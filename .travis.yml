@@ -1,0 +1,15 @@
+language: "python"
+python:
+  - "3.7"
+  - "3.6"
+services:
+  - postgresql
+env:
+  - DJANGO=2.0
+install:
+  - pip install -r requirements.txt
+before-script:
+  - python manage.py makemigrations
+  - python manage.py migrate --run-syncdb
+script:
+  - python manage.py test
