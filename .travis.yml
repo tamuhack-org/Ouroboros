@@ -8,7 +8,7 @@ env:
 install:
   - pip install -r requirements.txt
 before-script:
-  - python manage.py makemigrations
+  - python manage.py makemigrations hacker
   - python manage.py migrate --run-syncdb
 script:
   - python manage.py test
