@@ -7,8 +7,8 @@ env:
   - DJANGO=2.0
 install:
   - pip install -r requirements.txt
-before-script:
-  - python manage.py makemigrations
+before_script:
+  - python manage.py makemigrations hacker
   - python manage.py migrate --run-syncdb
 script:
   - python manage.py test
