@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+    <a class="navbar-brand" href="/">Howdy Hack</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
+      <div class="navbar-nav">
+        {% if session.logged_in %}
+        <a class="nav-item nav-link" href="/dashboard">Dashboard</a>
+        <a class="nav-item nav-link" href="/application">Application</a>
+        <a class="nav-item nav-link" href="/schedule">Event Details</a>
+        <a class="nav-item nav-link" href="/logout">Log out</a>
+        {% else %}
+        <a class="nav-item nav-link js-scroll-trigger" href="#about">About</a>
+        <a class="nav-item nav-link" href="">Schedule</a>
+        <a class="nav-item nav-link" href="">FAQ</a>
+        <a class="nav-item nav-link" href="">Sponsors</a>
+        <a class="nav-item nav-link" href="">Contact</a>
+        <a class="nav-item nav-link active" href="/login">Sign in</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>

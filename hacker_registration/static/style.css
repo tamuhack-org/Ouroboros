@@ -1,0 +1,128 @@
+
+.navbar {
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 8px 6px -6px #999;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.landing-screen h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 350%;
+}
+
+#logo_bar {
+    max-width: 100%;
+}
+
+#landing-screen {
+    background-color: #ffdfd3;
+    height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+    display: table;
+    background-size: cover;
+}
+
+.register-btn {
+    outline: none !important;
+    border-style: none !important;
+    background-color:#2ebfc7 !important;
+}
+
+._content h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 70pt;
+}
+
+._content p {
+    font-family: Helvetica;
+    line-height: 2em;
+}
+
+.signin {
+    padding-top: 15vh;
+    background-color: #ffdfd3;
+    height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+    display: flex;
+    overflow: hidden;
+    position: fixed;
+    background-size: cover;
+}
+
+.signin h1 {
+    font-weight: lighter;
+}
+
+.login-box {
+    background: #fff;
+    padding: 40px; 
+    padding-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.19);
+}
+
+.flat-field {
+    margin-bottom: 20px;
+    outline: none;
+    border: none;
+    background: transparent;
+    border-top: transparent !important;
+    border-left: transparent !important;
+    border-right: transparent !important;
+    border-radius: 0;
+    border-bottom: 1px solid black;
+    -webkit-transition: all 0.5%;
+    transition: all 0.5;
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 96%, #2ebfc7 4%);
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 96%, #2ebfc7 4%);
+    background-repeat: no-repeat;
+}
+
+.flat-field:focus {
+    outline: none !important;
+    outline-style: none !important;
+    box-shadow: none;
+    background-position: 0 0;
+    border-bottom: 0px;
+}
+
+.btn-login {
+    border-radius: 0;
+    background: #2ebfc7;
+    color: #fff;
+    -webkit-transition: all, 0.8%;
+    transition: all 0.8%;
+}
+
+.btn-login:hover {
+    background: transparent;
+    border: 1px solid #2ebfc7;
+    color: #2ebfc7;
+}
+
+.no-border {
+    border: none;
+    border: transparent;
+    outline: none;
+    outline: transparent;
+}
+
+.sidebar {
+    border: none;
+    border: transparent;
+    outline: none;
+    outline: transparent;
+}
+
+.btn-back-submit {
+    padding-top: 3%;
+    padding-left: 5%;
+    padding-right: 5%;
+}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% include 'includes/_logoBar.html' %}
+
+<section class = "signin">
+
+	<div class="container">
+		<div class="row justify-content-md-center text-center">
+			<div class="col-sm-12 col-md-8 col-lg-6 login-box">
+				<h1>Sign In</h1> <hr>
+				<form action="" method="POST">
+					<div class="form-row">
+						<div class="col-md-12">
+							<input type="text" name ="username" class="flat-field form-control form-control-md" placeholder="username">
+						</div>
+						<div class="col-md-12">
+							<input type="password" name ="password" class="flat-field form-control form-control-md" placeholder="password">
+						</div>
+						<button type="submit" class="btn btn-lg btn-block btn-login">
+							Login
+						</button>
+					</div>
+				</form>
+				<div class="row login-alt-options pt-5">
+					<div class="col-sm-6 col-lg-6 text-left">
+							Don't have an account? <a href="/register" >Sign up</a> 
+					</div>
+					<div class="col-sm-6 col-lg-6 text-right">
+							<a href="">Forgot Password?</a>
+					</div>			
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!--
+<section class = "signin">
+	<div class = "text-center">
+		<h1>Login</h1>
+		<form action="" method="POST">
+			<div class="form.group">
+				<label>Username</label>
+				<input type="text" name="username" class="form.control" value={{request.form.username}}>
+			</div>
+			<div class="form.group">
+				<label>Password</label>
+				<input type="text" name="password" class="form.control" value={{request.form.password}}>
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
+</section>
+-->
+{% endblock %}
