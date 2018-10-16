@@ -18,6 +18,8 @@ from django.contrib import auth
 from django.urls import path, include
 from core import views as core_views
 
+# test
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('django.contrib.auth.urls')),
