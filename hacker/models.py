@@ -2,6 +2,16 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+# GENDER_CHOICES - Previously named 'OPTIONS'; 
+#                  Previously found in `HackerProfile` model definition;
+GENDER_CHOICES = (
+    	('M', 'male'),
+    	('F', 'female'), 
+    	('NB', 'non-binary'),
+    	('NA', 'prefer to not disclose'),
+    )
+
+
 # `Hacker` model - Extends `AbstractUser` model:
 class Hacker(AbstractUser):
     admitted = models.NullBooleanField(blank=True)
@@ -34,5 +44,17 @@ class Hacker(AbstractUser):
 
 # `HackerProfile` model
 class HackerProfile(models.Model):
-    major = models.CharField(max_length=100)
-    # ...
+    # hacker = ....
+    gender = models.CharField(
+        max_length=2, 
+        choices=GENDER_CHOICES,
+    )
+    major = models.CharField(max_length=50)
+    grad_year = models.CharField(
+        max_length=4, 
+        choices=GRAD_YEAR_CHOICES,
+    )
+    date_submitted = models.DateField()     # Something's missing here ...
+
+    class Meta:
+        abstract=True
