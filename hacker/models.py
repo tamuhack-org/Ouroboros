@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 
 # GENDER_CHOICES - Previously named 'OPTIONS'; 
 #                  Previously found in `HackerProfile` model definition;
@@ -11,6 +12,8 @@ GENDER_CHOICES = (
     	('NA', 'prefer to not disclose'),
     )
 
+# GRAD_YEAR_CHOICES - Function that generates GRAD_YEAR_CHOICES
+GRAD_YEAR_CHOICES = [(i,i) for i in range(timezone.now().year, timezone.now().year + 6)]
 
 # `Hacker` model - Extends `AbstractUser` model:
 class Hacker(AbstractUser):
@@ -56,5 +59,5 @@ class HackerProfile(models.Model):
     )
     date_submitted = models.DateField()     # Something's missing here ...
 
-    class Meta:
+    class Meta:              # Makes `HackerProfile` an abstract model - will be inherited by `Application` model
         abstract=True
