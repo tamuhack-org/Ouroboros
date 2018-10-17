@@ -9,7 +9,8 @@
 		<div class="row justify-content-md-center text-center">
 			<div class="col-sm-12 col-md-8 col-lg-6 login-box">
 				<h1>Sign In</h1> <hr>
-				<form action="" method="POST">
+				<form id="login_form" method="POST" action="">
+					{% csrf_token %}	<!-- security -->
 					<div class="form-row">
 						<div class="col-md-12">
 							<input type="text" name ="username" class="flat-field form-control form-control-md" placeholder="username">

@@ -5,14 +5,14 @@
 {% include 'includes/_navbar.html' %}
 
 <header id="landing-screen" class="d-flex landing-screen">
-    <div class="container pt-5">
+    <div class="container pt-4">
 
-        <div class="row text-right">
-            <div class="col-md-6 col-lg-8"></div>
+        <div class="row">
+            <!--<div class="col-md-6 col-lg-6"></div>-->  <!-- Remove the comments around these to justify right -->
 
-            <div class="col-sm-12 col-lg-4 text-center">
+            <div class="col-sm-12 col-lg-6 text-center">
                 {% load static %}
-                <img src="{% static 'howdyHackLogo.svg' %}" width=250vw height=250vh>
+                <img src="{% static 'howdyHackLogo.svg' %}" width=300vw height=300vh>
                 <h1 class="font-weight-normal text-uppercase pt-3">
                     Howdy Hack
                 </h1>
@@ -20,19 +20,19 @@
         </div>
 
 
-        <div class = "row text-right pt-4">
-            <div class="col-md-6 col-lg-8 text-center"></div>
+        <div class = "row pt-2">
+            <!--<div class="col-md-6 col-lg-6 text-center"></div>-->
 
-            <div class="col-sm-12 col-lg-4 text-center">
-                <a class="register-btn btn btn-primary btn-xl js-scroll-trigger text-uppercase" href="/login">Access Application Here</a>
+            <div class="col-sm-12 col-lg-6 text-center">
+                <a class="register-btn btn btn-primary btn-lg js-scroll-trigger text-uppercase" href="/login">Access Application Here</a>
             </div>
         </div>
 
-        <div class = "row text-right pt-3">
-            <div class="col-md-6 col-lg-8 text-center"></div>
+        <div class = "row pt-3">
+            <!--<div class="col-md-6 col-lg-6 text-center"></div>-->
 
-            <div class="col-sm-12 col-lg-4 text-center">
-                <h5 class="font-weight-light">Start date - End date</h5>
+            <div class="col-sm-12 col-lg-6 text-center">
+                <h4 class="font-weight-light">Start date - End date</h4>
             </div>
         </div>
 

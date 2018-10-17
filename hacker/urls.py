@@ -1,5 +1,6 @@
 from django.urls import path, include
 from . import views
+from django.contrib.auth import login, authenticate
 
 urlpatterns = [
     path('', views.home),
