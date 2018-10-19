@@ -37,6 +37,11 @@
     background-color:#2ebfc7 !important;
 }
 
+.register-btn:hover {
+    background: white !important;
+    color: #2ebfc7 !important;
+}
+
 
 ._content h1 {
     font-family: 'Courier New', Courier, monospace;
@@ -126,6 +131,27 @@
     border: transparent;
     outline: none;
     outline: transparent;
+    border-radius: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+.list-group-item {
+    border-radius: 0 !important;
+}
+
+.transparent-obj {
+    background: transparent !important;   
+}
+
+.sidebar li:hover {
+    color: #e27536 !important;
+    font-weight: bold !important;
+}
+
+.sidebar a:link, a:hover a{
+    text-decoration: none;
+    color: black;
 }
 
 .btn-back-submit {
@@ -133,3 +159,11 @@
     padding-left: 5%;
     padding-right: 5%;
 }
+
+.dashboard {
+    background-image: linear-gradient(rgb(213, 244, 245),rgb(210, 226, 246));
+    height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+}
+
