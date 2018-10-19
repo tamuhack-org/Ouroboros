@@ -7,30 +7,23 @@
 <header id="landing-screen" class="d-flex landing-screen">
     <div class="container pt-4">
 
-        <div class="row">
-            <!-- <div class="col-md-6 col-lg-6"></div> -->  <!-- Remove the comments around these to justify right -->
-
-            <div class="col-sm-12 col-lg-6 text-center">
+        <div class="row">        
+            <div class="col-sm-12 col-lg-6 text-center my-svg-container">
                 {% load static %}
-                <img src="{% static 'howdyHackLogo.svg' %}" width=300vw height=300vh>
-                <h1 class="font-weight-normal text-uppercase pt-3">
+                <img src="{% static 'howdyHackLogo.svg' %}" width=300vh height=300vh> <!--change to 70% after figuring out how to fix whitespace-->
+                <h1 class="font-weight-normal text-uppercase">
                     Howdy Hack
                 </h1>
             </div>
         </div>
 
-
-        <div class = "row pt-2">
-            <!--<div class="col-md-6 col-lg-6 text-center"></div>-->
-
+        <div class = "row">
             <div class="col-sm-12 col-lg-6 text-center">
                 <a class="register-btn btn btn-primary btn-lg js-scroll-trigger text-uppercase" href="/login">Access Application Here</a>
             </div>
         </div>
 
         <div class = "row pt-3">
-            <!--<div class="col-md-6 col-lg-6 text-center"></div>-->
-
             <div class="col-sm-12 col-lg-6 text-center">
                 <h4 class="font-weight-light">Start date - End date</h4>
             </div>
