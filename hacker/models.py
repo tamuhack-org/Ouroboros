@@ -55,10 +55,10 @@ class Hacker(AbstractUser):
     checked_in_datetime = models.DateTimeField(null=True, blank=True)
 
     # Overrides AbstractUser.first_name to require not blank
-    first_name = models.CharField(max_length=30, blank=False)
+    first_name = models.CharField(max_length=30, blank=False, verbose_name='First Name')
 
     # Overrides AbstractUser.last_name to require not blank
-    last_name = models.CharField(max_length=150, blank=False)
+    last_name = models.CharField(max_length=150, blank=False, verbose_name='Last Name')
     
     # Overrides AbstractUser.email to require not blank
     email = models.EmailField(blank=False)
@@ -75,7 +75,7 @@ class HackerProfile(models.Model):
     major = models.CharField(max_length=50)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=2)
     classification = models.CharField(choices=CLASSIFICATION_CHOICES, max_length=2)
-    grad_year = models.IntegerField(choices=GRAD_YEAR_CHOICES)
+    grad_year = models.IntegerField(choices=GRAD_YEAR_CHOICES, verbose_name='Graduation Year')
 
     class Meta:         # TO-DO TEST
         abstract = True
@@ -97,8 +97,9 @@ class Confirmation(models.Model):
     shirt_size = models.CharField(          # TO-DO TEST
         max_length=3,
         choices=SHIRT_SIZE_CHOICES,
+        verbose_name='Shirt Size',
     )
-    dietary_restrictions = MultiSelectField(verbose_name='Dietary Restrictions', choices=DIETARY_RESTRICTION_CHOICES, blank=True)                                                # TO-DO TEST
+    dietary_restrictions = MultiSelectField(choices=DIETARY_RESTRICTION_CHOICES, verbose_name='Dietary Restrictions', blank=True)                                                # TO-DO TEST
     travel_reimbursement_required = models.BooleanField(default=False)          # TO-DO TEST
     date_confirmed = models.DateField(auto_now_add=True, blank=True)
     hacker = models.OneToOneField(              # TO-DO TEST
