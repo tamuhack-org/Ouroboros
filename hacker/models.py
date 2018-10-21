@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from multiselectfield import MultiSelectField
 
 SHIRT_SIZE_CHOICES = (
     ('XS', 'XS'),
@@ -25,6 +26,15 @@ CLASSIFICATION_CHOICES = (
     ('U3', 'U3'),
     ('U4', 'U4'),
     ('U5', 'U5'),
+)
+
+
+DIETARY_RESTRICTION_CHOICES = (
+    ('Vegan', 'Vegan'),
+    ('Vegaterian', 'Vegarterian'),
+    ('Halal', 'Halal'),
+    ('Kosher', 'Kosher'),
+    ('Food Allergies', 'Food Allergies'),
 )
 
 GRAD_YEAR_CHOICES = [(i,i) for i in range(timezone.now().year, timezone.now().year + 6)]        # TO-DO TEST
@@ -54,7 +64,7 @@ class Hacker(AbstractUser):
     email = models.EmailField(blank=False)
 
     def __str__(self):
-        return self.last_name
+        return '%s, %s' % (self.last_name, self.first_name)
 
 
 class HackerProfile(models.Model):
@@ -88,7 +98,7 @@ class Confirmation(models.Model):
         max_length=3,
         choices=SHIRT_SIZE_CHOICES,
     )
-    # dietary_restrictions =            # TO-DO TEST
+    dietary_restrictions = MultiSelectField(verbose_name='Dietary Restrictions', choices=DIETARY_RESTRICTION_CHOICES)                                                # TO-DO TEST
     travel_reimbursement_required = models.BooleanField(default=False)          # TO-DO TEST
     date_confirmed = models.DateField(auto_now_add=True, blank=True)
     hacker = models.OneToOneField(              # TO-DO TEST
