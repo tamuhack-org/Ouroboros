@@ -98,7 +98,7 @@ class Confirmation(models.Model):
         max_length=3,
         choices=SHIRT_SIZE_CHOICES,
     )
-    dietary_restrictions = MultiSelectField(verbose_name='Dietary Restrictions', choices=DIETARY_RESTRICTION_CHOICES)                                                # TO-DO TEST
+    dietary_restrictions = MultiSelectField(verbose_name='Dietary Restrictions', choices=DIETARY_RESTRICTION_CHOICES, blank=True)                                                # TO-DO TEST
     travel_reimbursement_required = models.BooleanField(default=False)          # TO-DO TEST
     date_confirmed = models.DateField(auto_now_add=True, blank=True)
     hacker = models.OneToOneField(              # TO-DO TEST
