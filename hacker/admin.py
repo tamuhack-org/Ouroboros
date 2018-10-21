@@ -12,14 +12,14 @@ class ApplicationAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Related Objects',         {'fields': ['hacker']}),
         ('Personal Information',    {'fields': ['gender','major','classification','grad_year']}),
-        ('Free Response Questions', {'fields': ['interests','essay']}),
+        ('Free Response Questions', {'fields': ['interests','essay','notes']}),
         ('Status',                  {'fields': ['approved']}),
     ]
 
 class ConfirmationAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Related Objects',        {'fields': ['hacker','team']}),
-        ('Logistical Information', {'fields': ['shirt_size','dietary_restrictions','travel_reimbursement_required']}),
+        ('Logistical Information', {'fields': ['shirt_size','dietary_restrictions','travel_reimbursement_required','notes']}),
     ]
 
 class TeamAdmin(admin.ModelAdmin):

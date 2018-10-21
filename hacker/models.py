@@ -88,6 +88,8 @@ class Application(HackerProfile):
     approved = models.NullBooleanField(blank=True)
     date_approved = models.DateField(null=True, blank=True)         # TO-DO TEST
     date_submitted = models.DateField(auto_now_add=True, blank=True)
+    notes = models.TextField(max_length=300, blank=True, help_text='Provide any additional notes and/or comments in the text box provide')
+
 
     def __str__(self):
         return '%s, %s - Profile' % (self.hacker.last_name, self.hacker.first_name)
@@ -102,6 +104,7 @@ class Confirmation(models.Model):
     dietary_restrictions = MultiSelectField(choices=DIETARY_RESTRICTION_CHOICES, verbose_name='Dietary Restrictions', blank=True)                                                # TO-DO TEST
     travel_reimbursement_required = models.BooleanField(default=False)          # TO-DO TEST
     date_confirmed = models.DateField(auto_now_add=True, blank=True)
+    notes = models.TextField(max_length=300, blank=True, help_text='Provide any additional notes and/or comments in the text box provide')
     hacker = models.OneToOneField(              # TO-DO TEST
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
