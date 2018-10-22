@@ -131,3 +131,16 @@ class Wave(models.Model):
     confirmation_period_start = models.DateTimeField()
     confirmation_period_end = models.DateTimeField()
 '''
+
+'''
+class ApplicationForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = '__all__'
+        widgets = {
+            'gender':forms.RadioSelect,
+            'classification':forms.RadioSelect,
+            'grad_year':forms.RadioSelect,
+            'status':forms.RadioSelect,
+        }
+'''

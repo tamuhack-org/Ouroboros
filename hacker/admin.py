@@ -9,15 +9,18 @@ class HackerAdmin(admin.ModelAdmin):
         ('Advanced',         {'fields': ['is_superuser','is_staff','is_active'], 'classes': ['collapse']}),
     ]
 
+
 class ApplicationAdminForm(forms.ModelForm):
     class Meta:
         model = Application
+        fields = '__all__'
         widgets = {
             'gender':forms.RadioSelect,
             'classification':forms.RadioSelect,
             'grad_year':forms.RadioSelect,
             'status':forms.RadioSelect,
         }
+
 
 class ApplicationAdmin(admin.ModelAdmin):
     form = ApplicationAdminForm
@@ -32,6 +35,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 class ConfirmationAdminForm(forms.ModelForm):
     class Meta:
         model = Confirmation
+        fields = '__all__'
         widgets = {
             'shirt_size':forms.RadioSelect,
             'dietary_restrictions':forms.RadioSelect,
