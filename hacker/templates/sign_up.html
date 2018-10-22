@@ -8,8 +8,9 @@
 		<div class="row justify-content-md-center text-center">
 			<div class="col-sm-12 col-md-8 col-lg-6 login-box">
 				<h1>Sign Up</h1> <hr>
-				<form action="" method="POST">
+				<form method="POST">
 					{% csrf_token %}	<!-- security -->
+					{{ form.as_p }} 
 					<div class="form-row">
 						<div class="col-md-12">
 							<input type="text" name ="first_name" class="flat-field form-control form-control-md" placeholder="first name">
@@ -29,7 +30,8 @@
 						<div class="col-md-12">
 							<input type="password" name ="confirm_password" class="flat-field form-control form-control-md" placeholder="confirm password">
                         </div>
-                    </div>
+					</div>
+
                     <div class="row btn-back-submit">
 						<a role="button" href="/login" class="col-lg-3 justify-content-start btn btn-lg btn-block btn-login btn-secondary">
 							Back
@@ -38,7 +40,8 @@
                         <button type="submit" class="col-lg-3 justify-content-end btn btn-lg btn-block btn-login">
 							Submit
 						</button>
-                    </div>
+					</div>
+					
 				</form>
 			</div>
 		</div>

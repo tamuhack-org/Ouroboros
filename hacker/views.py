@@ -1,7 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model
 # Create your views here.
+
+
+
+def home(request):
+    return render(request, 'index.html')
+
+def login(request):
+    return render(request, 'login.html')
+
+def register(request):
+    return render(request, 'sign_up.html')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST) #TODO: change to custom creation once it is made 
+        if form.is_valid():
+            form.save()
+            return redirect('/status')
+    else:
+        form = UserCreationForm()
+
+        args = {'form': form}
+        return render(request, 'sign_up.html', args)
 
 class dashboard:
     def status(request):
@@ -12,15 +34,9 @@ class dashboard:
         return render(request, 'team.html')
     def information(request):
         return render(request, 'information.html')
-
-def home(request):
-    return render(request, 'index.html')
-
-def login(request):
-    return render(request, 'login.html')
-
-def signup(request):
-    return render(request, 'sign_up.html')
+    def logout(request):
+        # do stuff to end session
+        return redirect('/')
 
 def dash(request):
     dashboard.status(request)

@@ -143,8 +143,12 @@
     background: transparent !important;   
 }
 
+.navbar-trans {
+    background: transparent;
+}
+
 .sidebar li:hover {
-    color: #e27536 !important;
+    color: blue !important;
     font-weight: bold !important;
 }
 

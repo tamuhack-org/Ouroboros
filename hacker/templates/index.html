@@ -3,10 +3,9 @@
 {% block body %}
 
 {% include 'includes/_navbar.html' %}
-
 <header id="landing-screen" class="d-flex landing-screen">
+   
     <div class="container pt-4">
-
         <div class="row">        
             <div class="col-sm-12 col-lg-6 text-center my-svg-container">
                 {% load static %}
@@ -63,5 +62,7 @@
         </div>
     </div>
 </footer>
+
+{% include 'includes/particles.html' %}
 
 {% endblock %}
