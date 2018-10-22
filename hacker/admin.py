@@ -40,16 +40,12 @@ class ConfirmationAdminForm(forms.ModelForm):
             'shirt_size':forms.RadioSelect,
             #'dietary_restrictions':forms.RadioSelect,
         }
-        '''
-        labels = {
-            'shirt_size': {
-                'empty_label': None
-            },
-            'dietary_restrictions': {
-                'empty_label': None
-            },
-        }
-        '''
+        
+    def __init__(self, *args, **kwargs):
+        super(ConfirmationAdminForm, self).__init__(*args, **kwargs)
+        self.fields['shirt_size'].empty_label = None
+        # following line needed to refresh widget copy of choice list
+        self.fields['shirt_size'].widget.choices = self.fields['shirt_size'].choices
 
 class ConfirmationAdmin(admin.ModelAdmin):
     form = ConfirmationAdminForm
