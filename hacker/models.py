@@ -125,3 +125,9 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
+
+'''
+class Wave(models.Model):
+    confirmation_period_start = models.DateTimeField()
+    confirmation_period_end = models.DateTimeField()
+'''
