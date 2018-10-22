@@ -40,6 +40,14 @@ class ConfirmationAdminForm(forms.ModelForm):
             'shirt_size':forms.RadioSelect,
             'dietary_restrictions':forms.RadioSelect,
         }
+        labels = {
+            'shirt_size': {
+                'empty_label': None
+            },
+            'dietary_restrictions': {
+                'empty_label': None
+            },
+        }
 
 class ConfirmationAdmin(admin.ModelAdmin):
     form = ConfirmationAdminForm
