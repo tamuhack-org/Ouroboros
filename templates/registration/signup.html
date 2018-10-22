@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% include 'includes/_logoBar.html' %}
+
+<section class="sign_up signin">
+    <div class="container">
+        <div class="row justify-content-md-center text-center">
+            <div class="col-sm-12 col-md-8 col-lg-6 login-box">
+                <h1>Sign Up</h1>
+                <hr>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <!-- security -->
+                    {{ form.as_p }}
+                    <input type="submit" value="Sign Up!">
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
