@@ -46,6 +46,8 @@ class ConfirmationAdminForm(forms.ModelForm):
         self.fields['shirt_size'].empty_label = None
         # following line needed to refresh widget copy of choice list
         self.fields['shirt_size'].widget.choices = self.fields['shirt_size'].choices
+        self.fields['shirt_size'].required = True
+
 
 class ConfirmationAdmin(admin.ModelAdmin):
     form = ConfirmationAdminForm
