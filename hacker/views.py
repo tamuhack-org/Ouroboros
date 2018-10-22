@@ -36,12 +36,9 @@ class dashboard:
         return render(request, 'team.html')
     def information(request):
         return render(request, 'information.html')
-<<<<<<< HEAD
     def logout(request):
         # do stuff to end session
         return redirect('/')
-=======
->>>>>>> 0c6238e24046e80d4bed1868ecd6695e91595741
 
 def dash(request):
     dashboard.status(request)
