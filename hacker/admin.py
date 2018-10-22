@@ -38,8 +38,9 @@ class ConfirmationAdminForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'shirt_size':forms.RadioSelect,
-            'dietary_restrictions':forms.RadioSelect,
+            #'dietary_restrictions':forms.RadioSelect,
         }
+        '''
         labels = {
             'shirt_size': {
                 'empty_label': None
@@ -48,6 +49,7 @@ class ConfirmationAdminForm(forms.ModelForm):
                 'empty_label': None
             },
         }
+        '''
 
 class ConfirmationAdmin(admin.ModelAdmin):
     form = ConfirmationAdminForm
