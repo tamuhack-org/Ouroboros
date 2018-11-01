@@ -32,6 +32,12 @@
                         </div>
 					</div>
 
+					<p>
+						{% for error in fields.errors %}
+							<p>{{ error }}</p>
+						{% endfor %}
+					</p>
+
                     <div class="row btn-back-submit">
 						<a role="button" href="/login" class="col-lg-3 justify-content-start btn btn-lg btn-block btn-login btn-secondary">
 							Back

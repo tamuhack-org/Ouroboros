@@ -157,6 +157,10 @@
     color: black;
 }
 
+.sidebar a:visited {
+    text-decoration: none;
+}
+
 .btn-back-submit {
     padding-top: 3%;
     padding-left: 5%;

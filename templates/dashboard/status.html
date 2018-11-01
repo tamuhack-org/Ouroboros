@@ -1,4 +1,4 @@
-{% extends 'dashboard.html' %}
+{% extends 'dashboard/dashboard_base.html' %}
 {% block content %}
 
     <div class='login-box'>
@@ -8,6 +8,8 @@
            <div class="text-center">
                {% if Confirmed %} <!--change these to correct conditions--> <!-- 'Confirmed' is currently a placeholder-->
                <button type="button" class="btn btn-lg btn-block btn-success">Confirmed</button>
+               {% elif Approved %}  <!--'Approved' is also a placeholder'-->
+               <button type="button" class="btn btn-lg btn-block btn-success">Approved</button>
                {% elif checked_in %}
                <button type="button" class="btn btn-lg btn-block btn-primary">Checked In</button>
                {% else %}

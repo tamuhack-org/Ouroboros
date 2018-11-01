@@ -15,27 +15,31 @@ def login(request):
     return render(request, 'login.html')
 
 def register(request):
-    return render(request, 'sign_up.html')
+    return render(request, 'signup.html')
     if request.method == 'POST':
-        form = UserCreationForm(request.POST) #TODO: change to custom creation once it is made 
+        form = SignupForm(request.POST) #TODO: change to custom creation once it is made 
         if form.is_valid():
             form.save()
-            return redirect('/status')
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('/application')
     else:
-        form = UserCreationForm()
+        form = SignupForm()
 
         args = {'form': form}
-        return render(request, 'sign_up.html', args)
+        return render(request, 'signup.html', args)
 
 class dashboard:
     def status(request):
-        return render(request, 'status.html')
+        return render(request, 'dashboard/status.html')
     def application(request):
-        return render(request, 'application.html')
+        return render(request, 'dashboard/application.html')
     def team(request):
-        return render(request, 'team.html')
+        return render(request, 'dashboard/team.html')
     def information(request):
-        return render(request, 'information.html')
+        return render(request, 'dashboard/information.html')
     def logout(request):
         # do stuff to end session
         return redirect('/')
