@@ -25,15 +25,15 @@
 							<input type="text" name ="username" class="flat-field form-control form-control-md" placeholder="username">
 						</div>
 						<div class="col-md-12">
-							<input type="password" name ="password" class="flat-field form-control form-control-md" placeholder="password">
+							<input type="password" name ="password1" class="flat-field form-control form-control-md" placeholder="password">
 						</div>
 						<div class="col-md-12">
-							<input type="password" name ="confirm_password" class="flat-field form-control form-control-md" placeholder="confirm password">
+							<input type="password" name ="password2" class="flat-field form-control form-control-md" placeholder="confirm password">
                         </div>
 					</div>
 
 					<p>
-						{% for error in fields.errors %}
+						{% for error in forms.errors %}
 							<p>{{ error }}</p>
 						{% endfor %}
 					</p>

@@ -15,7 +15,6 @@ def login(request):
     return render(request, 'login.html')
 
 def register(request):
-    return render(request, 'signup.html')
     if request.method == 'POST':
         form = SignupForm(request.POST) #TODO: change to custom creation once it is made 
         if form.is_valid():
