@@ -39,7 +39,7 @@ class HackerModelTestCase(test.TestCase):
         }
 
         self.team_fields = {
-            'team': 'Team',
+            'name': 'Team',
         }
 
     def test_first_name_required(self):
