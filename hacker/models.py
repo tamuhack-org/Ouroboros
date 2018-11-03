@@ -56,6 +56,11 @@ class Hacker(AbstractUser):
     # Overrides AbstractUser.email to require not blank
     email = models.EmailField(blank=False)
 
+
+    # def has_related_application(self):
+    #   ... fill in code ...
+
+
     def __str__(self):
         return '%s, %s' % (self.last_name, self.first_name)
 
