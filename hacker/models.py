@@ -29,7 +29,6 @@ CLASSIFICATION_CHOICES = (
     ('U5', 'U5'),
 )
 
-
 DIETARY_RESTRICTION_CHOICES = (
     ('Vegan', 'Vegan'),
     ('Vegaterian', 'Vegarterian'),
@@ -56,10 +55,21 @@ class Hacker(AbstractUser):
     # Overrides AbstractUser.email to require not blank
     email = models.EmailField(blank=False)
 
+    def has_related_application(self):
+        a = getattr(self, 'application', None)
+        return a is not None
 
-    # def has_related_application(self):
-    #   ... fill in code ...
+    def has_related_confirmation(self):
+        c = getattr(self, 'confirmation', None)
+        return c is not None
 
+    def has_related_team(self):
+        c = getattr(self, 'confirmation', None)
+        if c is not None:
+            t = getattr(c, 'team', None)
+            return t is not None
+        else:
+            return False
 
     def __str__(self):
         return '%s, %s' % (self.last_name, self.first_name)
