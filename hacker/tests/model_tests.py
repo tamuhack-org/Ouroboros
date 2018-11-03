@@ -4,7 +4,6 @@ from hacker import models as hacker_models
 from django.utils import timezone
 
 
-
 class HackerModelTestCase(test.TestCase):
 
     def setUp(self):
@@ -65,12 +64,12 @@ class HackerModelTestCase(test.TestCase):
             # Runs validation on the model
             hacker_without_email.full_clean()
 
+    # Hacker `has_related` function tests
     def test_has_related_application(self):
         hacker_to_test = hacker_models.Hacker(**self.hacker_fields)
         self.assertFalse(hacker_to_test.has_related_application())            
 
         application_to_test = hacker_models.Application(hacker=hacker_to_test, **self.application_fields)
-        self.assertTrue(hacker_to_test.has_related_application())  
 
     def test_has_related_confirmation(self):
         hacker_to_test = hacker_models.Hacker(**self.hacker_fields)
@@ -93,3 +92,5 @@ class HackerModelTestCase(test.TestCase):
         self.confirmation_fields['team'] = team_to_test
         confirmation_to_test = hacker_models.Confirmation(hacker=hacker_to_test, **self.confirmation_fields)
         self.assertTrue(hacker_to_test.has_related_team())
+
+
