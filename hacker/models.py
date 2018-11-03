@@ -29,7 +29,6 @@ CLASSIFICATION_CHOICES = (
     ('U5', 'U5'),
 )
 
-
 DIETARY_RESTRICTION_CHOICES = (
     ('Vegan', 'Vegan'),
     ('Vegaterian', 'Vegarterian'),
