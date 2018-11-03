@@ -63,34 +63,34 @@ class Hacker(AbstractUser):
     # Overrides AbstractUser.email to require not blank
     email = models.EmailField(blank=False)
 
-    def test_has_related_application(self):
-        hacker_to_test = hacker_models.Hacker(**self.hacker_fields)
-        self.assertFalse(hacker_to_test.has_related_application())            
+    def has_related_application(self):
+        a = getattr(self, 'application', None)
+        return a is not None
 
-        application_to_test = hacker_models.Application(hacker=hacker_to_test, **self.application_fields)
-        self.assertTrue(hacker_to_test.has_related_application())  
+    def has_related_confirmation(self):
+        c = getattr(self, 'confirmation', None)
+        return c is not None
 
-    def test_has_related_confirmation(self):
-        hacker_to_test = hacker_models.Hacker(**self.hacker_fields)
-        application_to_test = hacker_models.Application(hacker=hacker_to_test, **self.application_fields)
-        self.assertFalse(hacker_to_test.has_related_confirmation())  
+    def has_related_team(self):
+        c = getattr(self, 'confirmation', None)
+        if c is not None:
+            t = getattr(c, 'team', None)
+            return t is not None
+        else:
+            return False
 
-        confirmation_to_test = hacker_models.Confirmation(hacker=hacker_to_test, **self.confirmation_fields)
-        self.assertTrue(hacker_to_test.has_related_confirmation())  
+    def get_related_application(self):
+        return getattr(self, 'application', None)
 
-    def test_has_related_team(self):
-        hacker_to_test = hacker_models.Hacker(**self.hacker_fields)
-        self.assertFalse(hacker_to_test.has_related_team())
+    def get_related_confirmation(self):
+        return getattr(self, 'confirmation', None)
 
-        application_to_test = hacker_models.Application(hacker=hacker_to_test, **self.application_fields)
-        self.assertFalse(hacker_to_test.has_related_team())
-
-        team_to_test = hacker_models.Team(**self.team_fields)
-        self.assertFalse(hacker_to_test.has_related_team())
-
-        self.confirmation_fields['team'] = team_to_test
-        confirmation_to_test = hacker_models.Confirmation(hacker=hacker_to_test, **self.confirmation_fields)
-        self.assertTrue(hacker_to_test.has_related_team())
+    def get_related_team(self):
+        c = getattr(self, 'confirmation', None)
+        if c is not None:
+            return getattr(c, 'team', None)
+        else:
+            return None
 
     def __str__(self):
         return '%s, %s' % (self.last_name, self.first_name)
