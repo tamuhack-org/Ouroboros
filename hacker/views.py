@@ -16,7 +16,7 @@ def login(request):
 
 def register(request):
     if request.method == 'POST':
-        form = SignupForm(request.POST) #TODO: change to custom creation once it is made 
+        form = SignupForm(request.POST) #TO-DO: change to custom creation once it is made 
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')

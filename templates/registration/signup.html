@@ -1,42 +1,66 @@
 {% extends 'base.html' %}
 
+{% block additional_CSS %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'background_color_css.css' %}">
+{% endblock %}
+
 {% block body %}
 {% include 'includes/_logoBar.html' %}
 
-<section class = "sign_up signin">
+<section class = "sign_up">
 	<div class="container">
 		<div class="row justify-content-md-center text-center">
 			<div class="col-sm-12 col-md-8 col-lg-6 login-box">
 				<h1>Sign Up</h1> <hr>
 				<form method="POST">
 					{% csrf_token %}	<!-- security -->
-					 
+
 					<div class="form-row">
 						<div class="col-md-12">
-							<input type="text" name ="first_name" class="flat-field form-control form-control-md" placeholder="first name">
+							<input type="text" name ="first_name" {% if form.first_name.value != None %} value="{{form.first_name.value}}" {% endif %} class="flat-field form-control form-control-md" placeholder="first name">
 						</div>
+						{% if "first_name" in FormErrors %}
+							<div class="alert alert-danger" role="alert">{{ FormErrors.first_name.0.message }}</div>
+						{% endif %}
+
 						<div class="col-md-12">
-							<input type="text" name ="last_name" class="flat-field form-control form-control-md" placeholder="last name">
+							<input type="text" name ="last_name" {% if form.last_name.value != None %} value="{{form.last_name.value}}" {% endif %} class="flat-field form-control form-control-md" placeholder="last name">
 						</div>
+						{% if "last_name" in FormErrors %}
+							<div class="alert alert-danger" role="alert">{{ FormErrors.last_name.0.message }}</div>
+						{% endif %}
+
 						<div class="col-md-12">
-							<input type="email" name ="email" class="flat-field form-control form-control-md" placeholder="email">
+							<input type="email" name ="email"{% if form.email.value != None %} value="{{form.email.value}}" {% endif %} class="flat-field form-control form-control-md" placeholder="email">
 						</div>
+						{% if "email" in FormErrors %}
+							<div class="alert alert-danger" role="alert">{{ FormErrors.email.0.message }}</div>
+						{% endif %}
+
 						<div class="col-md-12">
-							<input type="text" name ="username" class="flat-field form-control form-control-md" placeholder="username">
+							<input type="text" name ="username" {% if form.username.value != None %} value="{{form.username.value}}" {% endif %} class="flat-field form-control form-control-md" placeholder="username">
 						</div>
+						{% if "username" in FormErrors %}
+							<div class="alert alert-danger" role="alert">{{ FormErrors.username.0.message }}</div>
+						{% endif %}
+
 						<div class="col-md-12">
-							<input type="password" name ="password1" class="flat-field form-control form-control-md" placeholder="password">
+							<input type="password" name ="password1" {% if form.password1.value != None %} value="{{form.password1.value}}" {% endif %} class="flat-field form-control form-control-md" placeholder="password">
 						</div>
+						{% if "password1" in FormErrors %}
+							<div class="alert alert-danger" role="alert">{{ FormErrors.password1.0.message }}</div>
+						{% endif %}
+
 						<div class="col-md-12">
 							<input type="password" name ="password2" class="flat-field form-control form-control-md" placeholder="confirm password">
-                        </div>
-					</div>
+						</div>
+						{% if "password2" in FormErrors %}
+							<div class="alert alert-danger" role="alert">{{ FormErrors.password2.0.message }}</div>
+						{% endif %}
 
-					<p>
-						{% for error in forms.errors %}
-							<p>{{ error }}</p>
-						{% endfor %}
-					</p>
+					</div>
 
                     <div class="row btn-back-submit">
 						<a role="button" href="/login" class="col-lg-3 justify-content-start btn btn-lg btn-block btn-login btn-secondary">

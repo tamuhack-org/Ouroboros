@@ -4,6 +4,7 @@ from django.views import generic as generic_views
 from django.views.generic import base as base_views
 from core import forms as core_forms
 from django.shortcuts import render, redirect
+import json
 
 class IndexView(base_views.TemplateView):
 
@@ -11,7 +12,6 @@ class IndexView(base_views.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
         return context
 
 class SignupView(generic_views.FormView):
@@ -37,4 +37,5 @@ class SignupView(generic_views.FormView):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             return redirect('/application')
-        return render(request, self.template_name, {'form':form})
+        FormErrors = json.loads(form.errors.as_json())
+        return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors})

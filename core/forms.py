@@ -16,4 +16,3 @@ class SignupForm(auth_forms.UserCreationForm):
     class Meta:
         model = hacker_models.Hacker
         fields = ('first_name', 'last_name', 'email', 'username','password1', 'password2')
-        #exclude = ['username']
