@@ -94,3 +94,17 @@ class HackerModelTestCase(test.TestCase):
         self.assertTrue(hacker_to_test.has_related_team())
 
 
+    ''' test the generate_confirm_code() function in `Hacker` '''
+    def test_generate_confirm_code(self):
+        # create test instance of `Hacker`
+        test_hacker = hacker_models.Hacker(**self.hacker_fields)
+        
+        # generate confirm_code
+        test_hacker.generate_confirm_code()
+        code = getattr(test_hacker, 'confirm_code', None)
+
+        # check: confirm_code value has been changed from None
+        self.assertIsNotNone(code)
+        # check: confirm_code is a string
+        self.assertIsInstance(code, str)
+

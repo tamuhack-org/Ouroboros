@@ -3,7 +3,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from multiselectfield import MultiSelectField
-
+import string
+import random
 
 SHIRT_SIZE_CHOICES = (
     ('XS', 'XS'),
@@ -45,6 +46,8 @@ class Hacker(AbstractUser):
     checked_in = models.NullBooleanField(blank=True)
     admitted_datetime = models.DateTimeField(null=True, blank=True)
     checked_in_datetime = models.DateTimeField(null=True, blank=True)
+    email_confirmed = models.BooleanField(blank=True, default=False)
+    confirm_code = models.CharField(max_length=12, blank=True, null=True)
 
     # Overrides AbstractUser.first_name to require not blank
     first_name = models.CharField(max_length=30, blank=False, verbose_name='first name')
@@ -70,6 +73,10 @@ class Hacker(AbstractUser):
             return t is not None
         else:
             return False
+
+    def generate_confirm_code(self):
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
+        setattr(self, 'confirm_code', code)
 
     def __str__(self):
         return '%s, %s' % (self.last_name, self.first_name)
