@@ -168,3 +168,4 @@ class ConfirmEmailView(generic_views.FormView):
                 return redirect('/confirm_email')
         FormErrors = json.loads(form.errors.as_json())
         return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors})
+        
