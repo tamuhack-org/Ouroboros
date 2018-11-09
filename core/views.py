@@ -18,6 +18,7 @@ except ImportError:
 
 import json
 
+
 class IndexView(base_views.TemplateView):
 
     template_name = 'index.html'
@@ -86,6 +87,8 @@ class SignInView(generic_views.FormView):
         return False
 
     def get(self, request, *args, **kwargs):
+        if (request.user.is_authenticated):
+            return redirect(self.get_success_url())
         form = self.form_class(initial=self.initial)
         self.set_test_cookie()
         return super(SignInView, self).get(request, *args, **kwargs)

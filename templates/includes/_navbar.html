@@ -6,17 +6,15 @@
   </button>
   <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
     <div class="navbar-nav">
-      {% if session.logged_in %}
-      <a class="nav-item nav-link" href="/dashboard">Dashboard</a>
-      <a class="nav-item nav-link" href="/application">Application</a>
-      <a class="nav-item nav-link" href="/schedule">Event Details</a>
-      <a class="nav-item nav-link" href="/auth/logout">Log out</a>
-      {% else %}
       <a class="nav-item nav-link js-scroll-trigger" href="#about">About</a>
       <a class="nav-item nav-link" href="">Schedule</a>
       <a class="nav-item nav-link" href="">FAQ</a>
       <a class="nav-item nav-link" href="">Sponsors</a>
       <a class="nav-item nav-link" href="">Contact</a>
+      {% if request.user.is_authenticated %}
+      <a class="nav-item nav-link" href="/status">Dashboard</a>
+      <a class="nav-item nav-link active" href="/auth/logout">Log out</a>
+      {% else %}
       <a class="nav-item nav-link active" href="/auth/login">Sign in</a>
       {% endif %}
     </div>
