@@ -56,6 +56,7 @@ class SignupView(generic_views.FormView):
 class SignInView(generic_views.FormView):
     form_class = core_forms.SignInForm
     template_name = 'registration/login.html'
+    success_url = core_forms.SignInForm.success_url
     redirect_field_name = core_forms.SignInForm.redirect_field_name
 
     # references: https://gist.github.com/stefanfoulis/1140136 , https://coderwall.com/p/sll1kw/django-auth-class-based-views-login-and-logout
@@ -73,20 +74,7 @@ class SignInView(generic_views.FormView):
         return redirect(self.get_success_url())
 
     def get_success_url(self):
-        if self.success_url:
-            print("success url")
-            redirect_to = self.success_url
-        else:
-            print("redirect_field")
-            redirect_to = self.request.GET.get(self.redirect_field_name, '')
-        
-        netloc = urlparse.urlparse(redirect_to)[1]
-        if not redirect_to:
-            redirect_to = settings.LOGIN_REDIRECT_URL
-        # Security check -- don't allow redirection to a different host.
-        elif netloc and netloc != self.request.get_host():
-            redirect_to = settings.LOGIN_REDIRECT_URL
-        return redirect_to
+        return self.success_url
 
     def set_test_cookie(self):
         self.request.session.set_test_cookie()
@@ -96,7 +84,6 @@ class SignInView(generic_views.FormView):
             self.request.session.delete_test_cookie()
             return True
         return False
-
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
@@ -115,19 +102,6 @@ class SignInView(generic_views.FormView):
         else:
             self.set_test_cookie()
             return self.form_invalid(form)
-
-        '''
-        form.is_valid()
-        username = request.POST['username']
-        raw_password = request.POST['password']
-        user = authenticate(username=username, password=raw_password)
-        if user is not None:
-            login(request, user)
-            return redirect('/status')
-        FormErrors = json.loads(form.errors.as_json())
-        print(FormErrors)
-        return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors})
-        '''
 
 class LogOutView(RedirectView):
     url = "/"
