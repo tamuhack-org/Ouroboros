@@ -3,6 +3,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from multiselectfield import MultiSelectField
+import random
+import string
+
 
 SHIRT_SIZE_CHOICES = (
     ('XS', 'XS'),
@@ -28,7 +31,6 @@ CLASSIFICATION_CHOICES = (
     ('U5', 'U5'),
 )
 
-
 DIETARY_RESTRICTION_CHOICES = (
     ('Vegan', 'Vegan'),
     ('Vegaterian', 'Vegarterian'),
@@ -45,6 +47,8 @@ class Hacker(AbstractUser):
     checked_in = models.NullBooleanField(blank=True)
     admitted_datetime = models.DateTimeField(null=True, blank=True)
     checked_in_datetime = models.DateTimeField(null=True, blank=True)
+    email_confirmed = models.BooleanField(blank=True, default=False)
+    confirm_code = models.CharField(max_length=6, blank=True, null=True)
 
     # Overrides AbstractUser.first_name to require not blank
     first_name = models.CharField(max_length=30, blank=False, verbose_name='first name')
@@ -54,6 +58,40 @@ class Hacker(AbstractUser):
     
     # Overrides AbstractUser.email to require not blank
     email = models.EmailField(blank=False)
+
+    def has_related_application(self):
+        a = getattr(self, 'application', None)
+        return a is not None
+
+    def has_related_confirmation(self):
+        c = getattr(self, 'confirmation', None)
+        return c is not None
+
+    def has_related_team(self):
+        c = getattr(self, 'confirmation', None)
+        if c is not None:
+            t = getattr(c, 'team', None)
+            return t is not None
+        else:
+            return False
+
+    def generate_confirm_code(self):
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        setattr(self, 'confirm_code', code)
+
+    def check_confirm_code(self, code):
+        if getattr(self, 'confirm_code', None) is None:
+            return False
+        else:
+            return getattr(self, 'confirm_code', None) == code
+
+    def confirm_email(self, code):
+        if self.check_confirm_code(code):
+            setattr(self, 'email_confirmed', True)
+            setattr(self, 'confirm_code', None)
+            return True
+        # return 'False' if check_confirm_code(code) returns 'False'
+        return False
 
     def __str__(self):
         return '%s, %s' % (self.last_name, self.first_name)
