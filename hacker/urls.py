@@ -7,5 +7,4 @@ urlpatterns = [
     path('application', views.dashboard.application),
     path('team', views.dashboard.team),
     path('information', views.dashboard.information),
-    path('logout', views.dashboard.logout)
 ]

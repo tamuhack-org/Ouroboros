@@ -4,6 +4,9 @@ from django.views import generic as generic_views
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
@@ -30,18 +33,29 @@ def register(request):
         args = {'form': form}
         return render(request, 'signup.html', args)
 
-class dashboard:
+class dashboard(LoginRequiredMixin):
+    login_url = '/auth/login/'
+    redirect_field_name = '/status'
+    
+    @login_required
     def status(request):
         return render(request, 'dashboard/status.html')
+    
+    @login_required
     def application(request):
+        redirect_field_name = '/application'
         return render(request, 'dashboard/application.html')
+    
+    @login_required
     def team(request):
+        redirect_field_name = '/team'
         return render(request, 'dashboard/team.html')
+    
+    @login_required
     def information(request):
+        redirect_field_name = '/information'
         return render(request, 'dashboard/information.html')
-    def logout(request):
-        # do stuff to end session
-        return redirect('/')
 
+@login_required
 def dash(request):
     dashboard.status(request)

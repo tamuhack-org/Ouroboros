@@ -16,7 +16,7 @@
                 <a href="/application"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Application</li></a>
                 <a href="/team"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Team</li></a>
                 <a href='/information'><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Information</li></a>
-                <a href="/logout"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
+                <a href="/auth/logout"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
 
 
 {% elif request.path == '/application' %}
@@ -25,7 +25,7 @@
                 <a href="/application"><li class="list-group-item border-top-0 border-left-0 border-bottom-0 active">Application</li></a>
                 <a href="/team"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Team</li></a>
                 <a href='/information'><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Information</li></a>
-                <a href="/logout"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
+                <a href="/auth/logout"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
 
 {% elif request.path == '/team' %}
 
@@ -33,7 +33,7 @@
                 <a href="/application"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Application</li></a>
                 <li class="list-group-item border-top-0 border-left-0 border-bottom-0 active">Team</li>
                 <a href='/information'><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Information</li></a>
-                <a href="/logout"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
+                <a href="/auth/logout"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
 
 {% elif request.path == '/information' %}
 
@@ -41,7 +41,7 @@
                 <a href="/application"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Application</li></a>
                 <a href="/team"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Team</li></a>
                 <a href='/information'><li class="list-group-item border-top-0 border-left-0 border-bottom-0 active">Information</li></a>
-                <a href="/logout"><li class="list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
+                <a href="/auth/logout"><li class="list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
 
 {% endif %}
 
