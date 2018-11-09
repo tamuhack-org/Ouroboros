@@ -8,6 +8,8 @@ from django.views.generic import base as base_views, RedirectView
 from core import forms as core_forms
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.core.mail import send_mail
+from hacker import models as hacker_models
 
 try:
     import urlparse                     # if using python2
@@ -133,3 +135,36 @@ class LogOutView(RedirectView):
     def get(self, request, *args, **kwargs):
         auth_logout(request)
         return super(LogOutView, self).get(request, *args, **kwargs)
+
+
+class ConfirmEmailView(generic_views.FormView):
+
+    from_class = core_forms.ConfirmEmailForm
+    template_name = 'email_confirmation/confirm_email.html'
+
+    def form_valid(self, form):
+        form.full_clean()
+        form.save()
+        return super(ConfirmEmailView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form':form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            email = form.cleaned_data.get('email')
+            code = form.cleaned_data.get('confirm_code')
+            hacker = hacker_models.Hacker.objects.get(email=email)
+            if hacker.confirm_email(code):
+                # given confirm_code is correct
+                # ...
+                return redirect('/status')
+            else:
+                # given confirm_code is NOT correct
+                # ...
+                return redirect('/confirm_email')
+        FormErrors = json.loads(form.errors.as_json())
+        return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors})
