@@ -126,6 +126,6 @@ STATICFILES_DIRS = [
 ]
 
 AUTH_USER_MODEL = 'hacker.Hacker'
-
+SIGNUP_REDIRECT_URL = '/confirm_email'
 LOGIN_REDIRECT_URL = '/status'
 LOGIN_URL = 'auth/login'

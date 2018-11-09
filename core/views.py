@@ -48,7 +48,7 @@ class SignupView(generic_views.FormView):
             raw_password = form.cleaned_data.get('password1') 
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect(settings.LOGIN_REDIRECT_URL)
+            return redirect(settings.SIGNUP_REDIRECT_URL)
         FormErrors = json.loads(form.errors.as_json())
         return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors})
 
@@ -140,7 +140,8 @@ class LogOutView(RedirectView):
 class ConfirmEmailView(generic_views.FormView):
 
     from_class = core_forms.ConfirmEmailForm
-    template_name = 'email_confirmation/confirm_email.html'
+    template_name = core_forms.ConfirmEmailForm.template_name
+    success_url = core_forms.ConfirmEmailForm.template_name
 
     def form_valid(self, form):
         form.full_clean()
