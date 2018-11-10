@@ -152,7 +152,8 @@ class ConfirmEmailView(generic_views.FormView):
             hacker = hacker_models.Hacker.objects.get(email=email)
             if hacker.confirm_email(code):
                 # given confirm_code is correct
-                # ...
+                hacker_models.Hacker.objects.get(email=email).update(confirm_code=None)
+                hacker_models.Hacker.objects.get(email=email).update(email_confirmed=True)
                 return redirect('/status')
             else:
                 # given confirm_code is NOT correct
