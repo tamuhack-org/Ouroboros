@@ -50,6 +50,7 @@ class SignupView(generic_views.FormView):
         if to_email is not None and confirm_code is not None:
             email_content = 'Almost there ' + first_name + '! Use the following confirmation code to confirm your email: ' + confirm_code
             send_mail('Confirm you email!', email_content, settings.EMAIL_HOST_USER, [to_email])
+            hacker_models.Hacker.objects.filter(email=to_email).update(confirm_code=confirm_code)
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
