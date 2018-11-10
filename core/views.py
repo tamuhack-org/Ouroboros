@@ -135,7 +135,7 @@ class ConfirmEmailView(generic_views.FormView):
 
     def form_valid(self, form):
         form.full_clean()
-        form.save()
+        #form.save()
         return super(ConfirmEmailView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):
@@ -145,7 +145,7 @@ class ConfirmEmailView(generic_views.FormView):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
+            #form.save()
             email = form.cleaned_data.get('email')
             code = form.cleaned_data.get('confirm_code')
             hacker = hacker_models.Hacker.objects.get(email=email)
