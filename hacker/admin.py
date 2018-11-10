@@ -9,6 +9,8 @@ class HackerAdmin(admin.ModelAdmin):
         ('Advanced',         {'fields': ['is_superuser','is_staff','is_active'], 'classes': ['collapse']}),
     ]
 
+    list_display = ('username', 'email', 'confirm_code', 'email_confirmed')
+
 
 class ApplicationAdminForm(forms.ModelForm):
     class Meta:
