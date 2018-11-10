@@ -84,15 +84,19 @@ class Hacker(AbstractUser):
         if getattr(self, 'confirm_code', None) is None:
             return False
         else:
-            return getattr(self, 'confirm_code', None) == code
+            confirm_code = getattr(self, 'confirm_code', None)
+            return (str(confirm_code) == str(code))
 
     def confirm_email(self, code):
         if self.check_confirm_code(code):
             setattr(self, 'email_confirmed', True)
-            setattr(self, 'confirm_code', None)
+            #setattr(self, 'confirm_code', None)
+            self.save()
             return True
         # return 'False' if check_confirm_code(code) returns 'False'
-        return False
+        else:
+            setattr(self, 'first_name', 'lol nope')
+            return False
 
     def __str__(self):
         return '%s, %s' % (self.last_name, self.first_name)

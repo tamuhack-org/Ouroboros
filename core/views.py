@@ -156,7 +156,7 @@ class ConfirmEmailView(generic_views.FormView):
             else:
                 # given confirm_code is NOT correct
                 # ...
-                return redirect('/confirm_email')
+                return redirect('/application')
         FormErrors = json.loads(form.errors.as_json())
         return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors})
         
