@@ -91,7 +91,6 @@ class Hacker(AbstractUser):
         if self.check_confirm_code(code):
             setattr(self, 'email_confirmed', True)
             #setattr(self, 'confirm_code', None)
-            self.save()
             return True
         # return 'False' if check_confirm_code(code) returns 'False'
         else:
