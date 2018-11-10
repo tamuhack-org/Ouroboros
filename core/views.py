@@ -47,10 +47,10 @@ class SignupView(generic_views.FormView):
         hacker.generate_confirm_code()
         confirm_code = getattr(hacker, 'confirm_code', None)
         first_name = getattr(hacker, 'first_name', None)
+        hacker_models.Hacker.objects.filter(email=to_email).update(confirm_code=confirm_code)
         if to_email is not None and confirm_code is not None:
             email_content = 'Almost there ' + first_name + '! Use the following confirmation code to confirm your email: ' + confirm_code
             send_mail('Confirm you email!', email_content, settings.EMAIL_HOST_USER, [to_email])
-            #hacker_models.Hacker.objects.filter(email=to_email).update(confirm_code=confirm_code)
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -156,7 +156,7 @@ class ConfirmEmailView(generic_views.FormView):
             else:
                 # given confirm_code is NOT correct
                 # ...
-                return redirect('/application')
+                return redirect('/confirm_email')
         FormErrors = json.loads(form.errors.as_json())
         return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors})
         
