@@ -126,6 +126,17 @@ STATICFILES_DIRS = [
 ]
 
 AUTH_USER_MODEL = 'hacker.Hacker'
+
+# Template URL Global Variables - To be used in Views
 SIGNUP_REDIRECT_URL = '/confirm_email'
 LOGIN_REDIRECT_URL = '/status'
 LOGIN_URL = 'auth/login'
+
+
+# Email Configuration Global Settings
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+# Miscellaneous Project Global Variables
+EMAIL_CONFIRM_CODE_LENGTH = 6

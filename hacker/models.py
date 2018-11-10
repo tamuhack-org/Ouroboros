@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from multiselectfield import MultiSelectField
+from ouroboros import settings
 import random
 import string
 
@@ -76,7 +77,7 @@ class Hacker(AbstractUser):
             return False
 
     def generate_confirm_code(self):
-        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=settings.EMAIL_CONFIRM_CODE_LENGTH))
         setattr(self, 'confirm_code', code)
 
     def check_confirm_code(self, code):

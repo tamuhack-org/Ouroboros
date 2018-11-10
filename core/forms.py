@@ -40,6 +40,9 @@ class ConfirmEmailForm(forms.Form):
     template_name = 'registration/confirm_email.html'
     success_url = '/application'
     email = forms.EmailField()
-    confirm_code = forms.CharField(max_length=6, min_length=6)
+    confirm_code = forms.CharField(
+        max_length=settings.EMAIL_CONFIRM_CODE_LENGTH, 
+        min_length=settings.EMAIL_CONFIRM_CODE_LENGTH,
+    )
 
     
