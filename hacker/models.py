@@ -79,6 +79,7 @@ class Hacker(AbstractUser):
     def generate_confirm_code(self):
         code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=settings.EMAIL_CONFIRM_CODE_LENGTH))
         setattr(self, 'confirm_code', code)
+        self.save()
 
     def check_confirm_code(self, code):
         if getattr(self, 'confirm_code', None) is None:
@@ -91,6 +92,7 @@ class Hacker(AbstractUser):
         if self.check_confirm_code(code):
             setattr(self, 'email_confirmed', True)
             setattr(self, 'confirm_code', None)
+            self.save()
             return True
         # return 'False' if check_confirm_code(code) returns 'False'
         else:
@@ -162,7 +164,7 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 # `Hacker.admitted` Values:
     #       1. 'True' - application approved & confirmation period has begun

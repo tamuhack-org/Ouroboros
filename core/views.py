@@ -79,7 +79,7 @@ class SignupView(generic_views.FormView):
 class SignInView(generic_views.FormView):
     form_class = core_forms.SignInForm
     template_name = 'registration/login.html'
-    success_url = core_forms.SignInForm.success_url
+    success_url = core_forms.SignInForm.success_url   #!!!
     redirect_field_name = core_forms.SignInForm.redirect_field_name
 
     # references: https://gist.github.com/stefanfoulis/1140136 , https://coderwall.com/p/sll1kw/django-auth-class-based-views-login-and-logout
@@ -96,7 +96,7 @@ class SignInView(generic_views.FormView):
         login(self.request, form.get_user())
         return redirect(self.get_success_url())
 
-    def get_success_url(self):
+    def get_success_url(self):      #!!!!!!!!!!
         return self.success_url
 
     def set_test_cookie(self):
@@ -108,7 +108,7 @@ class SignInView(generic_views.FormView):
             return True
         return False
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):   #!!!!!!!!!
         if (request.user.is_authenticated):
             return redirect(self.get_success_url())
         form = self.form_class(initial=self.initial)
