@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -132,10 +133,17 @@ SIGNUP_REDIRECT_URL = '/confirm_email'
 LOGIN_REDIRECT_URL = '/status'
 LOGIN_URL = 'auth/login'
 
-
+email_credentials_file = open("ouroboros/config/email_config.txt",'r')
+email_credentials_data = json.load(email_credentials_file)
+email_credentials_file.close()
 # Email Configuration Global Settings
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = email_credentials_data['EMAIL_HOST']
+EMAIL_HOST_PASSWORD = email_credentials_data['EMAIL_HOST_PASSWORD']
+EMAIL_HOST_USER = email_credentials_data['EMAIL_HOST_USER']
+EMAIL_PORT = email_credentials_data['EMAIL_PORT']
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 # Miscellaneous Project Global Variables
