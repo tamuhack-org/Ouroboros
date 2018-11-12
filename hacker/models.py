@@ -40,6 +40,11 @@ DIETARY_RESTRICTION_CHOICES = (
     ('Food Allergies', 'Food Allergies'),
 )
 
+WAVE_TYPE_CHOICES = (
+    ('Approve', 'Approve Application'),
+    ('Reject', 'Reject Application'),
+)
+
 GRAD_YEAR_CHOICES = [(i,i) for i in range(timezone.now().year, timezone.now().year + 6)]        # TO-DO TEST
 
 
@@ -165,6 +170,26 @@ class Team(models.Model):
     def __str__(self):
         return self.name
 
+'''
+class Wave(models.Model):
+    period_start = models.DateTimeField()
+    period_end = models.DateTimeField()
+    wave_type = models.CharField(
+        max_length=20,
+        choices=WAVE_TYPE_CHOICES,
+    )
+
+
+class EventSettings(models.Model):
+    registration_start = models.DateTimeField()
+    registration_end = models.DateTimeField()
+    confirmation_start = models.DateTimeField()
+    confirmation_end = models.DateTimeField()
+
+
+class Announcement(models.Model):
+    rec
+'''
 
 # `Hacker.admitted` Values:
     #       1. 'True' - application approved & confirmation period has begun
