@@ -7,8 +7,15 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.conf import settings
+from django.contrib.auth.decorators import user_passes_test
 # Create your views here.
 
+def email_confirmation_check(user):
+    return user.has_confirmed_email() 
+
+def completed_application(user):
+    return user.has_related_application()
 
 def home(request):
     return render(request, 'index.html')
@@ -18,7 +25,7 @@ def login(request):
 
 def register(request):
     if request.method == 'POST':
-        form = SignupForm(request.POST) #TO-DO: change to custom creation once it is made 
+        form = SignupForm(request.POST) 
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -37,24 +44,31 @@ class dashboard(LoginRequiredMixin):
     redirect_field_name = '/status'
     
     @login_required
+    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
+    @user_passes_test(completed_application, settings.APPLICATION_URL)
     def status(request):
         return render(request, 'dashboard/status.html')
     
     @login_required
+    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
     def application(request):
         redirect_field_name = '/application'
         return render(request, 'dashboard/application.html')
     
     @login_required
+    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
+    @user_passes_test(completed_application, settings.APPLICATION_URL)
     def team(request):
         redirect_field_name = '/team'
         return render(request, 'dashboard/team.html')
     
     @login_required
+    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
     def information(request):
         redirect_field_name = '/information'
         return render(request, 'dashboard/information.html')
 
 @login_required
+@user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
 def dash(request):
     dashboard.status(request)

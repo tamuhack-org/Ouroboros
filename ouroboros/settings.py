@@ -132,6 +132,7 @@ AUTH_USER_MODEL = 'hacker.Hacker'
 SIGNUP_REDIRECT_URL = '/confirm_email'
 LOGIN_REDIRECT_URL = '/status'
 LOGIN_URL = 'auth/login'
+APPLICATION_URL = '/application'
 
 email_credentials_file = open("ouroboros/config/email_config.txt",'r')
 email_credentials_data = json.load(email_credentials_file)

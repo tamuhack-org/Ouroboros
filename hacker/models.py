@@ -97,6 +97,9 @@ class Hacker(AbstractUser):
             setattr(self, 'first_name', 'lol nope')
             return False
 
+    def has_confirmed_email(self):
+        return self.email_confirmed
+
     def __str__(self):
         return '%s, %s' % (self.last_name, self.first_name)
 

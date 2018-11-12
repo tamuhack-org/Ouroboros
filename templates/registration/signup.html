@@ -60,16 +60,25 @@
 							<div class="alert alert-danger" role="alert">{{ FormErrors.password2.0.message }}</div>
 						{% endif %}
 
+						{% if user_exists %}
+							  <div class="alert alert-danger" role="alert">An account with email {{form.email.value}} already exists.</div>
+						{% endif %}
 					</div>
 
                     <div class="row btn-back-submit">
-						<a role="button" href="/login" class="col-lg-3 justify-content-start btn btn-lg btn-block btn-login btn-secondary">
+						<a role="button" href="/auth/login" class="col-lg-3 justify-content-start btn btn-lg btn-block btn-login btn-secondary">
 							Back
                         </a>
-                        <div class="col-lg-6"></div>
+						<div class="col-lg-6"></div>
+						{% if user_exists %}
+							<a role="button" href="/auth/login" class="col-lg-3 justify-content-start btn btn-lg btn-block btn-success">
+								LOGIN
+							</a>
+						{% else %}
                         <button type="submit" class="col-lg-3 justify-content-end btn btn-lg btn-block btn-login">
 							Submit
 						</button>
+						{% endif %}
 					</div>
 					{% csrf_token %}
 				</form>

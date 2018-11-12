@@ -34,6 +34,9 @@ class SignupView(generic_views.FormView):
     form_class = core_forms.SignupForm
     template_name = 'registration/signup.html'
 
+    def email_exists(self, form):
+        return (hacker_models.Hacker.objects.filter(email=form.cleaned_data.get('email')).exists())
+
     def form_valid(self, form):
         form.full_clean()
         form.save()
@@ -56,18 +59,22 @@ class SignupView(generic_views.FormView):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        user_exists = False
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1') 
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            hacker = hacker_models.Hacker.objects.get(username=username)
-            # call the 'send_confirmation_email' function to send a confirmation email
-            self.send_confirmation_email(hacker)
-            return redirect(settings.SIGNUP_REDIRECT_URL)
+            if (not self.email_exists(form)):
+                form.save()
+                username = form.cleaned_data.get('username')
+                raw_password = form.cleaned_data.get('password1') 
+                user = authenticate(username=username, password=raw_password)
+                login(request, user)
+                hacker = hacker_models.Hacker.objects.get(username=username)
+                # call the 'send_confirmation_email' function to send a confirmation email
+                self.send_confirmation_email(hacker)
+                return redirect(settings.SIGNUP_REDIRECT_URL)
+            else:
+                user_exists = True 
         FormErrors = json.loads(form.errors.as_json())
-        return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors})
+        return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors, 'user_exists':user_exists})
 
 
 class SignInView(generic_views.FormView):
