@@ -4,7 +4,7 @@ from hacker import models as hacker_models
 from ouroboros import settings
 from django import forms
 
-REQUIRED_FIELDS = ('first_name', 'last_name', 'email', 'username', 'password1', 'password2')
+SIGNUP_REQUIRED_FIELDS = ('first_name', 'last_name', 'email', 'username', 'password1', 'password2')
 
 class SignupForm(auth_forms.UserCreationForm):
 
@@ -12,7 +12,7 @@ class SignupForm(auth_forms.UserCreationForm):
         super(SignupForm, self).__init__(*args, **kwargs)
         for fieldname in ['username', 'password1', 'password2']:
             self.fields[fieldname].help_text = None
-        for fieldname in REQUIRED_FIELDS:
+        for fieldname in SIGNUP_REQUIRED_FIELDS:
             self.fields[fieldname].required = True
 
     class Meta:
@@ -38,11 +38,26 @@ class SignInForm(auth_forms.AuthenticationForm):
 class ConfirmEmailForm(forms.Form):
 
     template_name = 'registration/confirm_email.html'
-    success_url = '/application'
+    success_url = settings.CONFIRM_EMAIL_REDIRECT_URL
     email = forms.EmailField()
     confirm_code = forms.CharField(
         max_length=settings.EMAIL_CONFIRM_CODE_LENGTH, 
         min_length=settings.EMAIL_CONFIRM_CODE_LENGTH,
     )
 
-    
+CREATE_APPLICATION_REQUIRED_FIELDS = ('major', 'gender', 'classification', 'grad_year', 'interests', 'essay')
+
+class CreateApplicationForm(forms.Form):
+
+    #template_name = 
+    success_url = settings.CREATE_APPLICATION_REDIRECT_URL
+    def __init__(self, *args, **kwargs):
+        super(CreateApplicationForm,self).__init__(*args, **kwargs)
+        for fieldname in CREATE_APPLICATION_REQUIRED_FIELDS:
+            self.fields[fieldname].required = True
+        for fieldname in ['notes']:
+            self.fields[fieldname].required = False
+
+    class Meta:
+        model = hacker_models.Application
+        fields = ('major', 'gender', 'classification', 'grad_year', 'interests', 'essay', 'notes')

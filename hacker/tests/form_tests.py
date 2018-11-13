@@ -2,6 +2,7 @@ from django import test
 from core import forms as core_forms
 from hacker import models as hacker_models
 from ouroboros import settings
+from django.utils import timezone
 import random
 import string
 
@@ -42,6 +43,17 @@ class FormTests(test.TestCase):
             'confirm_code': code,
         }
 
+        self.create_application_fields = {
+            # create test instance of `Hacker`
+            'major': 'Major',
+            'gender': 'M',
+            'classification': 'U1',
+            'grad_year': timezone.now().year,
+            'interests': 'Interests',
+            'essay': 'Essay',
+            'notes': 'Notes',
+        }
+
     def test_signup_form(self):
         # check for already-existing Hacker w/ ...
             # email = some@email.com
@@ -75,3 +87,9 @@ class FormTests(test.TestCase):
         form = core_forms.ConfirmEmailForm(data=form_data)
         self.assertTrue(form.is_valid())
         #...
+
+    def test_create_application_form(self):
+        form_data = self.create_application_fields
+        form = core_forms.CreateApplicationForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        

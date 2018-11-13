@@ -133,6 +133,8 @@ SIGNUP_REDIRECT_URL = '/confirm_email'
 LOGIN_REDIRECT_URL = '/status'
 LOGIN_URL = 'auth/login'
 APPLICATION_URL = '/application'
+CONFIRM_EMAIL_REDIRECT_URL = '/application'
+CREATE_APPLICATION_REDIRECT_URL = '/status'
 
 email_credentials_file = open("ouroboros/config/email_config.txt",'r')
 email_credentials_data = json.load(email_credentials_file)
