@@ -14,13 +14,13 @@ class FormTests(test.TestCase):
             'last_name': 'Last',
             'email': 'some@email.com',
             'username': 'User',
-            'password1': 'sEcReT123',
-            'password2': 'sEcReT123',
+            'password1': 'COFd32fsf',
+            'password2': 'COFd32fsf',
         }
 
         self.signin_form_fields = {
             'username': 'User',
-            'password': 'sEcReT123',
+            'password': 'COFd32fsf',
         }
 
         code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=settings.EMAIL_CONFIRM_CODE_LENGTH))
