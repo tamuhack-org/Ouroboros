@@ -28,7 +28,6 @@ class IndexView(base_views.TemplateView):
         return context
 
 
-#TO-DO : prevent sign up with an already registered email
 class SignupView(generic_views.FormView):
 
     form_class = core_forms.SignupForm

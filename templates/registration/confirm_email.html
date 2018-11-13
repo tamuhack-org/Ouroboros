@@ -16,8 +16,17 @@
             <form action="" method="POST">
                 {% csrf_token %}
                 <!-- security -->
-                {{ form.as_p }}
-                <input type="submit" value="Confirm">
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <input type="text" name="email" class="flat-field form-control form-control-md" placeholder="email">
+                    </div>
+                    <div class="col-md-12">
+                        <input type="text" name="confirm_code" class="flat-field form-control form-control-md" placeholder="confirm code">
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-block btn-login">
+                        Confirm
+                    </button>
+                </div>
                 {% csrf_token %}
             </form>
         </div>
