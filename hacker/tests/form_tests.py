@@ -72,7 +72,7 @@ class FormTests(test.TestCase):
 
     def test_signin_form(self):
         # create test instance of `Hacker`
-        test_hacker = hacker_models.Hacker(**self.test_hacker_fields)
+        test_hacker = hacker_models.Hacker.objects.create(**self.test_hacker_fields)
 
         form_data = self.signin_form_fields
         form = core_forms.SignInForm(data=form_data)
