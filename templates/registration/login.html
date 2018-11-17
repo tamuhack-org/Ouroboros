@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-
 {% block additional_CSS %}
+
 {% load static %}
 <link rel="stylesheet" href="{% static 'background_color_css.css' %}">
 {% endblock %}
@@ -19,6 +19,9 @@
 					{% csrf_token %}
 					<!-- security -->
 					<div class="form-row">
+						{% if invalid_form %}
+							<div class="alert alert-danger" role="alert">Invalid Login</div>
+						{% endif %}
 						<div class="col-md-12">
 							<input type="text" name="username" class="flat-field form-control form-control-md" placeholder="username">
 						</div>

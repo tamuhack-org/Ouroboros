@@ -1,10 +1,5 @@
 {% extends 'base.html' %}
 
-{% block additional_CSS %}
-
-{% load static %}
-<link rel="stylesheet" href="{% static 'background_color_css.css' %}">
-{% endblock %}
 
 {% block body %}
 {% include 'includes/_logoBar.html' %}
@@ -70,15 +65,9 @@
 							Back
                         </a>
 						<div class="col-lg-6"></div>
-						{% if user_exists %}
-							<a role="button" href="/auth/login" class="col-lg-3 justify-content-start btn btn-lg btn-block btn-success">
-								LOGIN
-							</a>
-						{% else %}
                         <button type="submit" class="col-lg-3 justify-content-end btn btn-lg btn-block btn-login">
 							Submit
 						</button>
-						{% endif %}
 					</div>
 					{% csrf_token %}
 				</form>

@@ -95,6 +95,9 @@ class SignInView(generic_views.FormView):
         """
         login(self.request, form.get_user())
         return redirect(self.get_success_url())
+    
+    def form_invalid(self, form):
+        return render(self.request, self.template_name, {'invalid_form': True})
 
     def get_success_url(self):      #!!!!!!!!!!
         return self.success_url

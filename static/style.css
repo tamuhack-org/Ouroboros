@@ -53,15 +53,23 @@
 }
 
 .signin {
+    background-image: linear-gradient(rgb(213, 244, 245),rgb(210, 226, 246));
     padding-top: 15vh;
-    height: 100%;
+    height: 100vh;
     width: 100vw;
     max-width: 100%;
+
+    display: flex;
+    overflow: hidden;
+    position: fixed;
+    background-size: cover;
 }
 
 .sign_up {
-    padding-top: 9vh !important;
-    height: 100%;
+    background-image: linear-gradient(rgb(213, 244, 245),rgb(210, 226, 246));
+    height: 100vh;
+    margin-bottom: 0;
+    padding-top: 5vh !important;
 }
 
 .signin h1 {
