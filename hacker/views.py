@@ -43,32 +43,32 @@ class dashboard(LoginRequiredMixin):
     login_url = '/auth/login/'
     redirect_field_name = '/status'
     
-    #@login_required
-    #@user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
-    #@user_passes_test(completed_application, settings.APPLICATION_URL)
+    @login_required
+    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
+    @user_passes_test(completed_application, settings.APPLICATION_URL)
     def status(request):
         return render(request, 'dashboard/status.html')
     
-    #@login_required
-    #@user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
+    @login_required
+    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
     def application(request):
         redirect_field_name = '/application'
         return render(request, 'dashboard/application.html')
     
-    #@login_required
-    #@user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
-    #@user_passes_test(completed_application, settings.APPLICATION_URL)
+    @login_required
+    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
+    @user_passes_test(completed_application, settings.APPLICATION_URL)
     def team(request):
         redirect_field_name = '/team'
         return render(request, 'dashboard/team.html')
     
-    #@login_required
-    #@user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
+    @login_required
+    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
     def information(request):
         redirect_field_name = '/information'
         return render(request, 'dashboard/information.html')
 
-#@login_required
-#@user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
+@login_required
+@user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
 def dash(request):
     dashboard.status(request)
