@@ -143,12 +143,15 @@ class ConfirmEmailView(generic_views.FormView):
 
     form_class = core_forms.ConfirmEmailForm
     template_name = core_forms.ConfirmEmailForm.template_name
-    success_url = core_forms.ConfirmEmailForm.template_name
+    success_url = core_forms.ConfirmEmailForm.success_url
 
     def form_valid(self, form):
         form.full_clean()
         #form.save()
         return super(ConfirmEmailView, self).form_valid(form)
+    
+    def code_invalid(self, form):
+        return render(self.request, self.template_name, {'invalid_code': True})
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
@@ -156,6 +159,7 @@ class ConfirmEmailView(generic_views.FormView):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        invalid_code = False
         if form.is_valid():
             #form.save()
             email = form.cleaned_data.get('email')
@@ -169,7 +173,16 @@ class ConfirmEmailView(generic_views.FormView):
             else:
                 # given confirm_code is NOT correct
                 # ...
-                return redirect('/application')
+                return self.code_invalid(form)
+        else:
+            # given confirm_code is NOT correct
+            return self.code_invalid(form)
+            
         FormErrors = json.loads(form.errors.as_json())
-        return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors})
+        return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors, 'invalid_code':invalid_code})
         
+
+class CreateApplicationView(generic_views.FormView):
+    form_class = core_forms.CreateApplicationForm
+    template_name = core_forms.CreateApplicationForm.template_name
+    success_url = core_forms.CreateApplicationForm.success_url

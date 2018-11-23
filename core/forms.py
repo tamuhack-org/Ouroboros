@@ -49,7 +49,7 @@ CREATE_APPLICATION_REQUIRED_FIELDS = ('major', 'gender', 'classification', 'grad
 
 class CreateApplicationForm(forms.Form):
 
-    #template_name = 
+    template_name = 'registration/apply.html'
     success_url = settings.CREATE_APPLICATION_REDIRECT_URL
     def __init__(self, *args, **kwargs):
         super(CreateApplicationForm,self).__init__(*args, **kwargs)

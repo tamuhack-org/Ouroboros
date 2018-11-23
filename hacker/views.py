@@ -45,7 +45,7 @@ class dashboard(LoginRequiredMixin):
     
     @login_required
     @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
-    @user_passes_test(completed_application, settings.APPLICATION_URL)
+    @user_passes_test(completed_application, settings.VIEW_APPLICATION_URL)
     def status(request):
         return render(request, 'dashboard/status.html')
     
@@ -57,7 +57,7 @@ class dashboard(LoginRequiredMixin):
     
     @login_required
     @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
-    @user_passes_test(completed_application, settings.APPLICATION_URL)
+    @user_passes_test(completed_application, settings.VIEW_APPLICATION_URL)
     def team(request):
         redirect_field_name = '/team'
         return render(request, 'dashboard/team.html')
