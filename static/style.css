@@ -66,8 +66,8 @@
 }
 
 .sign_up {
-    background-image: linear-gradient(rgb(213, 244, 245),rgb(210, 226, 246));
-    height: 100vh;
+    background-image: linear-gradient(rgb(213, 244, 245),rgb(210, 226, 246)) !important;
+    height: 100vh !important;
     margin-bottom: 0;
     padding-top: 5vh !important;
 }
