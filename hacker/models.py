@@ -45,9 +45,6 @@ WAVE_TYPE_CHOICES = (
     ('Reject', 'Reject Application'),
 )
 
-GRAD_YEAR_CHOICES = [(i,i) for i in range(timezone.now().year, timezone.now().year + 6)]        # TO-DO TEST
-
-
 class Hacker(AbstractUser):
     admitted = models.NullBooleanField(blank=True)
     checked_in = models.NullBooleanField(blank=True)
@@ -116,7 +113,7 @@ class HackerProfile(models.Model):
     major = models.CharField(max_length=50)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=2)
     classification = models.CharField(choices=CLASSIFICATION_CHOICES, max_length=2)
-    grad_year = models.IntegerField(choices=GRAD_YEAR_CHOICES, verbose_name='graduation year')
+    grad_year = models.IntegerField(choices=settings.GRAD_YEAR_CHOICES, verbose_name='graduation year')
     hacker = models.OneToOneField(          
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
