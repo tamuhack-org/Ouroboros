@@ -27,7 +27,7 @@ urlpatterns = [
     path('auth/login', core_views.SignInView.as_view()),
     path('', core_views.IndexView.as_view()),
     path('confirm_email', core_views.ConfirmEmailView.as_view()),
-    #path('auth/apply',core_views.)
+    path('auth/apply',core_views.CreateApplicationView.as_view()),
 	path('', include('hacker.urls')),
     path('auth/logout', core_views.LogOutView.as_view()),
 ]
