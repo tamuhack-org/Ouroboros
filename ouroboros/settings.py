@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import json
+from django.utils import timezone
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -118,6 +119,10 @@ USE_L10N = True
 USE_TZ = True
 
 
+#hackathon application settings
+GRAD_YEAR_CHOICES = [(i,i) for i in range(timezone.now().year, timezone.now().year + 6)] # TO-DO : test
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
@@ -140,6 +145,20 @@ SIGNUP_REDIRECT_URL = CONFIRM_EMAIL_URL
 LOGIN_REDIRECT_URL = STATUS_URL
 CONFIRM_EMAIL_REDIRECT_URL = VIEW_APPLICATION_URL
 CREATE_APPLICATION_REDIRECT_URL = STATUS_URL
+
+
+'''
+EMAIL SETTINGS: 
+ouroboros/config/email_config.txt should be in the format:
+
+{
+    "EMAIL_HOST_PASSWORD": "enter your email password here", 
+    "EMAIL_PORT": enter your email port here,
+    "EMAIL_HOST_USER": "enter your email address here", 
+    "EMAIL_HOST": "enter smtp server for email here"
+    }
+
+'''
 
 email_credentials_file = open("ouroboros/config/email_config.txt",'r')
 email_credentials_data = json.load(email_credentials_file)
