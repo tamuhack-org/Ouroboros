@@ -186,3 +186,8 @@ class CreateApplicationView(generic_views.FormView):
     form_class = core_forms.CreateApplicationForm
     template_name = core_forms.CreateApplicationForm.template_name
     success_url = core_forms.CreateApplicationForm.success_url
+
+    #yearOptionsList = 
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
