@@ -119,10 +119,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-#hackathon application settings
-GRAD_YEAR_CHOICES = [(i,i) for i in range(timezone.now().year, timezone.now().year + 6)] # TO-DO : test
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
@@ -133,7 +129,9 @@ STATICFILES_DIRS = [
 
 AUTH_USER_MODEL = 'hacker.Hacker'
 
+
 # Template URL Global Variables - To be used in Views
+
 LOGIN_URL = 'auth/login'
 STATUS_URL = '/status'
 CONFIRM_EMAIL_URL = '/confirm_email'
@@ -147,23 +145,12 @@ CONFIRM_EMAIL_REDIRECT_URL = VIEW_APPLICATION_URL
 CREATE_APPLICATION_REDIRECT_URL = STATUS_URL
 
 
-'''
-EMAIL SETTINGS: 
-ouroboros/config/email_config.txt should be in the format:
-
-{
-    "EMAIL_HOST_PASSWORD": "enter your email password here", 
-    "EMAIL_PORT": enter your email port here,
-    "EMAIL_HOST_USER": "enter your email address here", 
-    "EMAIL_HOST": "enter smtp server for email here"
-    }
-
-'''
+# Email Configuration Global Settings
 
 email_credentials_file = open("ouroboros/config/email_config.txt",'r')
 email_credentials_data = json.load(email_credentials_file)
 email_credentials_file.close()
-# Email Configuration Global Settings
+
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = email_credentials_data['EMAIL_HOST']
@@ -172,6 +159,21 @@ EMAIL_HOST_USER = email_credentials_data['EMAIL_HOST_USER']
 EMAIL_PORT = email_credentials_data['EMAIL_PORT']
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+'''
+EMAIL SETTINGS: 
+ouroboros/config/email_config.txt should be in the format:
+
+{
+    "EMAIL_HOST": "smtp.gmail.com",
+    "EMAIL_HOST_USER": "enter your email address here", 
+    "EMAIL_HOST_PASSWORD": "enter your email password here", 
+    "EMAIL_PORT": 587
+}
+
+'''
+
 
 # Miscellaneous Project Global Variables
+
 EMAIL_CONFIRM_CODE_LENGTH = 6
+GRAD_YEAR_CHOICES = [(i,i) for i in range(timezone.now().year, timezone.now().year + EMAIL_CONFIRM_CODE_LENGTH)]
