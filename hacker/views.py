@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import base as base_views
 from django.views import generic as generic_views
 from django.contrib.auth import authenticate, login
@@ -9,6 +9,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
+from core import forms as core_forms
+from hacker import models as hacker_models
 
 
 def email_confirmation_check(user):
@@ -31,6 +33,7 @@ class dashboard(LoginRequiredMixin):
     @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
     def application(request):
         redirect_field_name = '/application'
+
         return render(request, 'dashboard/application.html')
     
     @login_required
@@ -45,5 +48,4 @@ class dashboard(LoginRequiredMixin):
     def information(request):
         redirect_field_name = '/information'
         return render(request, 'dashboard/information.html')
-
 
