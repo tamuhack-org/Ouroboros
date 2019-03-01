@@ -10,6 +10,9 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.mail import send_mail
 from hacker import models as hacker_models
+from django.contrib.auth.decorators import login_required
+from django.http import QueryDict
+import pdb
 
 try:
     import urlparse                     # if using python2
@@ -99,7 +102,7 @@ class SignInView(generic_views.FormView):
     def form_invalid(self, form):
         return render(self.request, self.template_name, {'invalid_form': True})
 
-    def get_success_url(self):      #!!!!!!!!!!
+    def get_success_url(self):      #!!!!!!!!!
         return self.success_url
 
     def set_test_cookie(self):
@@ -147,7 +150,6 @@ class ConfirmEmailView(generic_views.FormView):
 
     def form_valid(self, form):
         form.full_clean()
-        #form.save()
         return super(ConfirmEmailView, self).form_valid(form)
     
     def code_invalid(self, form):
@@ -161,7 +163,6 @@ class ConfirmEmailView(generic_views.FormView):
         form = self.form_class(request.POST)
         invalid_code = False
         if form.is_valid():
-            #form.save()
             email = form.cleaned_data.get('email')
             code = form.cleaned_data.get('confirm_code')
             hacker = hacker_models.Hacker.objects.get(email=email)
@@ -169,25 +170,41 @@ class ConfirmEmailView(generic_views.FormView):
                 # given confirm_code is correct
                 hacker_models.Hacker.objects.filter(email=email).update(confirm_code=None)
                 hacker_models.Hacker.objects.filter(email=email).update(email_confirmed=True)
-                return redirect('/status')
+                return redirect(settings.CONFIRM_EMAIL_REDIRECT_URL)
             else:
                 # given confirm_code is NOT correct
                 # ...
                 return self.code_invalid(form)
-        else:
-            # given confirm_code is NOT correct
-            return self.code_invalid(form)
             
         FormErrors = json.loads(form.errors.as_json())
         return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors, 'invalid_code':invalid_code})
         
 
 class CreateApplicationView(generic_views.FormView):
+
     form_class = core_forms.CreateApplicationForm
     template_name = core_forms.CreateApplicationForm.template_name
     success_url = core_forms.CreateApplicationForm.success_url
 
-    #yearOptionsList = 
+    yearOptionsList = [op[0] for op in settings.GRAD_YEAR_CHOICES]
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        form = self.form_class(initial=self.initial)        # get form data
+        return render(request, self.template_name, {'form': form, 'grad_options': self.yearOptionsList, 'student_classifications': settings.STUDENT_CLASSIFICATIONS})
+
+    def form_valid(self, form):
+        form.full_clean()
+        return super(CreateApplicationView, self).form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        post_q_dict = request.POST.copy()       # get form data
+        post_dict = post_q_dict.dict()          # convert from 'QueryDict' data type to 'dict' data type
+        post_dict.update({'hacker': request.user.id})       # pass 'hacker' field into form data
+        form = self.form_class(post_dict)       # instantiate 'CreateApplicationForm' using form data
+
+        if form.is_valid():
+            form.save()         # save instance of 'Application' to database
+            return redirect(self.success_url) 
+
+        FormErrors = json.loads(form.errors.as_json())
+        return render(request, self.template_name, {'form': form, 'FormErrors':FormErrors})
