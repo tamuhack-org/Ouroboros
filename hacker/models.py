@@ -45,10 +45,9 @@ WAVE_TYPE_CHOICES = (
     ('Reject', 'Reject Application'),
 )
 
+
 class Hacker(AbstractUser):
-    admitted = models.NullBooleanField(blank=True)
     checked_in = models.NullBooleanField(blank=True)
-    admitted_datetime = models.DateTimeField(null=True, blank=True)
     checked_in_datetime = models.DateTimeField(null=True, blank=True)
     email_confirmed = models.BooleanField(blank=True, default=False)
     confirm_code = models.CharField(max_length=6, blank=True, null=True)
@@ -77,6 +76,10 @@ class Hacker(AbstractUser):
             return t is not None
         else:
             return False
+
+    def get_related_application(self):
+        a = getattr(self, 'application', None)
+        return a
 
     def generate_confirm_code(self):
         code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=settings.EMAIL_CONFIRM_CODE_LENGTH))
@@ -108,32 +111,47 @@ class Hacker(AbstractUser):
         return '%s, %s' % (self.last_name, self.first_name)
 
 
-class HackerProfile(models.Model):
-    # should only include Hackers w/ verified emails, w/ active status, w/o pre-existing application
+class Application(models.Model):
     major = models.CharField(max_length=50)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=2)
     classification = models.CharField(choices=CLASSIFICATION_CHOICES, max_length=2)
-    grad_year = models.IntegerField(choices=settings.GRAD_YEAR_CHOICES, verbose_name='graduation year')
+    grad_year = models.IntegerField(choices=settings.GRAD_YEAR_CHOICES, verbose_name='graduation year')          
+    interests = models.TextField(max_length=200)
+    essay = models.TextField(max_length=200)
+    #resume = models.FileField( ... ) 
+    notes = models.TextField(max_length=300, blank=True, help_text='Provide any additional notes and/or comments in the text box provide')
+    approved = models.NullBooleanField(blank=True)
+    queued_for_approval = models.NullBooleanField(blank=True)
+    date_approved = models.DateField(null=True, blank=True)        
+    date_queued_for_approval = models.DateField(null=True, blank=True) 
+    date_submitted = models.DateField(auto_now_add=True, blank=True)
     hacker = models.OneToOneField(          
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-    )
-
-    class Meta:         
-        abstract = True
-
-
-class Application(HackerProfile):
-    #resume = models.FileField( ... )           
-    interests = models.TextField(max_length=200)
-    essay = models.TextField(max_length=200)
-    approved = models.NullBooleanField(blank=True)
-    date_approved = models.DateField(null=True, blank=True)         
-    date_submitted = models.DateField(auto_now_add=True, blank=True)
-    notes = models.TextField(max_length=300, blank=True, help_text='Provide any additional notes and/or comments in the text box provide')
-
+    )    
+    
     def __str__(self):
-        return '%s, %s - Profile' % (self.hacker.last_name, self.hacker.first_name)
+        return '%s, %s - Application' % (self.hacker.last_name, self.hacker.first_name)
+
+    def get_first_name(self):
+        fn = getattr(self.hacker, 'first_name', None)
+        return fn
+
+    def get_last_name(self):
+        ln = getattr(self.hacker, 'last_name', None)
+        return ln
+
+    def get_email(self):
+        email = getattr(self.hacker, 'email', None)
+        return email
+
+    def get_is_active(self):
+        active = getattr(self.hacker, 'is_active', None)
+        return active
+
+    get_first_name.short_description = "First Name"
+    get_last_name.short_description = "Last Name"
+    get_is_active.short_description = "Active"
 
 
 class Confirmation(models.Model):
@@ -166,34 +184,3 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
-
-'''
-class Wave(models.Model):
-    period_start = models.DateTimeField()
-    period_end = models.DateTimeField()
-    wave_type = models.CharField(
-        max_length=20,
-        choices=WAVE_TYPE_CHOICES,
-    )
-
-
-class EventSettings(models.Model):
-    registration_start = models.DateTimeField()
-    registration_end = models.DateTimeField()
-    confirmation_start = models.DateTimeField()
-    confirmation_end = models.DateTimeField()
-
-
-class Announcement(models.Model):
-    rec
-'''
-
-# `Hacker.admitted` Values:
-    #       1. 'True' - application approved & confirmation period has begun
-    #       2. 'False' - application approved & confirmation period has NOT begun
-    #       3. 'NULL' - application rejected, pending review, cancelled, or DNE
-
-# Possible Values:
-    #       1. 'True' - has been checked in by staff/volunteers (day of event)
-    #       2. 'False' - has NOT been checked in by staff/volunteers (day of event)
-    #       3. 'NULL' - will not be attending event
