@@ -83,6 +83,15 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.19);
 }
 
+.application {
+    background-image: linear-gradient(rgb(213, 244, 245),rgb(210, 226, 246)) !important;
+    height: 100vh !important;
+    margin-bottom: 0;
+    padding-top: 5vh !important;
+
+    background-size: cover;
+}
+
 .flat-field {
     margin-bottom: 20px;
     outline: none;

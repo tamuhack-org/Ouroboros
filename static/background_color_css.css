@@ -2,7 +2,9 @@ html,body{
     padding:0;
 }
 body {
+    background-attachment: fixed;
     margin: 0;
+    height: 100%;
 }
 
 html {
