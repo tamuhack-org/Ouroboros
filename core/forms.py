@@ -45,14 +45,22 @@ class ConfirmEmailForm(forms.Form):
         min_length=settings.EMAIL_CONFIRM_CODE_LENGTH,
     )
 
-CREATE_APPLICATION_REQUIRED_FIELDS = ('major', 'gender', 'classification', 'grad_year', 'interests', 'essay')
 
-class CreateApplicationForm(forms.Form):
+CREATE_APPLICATION_REQUIRED_FIELDS = ['major', 'gender', 'classification', 'grad_year', 'interests', 'essay', 'hacker']
+
+class CreateApplicationForm(forms.ModelForm):
 
     template_name = 'registration/apply.html'
     success_url = settings.CREATE_APPLICATION_REDIRECT_URL
+    hacker = forms.ChoiceField(
+        choices=[(x.id, x.id) for x in hacker_models.Hacker.objects.all()],
+        required=True,
+        widget=forms.Select()
+    )
+
     def __init__(self, *args, **kwargs):
-        super(CreateApplicationForm,self).__init__(*args, **kwargs)
+        super(CreateApplicationForm, self).__init__(*args, **kwargs)
+        self.fields['hacker'].choices = [(x.id, x.id) for x in hacker_models.Hacker.objects.all()]
         for fieldname in CREATE_APPLICATION_REQUIRED_FIELDS:
             self.fields[fieldname].required = True
         for fieldname in ['notes']:
@@ -60,4 +68,4 @@ class CreateApplicationForm(forms.Form):
 
     class Meta:
         model = hacker_models.Application
-        fields = ('major', 'gender', 'classification', 'grad_year', 'interests', 'essay', 'notes')
+        fields = ['major', 'gender', 'classification', 'grad_year', 'interests', 'essay', 'notes', 'hacker']
