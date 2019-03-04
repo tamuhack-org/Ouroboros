@@ -1,8 +1,7 @@
 from django import test
 from django.core import exceptions as django_exceptions
 from hacker import models as hacker_models
-
-# Create your tests here.
+from django.utils import timezone
 
 
 class HackerModelTestCase(test.TestCase):
@@ -16,6 +15,29 @@ class HackerModelTestCase(test.TestCase):
             'first_name': 'First',
             'last_name': 'Last',
             'email': 'some@email.com'
+        }
+
+        self.application_fields = {
+            # `Hacker` MUST be declared during instantiation of `Application`
+            'major': 'Major',
+            'gender': 'M',
+            'classification': 'U1',
+            'grad_year': timezone.now().year,
+            'interests': 'Interests',
+            'essay': 'Essay',
+            'notes': 'Notes',
+        }
+
+        self.confirmation_fields = {
+            # `Hacker` MUST be declared during instantiation of `Confirmation`
+            'shirt_size': 'M',
+            'dietary_restrictions': 'Halal',
+            'travel_reimbursement_required': False,
+            'notes': 'Notes',
+        }
+
+        self.team_fields = {
+            'name': 'Team',
         }
 
     def test_first_name_required(self):
@@ -41,3 +63,48 @@ class HackerModelTestCase(test.TestCase):
         with self.assertRaises(django_exceptions.ValidationError):
             # Runs validation on the model
             hacker_without_email.full_clean()
+
+    # Hacker `has_related` function tests
+    def test_has_related_application(self):
+        hacker_to_test = hacker_models.Hacker(**self.hacker_fields)
+        self.assertFalse(hacker_to_test.has_related_application())            
+
+        application_to_test = hacker_models.Application(hacker=hacker_to_test, **self.application_fields)
+
+    def test_has_related_confirmation(self):
+        hacker_to_test = hacker_models.Hacker(**self.hacker_fields)
+        application_to_test = hacker_models.Application(hacker=hacker_to_test, **self.application_fields)
+        self.assertFalse(hacker_to_test.has_related_confirmation())  
+
+        confirmation_to_test = hacker_models.Confirmation(hacker=hacker_to_test, **self.confirmation_fields)
+        self.assertTrue(hacker_to_test.has_related_confirmation())  
+
+    def test_has_related_team(self):
+        hacker_to_test = hacker_models.Hacker(**self.hacker_fields)
+        self.assertFalse(hacker_to_test.has_related_team())
+
+        application_to_test = hacker_models.Application(hacker=hacker_to_test, **self.application_fields)
+        self.assertFalse(hacker_to_test.has_related_team())
+
+        team_to_test = hacker_models.Team(**self.team_fields)
+        self.assertFalse(hacker_to_test.has_related_team())
+
+        self.confirmation_fields['team'] = team_to_test
+        confirmation_to_test = hacker_models.Confirmation(hacker=hacker_to_test, **self.confirmation_fields)
+        self.assertTrue(hacker_to_test.has_related_team())
+
+
+    ''' test the generate_confirm_code() function in `Hacker` '''
+    def test_generate_confirm_code(self):
+        # create test instance of `Hacker`
+        test_hacker = hacker_models.Hacker(**self.hacker_fields)
+        
+        # generate confirm_code
+        test_hacker.generate_confirm_code()
+        code = getattr(test_hacker, 'confirm_code', None)
+
+        # check: confirm_code value has been changed from None
+        self.assertIsNotNone(code)
+        # check: confirm_code is a string
+        self.assertIsInstance(code, str)
+
