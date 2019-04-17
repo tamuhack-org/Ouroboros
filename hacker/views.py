@@ -16,35 +16,58 @@ from hacker import models as hacker_models
 def email_confirmation_check(user):
     return user.has_confirmed_email() 
 
-def completed_application(user):
+def has_application_check(user):
     return user.has_related_application()
+
+def has_confirmation_check(user):
+    return user.has_related_confirmation()
+
+def has_team_check(user):
+    return user.has_related_team()
+
 
 class dashboard(LoginRequiredMixin):
     login_url = settings.LOGIN_URL
     redirect_field_name = settings.LOGIN_REDIRECT_URL
     
     @login_required
-    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
-    @user_passes_test(completed_application, settings.VIEW_APPLICATION_URL)
+    @user_passes_test(email_confirmation_check, settings.CONFIRM_EMAIL_URL)
+    @user_passes_test(has_application_check, settings.CREATE_APPLICATION_URL)
     def status(request):
         return render(request, 'dashboard/status.html')
     
     @login_required
-    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
+    @user_passes_test(email_confirmation_check, settings.CONFIRM_EMAIL_URL)
+    @user_passes_test(has_application_check, settings.CREATE_APPLICATION_URL)
     def application(request):
+
+        #form_class = core_forms.ViewApplicationForm
+
         redirect_field_name = '/application'
 
         return render(request, 'dashboard/application.html')
-    
+        
+    '''
     @login_required
-    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
-    @user_passes_test(completed_application, settings.VIEW_APPLICATION_URL)
+    @user_passes_test(email_confirmation_check, settings.CONFIRM_EMAIL_URL)
+    @user_passes_test(has_application_check, settings.CREATE_APPLICATION_URL)
+    @user_passes_test(has_confirmation_check, settings.CREATE_CONFIRMATION_URL)
+    def confirmation(request):
+        # ...
+    '''    
+
+    @login_required
+    @user_passes_test(email_confirmation_check, settings.CONFIRM_EMAIL_URL)
+    @user_passes_test(has_application_check, settings.CREATE_APPLICATION_URL)
+    @user_passes_test(has_confirmation_check, settings.CREATE_CONFIRMATION_URL)
+    #@user_passes_test(has_team_check, ______)
     def team(request):
         redirect_field_name = '/team'
         return render(request, 'dashboard/team.html')
     
     @login_required
-    @user_passes_test(email_confirmation_check,settings.SIGNUP_REDIRECT_URL)
+    @user_passes_test(email_confirmation_check, settings.CONFIRM_EMAIL_URL)
+    @user_passes_test(has_application_check, settings.CREATE_APPLICATION_URL)
     def information(request):
         redirect_field_name = '/information'
         return render(request, 'dashboard/information.html')
