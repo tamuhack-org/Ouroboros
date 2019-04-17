@@ -1,4 +1,14 @@
-from .model_tests import HackerModelTestCase
-from .form_tests import FormTests
+from .model_tests import HackerModelTests, ApplicationModelTests
+from .form_tests import FormTests, SignupFormTests, SignInFormTests, CreateApplicationFormTests
+from .view_tests import ViewTests, CreateApplicationViewTests
 
-__all__ = ['HackerModelTestCase','FormTests']
+__all__ = [
+    'HackerModelTests',
+    'ApplicationModelTests',
+    'FormTests', 
+    'SignupFormTests', 
+    'SignInFormTests', 
+    'CreateApplicationFormTests', 
+    'ViewTests',
+    'CreateApplicationViewTests'
+]

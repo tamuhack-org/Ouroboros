@@ -4,13 +4,11 @@ from hacker import models as hacker_models
 from django.utils import timezone
 
 
-class HackerModelTestCase(test.TestCase):
+class HackerModelTests(test.TestCase):
 
     def setUp(self):
         self.hacker_fields = {
-            'admitted': None,
             'checked_in': None,
-            'admitted_datetime': None,
             'checked_in_datetime': None,
             'first_name': 'First',
             'last_name': 'Last',
@@ -153,3 +151,59 @@ class HackerModelTestCase(test.TestCase):
         # Test 3
         self.assertTrue(getattr(test_hacker, 'email_confirmed', None))
         self.assertIsNone(getattr(test_hacker, 'confirm_code', 'not none'))
+
+
+class ApplicationModelTests(test.TestCase):
+
+    def setUp(self):
+        self.hacker_fields = {
+            'checked_in': None,
+            'checked_in_datetime': None,
+            'first_name': 'First',
+            'last_name': 'Last',
+            'email': 'some@email.com'
+        }
+        self.hacker = hacker_models.Hacker(**self.hacker_fields)
+
+        self.application_fields = {
+            'hacker': self.hacker,
+            'major': 'Major',
+            'gender': 'M',
+            'classification': 'U1',
+            'grad_year': timezone.now().year,
+            'interests': 'Interests',
+            'essay': 'Essay',
+            'notes': 'Notes',
+        }
+        self.application = hacker_models.Application(**self.application_fields)
+
+        self.team_fields = {
+            'name': 'Team',
+        }
+        self.team = hacker_models.Team(**self.team_fields)
+
+        self.confirmation_fields = {
+            'hacker': self.hacker,
+            'team': self.team,
+            'shirt_size': 'M',
+            'dietary_restrictions': 'Halal',
+            'travel_reimbursement_required': False,
+            'notes': 'Notes',
+        }
+        self.confirmation = hacker_models.Confirmation(**self.confirmation_fields)
+
+    def test_get_first_name(self):
+        fn = self.application.get_first_name()
+        self.assertTrue(fn == 'First')
+
+    def test_get_last_name(self):
+        ln = self.application.get_last_name()
+        self.assertTrue(ln == 'Last')
+
+    def test_get_email(self):
+        email = self.application.get_email()
+        self.assertTrue(email == 'some@email.com')
+
+    def test_get_is_active(self):
+        active = self.application.get_is_active()
+        self.assertTrue(active)
