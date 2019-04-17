@@ -24,6 +24,7 @@ class SignInForm(auth_forms.AuthenticationForm):
 
     success_url = settings.LOGIN_REDIRECT_URL
     redirect_field_name = settings.LOGIN_REDIRECT_URL
+    
     def __init__(self, *args, **kwargs):
         super(SignInForm,self).__init__(*args, **kwargs)
         for fieldname in ['username', 'password']:
@@ -69,3 +70,56 @@ class CreateApplicationForm(forms.ModelForm):
     class Meta:
         model = hacker_models.Application
         fields = ['major', 'gender', 'classification', 'grad_year', 'interests', 'essay', 'notes', 'hacker']
+
+
+CREATE_CONFIRMATION_REQUIRED_FIELDS = ['dietary_restrictions', 'shirt_size', 'hacker', 'team']
+
+class CreateConfirmationForm(forms.ModelForm):
+
+    template_name = 'dashboard/confirmation.html'
+    successs_url = settings.STATUS_URL
+    hacker = forms.ChoiceField(
+        choices=[(x.id, x.id) for x in hacker_models.Hacker.objects.all()],
+        required=True,
+        widget=forms.Select()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(CreateConfirmationForm, self).__init__(*args, **kwargs)
+        self.fields['hacker'].choices = [(x.id, x.id) for x in hacker_models.Hacker.objects.all()]
+        for fieldname in CREATE_CONFIRMATION_REQUIRED_FIELDS:
+            self.fields[fieldname].required = True
+        for fieldname in ['notes']:
+            self.fields[fieldname].required = False
+
+    class Meta:
+        model = hacker_models.Confirmation
+        fields = ['dietary_restrictions', 'shirt_size', 'notes', 'hacker', 'team']
+
+'''
+VIEW_APPLICATION_FIELDS = ['major', 'gender', 'classification', 'grad_year', 'interests', 'essay', 'notes', 'hacker']
+
+class ViewApplicationForm(forms.ModelForm):
+
+    template_name = 'dashboard/application.html'
+    hacker = forms.ChoiceField(
+        choices=[(x.id, x.id) for x in hacker_models.Hacker.objects.all()],
+        required=True,
+        widget=forms.Select()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(ViewApplicationForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            for fieldname in VIEW_APPLICATION_FIELDS:
+                self.fields[fieldname].widget.attrs['readonly']
+    
+    def clean_data(self):
+        instance = getattr(self, '')
+
+    class Meta:
+        model = hacker_models.Application
+        fields = VIEW_APPLICATION_FIELDS
+'''
+    
