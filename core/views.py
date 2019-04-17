@@ -14,6 +14,13 @@ from django.contrib.auth.decorators import login_required
 from django.http import QueryDict
 import pdb
 
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import user_passes_test
+
+
 try:
     import urlparse                     # if using python2
 except ImportError:
@@ -127,6 +134,7 @@ class SignInView(generic_views.FormView):
 
         form_class = self.get_form_class()
         form = self.get_form(form_class)
+
         if form.is_valid():
             self.check_and_delete_test_cookie()
             return self.form_valid(form)
@@ -141,12 +149,16 @@ class LogOutView(RedirectView):
         auth_logout(request)
         return super(LogOutView, self).get(request, *args, **kwargs)
 
-
-class ConfirmEmailView(generic_views.FormView):
+class ConfirmEmailView(generic_views.FormView, LoginRequiredMixin):
 
     form_class = core_forms.ConfirmEmailForm
     template_name = core_forms.ConfirmEmailForm.template_name
     success_url = core_forms.ConfirmEmailForm.success_url
+
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(settings.LOGIN_URL)
 
     def form_valid(self, form):
         form.full_clean()
@@ -158,6 +170,8 @@ class ConfirmEmailView(generic_views.FormView):
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form':form})
+
+    #def confirm_email(self, )
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -180,13 +194,19 @@ class ConfirmEmailView(generic_views.FormView):
         return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors, 'invalid_code':invalid_code})
         
 
-class CreateApplicationView(generic_views.FormView):
+class CreateApplicationView(generic_views.FormView, LoginRequiredMixin):
 
     form_class = core_forms.CreateApplicationForm
     template_name = core_forms.CreateApplicationForm.template_name
     success_url = core_forms.CreateApplicationForm.success_url
 
     yearOptionsList = [op[0] for op in settings.GRAD_YEAR_CHOICES]
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(settings.REDIRECT_LOGIN_URL)
+        if not request.user.email_confirmed:
+            return redirect(settings.CONFIRM_EMAIL_URL)
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)        # get form data
@@ -208,3 +228,22 @@ class CreateApplicationView(generic_views.FormView):
 
         FormErrors = json.loads(form.errors.as_json())
         return render(request, self.template_name, {'form': form, 'FormErrors':FormErrors})
+
+'''
+class CreateConfirmationView(generic_views.FormView):
+
+    form_class = core_forms.CreateConfirmationForm
+    template_name = core_forms.CreateConfirmationForm.template_name
+    success_url = core_forms.CreateConfirmationForm.successs_url
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {})
+
+    def form_valid(self, form):
+        from.full_clean()
+        return super(CreateConfirmationView, self).form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+
+'''
