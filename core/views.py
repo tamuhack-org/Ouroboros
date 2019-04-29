@@ -1,32 +1,29 @@
+import json
+import pdb
+import urllib.parse as urlparse
+
+from django.conf import settings
+from django.contrib.auth import REDIRECT_FIELD_NAME, authenticate
 from django.contrib.auth import forms as auth_forms
-from django.contrib.auth import authenticate, login, REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
+from django.contrib.auth import get_user_model
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
+from django.http import QueryDict
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views import generic as generic_views
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
-from django.views import generic as generic_views
-from django.views.generic import base as base_views, RedirectView
-from core import forms as core_forms
-from django.shortcuts import render, redirect
-from django.conf import settings
-from django.core.mail import send_mail
+from django.views.generic import RedirectView
+from django.views.generic import base as base_views
+from django import http
+
+from hacker import forms as hacker_forms
 from hacker import models as hacker_models
-from django.contrib.auth.decorators import login_required
-from django.http import QueryDict
-import pdb
-
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import user_passes_test
-
-
-try:
-    import urlparse                     # if using python2
-except ImportError:
-    import urllib.parse as urlparse     # if using python3 
-
-import json
 
 
 class IndexView(base_views.TemplateView):
@@ -40,7 +37,7 @@ class IndexView(base_views.TemplateView):
 
 class SignupView(generic_views.FormView):
 
-    form_class = core_forms.SignupForm
+    form_class = hacker_forms.SignupForm
     template_name = 'registration/signup.html'
 
     def email_exists(self, form):
@@ -75,22 +72,23 @@ class SignupView(generic_views.FormView):
                 username = form.cleaned_data.get('username')
                 raw_password = form.cleaned_data.get('password1') 
                 user = authenticate(username=username, password=raw_password)
-                login(request, user)
+                auth_login(request, user)
                 hacker = hacker_models.Hacker.objects.get(username=username)
                 # call the 'send_confirmation_email' function to send a confirmation email
                 self.send_confirmation_email(hacker)
-                return redirect(settings.SIGNUP_REDIRECT_URL)
+                return redirect(reverse_lazy("confirm_email"))
             else:
                 user_exists = True 
         FormErrors = json.loads(form.errors.as_json())
         return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors, 'user_exists':user_exists})
 
 
+# django.contrib.auth.LoginView
 class SignInView(generic_views.FormView):
-    form_class = core_forms.SignInForm
+    form_class = hacker_forms.SignInForm
     template_name = 'registration/login.html'
-    success_url = core_forms.SignInForm.success_url   #!!!
-    redirect_field_name = core_forms.SignInForm.redirect_field_name
+    success_url = hacker_forms.SignInForm.success_url   #!!!
+    redirect_field_name = hacker_forms.SignInForm.redirect_field_name
 
     # references: https://gist.github.com/stefanfoulis/1140136 , https://coderwall.com/p/sll1kw/django-auth-class-based-views-login-and-logout
     @method_decorator(csrf_protect)
@@ -103,7 +101,7 @@ class SignInView(generic_views.FormView):
         The user has provided valid credentials (this was checked in AuthenticationForm.is_valid()). So now we
         can log them in.
         """
-        login(self.request, form.get_user())
+        auth_login(self.request, form.get_user())
         return redirect(self.get_success_url())
     
     def form_invalid(self, form):
@@ -151,14 +149,9 @@ class LogOutView(RedirectView):
 
 class ConfirmEmailView(generic_views.FormView, LoginRequiredMixin):
 
-    form_class = core_forms.ConfirmEmailForm
-    template_name = core_forms.ConfirmEmailForm.template_name
-    success_url = core_forms.ConfirmEmailForm.success_url
-
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect(settings.LOGIN_URL)
+    form_class = hacker_forms.ConfirmEmailForm
+    template_name = hacker_forms.ConfirmEmailForm.template_name
+    success_url = hacker_forms.ConfirmEmailForm.success_url
 
     def form_valid(self, form):
         form.full_clean()
@@ -171,8 +164,6 @@ class ConfirmEmailView(generic_views.FormView, LoginRequiredMixin):
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form':form})
 
-    #def confirm_email(self, )
-
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         invalid_code = False
@@ -184,7 +175,7 @@ class ConfirmEmailView(generic_views.FormView, LoginRequiredMixin):
                 # given confirm_code is correct
                 hacker_models.Hacker.objects.filter(email=email).update(confirm_code=None)
                 hacker_models.Hacker.objects.filter(email=email).update(email_confirmed=True)
-                return redirect(settings.CONFIRM_EMAIL_REDIRECT_URL)
+                return redirect(reverse_lazy("apply"))
             else:
                 # given confirm_code is NOT correct
                 # ...
@@ -194,56 +185,43 @@ class ConfirmEmailView(generic_views.FormView, LoginRequiredMixin):
         return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors, 'invalid_code':invalid_code})
         
 
-class CreateApplicationView(generic_views.FormView, LoginRequiredMixin):
+class CreateApplicationView(generic_views.CreateView, LoginRequiredMixin):
+    model = hacker_models.Application
+    success_url = reverse_lazy("status")
+    template_used = 'hacker/application_form.html'
+    fields = [
+        "major", "gender", "classification", "grad_year", "interests", "essay", "notes"
+    ]
 
-    form_class = core_forms.CreateApplicationForm
-    template_name = core_forms.CreateApplicationForm.template_name
-    success_url = core_forms.CreateApplicationForm.success_url
-
-    yearOptionsList = [op[0] for op in settings.GRAD_YEAR_CHOICES]
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect(settings.REDIRECT_LOGIN_URL)
-        if not request.user.email_confirmed:
-            return redirect(settings.CONFIRM_EMAIL_URL)
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)        # get form data
-        return render(request, self.template_name, {'form': form, 'grad_options': self.yearOptionsList, 'student_classifications': settings.STUDENT_CLASSIFICATIONS})
-
-    def form_valid(self, form):
-        form.full_clean()
-        return super(CreateApplicationView, self).form_valid(form)
-
-    def post(self, request, *args, **kwargs):
-        post_q_dict = request.POST.copy()       # get form data
-        post_dict = post_q_dict.dict()          # convert from 'QueryDict' data type to 'dict' data type
-        post_dict.update({'hacker': request.user.id})       # pass 'hacker' field into form data
-        form = self.form_class(post_dict)       # instantiate 'CreateApplicationForm' using form data
-
-        if form.is_valid():
-            form.save()         # save instance of 'Application' to database
-            return redirect(self.success_url) 
-
-        FormErrors = json.loads(form.errors.as_json())
-        return render(request, self.template_name, {'form': form, 'FormErrors':FormErrors})
-
-'''
-class CreateConfirmationView(generic_views.FormView):
-
-    form_class = core_forms.CreateConfirmationForm
-    template_name = core_forms.CreateConfirmationForm.template_name
-    success_url = core_forms.CreateConfirmationForm.successs_url
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        return render(request, self.template_name, {})
+    grad_options = [op[0] for op in hacker_models.GRAD_YEARS]
+    student_classifications = [op[0] for op in hacker_models.CLASSIFICATIONS]
+    gender_options = hacker_models.GENDERS
+    
+    def get_context_data(self, **kwargs):
+        context = super(CreateApplicationView, self).get_context_data(**kwargs)
+        context['grad_options'] = self.grad_options
+        context['student_classifications'] = self.student_classifications
+        context['gender_options'] = self.gender_options
+        return context
 
     def form_valid(self, form):
-        from.full_clean()
-        return super(CreateConfirmationView, self).form_valid(form)
+        obj = form.save(commit=False)
+        obj.hacker = self.request.user
+        obj.save()
+        return http.HttpResponseRedirect(self.success_url)
 
-    def post(self, request, *args, **kwargs):
 
-'''
+class CreateConfirmationView(generic_views.CreateView, LoginRequiredMixin):
+    model = hacker_models.Confirmation
+    success_url = reverse_lazy("status")
+    fields = [
+        "dietary_restrictions",
+        "notes",
+        "shirt_size"
+    ]    
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.hacker = self.request.user
+        obj.save()
+        return http.HttpResponseRedirect(self.get_success_url())
