@@ -1,15 +1,15 @@
-from django.shortcuts import render, redirect, render_to_response
-from django.views.generic import base as base_views
-from django.views import generic as generic_views
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
-from django.contrib.auth.decorators import user_passes_test
-from core import forms as core_forms
+from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, render, render_to_response
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views import generic as generic_views
+from django.views.generic import base as base_views
+
+from hacker import forms as hacker_forms
 from hacker import models as hacker_models
 
 
@@ -27,48 +27,46 @@ def has_team_check(user):
 
 
 class dashboard(LoginRequiredMixin):
-    login_url = settings.LOGIN_URL
-    redirect_field_name = settings.LOGIN_REDIRECT_URL
+    login_url = reverse_lazy("login")
+    redirect_field_name = reverse_lazy("status")
     
     @login_required
-    @user_passes_test(email_confirmation_check, settings.CONFIRM_EMAIL_URL)
-    @user_passes_test(has_application_check, settings.CREATE_APPLICATION_URL)
+    @user_passes_test(email_confirmation_check, reverse_lazy("confirm_email"))
+    @user_passes_test(has_application_check, reverse_lazy("apply"))
     def status(request):
+        redirect_field_name = reverse_lazy("status")
         return render(request, 'dashboard/status.html')
     
     @login_required
-    @user_passes_test(email_confirmation_check, settings.CONFIRM_EMAIL_URL)
-    @user_passes_test(has_application_check, settings.CREATE_APPLICATION_URL)
+    @user_passes_test(email_confirmation_check, reverse_lazy("confirm_email"))
+    @user_passes_test(has_application_check, reverse_lazy("apply"))
     def application(request):
+        #form_class = hacker_forms.ViewApplicationForm
 
-        #form_class = core_forms.ViewApplicationForm
-
-        redirect_field_name = '/application'
-
+        redirect_field_name = reverse_lazy("application")
         return render(request, 'dashboard/application.html')
         
     '''
     @login_required
-    @user_passes_test(email_confirmation_check, settings.CONFIRM_EMAIL_URL)
-    @user_passes_test(has_application_check, settings.CREATE_APPLICATION_URL)
+    @user_passes_test(email_confirmation_check, reverse_lazy("confirm_email"))
+    @user_passes_test(has_application_check, reverse_lazy("apply"))
     @user_passes_test(has_confirmation_check, settings.CREATE_CONFIRMATION_URL)
     def confirmation(request):
         # ...
     '''    
 
     @login_required
-    @user_passes_test(email_confirmation_check, settings.CONFIRM_EMAIL_URL)
-    @user_passes_test(has_application_check, settings.CREATE_APPLICATION_URL)
-    @user_passes_test(has_confirmation_check, settings.CREATE_CONFIRMATION_URL)
+    @user_passes_test(email_confirmation_check, reverse_lazy("confirm_email"))
+    @user_passes_test(has_application_check, reverse_lazy("apply"))
+    #@user_passes_test(has_confirmation_check, settings.CREATE_CONFIRMATION_URL)
     #@user_passes_test(has_team_check, ______)
     def team(request):
-        redirect_field_name = '/team'
+        redirect_field_name = reverse_lazy("team")
         return render(request, 'dashboard/team.html')
     
     @login_required
-    @user_passes_test(email_confirmation_check, settings.CONFIRM_EMAIL_URL)
-    @user_passes_test(has_application_check, settings.CREATE_APPLICATION_URL)
+    @user_passes_test(email_confirmation_check, reverse_lazy("confirm_email"))
+    @user_passes_test(has_application_check, reverse_lazy("apply"))
     def information(request):
-        redirect_field_name = '/information'
+        redirect_field_name = reverse_lazy("information")
         return render(request, 'dashboard/information.html')
-

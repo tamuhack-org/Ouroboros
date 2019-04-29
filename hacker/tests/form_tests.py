@@ -1,5 +1,5 @@
 from django import test
-from core import forms as core_forms
+from hacker import forms as hacker_forms
 from hacker import models as hacker_models
 from ouroboros import settings
 from django.utils import timezone
@@ -21,20 +21,20 @@ class SignupFormTests(test.TestCase):
 
     # Valid Form Data
     def test_signup_form_valid(self):
-        form = core_forms.SignupForm(data=self.form_data)
+        form = hacker_forms.SignupForm(data=self.form_data)
         self.assertTrue(form.is_valid())
 
     # Blank Form Data
     def test_signup_form_blank(self):
         del self.form_data['first_name']
 
-        form = core_forms.SignupForm(data=self.form_data)
+        form = hacker_forms.SignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 
     def test_signup_form_invalid(self):
         self.form_data['password1'] = 'p'
 
-        form = core_forms.SignupForm(data=self.form_data)
+        form = hacker_forms.SignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 
 
@@ -53,21 +53,21 @@ class SignInFormTests(test.TestCase):
 
     # Valid Form Data
     def test_sign_in_form_valid(self):
-        form = core_forms.SignInForm(data=self.form_data)
+        form = hacker_forms.SignInForm(data=self.form_data)
         self.assertTrue(form.is_valid())
 
     # Blank Form Data
     def test_sign_in_form_blank(self):
         del self.form_data['username']
 
-        form = core_forms.SignInForm(data=self.form_data)
+        form = hacker_forms.SignInForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 
     # Invalid Form Data
     def test_sign_in_form_invalid(self):
         self.form_data['password'] = 'p'
 
-        form = core_forms.SignInForm(data=self.form_data)
+        form = hacker_forms.SignInForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 
 class CreateApplicationFormTests(test.TestCase):
@@ -101,35 +101,35 @@ class CreateApplicationFormTests(test.TestCase):
 
     # Valid Form Data
     def test_create_application_form_valid(self):
-        form = core_forms.CreateApplicationForm(data=self.form_data)
+        form = hacker_forms.CreateApplicationForm(data=self.form_data)
         self.assertTrue(form.is_valid())
 
     # Valid Form Data w/ Blank `notes` data field
     def test_create_application_form_valid_blank_notes(self):
         del self.form_data['notes']
 
-        form = core_forms.CreateApplicationForm(data=self.form_data)
+        form = hacker_forms.CreateApplicationForm(data=self.form_data)
         self.assertTrue(form.is_valid())
 
     # Blank Form Data (NOT `notes` data field)
     def test_create_application_form_blank(self):
         del self.form_data['major']
 
-        form = core_forms.CreateApplicationForm(data=self.form_data)
+        form = hacker_forms.CreateApplicationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 
     # Invalid Form Data - invalid `gender` data
     def test_create_application_form_invalid_gender(self):
         self.form_data['gender'] = 'X'      # "X" is not one of the gender choices defined in `models.py`
 
-        form = core_forms.CreateApplicationForm(data=self.form_data)
+        form = hacker_forms.CreateApplicationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 
     # Invalid Form Data - invalid `classification data`
     def test_create_application_form_invalid_classification(self):
         self.form_data['classification'] = 'XX'      # "XX" is not one of the classification choices defined in `models.py`
 
-        form = core_forms.CreateApplicationForm(data=self.form_data)
+        form = hacker_forms.CreateApplicationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 
 
@@ -201,7 +201,7 @@ class FormTests(test.TestCase):         # Remove In Future
 
     def test_confirm_email_form(self):
         form_data = self.confirm_email_form_fields
-        form = core_forms.ConfirmEmailForm(data=form_data)
+        form = hacker_forms.ConfirmEmailForm(data=form_data)
         self.assertTrue(form.is_valid())
         #...
 

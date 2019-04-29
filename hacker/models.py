@@ -8,7 +8,7 @@ import random
 import string
 
 
-SHIRT_SIZE_CHOICES = (
+SHIRT_SIZES = (
     ('XS', 'XS'),
     ('S', 'S'),
     ('M', 'M'),
@@ -17,14 +17,14 @@ SHIRT_SIZE_CHOICES = (
     ('XXL', 'XXL'),
 ) 
 
-GENDER_CHOICES = (
+GENDERS = (
     ('M', 'Male'),
     ('F', 'Female'),
     ('NB', 'Non-binary'),
     ('NA', 'Prefer not to disclose'),
 )
 
-CLASSIFICATION_CHOICES = (
+CLASSIFICATIONS = (
     ('U1', 'U1'),
     ('U2', 'U2'),
     ('U3', 'U3'),
@@ -32,7 +32,7 @@ CLASSIFICATION_CHOICES = (
     ('U5', 'U5'),
 )
 
-DIETARY_RESTRICTION_CHOICES = (
+DIETARY_RESTRICTIONS = (
     ('Vegan', 'Vegan'),
     ('Vegaterian', 'Vegarterian'),
     ('Halal', 'Halal'),
@@ -40,26 +40,35 @@ DIETARY_RESTRICTION_CHOICES = (
     ('Food Allergies', 'Food Allergies'),
 )
 
-WAVE_TYPE_CHOICES = (
+WAVE_TYPES = (
     ('Approve', 'Approve Application'),
     ('Reject', 'Reject Application'),
 )
 
+GRAD_YEARS = [(i,i) for i in range(timezone.now().year, timezone.now().year + settings.EMAIL_CONFIRM_CODE_LENGTH)]
+
+
+'''
+Misc. Information:
+
+    - 'first_name' overrides AbstractUser.first_name to require not blank
+    - 'last_name' overrides AbstractUser.last_name to require not blank
+    - 'email' overrides AbstractUser.email to require not blank
+
+'''
 
 class Hacker(AbstractUser):
-    checked_in = models.NullBooleanField(blank=True)
-    checked_in_datetime = models.DateTimeField(null=True, blank=True)
-    email_confirmed = models.BooleanField(blank=True, default=False)
-    confirm_code = models.CharField(max_length=6, blank=True, null=True)
-
-    # Overrides AbstractUser.first_name to require not blank
+    ### Fields ###
     first_name = models.CharField(max_length=30, blank=False, verbose_name='first name')
-
-    # Overrides AbstractUser.last_name to require not blank
     last_name = models.CharField(max_length=150, blank=False, verbose_name='last name')
-    
-    # Overrides AbstractUser.email to require not blank
     email = models.EmailField(blank=False)
+
+    checked_in = models.NullBooleanField(blank=True)
+    email_confirmed = models.BooleanField(blank=True, default=False)
+
+    checked_in_datetime = models.DateTimeField(null=True, blank=True)
+
+    confirm_code = models.CharField(max_length=6, blank=True, null=True)
 
     def has_related_application(self):
         a = getattr(self, 'application', None)
@@ -112,10 +121,11 @@ class Hacker(AbstractUser):
 
 
 class Application(models.Model):
+    ### Fields ###
     major = models.CharField(max_length=50)
-    gender = models.CharField(choices=GENDER_CHOICES, max_length=2)
-    classification = models.CharField(choices=CLASSIFICATION_CHOICES, max_length=2)
-    grad_year = models.IntegerField(choices=settings.GRAD_YEAR_CHOICES, verbose_name='graduation year')          
+    gender = models.CharField(choices=GENDERS, max_length=2)
+    classification = models.CharField(choices=CLASSIFICATIONS, max_length=2)
+    grad_year = models.IntegerField(choices=GRAD_YEARS, verbose_name='graduation year')          
     interests = models.TextField(max_length=200)
     essay = models.TextField(max_length=200)
     #resume = models.FileField( ... ) 
@@ -126,7 +136,7 @@ class Application(models.Model):
     date_queued_for_approval = models.DateField(null=True, blank=True) 
     date_submitted = models.DateField(auto_now_add=True, blank=True)
     hacker = models.OneToOneField(          
-        settings.AUTH_USER_MODEL,
+        Hacker,
         on_delete=models.CASCADE,
     )    
     
@@ -155,17 +165,17 @@ class Application(models.Model):
 
 
 class Confirmation(models.Model):
-    dietary_restrictions = MultiSelectField(choices=DIETARY_RESTRICTION_CHOICES, verbose_name='dietary restrictions', blank=True)                                                # TO-DO TEST
+    dietary_restrictions = MultiSelectField(choices=DIETARY_RESTRICTIONS, verbose_name='dietary restrictions', blank=True)                                                # TO-DO TEST
     travel_reimbursement_required = models.BooleanField(default=False)          
     date_confirmed = models.DateField(auto_now_add=True, blank=True)
     notes = models.TextField(max_length=300, blank=True, help_text='Provide any additional notes and/or comments in the text box provide')
     shirt_size = models.CharField(         
         max_length=3,
-        choices=SHIRT_SIZE_CHOICES,
+        choices=SHIRT_SIZES,
         verbose_name='shirt size',
     )
     hacker = models.OneToOneField(              
-        settings.AUTH_USER_MODEL,
+        Hacker,
         on_delete=models.CASCADE,
     )
     team = models.ForeignKey(           

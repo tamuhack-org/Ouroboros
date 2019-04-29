@@ -1,6 +1,8 @@
 from django import test
-from core import forms as core_forms
+from django.urls import reverse_lazy
+from hacker import forms as hacker_forms
 from hacker import models as hacker_models
+from core import views as core_views
 from ouroboros import settings
 from django.utils import timezone
 import random
@@ -23,29 +25,31 @@ class ViewTests(test.TestCase):
 
     # Confirm that anonymous users are redirected to login page
     def test_confirm_email_view_denies_anonymous(self):     # test fails
-        response = self.client.get(settings.REDIRECT_CONFIRM_EMAIL_URL)
-        self.assertRedirects(response, settings.REDIRECT_LOGIN_URL)
+        response = self.client.get(reverse_lazy("confirm_email"))
+        self.assertRedirects(response, reverse_lazy("login"))
         
 
     # Confirm
     def test_confirm_email_view_loads(self):                # Test Works!!!
         self.client.login(username=self.test_username, password=self.test_password)
-        response = self.client.get(settings.CONFIRM_EMAIL_URL)
+        print(reverse_lazy("confirm_email"))
+        response = self.client.get(reverse_lazy("confirm_email"))
+
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'registration/confirm_email.html')
 
     # Confirm that view rejects blank data                  # Test does NOT work
     def test_confirm_email_view_fails_blank(self):
         self.client.login(username=self.test_username, password=self.test_password)
-        response = self.client.get(settings.CONFIRM_EMAIL_URL, {})
-        self.assertFormError(response, core_forms.ConfirmEmailForm, 'email', 'This field is required')
-        self.assertFormError(response, core_forms.ConfirmEmailForm, 'confirm_code', 'This field is required')
+        response = self.client.get(reverse_lazy("confirm_email"), {})
+        self.assertFormError(response, hacker_forms.ConfirmEmailForm, 'email', 'This field is required')
+        self.assertFormError(response, hacker_forms.ConfirmEmailForm, 'confirm_code', 'This field is required')
 
     # Confirm that view rejects invalid data
     '''
     def test_confirm_email_view_fails_invalid(self):
         self.client.login(username=self.test_username, password=self.test_password)
-        response = self.client.get(settings.CONFIRM_EMAIL_URL, {'email': '', })
+        response = self.client.get(reverse_lazy("confirm_email"), {'email': '', })
     '''
 
     ''' `SignupView` '''
@@ -83,26 +87,26 @@ class CreateApplicationViewTests(test.TestCase):
         }
 
     def test_create_application_view_denies_anonymous(self):
-        response = self.client.get(settings.REDIRECT_CREATE_APPLICATION_URL)
-        self.assertRedirects(response, settings.REDIRECT_LOGIN_URL)
+        response = self.client.get(reverse_lazy("apply"))
+        self.assertRedirects(response, reverse_lazy("login"))
 
     def test_create_application_view_denies_user_email_not_confirmed(self):
         self.client.login(username=self.test_username, password=self.test_password)
         setattr(self.test_user, 'email_confirmed', False)
-        response = self.client.get(settings.REDIRECT_CREATE_APPLICATION_URL)
-        self.assertRedirects(response, settings.CONFIRM_EMAIL_URL)
+        response = self.client.get(reverse_lazy("apply"))
+        self.assertRedirects(response, reverse_lazy("confirm_email"))
 
     def test_create_application_view_loads(self):
         self.client.login(username=self.test_username, password=self.test_password)
         setattr(self.test_user, 'email_confirmed', True)
-        response = self.client.get(settings.CREATE_APPLICATION_URL)
+        response = self.client.get(reverse_lazy("apply"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, core_forms.CreateApplicationForm.template_name)
+        self.assertTemplateUsed(response, core_views.CreateApplicationView.template_used)
 
     def test_create_application_view_fails_blank(self):
         self.client.login(username=self.test_username, password=self.test_password)
         setattr(self.test_user, 'email_confirmed', True)
-        response = self.client.post(settings.CREATE_APPLICATION_URL, {})   # blank input data
+        response = self.client.post(reverse_lazy("apply"), {})   # blank input data
         self.assertFormError(response, 'CreateApplicationForm', 'major', 'This field is required.')
         self.assertFormError(response, 'CreateApplicationForm', 'gender', 'This field is required.')
         self.assertFormError(response, 'CreateApplicationForm', 'classification', 'This field is required.')
