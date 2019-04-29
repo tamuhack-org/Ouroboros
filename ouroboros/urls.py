@@ -18,16 +18,13 @@ from django.contrib import auth
 from django.urls import path, include
 from core import views as core_views
 
-# test
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('django.contrib.auth.urls')),
-    path('auth/register', core_views.SignupView.as_view()),
-    path('auth/login', core_views.SignInView.as_view()),
-    path('', core_views.IndexView.as_view()),
-    path('confirm_email', core_views.ConfirmEmailView.as_view()),
-    path('auth/apply',core_views.CreateApplicationView.as_view()),
-	path('', include('hacker.urls')),
-    path('auth/logout', core_views.LogOutView.as_view()),
+    path('', include('hacker.urls')),
+    path('', core_views.IndexView.as_view(), name="index"),
+    path('accounts/login/', core_views.SignInView.as_view(), name="login"),
+    path('accounts/logout/', core_views.LogOutView.as_view(), name="logout"),
+    path('accounts/register/', core_views.SignupView.as_view(), name="sign_up"),
+    path('accounts/apply/',core_views.CreateApplicationView.as_view(), name="apply"),
+    path('confirm_email/', core_views.ConfirmEmailView.as_view(), name="confirm_email"),
 ]

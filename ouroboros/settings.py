@@ -33,14 +33,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'hacker.apps.HackerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'multiselectfield'
+    'hacker.apps.HackerConfig',
+    # 'core.apps.CoreConfig',
+    'multiselectfield',
 ]
 
 MIDDLEWARE = [
@@ -80,8 +81,12 @@ WSGI_APPLICATION = 'ouroboros.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ouroboros',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -127,32 +132,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/')
 ]
 
-AUTH_USER_MODEL = 'hacker.Hacker'
-
-
+APPEND_SLASH = True
 # Template URL Global Variables - To be used in Views
 
-LOGIN_URL = 'auth/login'
-STATUS_URL = '/status'
-CONFIRM_EMAIL_URL = 'confirm_email'
-VIEW_APPLICATION_URL = '/application'
-CREATE_APPLICATION_URL = 'auth/apply'
-VIEW_CONFIRMATION_URL = '/confirmation'
-CREATE_CONFIRMATION_URL = 'auth/confirm'
-
-REDIRECT_LOGIN_URL = '/auth/login'
-REDIRECT_STATUS_URL = '/status'
-REDIRECT_CONFIRM_EMAIL_URL = '/confirm_email'
-REDIRECT_VIEW_APPLICATION_URL = '/application'
-REDIRECT_CREATE_APPLICATION_URL = '/auth/apply'
-REDIRECT_VIEW_CONFIRMATION_URL = '/confirmation'
-REDIRECT_CREATE_CONFIRMATION_URL = '/auth/confirm'
-
-LOGIN_REDIRECT_URL = STATUS_URL
-SIGNUP_REDIRECT_URL = CONFIRM_EMAIL_URL
-LOGIN_REDIRECT_URL = STATUS_URL
-CONFIRM_EMAIL_REDIRECT_URL = CREATE_APPLICATION_URL
-CREATE_APPLICATION_REDIRECT_URL = STATUS_URL
 
 
 # Email Configuration Global Settings
@@ -181,10 +163,8 @@ ouroboros/config/email_config.txt should be in the format:
 }
 
 '''
-
+AUTH_USER_MODEL = "hacker.Hacker"
 
 # Miscellaneous Project Global Variables
 
 EMAIL_CONFIRM_CODE_LENGTH = 6
-GRAD_YEAR_CHOICES = [(i,i) for i in range(timezone.now().year, timezone.now().year + EMAIL_CONFIRM_CODE_LENGTH)]
-STUDENT_CLASSIFICATIONS = ["U1", "U2", "U3", "U4", "U5"]
