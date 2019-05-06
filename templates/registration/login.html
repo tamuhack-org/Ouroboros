@@ -19,15 +19,10 @@
 					{% csrf_token %}
 					<!-- security -->
 					<div class="form-row">
-						{% if invalid_form %}
-							<div class="alert alert-danger" role="alert">Invalid Login</div>
-						{% endif %}
-						<div class="col-md-12">
-							<input type="text" name="username" class="flat-field form-control form-control-md" placeholder="username">
-						</div>
-						<div class="col-md-12">
-							<input type="password" name="password" class="flat-field form-control form-control-md" placeholder="password">
-						</div>
+						<!-- Below are the fields -->
+						<p>{{ form.as_p }}</p>
+						<!-- End fields -->
+						
 						<button type="submit" class="btn btn-lg btn-block btn-login">
 							Login
 						</button>

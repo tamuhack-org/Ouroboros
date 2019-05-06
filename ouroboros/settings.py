@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 import json
 from django.utils import timezone
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'hacker.apps.HackerConfig',
-    # 'core.apps.CoreConfig',
+    'core.apps.CoreConfig',
     'multiselectfield',
+    'access_tokens',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ouroboros.wsgi.application'
+DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
 
 
 # Database
@@ -135,6 +139,7 @@ STATICFILES_DIRS = [
 APPEND_SLASH = True
 # Template URL Global Variables - To be used in Views
 
+LOGIN_REDIRECT_URL = reverse_lazy("status")
 
 
 # Email Configuration Global Settings
@@ -163,6 +168,16 @@ ouroboros/config/email_config.txt should be in the format:
 }
 
 '''
+
+dropbox_credentials_file = open("ouroboros/config/dropbox_config.txt",'r')
+dropbox_credentials_data = json.load(dropbox_credentials_file)
+dropbox_credentials_file.close()
+
+DROPBOX_OAUTH2_TOKEN = dropbox_credentials_data['DROPBOX_APP_ACCESS_TOKEN']
+
+
+
+
 AUTH_USER_MODEL = "hacker.Hacker"
 
 # Miscellaneous Project Global Variables

@@ -19,48 +19,8 @@
                 <!-- security -->
                 <div class="form-row">
                     <!-- below are the fields-->
-
-                    <div class="col-md-12">
-                        <input type="text" name="major" class="flat-field form-control form-control-md" placeholder="major">
-                    </div>
-
-                    <div class="col-md-12 text-left">
-                        <p>Graduation Year: </p>
-                        {% for option in grad_options %}
-                        <input type="radio" name="grad_year" value={{option}}> {{option}} <br>
-                        {% endfor %}
-                    </div>
+                    <p>{{ form.as_p }}</p>
                     
-                    <div class="col-md-12"><br></div>
-
-                    <div class="col-md-12 text-left">
-                            <p>Classifications: </p>
-                            {% for option in student_classifications %}
-                            <input type="radio" name="classification" value={{option}}> {{option}} <br>
-                            {% endfor %}
-                        </div>
-                        
-                        <div class="col-md-12"><br></div>
-
-                    <div class="col-md-12 text-left">
-                        <p>Gender: </p>
-                        <input type="radio" name="gender" value="M"> Male <br>
-                        <input type="radio" name="gender" value="F"> Female <br>
-                        <input type="radio" name="gender" value="NB"> Non-binary <br>
-                        <input type="radio" name="gender" value="NA"> Prefer not to disclose <br>
-                    </div>
-
-                    <div class="col-md-12 text-left">
-                        <textarea name="interests" rows="5" class="flat-field form-control form-control-md" placeholder="interests"></textarea>
-                    </div>
-                    
-                    <div class="col-md-12 text-left">
-                        <textarea name="essay" rows="5" class="flat-field form-control form-control-md" placeholder="essay"></textarea>
-                    </div>
-                        
-                    <div class="col-md-12 text-left">
-                        <textarea name="notes" rows="5" class="flat-field form-control form-control-md" placeholder="notes"></textarea>
-                    </div>
 
                     <!-- end fields-->
                     <button type="submit" class="btn btn-lg btn-block btn-login">

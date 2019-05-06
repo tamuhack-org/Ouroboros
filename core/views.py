@@ -8,6 +8,7 @@ from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
@@ -28,7 +29,6 @@ from hacker import models as hacker_models
 
 
 class IndexView(base_views.TemplateView):
-
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
@@ -37,7 +37,6 @@ class IndexView(base_views.TemplateView):
 
 
 class SignupView(generic_views.FormView):
-
     form_class = hacker_forms.SignupForm
     template_name = 'registration/signup.html'
 
@@ -78,63 +77,11 @@ class SignupView(generic_views.FormView):
         return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors, 'user_exists':user_exists})
 
 
-
-# django.contrib.auth.LoginView
-class SignInView(generic_views.FormView):
-    form_class = hacker_forms.SignInForm
+class HackerLoginView(LoginView):
     template_name = 'registration/login.html'
-    success_url = hacker_forms.SignInForm.success_url   #!!!
-    redirect_field_name = hacker_forms.SignInForm.redirect_field_name
+    authentication_form = hacker_forms.HackerLoginForm
+    redirect_authenticated_user = True
 
-    # references: https://gist.github.com/stefanfoulis/1140136 , https://coderwall.com/p/sll1kw/django-auth-class-based-views-login-and-logout
-    @method_decorator(csrf_protect)
-    @method_decorator(never_cache)
-    def dispatch(self, *args, **kwargs):
-        return super(SignInView, self).dispatch(*args, **kwargs)
-
-    def form_valid(self, form):
-        """
-        The user has provided valid credentials (this was checked in AuthenticationForm.is_valid()). So now we
-        can log them in.
-        """
-        auth_login(self.request, form.get_user())
-        return redirect(self.get_success_url())
-    
-    def form_invalid(self, form):
-        return render(self.request, self.template_name, {'invalid_form': True})
-
-    def get_success_url(self):      #!!!!!!!!!
-        return self.success_url
-
-    def set_test_cookie(self):
-        self.request.session.set_test_cookie()
-
-    def check_and_delete_test_cookie(self):
-        if self.request.session.test_cookie_worked():
-            self.request.session.delete_test_cookie()
-            return True
-        return False
-
-    def get(self, request, *args, **kwargs):   #!!!!!!!!!
-        if (request.user.is_authenticated):
-            return redirect(self.get_success_url())
-        form = self.form_class(initial=self.initial)
-        self.set_test_cookie()
-        return super(SignInView, self).get(request, *args, **kwargs)
-
-    @method_decorator(csrf_protect)
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-
-        if form.is_valid():
-            self.check_and_delete_test_cookie()
-            return self.form_valid(form)
-        else:
-            self.set_test_cookie()
-            return self.form_invalid(form)
 
 class LogOutView(RedirectView):
     url = "/"
@@ -143,8 +90,8 @@ class LogOutView(RedirectView):
         auth_logout(request)
         return super(LogOutView, self).get(request, *args, **kwargs)
 
-class ConfirmEmailView(generic_views.FormView, LoginRequiredMixin):
 
+class ConfirmEmailView(generic_views.FormView, LoginRequiredMixin):
     form_class = hacker_forms.ConfirmEmailForm
     template_name = hacker_forms.ConfirmEmailForm.template_name
     success_url = hacker_forms.ConfirmEmailForm.success_url
@@ -205,10 +152,6 @@ class CreateApplicationView(generic_views.CreateView, LoginRequiredMixin):
         obj.hacker = self.request.user
         obj.save()
         return http.HttpResponseRedirect(self.success_url)
-
-
-
-
 
 
 class CreateConfirmationView(generic_views.CreateView, LoginRequiredMixin):

@@ -1,5 +1,5 @@
 from .model_tests import HackerModelTests, ApplicationModelTests
-from .form_tests import FormTests, SignupFormTests, SignInFormTests, CreateApplicationFormTests
+from .form_tests import FormTests, SignupFormTests#, SignInFormTests#, CreateApplicationFormTests
 from .view_tests import ViewTests, CreateApplicationViewTests
 
 __all__ = [
@@ -7,8 +7,8 @@ __all__ = [
     'ApplicationModelTests',
     'FormTests', 
     'SignupFormTests', 
-    'SignInFormTests', 
-    'CreateApplicationFormTests', 
+    #'SignInFormTests', 
+    #'CreateApplicationFormTests', 
     'ViewTests',
     'CreateApplicationViewTests'
 ]

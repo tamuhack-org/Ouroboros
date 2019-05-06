@@ -21,16 +21,17 @@ class HackerModelTests(test.TestCase):
             'gender': 'M',
             'classification': 'U1',
             'grad_year': timezone.now().year,
+            'num_hackathons_attended': 2,
+            'previous_attendant': True,
+            'tamu_student': True,
             'interests': 'Interests',
-            'essay': 'Essay',
+            'essay1': 'Essay1',
             'notes': 'Notes',
         }
 
         self.confirmation_fields = {
             # `Hacker` MUST be declared during instantiation of `Confirmation`
             'shirt_size': 'M',
-            'dietary_restrictions': 'Halal',
-            'travel_reimbursement_required': False,
             'notes': 'Notes',
         }
 
@@ -171,8 +172,11 @@ class ApplicationModelTests(test.TestCase):
             'gender': 'M',
             'classification': 'U1',
             'grad_year': timezone.now().year,
+            'num_hackathons_attended': 2,
+            'previous_attendant': True,
+            'tamu_student': True,
             'interests': 'Interests',
-            'essay': 'Essay',
+            'essay1': 'Essay1',
             'notes': 'Notes',
         }
         self.application = hacker_models.Application(**self.application_fields)
@@ -186,8 +190,6 @@ class ApplicationModelTests(test.TestCase):
             'hacker': self.hacker,
             'team': self.team,
             'shirt_size': 'M',
-            'dietary_restrictions': 'Halal',
-            'travel_reimbursement_required': False,
             'notes': 'Notes',
         }
         self.confirmation = hacker_models.Confirmation(**self.confirmation_fields)

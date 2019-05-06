@@ -81,7 +81,7 @@ class CreateApplicationViewTests(test.TestCase):
             'classification': 'U3',
             'grad_year': timezone.now().year,
             'interests': 'interests',
-            'essay': 'essay',
+            'essay1': 'essay1',
             'notes': 'notes',
             'hacker': self.test_user.id,
         }
@@ -111,8 +111,11 @@ class CreateApplicationViewTests(test.TestCase):
         self.assertFormError(response, 'CreateApplicationForm', 'gender', 'This field is required.')
         self.assertFormError(response, 'CreateApplicationForm', 'classification', 'This field is required.')
         self.assertFormError(response, 'CreateApplicationForm', 'grad_year', 'This field is required.')
+        self.assertFormError(response, 'CreateApplicationForm', 'num_hackathons_attended', 'This field is required.')
+        self.assertFormError(response, 'CreateApplicationForm', 'previous_attendant', 'This field is required.')
+        self.assertFormError(response, 'CreateApplicationForm', 'tamu_student', 'This field is required.')
         self.assertFormError(response, 'CreateApplicationForm', 'interests', 'This field is required.')
-        self.assertFormError(response, 'CreateApplicationForm', 'essay', 'This field is required.')
+        self.assertFormError(response, 'CreateApplicationForm', 'essay1', 'This field is required.')
         self.assertFormError(response, 'CreateApplicationForm', 'hacker', 'This field is required.')
 
     '''
