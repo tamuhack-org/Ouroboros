@@ -1,6 +1,8 @@
-from django.urls import path, include
-from hacker import views
 from django.contrib.auth import views as auth_views
+from django.urls import path, include
+
+from hacker import views
+
 
 urlpatterns = [
     path('status', views.dashboard.status, name="status"),

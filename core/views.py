@@ -1,16 +1,18 @@
 import json
 import pdb
 import urllib.parse as urlparse
+#from access_tokens import tokens
 
+from django import http
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME, authenticate
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
-from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, LogoutView
 from django.core.mail import send_mail
 from django.http import QueryDict
 from django.shortcuts import redirect, render
@@ -21,8 +23,6 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import RedirectView
 from django.views.generic import base as base_views
-from django import http
-#from access_tokens import tokens
 
 from hacker import forms as hacker_forms
 from hacker import models as hacker_models
@@ -34,6 +34,20 @@ class IndexView(base_views.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class HackerLoginView(LoginView):
+    template_name = 'registration/login.html'
+    authentication_form = hacker_forms.HackerLoginForm
+    redirect_authenticated_user = True
+
+
+class LogOutView(RedirectView):
+    url = "/"
+
+    def get(self, request, *args, **kwargs):
+        auth_logout(request)
+        return super(LogOutView, self).get(request, *args, **kwargs)
 
 
 class SignupView(generic_views.FormView):
@@ -75,20 +89,6 @@ class SignupView(generic_views.FormView):
                 user_exists = True 
         FormErrors = json.loads(form.errors.as_json())
         return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors, 'user_exists':user_exists})
-
-
-class HackerLoginView(LoginView):
-    template_name = 'registration/login.html'
-    authentication_form = hacker_forms.HackerLoginForm
-    redirect_authenticated_user = True
-
-
-class LogOutView(RedirectView):
-    url = "/"
-
-    def get(self, request, *args, **kwargs):
-        auth_logout(request)
-        return super(LogOutView, self).get(request, *args, **kwargs)
 
 
 class ConfirmEmailView(generic_views.FormView, LoginRequiredMixin):

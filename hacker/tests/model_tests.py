@@ -1,7 +1,8 @@
 from django import test
 from django.core import exceptions as django_exceptions
-from hacker import models as hacker_models
 from django.utils import timezone
+
+from hacker import models as hacker_models
 
 
 class HackerModelTests(test.TestCase):

@@ -1,14 +1,15 @@
-from django import test
-from hacker import forms as hacker_forms
-from hacker import models as hacker_models
-from ouroboros import settings
-from django.utils import timezone
 import random
 import string
 
+from django import test
+from django.utils import timezone
+
+from hacker import forms as hacker_forms
+from hacker import models as hacker_models
+from ouroboros import settings
+
 
 class SignupFormTests(test.TestCase):
-
     def setUp(self):
         self.form_data = {
             'first_name': 'First',
@@ -36,126 +37,6 @@ class SignupFormTests(test.TestCase):
 
         form = hacker_forms.SignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
-
-'''
-class SignInFormTests(test.TestCase):
-
-    def setUp(self):
-        self.form_data = {
-            'username': 'user',
-            'password': 'my_password'
-        }
-        self.user = hacker_models.Hacker.objects.create_user(
-            email='some@email.com', 
-            username=self.form_data['username'],
-            password=self.form_data['password']
-        )
-
-    # Valid Form Data
-    def test_sign_in_form_valid(self):
-        form = hacker_forms.SignInForm(data=self.form_data)
-        self.assertTrue(form.is_valid())
-
-    # Blank Form Data
-    def test_sign_in_form_blank(self):
-        del self.form_data['username']
-
-        form = hacker_forms.SignInForm(data=self.form_data)
-        self.assertFalse(form.is_valid())
-
-    # Invalid Form Data
-    def test_sign_in_form_invalid(self):
-        self.form_data['password'] = 'p'
-
-        form = hacker_forms.SignInForm(data=self.form_data)
-        self.assertFalse(form.is_valid())
-'''
-'''
-class CreateApplicationFormTests(test.TestCase):
-
-    def setUp(self):
-        self.test_username = 'user'
-        self.test_password = 'password'
-        self.test_email = 'some@email.com'
-        self.test_user = hacker_models.Hacker.objects.create_user(
-            username=self.test_username,
-            email=self.test_email,
-            password=self.test_password,
-            first_name='first',
-            last_name='last',
-        )
-        self.form_data = {
-            'major': 'major',
-            'gender': 'M',
-            'classification': 'U1',
-            'grad_year': timezone.now().year,
-            'num_hackathons_attended': 2,
-            'previous_attendant': True,
-            'tamu_student': True,
-            'interests': 'interests',
-            'essay1': 'essay1',
-            'notes': 'notes',
-            'hacker': self.test_user.id,
-        }
-        
-    # 
-    #def test_create_application_form_valid_hacker_choices(self):
-
-
-
-    # Valid Form Data
-    def test_create_application_form_valid(self):
-        form = hacker_forms.CreateApplicationForm(data=self.form_data)
-        self.assertTrue(form.is_valid())
-
-    # Valid Form Data w/ Blank `notes` data field
-    def test_create_application_form_valid_blank_notes(self):
-        del self.form_data['notes']
-
-        form = hacker_forms.CreateApplicationForm(data=self.form_data)
-        self.assertTrue(form.is_valid())
-
-    # Blank Form Data (NOT `notes` data field)
-    def test_create_application_form_blank(self):
-        del self.form_data['major']
-
-        form = hacker_forms.CreateApplicationForm(data=self.form_data)
-        self.assertFalse(form.is_valid())
-
-    # Invalid Form Data - invalid `gender` data
-    def test_create_application_form_invalid_gender(self):
-        self.form_data['gender'] = 'X'      # "X" is not one of the gender choices defined in `models.py`
-
-        form = hacker_forms.CreateApplicationForm(data=self.form_data)
-        self.assertFalse(form.is_valid())
-
-    # Invalid Form Data - invalid `classification data`
-    def test_create_application_form_invalid_classification(self):
-        self.form_data['classification'] = 'XX'      # "XX" is not one of the classification choices defined in `models.py`
-
-        form = hacker_forms.CreateApplicationForm(data=self.form_data)
-        self.assertFalse(form.is_valid())
-'''
-
-'''
-class ConfirmEmailFormTests(test.TestCase):
-
-    def setUp(self):
-        self.form_data = {
-            '': '',
-        }
-
-    # Valid Form Data
-    def test_confirm_email_form_valid(self):
-
-    # Blank Form Data
-    def test_confirm_email_form_blank(self):
-
-    # Invalid Form Data
-    def test_confirm_email_form_invalid(self):
-'''
-
-
 
 
 class FormTests(test.TestCase):         # Remove In Future

@@ -1,12 +1,14 @@
-from django import test
-from django.urls import reverse_lazy
-from hacker import forms as hacker_forms
-from hacker import models as hacker_models
-from core import views as core_views
-from ouroboros import settings
-from django.utils import timezone
 import random
 import string
+
+from django import test
+from django.urls import reverse_lazy
+from django.utils import timezone
+
+from core import views as core_views
+from hacker import forms as hacker_forms
+from hacker import models as hacker_models
+from ouroboros import settings
 
 
 class ViewTests(test.TestCase):

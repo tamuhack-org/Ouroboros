@@ -1,7 +1,9 @@
-from django.contrib import admin
-from .models import Hacker, Application, Confirmation, Team
-from django import forms
 import datetime
+
+from django import forms
+from django.contrib import admin
+
+from .models import Hacker, Application, Confirmation, Team
 
 
 ''' `Hacker` '''
@@ -51,8 +53,9 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_display = ('get_last_name','get_first_name','major', 'classification', 'grad_year', 'approved', 'get_is_active')
     fieldsets = [
         ('Related Objects',         {'fields': ['hacker']}),
-        ('Personal Information',    {'fields': ['gender','major','classification','grad_year']}),
-        ('Free Response Questions', {'fields': ['interests','essay','notes']}),
+        ('Personal Information',    {'fields': ['gender','major','classification','grad_year', 'dietary_restrictions', 'tamu_student']}),
+        ('Hackathon Information',   {'fields': ['num_hackathons_attended', 'previous_attendant']}),
+        ('Free Response Questions', {'fields': ['interests','essay1','notes', 'resume']}),
         ('Status',                  {'fields': ['approved']}),
     ]
 
@@ -74,26 +77,18 @@ class ApplicationAdmin(admin.ModelAdmin):
 class ConfirmationAdminForm(forms.ModelForm):
     class Meta:
         model = Confirmation
-        fields = ['shirt_size', 'dietary_restrictions', 'notes', 'team', 'hacker']
+        fields = ['shirt_size', 'notes', 'team', 'hacker']
         widgets = {
             'shirt_size':forms.RadioSelect,
-            #'dietary_restrictions':forms.RadioSelect,
         }
-    '''  
-    def __init__(self, *args, **kwargs):
-        super(ConfirmationAdminForm, self).__init__(*args, **kwargs)
-        self.fields['shirt_size'].empty_label = None
-        # following line needed to refresh widget copy of choice list
-        self.fields['shirt_size'].widget.choices = self.fields['shirt_size'].choices
-        self.fields['shirt_size'].required = True
-    '''
+
         
 class ConfirmationAdmin(admin.ModelAdmin):
     form = ConfirmationAdminForm
-    list_display = ('shirt_size', 'dietary_restrictions')
+    list_display = ('shirt_size', 'notes')
     fieldsets = [
         ('Related Objects',        {'fields': ['hacker','team']}),
-        ('Logistical Information', {'fields': ['shirt_size','dietary_restrictions','notes']}),
+        ('Logistical Information', {'fields': ['shirt_size','notes']}),
     ]
     
     def has_add_permission(self, request, obj=None):
