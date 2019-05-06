@@ -42,12 +42,9 @@ class HackerLoginView(LoginView):
     redirect_authenticated_user = True
 
 
-class LogOutView(RedirectView):
-    url = "/"
-
-    def get(self, request, *args, **kwargs):
-        auth_logout(request)
-        return super(LogOutView, self).get(request, *args, **kwargs)
+class HackerLogoutView(LogoutView):
+    template_name = 'index.html'
+    redirect_authenticated_user = True
 
 
 class SignupView(generic_views.FormView):

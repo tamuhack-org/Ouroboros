@@ -181,7 +181,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
 
 AUTH_USER_MODEL = "hacker.Hacker"
 LOGIN_REDIRECT_URL = reverse_lazy("status")
-
+LOGOUT_REDIRECT_URL = reverse_lazy("index")
 
 
 # Miscellaneous Project Global Variables
