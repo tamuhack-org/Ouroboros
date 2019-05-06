@@ -6,6 +6,7 @@ from multiselectfield import MultiSelectField
 from ouroboros import settings
 import random
 import string
+import json
 
 
 SHIRT_SIZES = (
@@ -70,6 +71,7 @@ class Hacker(AbstractUser):
 
     confirm_code = models.CharField(max_length=6, blank=True, null=True)
 
+    ### Functions ###
     def has_related_application(self):
         a = getattr(self, 'application', None)
         return a is not None
@@ -120,26 +122,62 @@ class Hacker(AbstractUser):
         return '%s, %s' % (self.last_name, self.first_name)
 
 
+'''
+~ as of April 17th, 2019 ~
+
+    New Fields:
+        - 'essay1'
+        - 'essay2'
+        - 'essay3'
+        - 'resume'
+        - 'num_hackathons_attended'
+        - 'previous_attendant'
+        - 'tamu_student'
+
+    Moved Fields: (moved TO `Application`)
+        - 'dietary_restrictions'
+
+    Altered Fields:
+        - 'date_submitted' -> 'application_date'
+
+'''
+
+
+
 class Application(models.Model):
     ### Fields ###
     major = models.CharField(max_length=50)
     gender = models.CharField(choices=GENDERS, max_length=2)
     classification = models.CharField(choices=CLASSIFICATIONS, max_length=2)
     grad_year = models.IntegerField(choices=GRAD_YEARS, verbose_name='graduation year')          
+    dietary_restrictions = MultiSelectField(choices=DIETARY_RESTRICTIONS, verbose_name='dietary restrictions', blank=True)
+    travel_reimbursement_required = models.BooleanField(default=False) 
+
+    num_hackathons_attended = models.PositiveSmallIntegerField(default=0)
+    previous_attendant = models.BooleanField(default=False)
+    tamu_student = models.BooleanField(default=True)
+
     interests = models.TextField(max_length=200)
-    essay = models.TextField(max_length=200)
-    #resume = models.FileField( ... ) 
+    essay1 = models.TextField(max_length=200)
+    essay2 = models.TextField(max_length=200, null=True, blank=True)
+    essay3 = models.TextField(max_length=200, null=True, blank=True)
+    essay4 = models.TextField(max_length=200, null=True, blank=True)
     notes = models.TextField(max_length=300, blank=True, help_text='Provide any additional notes and/or comments in the text box provide')
+    resume = models.FileField(upload_to='hacker_resumes', null=True, blank=True)
+    
     approved = models.NullBooleanField(blank=True)
     queued_for_approval = models.NullBooleanField(blank=True)
+    
     date_approved = models.DateField(null=True, blank=True)        
     date_queued_for_approval = models.DateField(null=True, blank=True) 
     date_submitted = models.DateField(auto_now_add=True, blank=True)
+    
     hacker = models.OneToOneField(          
         Hacker,
         on_delete=models.CASCADE,
-    )    
-    
+    )
+
+    ### Functions ###
     def __str__(self):
         return '%s, %s - Application' % (self.hacker.last_name, self.hacker.first_name)
 
@@ -165,15 +203,12 @@ class Application(models.Model):
 
 
 class Confirmation(models.Model):
-    dietary_restrictions = MultiSelectField(choices=DIETARY_RESTRICTIONS, verbose_name='dietary restrictions', blank=True)                                                # TO-DO TEST
-    travel_reimbursement_required = models.BooleanField(default=False)          
-    date_confirmed = models.DateField(auto_now_add=True, blank=True)
+    ### Fields ###
+    shirt_size = models.CharField(max_length=3, choices=SHIRT_SIZES, verbose_name='shirt size')         
     notes = models.TextField(max_length=300, blank=True, help_text='Provide any additional notes and/or comments in the text box provide')
-    shirt_size = models.CharField(         
-        max_length=3,
-        choices=SHIRT_SIZES,
-        verbose_name='shirt size',
-    )
+
+    date_confirmed = models.DateField(auto_now_add=True, blank=True)
+    
     hacker = models.OneToOneField(              
         Hacker,
         on_delete=models.CASCADE,
@@ -185,12 +220,15 @@ class Confirmation(models.Model):
         blank=True,
     )
 
+    ### Functions ###
     def __str__(self):
         return '%s, %s - Confirmation' % (self.hacker.last_name, self.hacker.first_name)
 
 
 class Team(models.Model):
+    ### Fields ###
     name = models.CharField(max_length=40)
 
+    ### Functions ###
     def __str__(self):
         return self.name

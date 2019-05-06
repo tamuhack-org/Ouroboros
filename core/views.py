@@ -21,6 +21,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import RedirectView
 from django.views.generic import base as base_views
 from django import http
+#from access_tokens import tokens
 
 from hacker import forms as hacker_forms
 from hacker import models as hacker_models
@@ -52,16 +53,12 @@ class SignupView(generic_views.FormView):
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form':form})
 
-    # 'recipient_hacker' should be the `Hacker` model receiving the email
-    def send_confirmation_email(self, recipient_hacker):
-        recipient_hacker.generate_confirm_code()
-        to_email = getattr(recipient_hacker, 'email', None)
-        confirm_code = getattr(recipient_hacker, 'confirm_code', None)
-        first_name = getattr(recipient_hacker, 'first_name', None)
-        if to_email is not None and confirm_code is not None:
-            email_content = 'Almost there ' + first_name + '! Use the following confirmation code to confirm your email: ' + confirm_code
-            send_mail('Confirm you email!', email_content, settings.EMAIL_HOST_USER, [to_email])
-            hacker_models.Hacker.objects.filter(email=to_email).update(confirm_code=confirm_code)
+    def send_confirmation_email(self):
+        user = self.request.user
+        user.generate_confirm_code()
+        content = 'Almost there ' + user.first_name + '! Use the following confirmation code to confirm your email: ' + user.confirm_code
+        send_mail('Confirm your email!', content, settings.EMAIL_HOST_USER, [user.email])
+        hacker_models.Hacker.objects.filter(email=user.email).update(confirm_code=user.confirm_code)
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -73,14 +70,13 @@ class SignupView(generic_views.FormView):
                 raw_password = form.cleaned_data.get('password1') 
                 user = authenticate(username=username, password=raw_password)
                 auth_login(request, user)
-                hacker = hacker_models.Hacker.objects.get(username=username)
-                # call the 'send_confirmation_email' function to send a confirmation email
-                self.send_confirmation_email(hacker)
+                self.send_confirmation_email()
                 return redirect(reverse_lazy("confirm_email"))
             else:
                 user_exists = True 
         FormErrors = json.loads(form.errors.as_json())
         return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors, 'user_exists':user_exists})
+
 
 
 # django.contrib.auth.LoginView
@@ -190,7 +186,7 @@ class CreateApplicationView(generic_views.CreateView, LoginRequiredMixin):
     success_url = reverse_lazy("status")
     template_used = 'hacker/application_form.html'
     fields = [
-        "major", "gender", "classification", "grad_year", "interests", "essay", "notes"
+        "major", "gender", "classification", "grad_year", "dietary_restrictions", "num_hackathons_attended", "previous_attendant", "tamu_student", "interests", "essay1", "notes", "resume"
     ]
 
     grad_options = [op[0] for op in hacker_models.GRAD_YEARS]
@@ -211,13 +207,16 @@ class CreateApplicationView(generic_views.CreateView, LoginRequiredMixin):
         return http.HttpResponseRedirect(self.success_url)
 
 
+
+
+
+
 class CreateConfirmationView(generic_views.CreateView, LoginRequiredMixin):
     model = hacker_models.Confirmation
     success_url = reverse_lazy("status")
     fields = [
-        "dietary_restrictions",
-        "notes",
-        "shirt_size"
+        "shirt_size",
+        "notes"
     ]    
 
     def form_valid(self, form):
