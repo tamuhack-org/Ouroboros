@@ -41,19 +41,8 @@ class dashboard(LoginRequiredMixin):
     @user_passes_test(email_confirmation_check, reverse_lazy("confirm_email"))
     @user_passes_test(has_application_check, reverse_lazy("apply"))
     def application(request):
-        #form_class = hacker_forms.ViewApplicationForm
-
         redirect_field_name = reverse_lazy("application")
         return render(request, 'dashboard/application.html')
-        
-    '''
-    @login_required
-    @user_passes_test(email_confirmation_check, reverse_lazy("confirm_email"))
-    @user_passes_test(has_application_check, reverse_lazy("apply"))
-    @user_passes_test(has_confirmation_check, settings.CREATE_CONFIRMATION_URL)
-    def confirmation(request):
-        # ...
-    '''    
 
     @login_required
     @user_passes_test(email_confirmation_check, reverse_lazy("confirm_email"))

@@ -61,7 +61,6 @@ Misc. Information:
 '''
 
 class Hacker(AbstractUser):
-    ### Fields ###
     first_name = models.CharField(max_length=30, blank=False, verbose_name='first name')
     last_name = models.CharField(max_length=150, blank=False, verbose_name='last name')
     email = models.EmailField(blank=False)
@@ -73,7 +72,6 @@ class Hacker(AbstractUser):
 
     confirm_code = models.CharField(max_length=6, blank=True, null=True)
 
-    ### Functions ###
     def has_related_application(self):
         a = getattr(self, 'application', None)
         return a is not None
@@ -147,7 +145,6 @@ class Hacker(AbstractUser):
 
 
 class Application(models.Model):
-    ### Fields ###
     major = models.CharField(max_length=50)
     gender = models.CharField(choices=GENDERS, max_length=2)
     classification = models.CharField(choices=CLASSIFICATIONS, max_length=2)
@@ -179,7 +176,6 @@ class Application(models.Model):
         on_delete=models.CASCADE,
     )
 
-    ### Functions ###
     def __str__(self):
         return '%s, %s - Application' % (self.hacker.last_name, self.hacker.first_name)
 
@@ -205,7 +201,6 @@ class Application(models.Model):
 
 
 class Confirmation(models.Model):
-    ### Fields ###
     shirt_size = models.CharField(max_length=3, choices=SHIRT_SIZES, verbose_name='shirt size')         
     notes = models.TextField(max_length=300, blank=True, help_text='Provide any additional notes and/or comments in the text box provide')
 
@@ -222,15 +217,12 @@ class Confirmation(models.Model):
         blank=True,
     )
 
-    ### Functions ###
     def __str__(self):
         return '%s, %s - Confirmation' % (self.hacker.last_name, self.hacker.first_name)
 
 
 class Team(models.Model):
-    ### Fields ###
     name = models.CharField(max_length=40)
 
-    ### Functions ###
     def __str__(self):
         return self.name

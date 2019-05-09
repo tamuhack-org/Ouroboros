@@ -6,8 +6,7 @@ from django.contrib import admin
 from .models import Hacker, Application, Confirmation, Team
 
 
-''' `Hacker` '''
-def make_checked_in(modeladmin, request, queryset): # Needs to be Tested!!!
+def check_in(modeladmin, request, queryset): # Needs to be Tested!!!
     queryset.update(checked_in=True)
     queryset.update(checked_in_datetime=datetime.datetime.now())
 
@@ -18,8 +17,8 @@ class HackerAdmin(admin.ModelAdmin):
         ('Advanced',         {'fields': ['is_superuser','is_staff','is_active'], 'classes': ['collapse']}),
     ]
 
-    make_checked_in.short_description = "Check-In Selected Hackers"
-    actions = [make_checked_in]
+    check_in.short_description = "Check-In Selected Hackers"
+    actions = [check_in]
 
     def has_add_permission(self, request, obj=None):
         return True
@@ -30,11 +29,11 @@ class HackerAdmin(admin.ModelAdmin):
 #    def has_delete_permission(self, request, obj=None):
 #        return False
     
-''' `Application` '''
-def make_approved(modeladmin, request, queryset): # Needs to be Tested!!!
+
+def approve(modeladmin, request, queryset): # Needs to be Tested!!!
     queryset.update(approved=True)
 
-def make_rejected(self, request, queryset): # Needs to be Tested!!!
+def reject(self, request, queryset): # Needs to be Tested!!!
     queryset.update(approved=False)
 
 class ApplicationAdminForm(forms.ModelForm):
@@ -59,9 +58,9 @@ class ApplicationAdmin(admin.ModelAdmin):
         ('Status',                  {'fields': ['approved']}),
     ]
 
-    make_approved.short_description = "Approve Selected Applications"
-    make_rejected.short_description = "Reject Selected Applications"
-    actions = [make_approved, make_rejected]
+    approve.short_description = "Approve Selected Applications"
+    reject.short_description = "Reject Selected Applications"
+    actions = [approve, reject]
 
     def has_add_permission(self, request, obj=None):
         return True
@@ -73,7 +72,6 @@ class ApplicationAdmin(admin.ModelAdmin):
 #        return False
 
 
-''' `Confirmation` '''    
 class ConfirmationAdminForm(forms.ModelForm):
     class Meta:
         model = Confirmation
@@ -101,7 +99,6 @@ class ConfirmationAdmin(admin.ModelAdmin):
         return False
 
 
-''' `Team` '''
 class TeamAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Team Name', {'fields': ['name']}),
