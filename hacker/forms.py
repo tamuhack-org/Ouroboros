@@ -30,16 +30,6 @@ class SignupForm(auth_forms.UserCreationForm):
         }
 
 
-class HackerLoginForm(auth_forms.AuthenticationForm):
-    error_messages = {
-        'invalid_login': _(
-            "Please enter a correct username and password. Note that both "
-            "fields may be case sensitive."
-        ),
-        'inactive': _("This account is inactive."),
-    }
-
-
 class ConfirmEmailForm(forms.Form):
     template_name = 'registration/confirm_email.html'
     success_url = reverse_lazy("apply")
