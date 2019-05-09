@@ -12,16 +12,13 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
 from django.core.mail import send_mail
-from django.http import QueryDict
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as generic_views
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
-from django.views.generic import RedirectView
 from django.views.generic import base as base_views
 
 from hacker import forms as hacker_forms
@@ -34,17 +31,6 @@ class IndexView(base_views.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
-
-class HackerLoginView(LoginView):
-    template_name = 'registration/login.html'
-    authentication_form = hacker_forms.HackerLoginForm
-    redirect_authenticated_user = True
-
-
-class HackerLogoutView(LogoutView):
-    template_name = 'index.html'
-    redirect_authenticated_user = True
 
 
 class SignupView(generic_views.FormView):
@@ -84,8 +70,8 @@ class SignupView(generic_views.FormView):
                 return redirect(reverse_lazy("confirm_email"))
             else:
                 user_exists = True 
-        FormErrors = json.loads(form.errors.as_json())
-        return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors, 'user_exists':user_exists})
+        form_errors = json.loads(form.errors.as_json())
+        return render(request, self.template_name, {'form':form, 'FormErrors':form_errors, 'user_exists':user_exists})
 
 
 class ConfirmEmailView(generic_views.FormView, LoginRequiredMixin):
@@ -121,8 +107,8 @@ class ConfirmEmailView(generic_views.FormView, LoginRequiredMixin):
                 # ...
                 return self.code_invalid(form)
             
-        FormErrors = json.loads(form.errors.as_json())
-        return render(request, self.template_name, {'form':form, 'FormErrors':FormErrors, 'invalid_code':invalid_code})
+        form_errors = json.loads(form.errors.as_json())
+        return render(request, self.template_name, {'form':form, 'FormErrors':form_errors, 'invalid_code':invalid_code})
         
 
 class CreateApplicationView(generic_views.CreateView, LoginRequiredMixin):
@@ -133,8 +119,8 @@ class CreateApplicationView(generic_views.CreateView, LoginRequiredMixin):
         "major", "gender", "classification", "grad_year", "dietary_restrictions", "num_hackathons_attended", "previous_attendant", "tamu_student", "interests", "essay1", "notes", "resume"
     ]
 
-    grad_options = [op[0] for op in hacker_models.GRAD_YEARS]
-    student_classifications = [op[0] for op in hacker_models.CLASSIFICATIONS]
+    grad_options = [option[0] for option in hacker_models.GRAD_YEARS]
+    student_classifications = [option[0] for option in hacker_models.CLASSIFICATIONS]
     gender_options = hacker_models.GENDERS
     
     def get_context_data(self, **kwargs):
