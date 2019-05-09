@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from hacker import models
-from ouroboros import settings
+from ouroboros.settings import customization as custom_settings
 
 
 class SignupForm(auth_forms.UserCreationForm):
@@ -35,6 +35,6 @@ class ConfirmEmailForm(forms.Form):
     success_url = reverse_lazy("apply")
     email = forms.EmailField()
     confirm_code = forms.CharField(
-        max_length=settings.EMAIL_CONFIRM_CODE_LENGTH, 
-        min_length=settings.EMAIL_CONFIRM_CODE_LENGTH,
+        max_length=custom_settings.EMAIL_CONFIRM_CODE_LENGTH, 
+        min_length=custom_settings.EMAIL_CONFIRM_CODE_LENGTH,
     )
