@@ -6,15 +6,33 @@ from django.contrib import admin
 from .models import Hacker, Application, Confirmation, Team
 
 
-def check_in(modeladmin, request, queryset): # Needs to be Tested!!!
+def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
     queryset.update(checked_in=True)
     queryset.update(checked_in_datetime=datetime.datetime.now())
 
+
 class HackerAdmin(admin.ModelAdmin):
-    list_display = ('username','email','first_name', 'last_name', 'is_active', 'is_staff', 'checked_in')
+    list_display = (
+        "username",
+        "email",
+        "first_name",
+        "last_name",
+        "is_active",
+        "is_staff",
+        "checked_in",
+    )
     fieldsets = [
-        ('User Information', {'fields': ['first_name','last_name','email','username','password']}),
-        ('Advanced',         {'fields': ['is_superuser','is_staff','is_active'], 'classes': ['collapse']}),
+        (
+            "User Information",
+            {"fields": ["first_name", "last_name", "email", "username", "password"]},
+        ),
+        (
+            "Advanced",
+            {
+                "fields": ["is_superuser", "is_staff", "is_active"],
+                "classes": ["collapse"],
+            },
+        ),
     ]
 
     check_in.short_description = "Check-In Selected Hackers"
@@ -26,36 +44,54 @@ class HackerAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return False
 
-#    def has_delete_permission(self, request, obj=None):
-#        return False
-    
 
-def approve(modeladmin, request, queryset): # Needs to be Tested!!!
+def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
     queryset.update(approved=True)
 
-def reject(self, request, queryset): # Needs to be Tested!!!
+
+def reject(self, request, queryset):  # Needs to be Tested!!!
     queryset.update(approved=False)
+
 
 class ApplicationAdminForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = '__all__'
+        fields = "__all__"
         widgets = {
-            'gender':forms.RadioSelect,
-            'classification':forms.RadioSelect,
-            'grad_year':forms.RadioSelect,
-            'status':forms.RadioSelect,
+            "gender": forms.RadioSelect,
+            "classification": forms.RadioSelect,
+            "grad_year": forms.RadioSelect,
+            "status": forms.RadioSelect,
         }
+
 
 class ApplicationAdmin(admin.ModelAdmin):
     form = ApplicationAdminForm
-    list_display = ('get_last_name','get_first_name','major', 'classification', 'grad_year', 'approved', 'get_is_active')
+    list_display = ("major", "classification", "grad_year", "approved")
     fieldsets = [
-        ('Related Objects',         {'fields': ['hacker']}),
-        ('Personal Information',    {'fields': ['gender','major','classification','grad_year', 'dietary_restrictions', 'tamu_student']}),
-        ('Hackathon Information',   {'fields': ['num_hackathons_attended', 'previous_attendant']}),
-        ('Free Response Questions', {'fields': ['interests','essay1','notes', 'resume']}),
-        ('Status',                  {'fields': ['approved']}),
+        ("Related Objects", {"fields": ["hacker"]}),
+        (
+            "Personal Information",
+            {
+                "fields": [
+                    "gender",
+                    "major",
+                    "classification",
+                    "grad_year",
+                    "dietary_restrictions",
+                    "tamu_student",
+                ]
+            },
+        ),
+        (
+            "Hackathon Information",
+            {"fields": ["num_hackathons_attended", "previous_attendant"]},
+        ),
+        (
+            "Free Response Questions",
+            {"fields": ["interests", "essay1", "notes", "resume"]},
+        ),
+        ("Status", {"fields": ["approved"]}),
     ]
 
     approve.short_description = "Approve Selected Applications"
@@ -68,27 +104,22 @@ class ApplicationAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return False
 
-#    def has_delete_permission(self, request, obj=None):
-#        return False
-
 
 class ConfirmationAdminForm(forms.ModelForm):
     class Meta:
         model = Confirmation
-        fields = ['shirt_size', 'notes', 'team', 'hacker']
-        widgets = {
-            'shirt_size':forms.RadioSelect,
-        }
+        fields = ["shirt_size", "notes", "team", "hacker"]
+        widgets = {"shirt_size": forms.RadioSelect}
 
-        
+
 class ConfirmationAdmin(admin.ModelAdmin):
     form = ConfirmationAdminForm
-    list_display = ('shirt_size', 'notes')
+    list_display = ("shirt_size", "notes")
     fieldsets = [
-        ('Related Objects',        {'fields': ['hacker','team']}),
-        ('Logistical Information', {'fields': ['shirt_size','notes']}),
+        ("Related Objects", {"fields": ["hacker", "team"]}),
+        ("Logistical Information", {"fields": ["shirt_size", "notes"]}),
     ]
-    
+
     def has_add_permission(self, request, obj=None):
         return True
 
@@ -100,9 +131,7 @@ class ConfirmationAdmin(admin.ModelAdmin):
 
 
 class TeamAdmin(admin.ModelAdmin):
-    fieldsets = [
-        ('Team Name', {'fields': ['name']}),
-    ]
+    fieldsets = [("Team Name", {"fields": ["name"]})]
 
     def has_add_permission(self, request, obj=None):
         return True
@@ -112,7 +141,6 @@ class TeamAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
-        
 
 
 admin.site.register(Hacker, HackerAdmin)

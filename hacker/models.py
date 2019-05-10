@@ -1,14 +1,13 @@
 import json
 import random
 import string
-from multiselectfield import MultiSelectField
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
+from multiselectfield import MultiSelectField
 
 from ouroboros.settings import customization as custom_settings
-
 
 SHIRT_SIZES = (
     ("XS", "XS"),
@@ -26,7 +25,7 @@ GENDERS = (
     ("NA", "Prefer not to disclose"),
 )
 
-CLASSIFICATIONS = (("U1", "U1"), ("U2", "U2"), ("U3", "U3"), ("U4", "U4"), ("U5", "U5"))
+CLASSIFICATIONS = [("U1", "U1"), ("U2", "U2"), ("U3", "U3"), ("U4", "U4"), ("U5", "U5")]
 
 DIETARY_RESTRICTIONS = (
     ("Vegan", "Vegan"),
@@ -48,67 +47,22 @@ GRAD_YEARS = [
 
 
 class Hacker(AbstractUser):
-    first_name = models.CharField(max_length=30, blank=False, verbose_name="first name")
-    last_name = models.CharField(max_length=150, blank=False, verbose_name="last name")
-    email = models.EmailField(blank=False)
+    is_active = models.BooleanField(
+        ("active"),
+        default=False,
+        help_text=(
+            "Designates whether this user should be treated as active. "
+            "Unselect this instead of deleting accounts."
+        ),
+    )
+    first_name = models.CharField(
+        max_length=255, blank=False, verbose_name="first name"
+    )
+    last_name = models.CharField(max_length=255, blank=False, verbose_name="last name")
+    email = models.EmailField(blank=False, null=False)
 
     checked_in = models.NullBooleanField(blank=True)
-    email_confirmed = models.BooleanField(blank=True, default=False)
-
     checked_in_datetime = models.DateTimeField(null=True, blank=True)
-
-    confirm_code = models.CharField(max_length=6, blank=True, null=True)
-
-    def has_related_application(self):
-        a = getattr(self, "application", None)
-        return a is not None
-
-    def has_related_confirmation(self):
-        c = getattr(self, "confirmation", None)
-        return c is not None
-
-    def has_related_team(self):
-        c = getattr(self, "confirmation", None)
-        if c is not None:
-            t = getattr(c, "team", None)
-            return t is not None
-        else:
-            return False
-
-    def get_related_application(self):
-        a = getattr(self, "application", None)
-        return a
-
-    def generate_confirm_code(self):
-        code = "".join(
-            random.choices(
-                string.ascii_uppercase + string.digits,
-                k=custom_settings.EMAIL_CONFIRM_CODE_LENGTH,
-            )
-        )
-        setattr(self, "confirm_code", code)
-        self.save()
-
-    def check_confirm_code(self, code):
-        if getattr(self, "confirm_code", None) is None:
-            return False
-        else:
-            confirm_code = getattr(self, "confirm_code", None)
-            return str(confirm_code) == str(code)
-
-    def confirm_email(self, code):
-        if self.check_confirm_code(code):
-            setattr(self, "email_confirmed", True)
-            setattr(self, "confirm_code", None)
-            self.save()
-            return True
-        # return 'False' if check_confirm_code(code) returns 'False'
-        else:
-            setattr(self, "first_name", "lol nope")
-            return False
-
-    def has_confirmed_email(self):
-        return self.email_confirmed
 
     def __str__(self):
         return "%s, %s" % (self.last_name, self.first_name)
@@ -151,26 +105,6 @@ class Application(models.Model):
 
     def __str__(self):
         return "%s, %s - Application" % (self.hacker.last_name, self.hacker.first_name)
-
-    def get_first_name(self):
-        fn = getattr(self.hacker, "first_name", None)
-        return fn
-
-    def get_last_name(self):
-        ln = getattr(self.hacker, "last_name", None)
-        return ln
-
-    def get_email(self):
-        email = getattr(self.hacker, "email", None)
-        return email
-
-    def get_is_active(self):
-        active = getattr(self.hacker, "is_active", None)
-        return active
-
-    get_first_name.short_description = "First Name"
-    get_last_name.short_description = "Last Name"
-    get_is_active.short_description = "Active"
 
 
 class Confirmation(models.Model):

@@ -16,18 +16,22 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib import auth
 from django.contrib.auth import views as auth_views
+from confirm import views as confirm_views
 from django.urls import path, include
+from django.conf.urls import url
 
-from core import views as core_views
-
+from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('hacker.urls')),
-    path('', core_views.IndexView.as_view(), name="index"),
-    path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name="login"),
-    path('accounts/logout/', auth_views.LogoutView.as_view(), name="logout"),
-    path('accounts/register/', core_views.SignupView.as_view(), name="sign_up"),
-    path('accounts/apply/',core_views.CreateApplicationView.as_view(), name="apply"),
-    path('confirm_email/', core_views.ConfirmEmailView.as_view(), name="confirm_email"),
+    path("admin/", admin.site.urls),
+    path("accounts/login/", auth_views.LoginView.as_view(), name="login"),
+    path("accounts/logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("accounts/signup/", confirm_views.SignupView.as_view(), name="signup"),
+    url(
+        r"^accounts/activate/(?P<uidb64>[\w\d_\-]+)/(?P<token>[\w\d]{1,13}-[\w\d]{1,20})/$",
+        confirm_views.ActivateView.as_view(),
+        name="activate",
+    ),
+    path("", include("hacker.urls")),
+    path("", TemplateView.as_view(template_name="index.html"), name="index"),
 ]
