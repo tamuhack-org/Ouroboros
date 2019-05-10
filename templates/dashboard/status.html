@@ -1,27 +1,40 @@
-{% extends 'dashboard/dashboard_base.html' %}
-{% block content %}
+{% extends 'dashboard/dashboard_base.html' %} {% block content %}
 
 <div class="pt-5">
-    <div class='login-box'>
-    
-            <h2 class="text-center">Status</h2> <hr>
-            <div class="pt-3"></div>
-           <div class="text-center">
-               {% if Confirmed %} <!--change these to correct conditions--> <!-- 'Confirmed' is currently a placeholder-->
-               <button type="button" class="btn btn-lg btn-block btn-success">Confirmed</button>
-               {% elif Approved %}  <!--'Approved' is also a placeholder'-->
-               <button type="button" class="btn btn-lg btn-block btn-success">Approved</button>
-               {% elif checked_in %}
-               <button type="button" class="btn btn-lg btn-block btn-primary">Checked In</button>
-               {% else %}
-               <button type="button" class="btn btn-lg btn-block btn-secondary">Pending</button>
-               {% endif %}
-           </div>
-           <div class="pt-5 pb-3 row">
-                <div class="col-lg-6 col-sm-12 d-flex justify-content-center pb-1"><button type="button" class="btn btn-info">Event details</button></div>
-                <div class="col-lg-6 col-sm-12 d-flex justify-content-center"><button type="button" class="btn btn-danger">Sorry, I can't make it</button></div>
-           </div>
-           
-    </div>    
+  <div class="login-box">
+    <h2 class="text-center">Status</h2>
+    <hr />
+    <div class="pt-3"></div>
+    <div class="text-center">
+      {% if NEEDS_TO_APPLY %}
+      <a href="{% url 'application' %}" class="btn btn-lg btn-block btn-success"
+        >Apply Here!</a
+      >
+      {% elif PENDING %}
+      <button type="button" class="btn btn-lg btn-block btn-secondary">
+        Pending
+      </button>
+      {% elif NEEDS_TO_CONFIRM %}
+      <a href="{% url 'rsvp' %}" class="btn btn-lg btn-block btn-success"
+        >RSVP Here!</a
+      >{% elif COMPLETE %}
+      <button type="button" class="btn btn-lg btn-block btn-success">
+        Done!</button
+      >{% elif REJECTED %}
+      <button type="button" class="btn btn-lg btn-block btn-failure">
+        Sorry :()</button
+      >{%endif%}
+    </div>
+    <div class="pt-5 pb-3 row">
+      <div class="col-lg-6 col-sm-12 d-flex justify-content-center pb-1">
+        <button type="button" class="btn btn-info">Event details</button>
+      </div>
+      <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+        <button type="button" class="btn btn-danger">
+          Sorry, I can't make it
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

@@ -65,7 +65,7 @@ class ActivateView(views.View):
             hacker.is_active = True
             hacker.save()
             login(request, hacker)
-            return redirect(reverse_lazy("application"))
+            return redirect(reverse_lazy("status"))
         else:
             print("Hacker is none:", hacker is None)
             print("Hacker:", hacker)
