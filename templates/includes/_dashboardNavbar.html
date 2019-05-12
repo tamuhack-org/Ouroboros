@@ -1,0 +1,51 @@
+
+<div class="sidebar navbar-expand-lg navbar-expand-md  navbar-light pt-5">
+        <nav class="navbar-toggler">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#dashboard-navbar" aria-controls="dashboard-navbar" aria-expanded="false">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+        </nav>
+    
+        <div id="dashboard-navbar" class="collapse navbar-collapse container pt-5">
+            <div class="">
+                <ul class="list-group text-right">
+
+{% if request.path == '/status' %}
+                <li class="list-group-item border-top-0 border-left-0 border-bottom-0 active">Status</li>
+                <a href="/application"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">View Application</li></a>
+                <a href="/team"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Team</li></a>
+                <a href='/information'><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Information</li></a>
+                <a href="/accounts/logout"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
+
+{% elif request.path == '/application' %}
+                <a href="/status"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Status</li></a>
+                <a href="/application"><li class="list-group-item border-top-0 border-left-0 border-bottom-0 active">View Application</li></a>
+                <a href="/team"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Team</li></a>
+                <a href='/information'><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Information</li></a>
+                <a href="/accounts/logout"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
+
+{% elif request.path == '/team' %}
+
+                <a href="/status"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Status</li></a>
+                <a href="/application"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">View Application</li></a>
+                <li class="list-group-item border-top-0 border-left-0 border-bottom-0 active">Team</li>
+                <a href='/information'><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Information</li></a>
+                <a href="/accounts/logout"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
+
+{% elif request.path == '/information' %}
+
+                <a href="/status"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Status</li></a>
+                <a href="/application"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">View Application</li></a>
+                <a href="/team"><li class="transparent-obj list-group-item border-top-0 border-left-0 border-bottom-0">Team</li></a>
+                <a href='/information'><li class="list-group-item border-top-0 border-left-0 border-bottom-0 active">Information</li></a>
+                <a href="/accounts/logout"><li class="list-group-item border-top-0 border-left-0 border-bottom-0">Log Out</li></a>
+
+{% endif %}
+
+
+            </ul>
+        </div>
+    </div>
+    
+
+</div>

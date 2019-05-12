@@ -1,0 +1,12 @@
+{% extends 'dashboard_base.html' %} {% block content %}
+<h1>Application</h1>
+<hr />
+<form method="POST" action="{% url 'application' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-lg btn-block btn-login">
+    Submit
+  </button>
+</form>
+
+{% endblock %}

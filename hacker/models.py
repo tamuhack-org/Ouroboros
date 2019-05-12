@@ -1,138 +1,131 @@
-from django.conf import settings
-from django.db import models
+import json
+import random
+import string
+
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.utils import timezone
 from multiselectfield import MultiSelectField
-import string
-import random
 
-SHIRT_SIZE_CHOICES = (
-    ('XS', 'XS'),
-    ('S', 'S'),
-    ('M', 'M'),
-    ('L', 'L'),
-    ('XL', 'XL'),
-    ('XXL', 'XXL'),
-) 
+from ouroboros.settings import customization as custom_settings
 
-GENDER_CHOICES = (
-    ('M', 'Male'),
-    ('F', 'Female'),
-    ('NB', 'Non-binary'),
-    ('NA', 'Prefer not to disclose'),
+SHIRT_SIZES = (
+    ("XS", "XS"),
+    ("S", "S"),
+    ("M", "M"),
+    ("L", "L"),
+    ("XL", "XL"),
+    ("XXL", "XXL"),
 )
 
-CLASSIFICATION_CHOICES = (
-    ('U1', 'U1'),
-    ('U2', 'U2'),
-    ('U3', 'U3'),
-    ('U4', 'U4'),
-    ('U5', 'U5'),
+GENDERS = (
+    ("M", "Male"),
+    ("F", "Female"),
+    ("NB", "Non-binary"),
+    ("NA", "Prefer not to disclose"),
 )
 
-DIETARY_RESTRICTION_CHOICES = (
-    ('Vegan', 'Vegan'),
-    ('Vegaterian', 'Vegarterian'),
-    ('Halal', 'Halal'),
-    ('Kosher', 'Kosher'),
-    ('Food Allergies', 'Food Allergies'),
+CLASSIFICATIONS = [("U1", "U1"), ("U2", "U2"), ("U3", "U3"), ("U4", "U4"), ("U5", "U5")]
+
+DIETARY_RESTRICTIONS = (
+    ("Vegan", "Vegan"),
+    ("Vegetarian", "Vegetarian"),
+    ("Halal", "Halal"),
+    ("Kosher", "Kosher"),
+    ("Food Allergies", "Food Allergies"),
 )
 
-GRAD_YEAR_CHOICES = [(i,i) for i in range(timezone.now().year, timezone.now().year + 6)]        # TO-DO TEST
+WAVE_TYPES = (("Approve", "Approve Application"), ("Reject", "Reject Application"))
+
+GRAD_YEARS = [
+    (i, i)
+    for i in range(
+        timezone.now().year,
+        timezone.now().year + custom_settings.EMAIL_CONFIRM_CODE_LENGTH,
+    )
+]
 
 
 class Hacker(AbstractUser):
-    admitted = models.NullBooleanField(blank=True)
+    is_active = models.BooleanField(
+        ("active"),
+        default=False,
+        help_text=(
+            "Designates whether this user should be treated as active. "
+            "Unselect this instead of deleting accounts."
+        ),
+    )
+    first_name = models.CharField(
+        max_length=255, blank=False, verbose_name="first name"
+    )
+    last_name = models.CharField(max_length=255, blank=False, verbose_name="last name")
+    email = models.EmailField(blank=False, null=False)
+
     checked_in = models.NullBooleanField(blank=True)
-    admitted_datetime = models.DateTimeField(null=True, blank=True)
     checked_in_datetime = models.DateTimeField(null=True, blank=True)
     email_confirmed = models.BooleanField(blank=True, default=False)
     confirm_code = models.CharField(max_length=12, blank=True, null=True)
 
-    # Overrides AbstractUser.first_name to require not blank
-    first_name = models.CharField(max_length=30, blank=False, verbose_name='first name')
-
-    # Overrides AbstractUser.last_name to require not blank
-    last_name = models.CharField(max_length=150, blank=False, verbose_name='last name')
-    
-    # Overrides AbstractUser.email to require not blank
-    email = models.EmailField(blank=False)
-
-    def has_related_application(self):
-        a = getattr(self, 'application', None)
-        return a is not None
-
-    def has_related_confirmation(self):
-        c = getattr(self, 'confirmation', None)
-        return c is not None
-
-    def has_related_team(self):
-        c = getattr(self, 'confirmation', None)
-        if c is not None:
-            t = getattr(c, 'team', None)
-            return t is not None
-        else:
-            return False
-
-    def generate_confirm_code(self):
-        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
-        setattr(self, 'confirm_code', code)
-
     def __str__(self):
-        return '%s, %s' % (self.last_name, self.first_name)
+        return "%s, %s" % (self.last_name, self.first_name)
 
 
-class HackerProfile(models.Model):
-    # should only include Hackers w/ verified emails, w/ active status, w/o pre-existing application
+class Application(models.Model):
     major = models.CharField(max_length=50)
-    gender = models.CharField(choices=GENDER_CHOICES, max_length=2)
-    classification = models.CharField(choices=CLASSIFICATION_CHOICES, max_length=2)
-    grad_year = models.IntegerField(choices=GRAD_YEAR_CHOICES, verbose_name='graduation year')
-    hacker = models.OneToOneField(          
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
+    gender = models.CharField(choices=GENDERS, max_length=2)
+    classification = models.CharField(choices=CLASSIFICATIONS, max_length=2)
+    grad_year = models.IntegerField(choices=GRAD_YEARS, verbose_name="graduation year")
+    dietary_restrictions = MultiSelectField(
+        choices=DIETARY_RESTRICTIONS, verbose_name="dietary restrictions", blank=True
     )
+    travel_reimbursement_required = models.BooleanField(default=False)
 
-    class Meta:         
-        abstract = True
+    num_hackathons_attended = models.PositiveSmallIntegerField(default=0)
+    previous_attendant = models.BooleanField(default=False)
+    tamu_student = models.BooleanField(default=True)
 
-
-class Application(HackerProfile):
-    #resume = models.FileField( ... )           
     interests = models.TextField(max_length=200)
-    essay = models.TextField(max_length=200)
-    approved = models.NullBooleanField(blank=True)
-    date_approved = models.DateField(null=True, blank=True)         
-    date_submitted = models.DateField(auto_now_add=True, blank=True)
-    notes = models.TextField(max_length=300, blank=True, help_text='Provide any additional notes and/or comments in the text box provide')
-
-    def __str__(self):
-        return '%s, %s - Profile' % (self.hacker.last_name, self.hacker.first_name)
-
-
-class Confirmation(models.Model):
-    dietary_restrictions = MultiSelectField(choices=DIETARY_RESTRICTION_CHOICES, verbose_name='dietary restrictions', blank=True)                                                # TO-DO TEST
-    travel_reimbursement_required = models.BooleanField(default=False)          
-    date_confirmed = models.DateField(auto_now_add=True, blank=True)
-    notes = models.TextField(max_length=300, blank=True, help_text='Provide any additional notes and/or comments in the text box provide')
-    shirt_size = models.CharField(         
-        max_length=3,
-        choices=SHIRT_SIZE_CHOICES,
-        verbose_name='shirt size',
-    )
-    hacker = models.OneToOneField(              
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
-    team = models.ForeignKey(           
-        'Team', 
-        on_delete=models.SET_NULL,
-        null=True, 
+    essay1 = models.TextField(max_length=200)
+    essay2 = models.TextField(max_length=200, null=True, blank=True)
+    essay3 = models.TextField(max_length=200, null=True, blank=True)
+    essay4 = models.TextField(max_length=200, null=True, blank=True)
+    notes = models.TextField(
+        max_length=300,
         blank=True,
+        help_text="Provide any additional notes and/or comments in the text box provide",
     )
+    resume = models.FileField(upload_to="hacker_resumes", null=True, blank=True)
+
+    approved = models.NullBooleanField(blank=True)
+    queued_for_approval = models.NullBooleanField(blank=True)
+
+    date_approved = models.DateField(null=True, blank=True)
+    date_queued_for_approval = models.DateField(null=True, blank=True)
+    date_submitted = models.DateField(auto_now_add=True, blank=True)
+
+    hacker = models.OneToOneField(Hacker, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '%s, %s - Confirmation' % (self.hacker.last_name, self.hacker.first_name)
+        return "%s, %s - Application" % (self.hacker.last_name, self.hacker.first_name)
+
+
+class Rsvp(models.Model):
+    shirt_size = models.CharField(
+        max_length=3, choices=SHIRT_SIZES, verbose_name="shirt size"
+    )
+    notes = models.TextField(
+        max_length=300,
+        blank=True,
+        help_text="Provide any additional notes and/or comments in the text box provide",
+    )
+
+    date_rsvped = models.DateField(auto_now_add=True, blank=True)
+
+    hacker = models.OneToOneField(Hacker, on_delete=models.CASCADE)
+    team = models.ForeignKey("Team", on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return "%s, %s - Rsvp" % (self.hacker.last_name, self.hacker.first_name)
 
 
 class Team(models.Model):
@@ -140,14 +133,3 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
-    
-
-# `Hacker.admitted` Values:
-    #       1. 'True' - application approved & confirmation period has begun
-    #       2. 'False' - application approved & confirmation period has NOT begun
-    #       3. 'NULL' - application rejected, pending review, cancelled, or DNE
-
-# Possible Values:
-    #       1. 'True' - has been checked in by staff/volunteers (day of event)
-    #       2. 'False' - has NOT been checked in by staff/volunteers (day of event)
-    #       3. 'NULL' - will not be attending event

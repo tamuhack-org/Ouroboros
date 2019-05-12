@@ -1,0 +1,12 @@
+{% extends 'dashboard_base.html' %} {% block content %}
+<h1>RSVP</h1>
+<hr />
+<form method="POST" action="{% url 'rsvp' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-lg btn-block btn-login">
+    Submit
+  </button>
+</form>
+
+{% endblock %}
