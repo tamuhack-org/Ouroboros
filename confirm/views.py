@@ -35,8 +35,6 @@ class SignupView(generic.FormView):
                 "token": email_confirmation_generator.make_token(user),
             },
         )
-        print("Original user pk =", user.pk)
-        print(msg)
         to_email = form.cleaned_data.get("email")
         email = django_email.EmailMessage(subject, msg, to=[to_email])
         email.send()
