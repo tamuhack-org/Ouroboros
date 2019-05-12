@@ -63,6 +63,8 @@ class Hacker(AbstractUser):
 
     checked_in = models.NullBooleanField(blank=True)
     checked_in_datetime = models.DateTimeField(null=True, blank=True)
+    email_confirmed = models.BooleanField(blank=True, default=False)
+    confirm_code = models.CharField(max_length=12, blank=True, null=True)
 
     def __str__(self):
         return "%s, %s" % (self.last_name, self.first_name)
