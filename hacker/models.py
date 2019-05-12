@@ -107,7 +107,7 @@ class Application(models.Model):
         return "%s, %s - Application" % (self.hacker.last_name, self.hacker.first_name)
 
 
-class Confirmation(models.Model):
+class Rsvp(models.Model):
     shirt_size = models.CharField(
         max_length=3, choices=SHIRT_SIZES, verbose_name="shirt size"
     )
@@ -117,13 +117,13 @@ class Confirmation(models.Model):
         help_text="Provide any additional notes and/or comments in the text box provide",
     )
 
-    date_confirmed = models.DateField(auto_now_add=True, blank=True)
+    date_rsvped = models.DateField(auto_now_add=True, blank=True)
 
     hacker = models.OneToOneField(Hacker, on_delete=models.CASCADE)
     team = models.ForeignKey("Team", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return "%s, %s - Confirmation" % (self.hacker.last_name, self.hacker.first_name)
+        return "%s, %s - Rsvp" % (self.hacker.last_name, self.hacker.first_name)
 
 
 class Team(models.Model):

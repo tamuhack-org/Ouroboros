@@ -1,4 +1,4 @@
-{% extends 'dashboard/dashboard_base.html' %} {% block content %}
+{% extends 'dashboard_base.html' %} {% block content %}
 
 <div class="pt-5">
   <div class="login-box">
@@ -14,7 +14,7 @@
       <button type="button" class="btn btn-lg btn-block btn-secondary">
         Pending
       </button>
-      {% elif NEEDS_TO_CONFIRM %}
+      {% elif NEEDS_TO_RSVP %}
       <a href="{% url 'rsvp' %}" class="btn btn-lg btn-block btn-success"
         >RSVP Here!</a
       >{% elif COMPLETE %}

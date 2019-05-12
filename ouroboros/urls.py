@@ -19,8 +19,8 @@ from django.contrib.auth import views as auth_views
 from confirm import views as confirm_views
 from django.urls import path, include
 from django.conf.urls import url
+from ouroboros.settings import customization as custom_settings
 
-from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -33,5 +33,4 @@ urlpatterns = [
         name="activate",
     ),
     path("", include("hacker.urls")),
-    path("", TemplateView.as_view(template_name="index.html"), name="index"),
 ]

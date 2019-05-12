@@ -65,8 +65,4 @@ class ActivateView(views.View):
             login(request, hacker)
             return redirect(reverse_lazy("status"))
         else:
-            print("Hacker is none:", hacker is None)
-            print("Hacker:", hacker)
-            print(kwargs["token"])
-            print(email_confirmation_generator.check_token(hacker, kwargs["token"]))
             return HttpResponse("Activation link is invalid.")

@@ -3,7 +3,7 @@ import datetime
 from django import forms
 from django.contrib import admin
 
-from .models import Hacker, Application, Confirmation, Team
+from .models import Hacker, Application, Rsvp, Team
 
 
 def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
@@ -105,15 +105,15 @@ class ApplicationAdmin(admin.ModelAdmin):
         return False
 
 
-class ConfirmationAdminForm(forms.ModelForm):
+class RsvpAdminForm(forms.ModelForm):
     class Meta:
-        model = Confirmation
+        model = Rsvp
         fields = ["shirt_size", "notes", "team", "hacker"]
         widgets = {"shirt_size": forms.RadioSelect}
 
 
-class ConfirmationAdmin(admin.ModelAdmin):
-    form = ConfirmationAdminForm
+class RsvpAdmin(admin.ModelAdmin):
+    form = RsvpAdminForm
     list_display = ("shirt_size", "notes")
     fieldsets = [
         ("Related Objects", {"fields": ["hacker", "team"]}),
@@ -145,5 +145,5 @@ class TeamAdmin(admin.ModelAdmin):
 
 admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Application, ApplicationAdmin)
-admin.site.register(Confirmation, ConfirmationAdmin)
+admin.site.register(Rsvp, RsvpAdmin)
 admin.site.register(Team, TeamAdmin)

@@ -8,7 +8,7 @@
       <div class="col-sm-12 col-md-8 col-lg-6 login-box">
         <h1>Sign In</h1>
         <hr />
-        <form id="login-form" method="POST" action="">
+        <form id="login-form" method="POST" action="{% url 'application' %}">
           {% csrf_token %}
           <!-- security -->
           <div class="form-row">
@@ -16,9 +16,11 @@
             <p>{{ form.as_p }}</p>
             <!-- End fields -->
 
-            <input type="submit" method="POST" action="{% url 'application' %}" class="btn btn-lg btn-block btn-login">
-              Login
-            </button>
+            <input
+              type="submit"
+              class="btn btn-lg btn-block btn-login"
+              value="Login"
+            />
           </div>
           {% csrf_token %}
         </form>

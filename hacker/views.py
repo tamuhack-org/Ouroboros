@@ -8,7 +8,7 @@ from hacker import models as hacker_models
 
 
 class ApplicationView(generic.CreateView, mixins.LoginRequiredMixin):
-    template_name = "dashboard/application.html"
+    template_name = "application.html"
     queryset = hacker_models.Application.objects.all()
     success_url = reverse_lazy("status")
     fields = [
@@ -30,6 +30,11 @@ class ApplicationView(generic.CreateView, mixins.LoginRequiredMixin):
         "resume",
     ]
 
+    def get(self, request, *args, **kwargs):
+        if getattr(request.user, "application", None) is not None:
+            return redirect(self.success_url)
+        return super().get(request, *args, **kwargs)
+
     def form_valid(self, form: forms.Form):
         application: hacker_models.Application = form.save(commit=False)
         application.hacker = self.request.user
@@ -41,7 +46,7 @@ class ApplicationView(generic.CreateView, mixins.LoginRequiredMixin):
 
 
 class StatusView(generic.TemplateView, mixins.LoginRequiredMixin):
-    template_name = "dashboard/status.html"
+    template_name = "status.html"
 
     def get_context_data(self, **kwargs):
         hacker = self.request.user
@@ -53,8 +58,8 @@ class StatusView(generic.TemplateView, mixins.LoginRequiredMixin):
             # User application has response
             if hacker.application.approved:
                 # User app approved
-                if getattr(hacker, "confirmation", None) is None:
-                    kwargs["NEEDS_TO_CONFIRM"] = True
+                if getattr(hacker, "rsvp", None) is None:
+                    kwargs["NEEDS_TO_RSVP"] = True
                 else:
                     kwargs["COMPLETE"] = True
             else:
@@ -63,17 +68,17 @@ class StatusView(generic.TemplateView, mixins.LoginRequiredMixin):
 
 
 class RsvpView(generic.CreateView, mixins.LoginRequiredMixin):
-    template_name = "dashboard/confirmation.html"
-    queryset = hacker_models.Confirmation.objects.all()
+    template_name = "rsvp.html"
+    queryset = hacker_models.Rsvp.objects.all()
     success_url = reverse_lazy("status")
 
     fields = ["shirt_size", "notes"]
 
     def form_valid(self, form: forms.Form):
-        confirmation: hacker_models.Confirmation = form.save(commit=False)
-        confirmation.hacker = self.request.user
-        confirmation.save()
+        rsvp: hacker_models.Rsvp = form.save(commit=False)
+        rsvp.hacker = self.request.user
+        rsvp.save()
         return redirect(self.success_url)
 
     class Meta:
-        model = hacker_models.Confirmation
+        model = hacker_models.Rsvp
