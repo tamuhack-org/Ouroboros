@@ -7,7 +7,7 @@ from django.views import generic
 from hacker import models as hacker_models
 
 
-class ApplicationView(generic.CreateView, mixins.LoginRequiredMixin):
+class ApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
     template_name = "application.html"
     queryset = hacker_models.Application.objects.all()
     success_url = reverse_lazy("status")
@@ -67,7 +67,7 @@ class StatusView(generic.TemplateView, mixins.LoginRequiredMixin):
         return super().get_context_data(**kwargs)
 
 
-class RsvpView(generic.CreateView, mixins.LoginRequiredMixin):
+class RsvpView(mixins.LoginRequiredMixin, generic.CreateView):
     template_name = "rsvp.html"
     queryset = hacker_models.Rsvp.objects.all()
     success_url = reverse_lazy("status")
