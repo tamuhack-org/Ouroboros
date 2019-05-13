@@ -31,7 +31,7 @@ class SignupView(generic.FormView):
             {
                 "user": user,
                 "domain": curr_domain,
-                "uid": urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                 "token": email_confirmation_generator.make_token(user),
             },
         )
@@ -48,7 +48,6 @@ class ActivateView(views.View):
         hacker = None
         try:
             uid = force_text(urlsafe_base64_decode(kwargs["uidb64"]))
-            print("uid =", uid)
             hacker = hacker_models.Hacker.objects.get(id=int(uid))
         except (
             TypeError,

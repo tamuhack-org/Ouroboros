@@ -1,7 +1,10 @@
 from django.test import TestCase
 from hacker import models as hacker_models
 from django.urls import reverse_lazy
+import re
 from django.core import mail
+
+URL_REGEX = r"(?P<url>https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))"
 
 # Create your tests here.
 class SignupTestCase(TestCase):
@@ -32,8 +35,13 @@ class SignupTestCase(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "Confirm your email address!")
 
-    # TODO: Extract confirmation link before sending email, and follow it to ensure that it works
-    # Success determined by if, when link followed, hacker.is_active is True
-    # def test_confirmation_link_is_valid(self):
-    #     pass
+    def test_confirmation_link_is_valid(self):
+        response = self.client.post(reverse_lazy("signup"), data=self.hacker_fields)
+        hacker = hacker_models.Hacker.objects.get(username=self.username)
+        self.assertFalse(hacker.is_active)
+        body = mail.outbox[0].body
+        url, _, _ = re.findall(URL_REGEX, body)[0]
 
+        response = self.client.get(url)
+        hacker = hacker_models.Hacker.objects.get(username=self.username)
+        self.assertTrue(hacker.is_active)
