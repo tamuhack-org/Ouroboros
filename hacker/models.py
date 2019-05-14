@@ -40,13 +40,22 @@ WAVE_TYPES = (("Approve", "Approve Application"), ("Reject", "Reject Application
 GRAD_YEARS = [
     (i, i)
     for i in range(
-        timezone.now().year,
-        timezone.now().year + custom_settings.EMAIL_CONFIRM_CODE_LENGTH,
+        timezone.now().year, timezone.now().year + custom_settings.MAX_YEARS_ADMISSION
     )
 ]
 
 
 class Hacker(AbstractUser):
+    """
+    Represents an individual hacker. This model overrides Django's default `User`
+    to make some optional fields required. One important piece of behavior to
+    note is that `Hacker`s by default are INACTIVE until they confirm their
+    email, and cannot authenticate until email verification has occurred.
+    
+    During testing, simply setting the `is_active` field to `True` will bypass
+    email verification.
+    """
+
     is_active = models.BooleanField(
         ("active"),
         default=False,
@@ -69,6 +78,10 @@ class Hacker(AbstractUser):
 
 
 class Application(models.Model):
+    """
+    Represents a `Hacker`'s application to this hackathon.
+    """
+
     major = models.CharField(max_length=50)
     gender = models.CharField(choices=GENDERS, max_length=2)
     classification = models.CharField(choices=CLASSIFICATIONS, max_length=2)
@@ -108,6 +121,10 @@ class Application(models.Model):
 
 
 class Rsvp(models.Model):
+    """
+    Represents a `Hacker`'s confirmation that they are attending this hackathon.
+    """
+
     shirt_size = models.CharField(
         max_length=3, choices=SHIRT_SIZES, verbose_name="shirt size"
     )
