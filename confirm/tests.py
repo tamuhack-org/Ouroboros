@@ -45,3 +45,20 @@ class SignupTestCase(TestCase):
         response = self.client.get(url)
         hacker = hacker_models.Hacker.objects.get(username=self.username)
         self.assertTrue(hacker.is_active)
+
+    def test_confirm_doesnt_approve_everything(self):
+        response = self.client.post(reverse_lazy("signup"), data=self.hacker_fields)
+        body = mail.outbox[0].body
+        url, _, _ = re.findall(URL_REGEX, body)[0]
+        url = url[:-1]
+
+        response = self.client.get(url)
+        hacker = hacker_models.Hacker.objects.get(username=self.username)
+        self.assertFalse(hacker.is_active)
+
+    def test_confirm_redirects_to_status(self):
+        response = self.client.post(reverse_lazy("signup"), data=self.hacker_fields)
+        body = mail.outbox[0].body
+        url, _, _ = re.findall(URL_REGEX, body)[0]
+        response = self.client.get(url, follow=True)
+        self.assertIn("status.html", response.template_name)
