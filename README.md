@@ -34,7 +34,7 @@ docker exec -it ouroboros python3 manage.py makemigrations hacker --settings=our
 docker exec -it ouroboros python3 manage.py migrate --settings=ouroboros.settings.docker_dev
 ```
 
-From there, you should be able to go through most of the website.
+From there, you should be able to go through most of the website! Navigate to `http://localhost:8000/account/login`.
 
 In order to go through the entire registration progress, however, you'll need to create an admin user. You can do this by doing:
 
