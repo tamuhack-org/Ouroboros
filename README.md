@@ -6,7 +6,7 @@ A modular, open-source, fully-customizable hackathon management system.
 
 There's two ways of running Ouroboros: by using Docker, or by installing the dependencies yourself.
 
-In either case, there are really _X_ steps involved in getting the app running:
+In either case, there are really 6 steps involved in getting the app running:
 
 1. Getting PostgreSQL (Taken care of by Docker)
 2. Installing dependencies for the app (Taken care of by Docker)
