@@ -8,6 +8,12 @@ from hacker import models as hacker_models
 
 
 class ApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
+    """
+    A view for creating an `Application` for a `Hacker`. `GET` requests will
+    display a form that users will fill out, and `POST` requests will submit
+    that form for validation.
+    """
+
     template_name = "application.html"
     queryset = hacker_models.Application.objects.all()
     success_url = reverse_lazy("status")
@@ -46,6 +52,11 @@ class ApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
 
 
 class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
+    """
+    The default (core) view for authenticated users. Displays what actions
+    a user has left to take, and the status of their application to the event.
+    """
+
     template_name = "status.html"
 
     def get_context_data(self, **kwargs):
@@ -68,6 +79,13 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
 
 
 class RsvpView(mixins.UserPassesTestMixin, generic.CreateView):
+    """
+    View for creating an `Rsvp` instance for a `Hacker`. `GET` requests will
+    display a form that users will fill out, and `POST` requests will submit the form for validation.
+
+    This view WILL RAISE AN ERROR if a user does not have an approved application.
+    """
+
     template_name = "rsvp.html"
     queryset = hacker_models.Rsvp.objects.all()
     permission_denied_message = (
