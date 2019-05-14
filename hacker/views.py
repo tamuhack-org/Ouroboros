@@ -45,7 +45,7 @@ class ApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
         model = hacker_models.Application
 
 
-class StatusView(generic.TemplateView, mixins.LoginRequiredMixin):
+class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
     template_name = "status.html"
 
     def get_context_data(self, **kwargs):
@@ -67,10 +67,27 @@ class StatusView(generic.TemplateView, mixins.LoginRequiredMixin):
         return super().get_context_data(**kwargs)
 
 
-class RsvpView(mixins.LoginRequiredMixin, generic.CreateView):
+class RsvpView(mixins.UserPassesTestMixin, generic.CreateView):
     template_name = "rsvp.html"
     queryset = hacker_models.Rsvp.objects.all()
-    success_url = reverse_lazy("status")
+    permission_denied_message = (
+        "You need to be both logged-in and have an approved application to RSVP."
+    )
+
+    def test_func(self):
+        return (
+            not self.request.user.is_anonymous
+            and getattr(self.request.user, "application", None) is not None
+            and self.request.user.application.approved
+        )
+
+    def get_login_url(self):
+        if self.request.user.is_anonymous:
+            return reverse_lazy("login")
+        elif getattr(self.request.user, "application", None) is None:
+            return reverse_lazy("application")
+        elif not self.request.user.application.approved:
+            return reverse_lazy("status")
 
     fields = ["shirt_size", "notes"]
 
