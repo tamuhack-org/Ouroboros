@@ -1,43 +1,25 @@
-version: '3.1'
+version: "3.1"
 
 services:
   db:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD_FILE: /run/secrets/SECRET_POSTGRES_PASS
-      POSTGRES_USER_FILE: /run/secrets/SECRET_POSTGRES_USER
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
       POSTGRES_DB: ouroboros
-    secrets:
-      - SECRET_POSTGRES_PASS
-      - SECRET_POSTGRES_USER
-
+    volumes:
+      postgres-data:/var/lib/postgresql/data
   app:
+    container_name: ouroboros
     build: .
     depends_on:
       - db
     ports:
       - 8000:8000
-    expose:
-      - 8000
-    command: python manage.py runserver --settings=ouroboros.settings.prod 0.0.0.0:8000
-    secrets:
-      - SECRET_POSTGRES_PASS
-      - SECRET_POSTGRES_USER
-      - SECRET_EMAIL_CONFIG
-      - SECRET_DJANGO_KEY
+    command: python manage.py runserver --settings=ouroboros.settings.docker_dev 0.0.0.0:8000
     volumes:
       - resume_storage:/resumes
 
-secrets:
-  SECRET_DJANGO_KEY:
-    file: ouroboros/config/SECRET_DJANGO_KEY
-  SECRET_POSTGRES_PASS:
-    file: ouroboros/config/SECRET_POSTGRES_PASS
-  SECRET_POSTGRES_USER:
-    file: ouroboros/config/SECRET_POSTGRES_USER
-  SECRET_EMAIL_CONFIG:
-    file: ouroboros/config/SECRET_EMAIL_CONFIG.json
-
-volumes:
+volumes: 
   resume_storage:
