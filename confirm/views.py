@@ -12,8 +12,7 @@ from django.views import generic
 
 from confirm import forms as confirm_forms
 from confirm.tokens import email_confirmation_generator
-from hacker import models as hacker_models
-
+from django.contrib.auth import get_user_model
 
 # Create your views here.
 class SignupView(generic.FormView):
@@ -48,12 +47,12 @@ class ActivateView(views.View):
         hacker = None
         try:
             uid = force_text(urlsafe_base64_decode(kwargs["uidb64"]))
-            hacker = hacker_models.Hacker.objects.get(id=int(uid))
+            hacker = get_user_model().objects.get(id=int(uid))
         except (
             TypeError,
             ValueError,
             OverflowError,
-            hacker_models.Hacker.DoesNotExist,
+            get_user_model().DoesNotExist,
         ) as e:
             print(e)
         if hacker is not None and email_confirmation_generator.check_token(

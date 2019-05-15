@@ -9,10 +9,8 @@ URL_REGEX = r"(?P<url>https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\b([-a-zA-
 # Create your tests here.
 class SignupTestCase(TestCase):
     def setUp(self):
-        self.username = "test_username"
         self.email_addr = "test_username@email.com"
         self.hacker_fields = {
-            "username": self.username,
             "email": self.email_addr,
             "first_name": "Dummy",
             "last_name": "Dimmy",
@@ -37,13 +35,13 @@ class SignupTestCase(TestCase):
 
     def test_confirmation_link_is_valid(self):
         response = self.client.post(reverse_lazy("signup"), data=self.hacker_fields)
-        hacker = hacker_models.Hacker.objects.get(username=self.username)
+        hacker = hacker_models.Hacker.objects.get(email=self.email_addr)
         self.assertFalse(hacker.is_active)
         body = mail.outbox[0].body
         url, _, _ = re.findall(URL_REGEX, body)[0]
 
         response = self.client.get(url)
-        hacker = hacker_models.Hacker.objects.get(username=self.username)
+        hacker = hacker_models.Hacker.objects.get(email=self.email_addr)
         self.assertTrue(hacker.is_active)
 
     def test_confirm_doesnt_approve_everything(self):
@@ -53,7 +51,7 @@ class SignupTestCase(TestCase):
         url = url[:-1]
 
         response = self.client.get(url)
-        hacker = hacker_models.Hacker.objects.get(username=self.username)
+        hacker = hacker_models.Hacker.objects.get(email=self.email_addr)
         self.assertFalse(hacker.is_active)
 
     def test_confirm_redirects_to_status(self):

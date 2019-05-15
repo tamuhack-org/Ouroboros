@@ -2,7 +2,12 @@ import json
 import random
 import string
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    PermissionsMixin,
+    BaseUserManager,
+)
+
 from django.db import models
 from django.utils import timezone
 from multiselectfield import MultiSelectField
@@ -45,7 +50,36 @@ GRAD_YEARS = [
 ]
 
 
-class Hacker(AbstractUser):
+class HackerManager(BaseUserManager):
+    """
+    Custom manager to deal with emails as unique IDs for auth instead of usernames.
+    """
+
+    def _create_user(self, email, password, **kwargs):
+        """
+        Creates/saves a User with given email and password.
+        """
+        if not email:
+            raise ValueError("Email field in Hacker must be set.")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **kwargs)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(self, email, password, **kwargs):
+        kwargs.setdefault("is_staff", True)
+        kwargs.setdefault("is_superuser", True)
+        kwargs.setdefault("is_active", True)
+
+        if kwargs.get("is_staff") is None:
+            raise ValueError("Superuser must have is_staff=True.")
+        if kwargs.get("is_superuser") is None:
+            raise ValueError("Superuser must have is_superuser=True.")
+        return self._create_user(email, password, **kwargs)
+
+
+class Hacker(AbstractBaseUser, PermissionsMixin):
     """
     Represents an individual hacker. This model overrides Django's default `User`
     to make some optional fields required. One important piece of behavior to
@@ -56,25 +90,38 @@ class Hacker(AbstractUser):
     email verification.
     """
 
-    is_active = models.BooleanField(
-        ("active"),
+    objects = HackerManager()
+
+    email = models.EmailField(unique=True, null=True)
+    is_staff = models.BooleanField(
+        "staff status",
         default=False,
-        help_text=(
-            "Designates whether this user should be treated as active. "
-            "Unselect this instead of deleting accounts."
-        ),
+        help_text="Designates whether the user can log into the admin site.",
+    )
+
+    is_active = models.BooleanField(
+        "active",
+        default=False,
+        help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
     )
     first_name = models.CharField(
         max_length=255, blank=False, verbose_name="first name"
     )
     last_name = models.CharField(max_length=255, blank=False, verbose_name="last name")
-    email = models.EmailField(blank=False, null=False)
 
     checked_in = models.NullBooleanField(blank=True)
     checked_in_datetime = models.DateTimeField(null=True, blank=True)
 
+    USERNAME_FIELD = "email"
+
     def __str__(self):
-        return "%s, %s" % (self.last_name, self.first_name)
+        return self.email
+
+    def get_full_name(self):
+        return self.email
+
+    def get_short_name(self):
+        return self.email
 
 
 class Application(models.Model):

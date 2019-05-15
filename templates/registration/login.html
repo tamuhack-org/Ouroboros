@@ -8,13 +8,25 @@
       <div class="col-sm-12 col-md-8 col-lg-6 login-box">
         <h1>Sign In</h1>
         <hr />
-        <form id="login-form" method="POST" action="{% url 'application' %}">
+        <form id="login-form" method="POST" action="{% url 'login' %}">
           {% csrf_token %}
           <!-- security -->
           <div class="form-row">
-            <!-- Below are the fields -->
-            <p>{{ form.as_p }}</p>
-            <!-- End fields -->
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {{form.as_p}}
 
             <input
               type="submit"

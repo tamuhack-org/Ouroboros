@@ -13,7 +13,6 @@ def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
 
 class HackerAdmin(admin.ModelAdmin):
     list_display = (
-        "username",
         "email",
         "first_name",
         "last_name",
@@ -24,7 +23,7 @@ class HackerAdmin(admin.ModelAdmin):
     fieldsets = [
         (
             "User Information",
-            {"fields": ["first_name", "last_name", "email", "username", "password"]},
+            {"fields": ["first_name", "last_name", "email", "password"]},
         ),
         (
             "Advanced",

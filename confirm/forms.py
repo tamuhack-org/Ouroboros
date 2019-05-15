@@ -1,12 +1,11 @@
 from django.contrib.auth import forms as auth_forms
-from hacker import models as hacker_models
+from django.contrib.auth import get_user_model
 
 
 class SignupForm(auth_forms.UserCreationForm):
     class Meta:
-        model = hacker_models.Hacker
+        model = get_user_model()
         fields = (
-            "username",
             "email",
             "first_name",
             "last_name",
