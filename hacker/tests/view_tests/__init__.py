@@ -1,3 +1,4 @@
 from .status_tests import StatusViewTestCase
-
-__all__ = ["StatusViewTestCase"]
+from .application_tests import ApplicationViewTestCase
+from .rsvp_tests import RsvpTestCase
+__all__ = ["StatusViewTestCase", "ApplicationViewTestCase", "RsvpTestCase"]
