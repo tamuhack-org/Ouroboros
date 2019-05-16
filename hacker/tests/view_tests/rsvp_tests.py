@@ -33,10 +33,7 @@ class RsvpTestCase(test.TestCase):
             "hacker": self.hacker,
         }
 
-        self.rsvp_fields = {
-            "shirt_size": "S",
-            "notes": ""
-        }
+        self.rsvp_fields = {"shirt_size": "S", "notes": ""}
 
     def test_redirects_when_not_logged_in(self):
         response = self.client.get(reverse_lazy("rsvp"))
@@ -50,12 +47,22 @@ class RsvpTestCase(test.TestCase):
         response = self.client.get(reverse_lazy("rsvp"))
         self.assertEqual(response.status_code, 403)
 
+    def test_denies_post_request_when_no_application(self):
+        self.client.login(email=self.email, password=self.password)
+        response = self.client.post(reverse_lazy("rsvp"), data=self.rsvp_fields)
+        self.assertEqual(response.status_code, 403)
+
     def test_denies_access_when_application_unapproved(self):
         application = hacker_models.Application(**self.application_fields)
         application.save()
 
         self.client.login(email=self.email, password=self.password)
         response = self.client.get(reverse_lazy("rsvp"))
+        self.assertEqual(response.status_code, 403)
+
+    def test_denies_post_request_when_application_unapproved(self):
+        self.client.login(email=self.email, password=self.password)
+        response = self.client.post(reverse_lazy("rsvp"), data=self.rsvp_fields)
         self.assertEqual(response.status_code, 403)
 
     def test_denies_access_when_application_rejected(self):
