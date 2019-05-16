@@ -1,9 +1,9 @@
 from django import views
-from django.contrib.auth import login
+from django.contrib.auth import get_user_model, login
 from django.contrib.sites import shortcuts as site_shortcuts
 from django.core import mail as django_email
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_text
@@ -12,7 +12,7 @@ from django.views import generic
 
 from confirm import forms as confirm_forms
 from confirm.tokens import email_confirmation_generator
-from django.contrib.auth import get_user_model
+
 
 # Create your views here.
 class SignupView(generic.FormView):

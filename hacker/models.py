@@ -4,15 +4,18 @@ import string
 
 from django.contrib.auth.models import (
     AbstractBaseUser,
-    PermissionsMixin,
     BaseUserManager,
+    PermissionsMixin,
 )
-
+from django.core import mail
 from django.db import models
-from django.utils import timezone
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
+from django.template.loader import render_to_string
+from django.utils import timezone, html
 from multiselectfield import MultiSelectField
 
-from ouroboros.settings import customization as custom_settings
+from django.conf import settings
 
 SHIRT_SIZES = (
     ("XS", "XS"),
@@ -45,7 +48,7 @@ WAVE_TYPES = (("Approve", "Approve Application"), ("Reject", "Reject Application
 GRAD_YEARS = [
     (i, i)
     for i in range(
-        timezone.now().year, timezone.now().year + custom_settings.MAX_YEARS_ADMISSION
+        timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION
     )
 ]
 
@@ -167,6 +170,65 @@ class Application(models.Model):
         return "%s, %s - Application" % (self.hacker.last_name, self.hacker.first_name)
 
 
+@receiver(pre_save, sender=Application)
+def send_application_approved_email(sender, instance: Application, **kwargs):
+    try:
+        obj = sender.objects.get(pk=instance.pk)
+    except sender.DoesNotExist:
+        pass
+    else:
+        if not obj.approved and instance.approved:
+            # User has been approved!
+            email_template = "emails/application/approved.html"
+            subject = f"Your {settings.EVENT_NAME} application has been approved!"
+
+            hacker: Hacker = instance.hacker
+            html_message = render_to_string(
+                email_template,
+                context={
+                    "first_name": hacker.first_name,
+                    "event_name": settings.EVENT_NAME,
+                },
+            )
+            msg = html.strip_tags(html_message)
+            mail.send_mail(
+                subject,
+                msg,
+                settings.DEFAULT_FROM_EMAIL,
+                [hacker.email],
+                html_message=html_message,
+            )
+
+
+@receiver(post_save, sender=Application)
+def send_application_email(sender, instance: Application, **kwargs):
+    if instance.approved:
+        # Don't send two emails when a user's application gets approved.
+        # It's not like they'll be making edits to their application afterwards anyway
+        return
+    created: bool = kwargs["created"]
+
+    email_template = "emails/application/updated.html"
+    subject = f"Your {settings.EVENT_NAME} application has been updated!"
+    if created:
+        email_template = "emails/application/created.html"
+        subject = f"Your {settings.EVENT_NAME} application has been created!"
+
+    hacker: Hacker = instance.hacker
+    html_message = render_to_string(
+        email_template,
+        context={"first_name": hacker.first_name, "event_name": settings.EVENT_NAME},
+    )
+    msg = html.strip_tags(html_message)
+    mail.send_mail(
+        subject,
+        msg,
+        settings.DEFAULT_FROM_EMAIL,
+        [hacker.email],
+        html_message=html_message,
+    )
+
+
 class Rsvp(models.Model):
     """
     Represents a `Hacker`'s confirmation that they are attending this hackathon.
@@ -188,6 +250,31 @@ class Rsvp(models.Model):
 
     def __str__(self):
         return "%s, %s - Rsvp" % (self.hacker.last_name, self.hacker.first_name)
+
+
+@receiver(post_save, sender=Rsvp)
+def send_rsvp_email(sender, **kwargs):
+    rsvp: Rsvp = kwargs["instance"]
+    created: bool = kwargs["created"]
+
+    email_template = "emails/rsvp/updated.html"
+    subject = f"Your {settings.EVENT_NAME} RSVP has been updated!"
+    if created:
+        email_template = "emails/rsvp/created.html"
+        subject = f"Your {settings.EVENT_NAME} RSVP has been created!"
+    hacker: Hacker = rsvp.hacker
+    html_message = render_to_string(
+        email_template,
+        context={"first_name": hacker.first_name, "event_name": settings.EVENT_NAME},
+    )
+    msg = html.strip_tags(html_message)
+    mail.send_mail(
+        subject,
+        msg,
+        settings.DEFAULT_FROM_EMAIL,
+        [hacker.email],
+        html_message=html_message,
+    )
 
 
 class Team(models.Model):
