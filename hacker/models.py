@@ -184,11 +184,7 @@ def send_application_approved_email(sender, instance: Application, **kwargs):
 
             hacker: Hacker = instance.hacker
             html_message = render_to_string(
-                email_template,
-                context={
-                    "first_name": hacker.first_name,
-                    "event_name": settings.EVENT_NAME,
-                },
+                email_template, context={"first_name": hacker.first_name}
             )
             msg = html.strip_tags(html_message)
             mail.send_mail(
@@ -216,8 +212,7 @@ def send_application_email(sender, instance: Application, **kwargs):
 
     hacker: Hacker = instance.hacker
     html_message = render_to_string(
-        email_template,
-        context={"first_name": hacker.first_name, "event_name": settings.EVENT_NAME},
+        email_template, context={"first_name": hacker.first_name}
     )
     msg = html.strip_tags(html_message)
     mail.send_mail(
