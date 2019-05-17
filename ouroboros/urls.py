@@ -25,5 +25,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/signup/", confirm_views.SignupView.as_view(), name="signup"),
     path("accounts/", include("django.contrib.auth.urls")),
+    url(
+        r"^accounts/activate/(?P<uidb64>[\w\d_\-]+)/(?P<token>[\w\d]{1,13}-[\w\d]{1,20})/$",
+        confirm_views.ActivateView.as_view(),
+        name="activate",
+    ),
     path("", include("hacker.urls")),
 ]
