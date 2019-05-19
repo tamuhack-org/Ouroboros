@@ -1,13 +1,18 @@
 {% extends 'base.html' %} {% block additional_CSS %} {% load static %}
 <link rel="stylesheet" href="{% static 'background_color_css.css' %}" />
-{% endblock %} {% block body %} {% include 'includes/_logoBar.html' %}
+{% endblock %} {% block body %}
 
 <section class="signin">
   <div class="container">
     <div class="row justify-content-md-center text-center">
       <div class="col-sm-12 col-md-8 col-lg-6 login-box">
-        <h1>Sign In</h1>
-        <hr />
+       
+        <header>
+          <img class="header-logo" src="{% static 'howdyHackLogo.svg' %}">
+          <h1>HowdyHack 2019</h1>
+          <h1>Application</h1>
+        </header>
+
         <form id="login-form" method="POST" action="{% url 'login' %}">
           {% csrf_token %}
           <!-- security -->
@@ -28,22 +33,24 @@
             {% endif %}
             {{form.as_p}}
 
+
+            <a href="" class="forgot-pswd">Forgot Password?</a>
+            
             <input
               type="submit"
               class="btn btn-lg btn-block btn-login"
-              value="Login"
+              value="Log In"
             />
           </div>
           {% csrf_token %}
         </form>
-        <div class="row login-alt-options pt-5">
-          <div class="col-sm-6 col-lg-6 text-left">
+
+        <div class="row login-alt-options pt-4">
+          <div class="col-sm-12 col-lg-12 text-center">
             Don't have an account? <a href="{% url 'signup' %}">Sign up</a>
           </div>
-          <div class="col-sm-6 col-lg-6 text-right">
-            <a href="">Forgot Password?</a>
-          </div>
         </div>
+
       </div>
     </div>
   </div>
