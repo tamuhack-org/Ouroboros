@@ -2,7 +2,7 @@ FROM python:3.6-slim
 WORKDIR /app
 COPY hacker /app/hacker
 COPY ouroboros /app/ouroboros
-COPY confirm /app/confirm
+COPY customauth /app/customauth
 COPY static /app/static
 COPY templates /app/templates
 COPY manage.py /app/manage.py
