@@ -34,7 +34,7 @@ class ApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
     that form for validation.
     """
 
-    template_name = "application.html"
+    template_name = "hacker/application.html"
     queryset = hacker_models.Application.objects.all()
     success_url = reverse_lazy("status")
     fields = [
@@ -77,7 +77,7 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
     a user has left to take, and the status of their application to the event.
     """
 
-    template_name = "status.html"
+    template_name = "hacker/status.html"
 
     def get_context_data(self, **kwargs):
         hacker = self.request.user
@@ -106,7 +106,7 @@ class RsvpView(mixins.UserPassesTestMixin, CreateUpdateView):
     This view WILL RAISE AN ERROR if a user does not have an approved application.
     """
 
-    template_name = "rsvp.html"
+    template_name = "hacker/rsvp.html"
     queryset = hacker_models.Rsvp.objects.all()
     success_url = reverse_lazy("status")
     permission_denied_message = (

@@ -10,8 +10,8 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import generic
 
-from confirm import forms as confirm_forms
-from confirm.tokens import email_confirmation_generator
+from customauth import forms as confirm_forms
+from customauth.tokens import email_confirmation_generator
 
 
 # Create your views here.
