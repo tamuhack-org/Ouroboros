@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "hacker.apps.HackerConfig",
-    "confirm.apps.ConfirmConfig",
+    "customauth.apps.CustomauthConfig",
     "deadlines.apps.DeadlinesConfig",
     "multiselectfield",
 ]

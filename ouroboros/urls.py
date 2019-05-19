@@ -16,19 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib import auth
 from django.contrib.auth import views as auth_views
-from confirm import views as confirm_views
 from django.urls import path, include
 from django.conf.urls import url
 from ouroboros.settings import customization as custom_settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accounts/signup/", confirm_views.SignupView.as_view(), name="signup"),
-    path("accounts/", include("django.contrib.auth.urls")),
-    url(
-        r"^accounts/activate/(?P<uidb64>[\w\d_\-]+)/(?P<token>[\w\d]{1,13}-[\w\d]{1,20})/$",
-        confirm_views.ActivateView.as_view(),
-        name="activate",
-    ),
+    path("accounts/", include("customauth.urls")),
     path("", include("hacker.urls")),
 ]

@@ -1,8 +1,10 @@
-from django.test import TestCase
-from hacker import models as hacker_models
-from django.urls import reverse_lazy
 import re
+
 from django.core import mail
+from django.test import TestCase
+from django.urls import reverse_lazy
+
+from hacker import models as hacker_models
 
 URL_REGEX = r"(?P<url>https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))"
 
@@ -59,4 +61,4 @@ class SignupTestCase(TestCase):
         body = mail.outbox[0].body
         url, _, _ = re.findall(URL_REGEX, body)[0]
         response = self.client.get(url, follow=True)
-        self.assertIn("status.html", response.template_name)
+        self.assertIn("hacker/status.html", response.template_name)
