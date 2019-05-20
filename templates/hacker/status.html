@@ -2,39 +2,83 @@
 
 <div class="pt-5">
   <div class="login-box">
-    <h2 class="text-center">Status</h2>
-    <hr />
-    <div class="pt-3"></div>
-    <div class="text-center">
+    
+    <header>
+    </header>
+
+    <div class="pt-3 text-center submit-pg">
       {% if NEEDS_TO_APPLY %}
-      <a href="{% url 'application' %}" class="btn btn-lg btn-block btn-success"
-        >Apply Here!</a
-      >
+      <p> Your application is </p>
+      <div class="app-status">INCOMPLETE</div>
+
+      <p class="status-subtitle pt-2">
+        Submit your application before 11:59pm CDT, 21st Sept 2019 to be considered.
+      </p>
+
+      <div class="row login-alt-options pt-4">
+        <div class="col-sm-12 col-lg-12 text-center">
+            <br>
+            <a href="{% url 'application' %}" class="btn btn-login">Complete Application</a>
+        </div>
+      </div>
+
       {% elif PENDING %}
-      <button type="button" class="btn btn-lg btn-block btn-secondary">
-        Pending
-      </button>
+      <p> Your application has been </p>
+      <div class="app-status">SUBMITTED</div>
+
+      <p class="status-subtitle pt-2">
+        Check back soon! Decisions will be released 11:59pm CDT, 21st Sept 2019.
+      </p>
+
+      <div class="row login-alt-options pt-4">
+        <div class="col-sm-12 col-lg-12 text-center">
+            <br>
+            <a href="{% url 'application' %}" class="btn btn-login">View Application</a>
+        </div>
+      </div>
+
       {% elif NEEDS_TO_RSVP %}
-      <a href="{% url 'rsvp' %}" class="btn btn-lg btn-block btn-success"
-        >RSVP Here!</a
-      >{% elif COMPLETE %}
-      <button type="button" class="btn btn-lg btn-block btn-success">
-        Done!</button
-      >{% elif REJECTED %}
-      <button type="button" class="btn btn-lg btn-block btn-failure">
-        Sorry :()</button
-      >{%endif%}
-    </div>
-    <div class="pt-5 pb-3 row">
-      <div class="col-lg-6 col-sm-12 d-flex justify-content-center pb-1">
-        <button type="button" class="btn btn-info">Event details</button>
+      <p> Congrats, you have been </p>
+      <div class="app-status">ACCEPTED</div>
+
+      <p class="status-subtitle pt-2">
+        Please RSVP below by 11:59pm CDT, 21 Sept or you risk losing your spot.
+      </p>
+       <div class="row login-alt-options pt-4">
+        <div class="col-sm-12 col-lg-12 text-center">
+            <br>
+            <a href="{% url 'rsvp' %}" class="btn btn-login"
+        >RSVP Here!</a>
+          </div>
       </div>
-      <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
-        <button type="button" class="btn btn-danger">
-          Sorry, I can't make it
-        </button>
-      </div>
+
+      {% elif COMPLETE %}
+      <p>Your attendance has been</p>
+      <div class="app-status">CONFIRMED</div>
+
+      <p class="status-subtitle pt-2">
+        Prepare for the event by visiting our FAQ for tips and info. See you soon!
+      </p>
+
+      <p class="pt-5">
+        Have additional questions? Email us at hello@tamuhack.com
+      </p>
+
+      {% elif REJECTED %}
+      <p> Your application has been </p>
+      <div class="app-status">WAITLISTED</div>
+
+      <p class="status-subtitle pt-2">
+        You have not been admitted into the event.
+      </p>
+
+      <div class="row login-alt-options pt-4">
+        <div class="col-sm-12 col-lg-12 text-center">
+            <br>
+            <a href="{% url 'application' %}" class="btn btn-login">View Application</a>
+        </div>
+      </div>{%endif%}
     </div>
-  </div>
+    
 </div>
 {% endblock %}

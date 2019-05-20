@@ -1,12 +1,22 @@
-{% extends 'hacker/dashboard_base.html' %} {% block content %}
-<h1>Application</h1>
-<hr />
-<form method="POST" action="{% url 'application' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-lg btn-block btn-login">
-    Submit
-  </button>
-</form>
+{% extends 'hacker/dashboard_base.html' %} {% block content %}{% load static %}
+
+<div class="application login-box">
+	<header class="text-center">
+      <img class="header-logo" src="{% static 'howdyHackLogo.svg' %}">
+      <h5>HowdyHack 2019</h5>
+      <h5>Application</h5>
+    </header>
+
+	<form method="POST" action="{% url 'application' %}">
+	  {% csrf_token %}
+	  {{ form.as_p }}
+	  <br>
+	  <p class="p-caution">* Please note that once you submit, you will not be able to make changes to your application.</p>
+	  <button type="submit" class="btn btn-lg btn-block btn-login">
+	    Submit
+	  </button>
+	</form>
+</div>
+
 
 {% endblock %}

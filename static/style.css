@@ -2,32 +2,22 @@
     -webkit-box-shadow: 0 8px 6px -6px #999;
     -moz-box-shadow: 0 8px 6px -6px #999;
     box-shadow: 0 8px 6px -6px #999;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
+    font-family: sans-serif;
+    text-transform: uppercase;
+}
+
+.navbar a {
+    color: #232323 !important;
+    width:20%;
 }
 
 .navbar-brand {
     font-weight: bold;
 }
 
-.landing-screen h1 {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 430%;
-}
-
 #logo_bar {
     max-width: 100%;
-}
-
-#landing-screen {
-    background-image: linear-gradient(rgb(213, 244, 245),rgb(210, 226, 246));
-    height: 100vh;
-    width: 100vw;
-    max-width: 100%;
-    display: table;
-    background-size: cover;
-    padding-top: 8vh;
-    padding-right: 5vh;
+    background-color: white !important;
 }
 
 .register-btn {
@@ -54,7 +44,7 @@
 
 .signin {
     background-color: #F9ECEE;
-    padding-top: 7vh;
+    padding-top: 15vh;
     height: 100vh;
     width: 100vw;
     max-width: 100%;
@@ -69,7 +59,7 @@
     background-color: #D8ECFE;
     height: 100vh !important;
     margin-bottom: 0;
-    padding-top: 7vh !important;
+    padding-top: 9vh !important;
 }
 
 header {
@@ -83,6 +73,7 @@ header {
 
 .signin label, p, a {
     width: 100%;
+    font-size: 16px;
 }
 
 .signin a {
@@ -93,10 +84,10 @@ header {
     border: 1px solid #999999;
     border-radius: 5px;
     width: 100%;
-    padding: 5px;
+    padding: 10px !important;
 }
 
-.signin input[type="submit"] {
+input[type="submit"] {
     margin-top: 30px;
     padding: 15px;
 }
@@ -117,15 +108,33 @@ header {
     display: none;
 }
 
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  font-style: italic;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  font-style: italic;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  font-style: italic;
+}
+
 .header-logo {
-    max-width: 80px;
+    max-width: 70px;
     margin-bottom: 20px;
+}
+
+.nav-logo {
+    max-width: 50px;
 }
 
 .signin h1 {
     text-transform: uppercase;
     margin-bottom: 5px !important;
-    font-size: 1.8rem;
+    font-size: 1.7rem;
+    letter-spacing: 1px;
 }
 
 .login-box {
@@ -133,15 +142,6 @@ header {
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     padding: 3em 5em !important; 
-}
-
-.application {
-    background-image: linear-gradient(rgb(213, 244, 245),rgb(210, 226, 246)) !important;
-    height: 100vh !important;
-    margin-bottom: 0;
-    padding-top: 5vh !important;
-
-    background-size: cover;
 }
 
 .flat-field {
@@ -177,6 +177,8 @@ header {
     transition: all 0.8%;
     border: 0px solid #fff !important;
     text-transform: uppercase;
+    font-weight: 500 !important;
+    letter-spacing: 1px;
 }
 
 .btn-login:hover {
@@ -214,7 +216,7 @@ header {
 }
 
 .navbar-trans {
-    background: transparent;
+    background: white;
 }
 
 .sidebar li:hover {
@@ -237,9 +239,9 @@ header {
 }
 
 .dashboard {
-    background-image: linear-gradient(rgb(213, 244, 245),rgb(210, 226, 246));
-    height: 100vh;
-    width: 100vw;
+    background-color: #F9ECEE;
+    min-height: 100vh;
+    min-width: 100vw;
     max-width: 100%;
 }
 
@@ -248,3 +250,77 @@ header {
     display: inline-block;
 }
 
+.app-status {
+    font-weight: 600;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.submit-pg p {
+    font-weight: 300;
+    margin-bottom: 5px;
+}
+
+.submit-pg a {
+    padding: 15px 10px;
+    width: 50% !important;
+}
+.submit-pg a:hover {
+    color: white;
+}
+
+.status-subtitle {
+    padding: 0 80px;
+    font-size: 14px;
+}
+
+.application {
+    margin-bottom: 7vh !important;
+}
+
+.application h5 {
+    text-transform: uppercase;
+    margin-bottom: 3px !important;
+    font-weight: 400 !important;
+    letter-spacing: 1px;
+}
+
+.application p {
+    margin-bottom: 30px;
+}
+
+.application label {
+    display: block;
+    font-weight: 600 !important;
+    margin-bottom: 3px;
+}
+
+.application ul {
+    list-style: none;
+    padding: 0;
+    margin-top: -30px;
+}
+.application ul li label {
+    font-weight: 400 !important;
+}
+.application input[type='text'], input[type='number'], .application textarea, .application select{
+    width: 80%;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid #bbb !important;
+    font-size: 14px;
+}
+
+.application select option {
+    background-color: white;
+}
+
+.p-caution {
+    font-size: 14px;
+    color: #999999;
+    font-style: italic;
+}
+
+.btn-block {
+    max-width: 200px !important;
+}
