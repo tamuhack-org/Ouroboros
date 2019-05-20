@@ -1,7 +1,9 @@
+import datetime
 import json
 import random
 import string
 
+from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -12,10 +14,8 @@ from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string
-from django.utils import timezone, html
+from django.utils import html, timezone
 from multiselectfield import MultiSelectField
-
-from django.conf import settings
 
 SHIRT_SIZES = (
     ("XS", "XS"),
@@ -112,6 +112,8 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
     )
     last_name = models.CharField(max_length=255, blank=False, verbose_name="last name")
 
+    rsvp_deadline = models.DateTimeField(null=True)
+
     checked_in = models.NullBooleanField(blank=True)
     checked_in_datetime = models.DateTimeField(null=True, blank=True)
 
@@ -125,6 +127,26 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.email
+
+    def didnt_rsvp_in_time(self):
+        return not getattr(self, "rsvp", None) and self.rsvp_deadline < timezone.now()
+
+
+class WaveManager(models.Manager):
+    def next_wave(self, dt: datetime.datetime = timezone.now()):
+        qs = self.get_queryset().filter(start__gt=dt).order_by("start")
+        return qs.first()
+
+    def active_wave(self, dt: datetime.datetime = timezone.now()):
+        qs = self.get_queryset().filter(start__lte=dt, end__gt=dt).order_by("start")
+        return qs.first()
+
+
+class Wave(models.Model):
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+
+    objects = WaveManager()
 
 
 class Application(models.Model):
@@ -153,16 +175,13 @@ class Application(models.Model):
     notes = models.TextField(
         max_length=300,
         blank=True,
-        help_text="Provide any additional notes and/or comments in the text box provide",
+        help_text="Provide any additional notes and/or comments in the text box provided",
     )
     resume = models.FileField(upload_to="hacker_resumes", null=True, blank=True)
 
     approved = models.NullBooleanField(blank=True)
-    queued_for_approval = models.NullBooleanField(blank=True)
 
-    date_approved = models.DateField(null=True, blank=True)
-    date_queued_for_approval = models.DateField(null=True, blank=True)
-    date_submitted = models.DateField(auto_now_add=True, blank=True)
+    wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
 
     hacker = models.OneToOneField(Hacker, on_delete=models.CASCADE)
 
@@ -171,33 +190,38 @@ class Application(models.Model):
 
 
 @receiver(pre_save, sender=Application)
-def send_application_approved_email(sender, instance: Application, **kwargs):
+def application_approved(sender, instance: Application, **kwargs):
     try:
         obj = sender.objects.get(pk=instance.pk)
     except sender.DoesNotExist:
         pass
     else:
         if not obj.approved and instance.approved:
-            # User has been approved!
-            email_template = "emails/application/approved.html"
-            subject = f"Your {settings.EVENT_NAME} application has been approved!"
+            deadline = timezone.now().replace(
+                hour=23, minute=59, second=59, microsecond=0
+            ) + datetime.timedelta(days=settings.DAYS_TO_RSVP)
+            instance.hacker.rsvp_deadline = deadline
+            instance.hacker.save()
+            send_application_approved_email(instance.hacker)
 
-            hacker: Hacker = instance.hacker
-            html_message = render_to_string(
-                email_template,
-                context={
-                    "first_name": hacker.first_name,
-                    "event_name": settings.EVENT_NAME,
-                },
-            )
-            msg = html.strip_tags(html_message)
-            mail.send_mail(
-                subject,
-                msg,
-                settings.DEFAULT_FROM_EMAIL,
-                [hacker.email],
-                html_message=html_message,
-            )
+
+def send_application_approved_email(hacker: Hacker):
+    # User has been approved!
+    email_template = "emails/application/approved.html"
+    subject = f"Your {settings.EVENT_NAME} application has been approved!"
+
+    html_message = render_to_string(
+        email_template,
+        context={"first_name": hacker.first_name, "event_name": settings.EVENT_NAME},
+    )
+    msg = html.strip_tags(html_message)
+    mail.send_mail(
+        subject,
+        msg,
+        settings.DEFAULT_FROM_EMAIL,
+        [hacker.email],
+        html_message=html_message,
+    )
 
 
 @receiver(post_save, sender=Application)
