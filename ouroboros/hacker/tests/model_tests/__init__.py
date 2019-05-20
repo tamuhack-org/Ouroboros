@@ -1,4 +1,3 @@
-from .application_tests import ApplicationModelTestCase
-from .rsvp_tests import RsvpModelTestCase
-
-__all__ = ["ApplicationModelTestCase", "RsvpModelTestCase"]
+from .application import *
+from .rsvp import *
+from .wave import *
