@@ -321,6 +321,6 @@ input[type="submit"] {
     font-style: italic;
 }
 
-.btn-block {
+.btn-width {
     max-width: 200px !important;
 }
