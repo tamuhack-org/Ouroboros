@@ -133,21 +133,7 @@ class RsvpAdmin(admin.ModelAdmin):
         return False
 
 
-class TeamAdmin(admin.ModelAdmin):
-    fieldsets = [("Team Name", {"fields": ["name"]})]
-
-    def has_add_permission(self, request, obj=None):
-        return True
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-
 admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Rsvp, RsvpAdmin)
-admin.site.register(Team, TeamAdmin)
 admin.site.register(Wave, WaveAdmin)
