@@ -12,22 +12,6 @@ class StatusViewTestCase(test.SharedTestCase):
     def setUp(self):
         super().setUp()
 
-        self.fields = {
-            "major": "A",
-            "gender": "M",
-            "classification": "U1",
-            "grad_year": 2020,
-            "dietary_restrictions": "Vegan",
-            "num_hackathons_attended": 0,
-            "interests": "A",
-            "essay1": "A",
-            "essay2": "B",
-            "essay3": "C",
-            "essay4": "D",
-            "notes": "E",
-            "hacker": self.hacker,
-        }
-
         self.rsvp_fields = {"shirt_size": "S", "notes": "", "hacker": self.hacker}
 
     def test_redirects_when_not_logged_in(self):
@@ -63,7 +47,7 @@ class StatusViewTestCase(test.SharedTestCase):
     def test_pending_context(self):
         self.create_active_wave()
         self.client.force_login(self.hacker)
-        application = hacker_models.Application(**self.fields)
+        application = hacker_models.Application(**self.application_fields)
         application.wave = self.wave1
         application.save()
 
@@ -73,7 +57,7 @@ class StatusViewTestCase(test.SharedTestCase):
     def test_rsvp_deadline_expired(self):
         self.create_active_wave()
         self.client.force_login(self.hacker)
-        application = hacker_models.Application(**self.fields)
+        application = hacker_models.Application(**self.application_fields)
         application.wave = self.wave1
         application.approved = True
         application.save()
@@ -89,7 +73,7 @@ class StatusViewTestCase(test.SharedTestCase):
     def test_needs_to_rsvp_context(self):
         self.create_active_wave()
         self.client.force_login(self.hacker)
-        application = hacker_models.Application(**self.fields)
+        application = hacker_models.Application(**self.application_fields)
         application.wave = self.wave1
         application.save()
         application.approved = True
@@ -102,7 +86,7 @@ class StatusViewTestCase(test.SharedTestCase):
     def test_complete_context(self):
         self.create_active_wave()
         self.client.force_login(self.hacker)
-        application = hacker_models.Application(**self.fields)
+        application = hacker_models.Application(**self.application_fields)
         application.wave = self.wave1
         application.save()
         application.approved = True
@@ -117,7 +101,7 @@ class StatusViewTestCase(test.SharedTestCase):
     def test_rejected_context(self):
         self.create_active_wave()
         self.client.force_login(self.hacker)
-        application = hacker_models.Application(**self.fields)
+        application = hacker_models.Application(**self.application_fields)
         application.wave = self.wave1
         application.approved = False
         application.save()

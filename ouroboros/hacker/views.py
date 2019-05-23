@@ -15,6 +15,12 @@ from hacker import models as hacker_models
 class CreateUpdateView(
     SingleObjectTemplateResponseMixin, ModelFormMixin, ProcessFormView
 ):
+    """
+    If the instance requested by the user does not exist, the user is
+    redirected to a CreateView, otherwise they're redirected to a view
+    containing their instance for updating.
+    """
+
     def get_object(self, queryset=None):
         try:
             return super(CreateUpdateView, self).get_object(queryset)

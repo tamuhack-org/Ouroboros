@@ -12,25 +12,10 @@ class ApplicationModelTestCase(test.SharedTestCase):
     def setUp(self):
         super().setUp()
         self.create_active_wave()
-        self.fields = {
-            "major": "A",
-            "gender": "M",
-            "classification": "U1",
-            "grad_year": 2020,
-            "dietary_restrictions": "Vegan",
-            "num_hackathons_attended": 0,
-            "interests": "A",
-            "essay1": "A",
-            "essay2": "B",
-            "essay3": "C",
-            "essay4": "D",
-            "notes": "E",
-            "hacker": self.hacker,
-            "wave": self.wave1,
-        }
+        self.application_fields["wave"] = self.wave1
 
     def test_sends_creation_email(self):
-        app = hacker_models.Application(**self.fields)
+        app = hacker_models.Application(**self.application_fields)
         app.save()
 
         self.assertEqual(len(mail.outbox), 1)
@@ -42,7 +27,7 @@ class ApplicationModelTestCase(test.SharedTestCase):
         self.assertEmailBodiesEqual(creation_email_template, context, mail.outbox[0])
 
     def test_sends_update_email(self):
-        app = hacker_models.Application(**self.fields)
+        app = hacker_models.Application(**self.application_fields)
         app.save()
 
         update_email_template = "emails/application/updated.html"
@@ -58,7 +43,7 @@ class ApplicationModelTestCase(test.SharedTestCase):
         self.assertEmailBodiesEqual(update_email_template, context, mail.outbox[1])
 
     def test_sends_approved_email(self):
-        app = hacker_models.Application(**self.fields)
+        app = hacker_models.Application(**self.application_fields)
         app.save()
 
         approved_email_template = "emails/application/approved.html"
@@ -74,7 +59,7 @@ class ApplicationModelTestCase(test.SharedTestCase):
         self.assertEmailBodiesEqual(approved_email_template, context, mail.outbox[1])
 
     def test_sets_hacker_rsvp_deadline_when_approved(self):
-        app = hacker_models.Application(**self.fields)
+        app = hacker_models.Application(**self.application_fields)
         app.save()
 
         app.approved = True

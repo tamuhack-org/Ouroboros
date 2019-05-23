@@ -12,22 +12,6 @@ class RsvpViewTestCase(test.SharedTestCase):
     def setUp(self):
         super().setUp()
 
-        self.fields = {
-            "major": "A",
-            "gender": "M",
-            "classification": "U1",
-            "grad_year": 2020,
-            "dietary_restrictions": ["Vegan"],
-            "num_hackathons_attended": 0,
-            "interests": "A",
-            "essay1": "A",
-            "essay2": "B",
-            "essay3": "C",
-            "essay4": "D",
-            "notes": "E",
-            "hacker": self.hacker,
-        }
-
         self.rsvp_fields = {"shirt_size": "S", "notes": ""}
 
     def test_redirects_when_not_logged_in(self):
@@ -43,18 +27,18 @@ class RsvpViewTestCase(test.SharedTestCase):
 
     def test_denies_access_when_unapproved_application(self):
         self.create_active_wave()
-        self.fields["wave"] = self.wave1
+        self.application_fields["wave"] = self.wave1
         self.client.force_login(self.hacker)
-        app = hacker_models.Application(**self.fields)
+        app = hacker_models.Application(**self.application_fields)
         app.save()
         response = self.client.get(reverse_lazy("rsvp"))
         self.assertEqual(response.status_code, 403)
 
     def test_redirects_gets_when_didnt_rsvp_in_time(self):
         self.create_active_wave()
-        self.fields["wave"] = self.wave1
+        self.application_fields["wave"] = self.wave1
         self.client.force_login(self.hacker)
-        app = hacker_models.Application(**self.fields)
+        app = hacker_models.Application(**self.application_fields)
         app.save()
         app.approved = True
         app.save()
@@ -69,9 +53,9 @@ class RsvpViewTestCase(test.SharedTestCase):
 
     def test_denies_access_when_didnt_rsvp_in_time(self):
         self.create_active_wave()
-        self.fields["wave"] = self.wave1
+        self.application_fields["wave"] = self.wave1
         self.client.force_login(self.hacker)
-        app = hacker_models.Application(**self.fields)
+        app = hacker_models.Application(**self.application_fields)
         app.save()
         app.approved = True
         app.save()
