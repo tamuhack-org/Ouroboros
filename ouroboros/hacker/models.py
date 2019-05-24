@@ -34,10 +34,10 @@ GENDERS = (
 )
 
 CLASSIFICATIONS = [
-    ("Freshman", "Freshman"),
-    ("Sophomore", "Sophomore"),
-    ("Junior", "Junior"),
-    ("Senior", "Senior"),
+    ("U1", "U1"),
+    ("U2", "U2"),
+    ("U3", "U3"),
+    ("U4", "U4"),
 ]
 
 DIETARY_RESTRICTIONS = (
@@ -287,7 +287,6 @@ class Rsvp(models.Model):
     date_rsvped = models.DateField(auto_now_add=True, blank=True)
 
     hacker = models.OneToOneField(Hacker, on_delete=models.CASCADE)
-    team = models.ForeignKey("Team", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return "%s, %s - Rsvp" % (self.hacker.last_name, self.hacker.first_name)
