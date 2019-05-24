@@ -3,7 +3,7 @@ import datetime
 from django import forms
 from django.contrib import admin
 
-from .models import Hacker, Application, Rsvp, Team
+from .models import Hacker, Application, Rsvp, Team, Wave
 
 
 def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
@@ -62,6 +62,10 @@ class ApplicationAdminForm(forms.ModelForm):
             "grad_year": forms.RadioSelect,
             "status": forms.RadioSelect,
         }
+
+
+class WaveAdmin(admin.ModelAdmin):
+    list_display = ("pk", "start", "end")
 
 
 class ApplicationAdmin(admin.ModelAdmin):
@@ -146,3 +150,4 @@ admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Rsvp, RsvpAdmin)
 admin.site.register(Team, TeamAdmin)
+admin.site.register(Wave, WaveAdmin)

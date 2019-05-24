@@ -14,6 +14,7 @@ In either case, there are really 6 steps involved in getting the app running:
 4. Creating the SQL database and tables
 5. Creating the superuser
 6. Running the server
+7. Creating an initial wave (performed via the Django admin interface)
 
 ### Docker
 
@@ -30,8 +31,8 @@ docker-compose up --build
 This will start all of the required containers, and get the server running. In a separate terminal, you'll need to run the following two commands:
 
 ```sh
-docker exec -it ouroboros python3 manage.py makemigrations hacker --settings=ouroboros.settings.docker_dev
-docker exec -it ouroboros python3 manage.py migrate --settings=ouroboros.settings.docker_dev
+docker exec -it ouroboros python3 ouroboros/manage.py makemigrations hacker --settings=ouroboros.settings.docker_dev
+docker exec -it ouroboros python3 ouroboros/manage.py migrate --settings=ouroboros.settings.docker_dev
 ```
 
 From there, you should be able to go through most of the website! Navigate to `http://localhost:8000/account/login`.
@@ -39,7 +40,7 @@ From there, you should be able to go through most of the website! Navigate to `h
 In order to go through the entire registration progress, however, you'll need to create an admin user. You can do this by doing:
 
 ```sh
-docker exec -it ouroboros python3 manage.py createsuperuser --settings=ouroboros.settings.docker_dev
+docker exec -it ouroboros python3 ouroboros/manage.py createsuperuser --settings=ouroboros.settings.docker_dev
 ```
 
 You should only need to run the above command once.

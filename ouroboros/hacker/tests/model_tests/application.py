@@ -1,24 +1,18 @@
-from django import test
-from django.core import mail
-from hacker import models as hacker_models
-from django.template.loader import render_to_string
+import datetime
+
 from django.conf import settings
-from django.utils import html
+from django.core import mail
+from django.utils import timezone
+
+from hacker import models as hacker_models
+from shared import test
 
 
-class ApplicationModelTestCase(test.TestCase):
+class ApplicationModelTestCase(test.SharedTestCase):
     def setUp(self):
-        self.email = "dummy@email.com"
-        self.password = "DummyPassword"
-        self.hacker = hacker_models.Hacker.objects._create_user(
-            self.email,
-            self.password,
-            first_name="Kennedy",
-            last_name="Doe",
-            is_active=True,
-        )
-
-        self.application_fields = {
+        super().setUp()
+        self.create_active_wave()
+        self.fields = {
             "major": "A",
             "gender": "M",
             "classification": "U1",
@@ -32,28 +26,23 @@ class ApplicationModelTestCase(test.TestCase):
             "essay4": "D",
             "notes": "E",
             "hacker": self.hacker,
+            "wave": self.wave1,
         }
 
-    def ensure_email_bodies_equal(self, template_name, context, email):
-        html_output = render_to_string(template_name, context)
-        stripped = html.strip_tags(html_output)
-        self.assertEqual(email.body, stripped)
-
     def test_sends_creation_email(self):
-        app = hacker_models.Application(**self.application_fields)
+        app = hacker_models.Application(**self.fields)
         app.save()
 
         self.assertEqual(len(mail.outbox), 1)
-
         creation_email_template = "emails/application/created.html"
         context = {
             "first_name": self.hacker.first_name,
             "event_name": settings.EVENT_NAME,
         }
-        self.ensure_email_bodies_equal(creation_email_template, context, mail.outbox[0])
+        self.assertEmailBodiesEqual(creation_email_template, context, mail.outbox[0])
 
     def test_sends_update_email(self):
-        app = hacker_models.Application(**self.application_fields)
+        app = hacker_models.Application(**self.fields)
         app.save()
 
         update_email_template = "emails/application/updated.html"
@@ -66,11 +55,12 @@ class ApplicationModelTestCase(test.TestCase):
         app.save()
         self.assertEqual(len(mail.outbox), 2)
 
-        self.ensure_email_bodies_equal(update_email_template, context, mail.outbox[1])
+        self.assertEmailBodiesEqual(update_email_template, context, mail.outbox[1])
 
     def test_sends_approved_email(self):
-        app = hacker_models.Application(**self.application_fields)
+        app = hacker_models.Application(**self.fields)
         app.save()
+
         approved_email_template = "emails/application/approved.html"
         context = {
             "first_name": self.hacker.first_name,
@@ -79,6 +69,20 @@ class ApplicationModelTestCase(test.TestCase):
 
         app.approved = True
         app.save()
-        self.assertEqual(len(mail.outbox), 2)
 
-        self.ensure_email_bodies_equal(approved_email_template, context, mail.outbox[1])
+        self.assertEqual(len(mail.outbox), 2)
+        self.assertEmailBodiesEqual(approved_email_template, context, mail.outbox[1])
+
+    def test_sets_hacker_rsvp_deadline_when_approved(self):
+        app = hacker_models.Application(**self.fields)
+        app.save()
+
+        app.approved = True
+        app.save()
+
+        expected = timezone.now().replace(
+            hour=23, minute=59, second=59, microsecond=0
+        ) + datetime.timedelta(days=settings.DAYS_TO_RSVP)
+        actual = self.hacker.rsvp_deadline
+
+        self.assertEqual(expected, actual)
