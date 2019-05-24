@@ -1,26 +1,68 @@
-{% extends 'hacker/dashboard_base.html' %} {% block content %}
+{% extends 'hacker/dashboard_base.html' %} {% load static %} {% block content %}
 
 <div class="pt-5">
   <div class="login-box">
-    
+  
     <header>
+      {% if COMPLETE or NEEDS_TO_RSVP %}
+        <ol class="timeline-24">
+      {% else %}
+        <ol class="timeline">
+      {% endif %}
+
+        <li>
+          <p class="diplome">Submitted</p>
+          {% if COMPLETE or REJECTED or PENDING or NEEDS_TO_RSVP %}
+            <img src="{% static 'tick.svg' %}">
+          {% else %}
+            <span class="point"></span>
+          {% endif %}
+        </li>
+         <li>
+          <p class="diplome">Reviewed</p>
+          {% if COMPLETE or REJECTED or NEEDS_TO_RSVP or WAIT_UNTIL_NEXT_WAVE%}
+           <img src="{% static 'tick.svg' %}">
+          {% else %}
+            <span class="point"></span>
+          {% endif %}        
+        </li>
+        <li>
+          <p class="diplome">Decisions Released</p>
+          {% if COMPLETE or REJECTED or NEEDS_TO_RSVP %}
+            <img src="{% static 'tick.svg' %}"> 
+          {% else %}
+            <span class="point"></span>
+          {% endif %}
+        </li>
+        
+        {% if COMPLETE or NEEDS_TO_RSVP %}
+        <li>
+          <p class="diplome">RSVP</p>
+            {% if COMPLETE %}
+              <img src="{% static 'tick.svg' %}"> 
+            {% else %}
+              <span class="point"></span>
+            {% endif %}
+        </li>{% endif %}
+      </ol>
     </header>
 
-    <div class="pt-3 text-center submit-pg">
+    <div class="pt-4 text-center submit-pg">
+      <br>
       {% if NEEDS_TO_APPLY %}
-      <p> Your application is </p>
-      <div class="app-status">INCOMPLETE</div>
+        <p> Your application is </p>
+        <div class="app-status">INCOMPLETE</div>
 
-      <p class="status-subtitle pt-2">
-        Submit your application before 11:59pm CDT, 21st Sept 2019 to be considered.
-      </p>
+        <p class="status-subtitle pt-2">
+          Submit your application before 11:59pm CDT, 21st Sept 2019 to be considered.
+        </p>
 
-      <div class="row login-alt-options pt-4">
-        <div class="col-sm-12 col-lg-12 text-center">
-            <br>
-            <a href="{% url 'application' %}" class="btn btn-login">Complete Application</a>
+        <div class="row login-alt-options pt-4">
+          <div class="col-sm-12 col-lg-12 text-center">
+              <br>
+              <a href="{% url 'application' %}" class="btn btn-login">Complete Application</a>
+          </div>
         </div>
-      </div>
 
       {% elif PENDING %}
       <p> Your application has been </p>

@@ -8,7 +8,7 @@
 
 .navbar a {
     color: #232323 !important;
-    width:20%;
+    width:40%;
 }
 
 .navbar-brand {
@@ -44,7 +44,7 @@
 
 .signin {
     background-color: #F9ECEE;
-    padding-top: 15vh;
+    padding-top: 12vh;
     height: 100vh;
     width: 100vw;
     max-width: 100%;
@@ -59,7 +59,7 @@
     background-color: #D8ECFE;
     height: 100vh !important;
     margin-bottom: 0;
-    padding-top: 9vh !important;
+    padding-top: 3vh !important;
 }
 
 header {
@@ -194,7 +194,7 @@ input[type="submit"] {
 
 .forgot-pswd {
     text-align: right;
-    display: block;
+    display: block!important;
 }
 
 .sidebar {
@@ -263,14 +263,14 @@ input[type="submit"] {
 
 .submit-pg a {
     padding: 15px 10px;
-    width: 50% !important;
+    width: 250px !important;
 }
 .submit-pg a:hover {
     color: white;
 }
 
 .status-subtitle {
-    padding: 0 80px;
+    padding: 0 14vw;
     font-size: 14px;
 }
 
@@ -324,3 +324,76 @@ input[type="submit"] {
 .btn-width {
     max-width: 200px !important;
 }
+
+/* ---- Timeline ---- */
+.timeline, .timeline-24 {
+    position: relative;
+    display: block;
+    height: 15px;
+    border-bottom: 2px dotted #bbb;
+    padding: 0;
+}
+
+/* ---- Timeline elements ---- */
+li {
+    position: relative;
+    display: inline-block;
+    margin: auto;
+    font-size: 12px;
+    font-weight: 600;
+    height: 50px;
+}
+
+li img {
+    display: block;
+    width: 27px;
+    height: 27px;
+    border: 3px solid #ED768B;
+    border-radius: 50%;
+    background-color: #ED768B;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.timeline li {
+    width:30%;
+}
+
+.timeline-24 li {
+    width: 23%;
+}
+
+li .diplome {
+  position: absolute;
+  text-align: center;
+  top: 70%;
+}
+li .point {
+    content: "";
+    display: block;
+    width: 30px;
+    height: 30px;
+    border: 4px solid #ED768B;
+    border-radius: 50%;
+    background: #fff;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+@media only screen and (max-width: 770px) {
+    .navbar a:last-child  {
+        text-align: right!important;
+    }
+    .status-subtitle {
+        padding: 0 5vw;
+        font-size: 14px;
+    }
+
+    li .diplome {
+        font-size: 12px;
+        line-height: 14px;
+    }
+}
+
+
