@@ -20,6 +20,8 @@ services:
     command: python ouroboros/manage.py runserver --settings=ouroboros.settings.docker_dev 0.0.0.0:8000
     volumes:
       - resume_storage:/resumes
+      - ./ouroboros/templates/:/app/ouroboros/templates
+      - ./ouroboros/static/:/app/ouroboros/static
 
 volumes: 
   resume_storage:
