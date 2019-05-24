@@ -3,7 +3,7 @@ import datetime
 from django import forms
 from django.contrib import admin
 
-from .models import Hacker, Application, Rsvp, Team, Wave
+from .models import Hacker, Application, Rsvp, Wave
 
 
 def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
@@ -111,7 +111,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 class RsvpAdminForm(forms.ModelForm):
     class Meta:
         model = Rsvp
-        fields = ["shirt_size", "notes", "team", "hacker"]
+        fields = ["shirt_size", "notes", "hacker"]
         widgets = {"shirt_size": forms.RadioSelect}
 
 
@@ -119,22 +119,9 @@ class RsvpAdmin(admin.ModelAdmin):
     form = RsvpAdminForm
     list_display = ("shirt_size", "notes")
     fieldsets = [
-        ("Related Objects", {"fields": ["hacker", "team"]}),
+        ("Related Objects", {"fields": ["hacker"]}),
         ("Logistical Information", {"fields": ["shirt_size", "notes"]}),
     ]
-
-    def has_add_permission(self, request, obj=None):
-        return True
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-
-class TeamAdmin(admin.ModelAdmin):
-    fieldsets = [("Team Name", {"fields": ["name"]})]
 
     def has_add_permission(self, request, obj=None):
         return True
@@ -149,5 +136,4 @@ class TeamAdmin(admin.ModelAdmin):
 admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Rsvp, RsvpAdmin)
-admin.site.register(Team, TeamAdmin)
 admin.site.register(Wave, WaveAdmin)
