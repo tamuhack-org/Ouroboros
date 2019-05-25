@@ -1,10 +1,13 @@
 import datetime
 
+from django.core import files
 from django import test
 from django.template.loader import render_to_string
 from django.utils import html, timezone
 
 from hacker import models as hacker_models
+from django.core.files.uploadedfile import SimpleUploadedFile
+from unittest import mock
 
 
 class SharedTestCase(test.TestCase):
@@ -37,12 +40,15 @@ class SharedTestCase(test.TestCase):
         )
         self.hacker2.save()
 
+        self.resume = SimpleUploadedFile("resume.txt", b"dummy")
+        self.resume_file_data = {"resume": self.resume}
+
         self.application_fields = {
             "major": "A",
             "gender": "M",
             "classification": "U1",
             "grad_year": 2020,
-            "dietary_restrictions": "Vegan",
+            "dietary_restrictions": ["Vegan"],
             "num_hackathons_attended": 0,
             "interests": "A",
             "essay1": "A",
@@ -51,7 +57,12 @@ class SharedTestCase(test.TestCase):
             "essay4": "D",
             "notes": "E",
             "hacker": self.hacker,
+            **self.resume_file_data,
         }
+
+        self.updated_application_fields = dict(**self.application_fields)
+        self.updated_application_fields["major"] = "ABCDEFG"
+        del self.updated_application_fields["resume"]
 
     def create_active_wave(self):
         start = timezone.now() - datetime.timedelta(days=1)
