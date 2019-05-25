@@ -13,7 +13,7 @@ services:
       - SECRET_POSTGRES_USER
 
   app:
-    command: python manage.py runserver --settings=ouroboros.settings.prod 0.0.0.0:8000
+    command: python ouroboros/manage.py runserver --settings=ouroboros.settings.prod 0.0.0.0:8000
     secrets:
       - SECRET_POSTGRES_PASS
       - SECRET_POSTGRES_USER
