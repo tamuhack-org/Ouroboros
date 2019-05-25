@@ -1,13 +1,14 @@
 import datetime
+import os
+from unittest import mock
 
-from django.core import files
 from django import test
+from django.core import files
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.template.loader import render_to_string
 from django.utils import html, timezone
 
 from hacker import models as hacker_models
-from django.core.files.uploadedfile import SimpleUploadedFile
-from unittest import mock
 
 
 class SharedTestCase(test.TestCase):
