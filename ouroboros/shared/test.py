@@ -37,6 +37,22 @@ class SharedTestCase(test.TestCase):
         )
         self.hacker2.save()
 
+        self.application_fields = {
+            "major": "A",
+            "gender": "M",
+            "classification": "U1",
+            "grad_year": 2020,
+            "dietary_restrictions": "Vegan",
+            "num_hackathons_attended": 0,
+            "interests": "A",
+            "essay1": "A",
+            "essay2": "B",
+            "essay3": "C",
+            "essay4": "D",
+            "notes": "E",
+            "hacker": self.hacker,
+        }
+
     def create_active_wave(self):
         start = timezone.now() - datetime.timedelta(days=1)
         end = start + datetime.timedelta(days=30)
