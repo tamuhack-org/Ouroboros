@@ -1,5 +1,7 @@
 VSCode Settings files
 .vscode
+
+hacker_resumes
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

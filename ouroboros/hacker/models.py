@@ -33,12 +33,7 @@ GENDERS = (
     ("NA", "Prefer not to disclose"),
 )
 
-CLASSIFICATIONS = [
-    ("U1", "U1"),
-    ("U2", "U2"),
-    ("U3", "U3"),
-    ("U4", "U4"),
-]
+CLASSIFICATIONS = [("U1", "U1"), ("U2", "U2"), ("U3", "U3"), ("U4", "U4")]
 
 DIETARY_RESTRICTIONS = (
     ("Vegan", "Vegan"),
@@ -133,7 +128,11 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     def didnt_rsvp_in_time(self):
-        return not getattr(self, "rsvp", None) and self.rsvp_deadline < timezone.now()
+        return (
+            not getattr(self, "rsvp", None)
+            and getattr(self, "rsvp_deadline", None) is not None
+            and self.rsvp_deadline < timezone.now()
+        )
 
 
 class WaveManager(models.Manager):
@@ -194,7 +193,7 @@ class Application(models.Model):
         blank=True,
         help_text="Provide any additional notes and/or comments in the text box provided",
     )
-    resume = models.FileField(upload_to="hacker_resumes", null=True, blank=True)
+    resume = models.FileField(upload_to="hacker_resumes")
 
     approved = models.NullBooleanField(blank=True)
 

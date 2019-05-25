@@ -1,5 +1,6 @@
 {% extends 'hacker/dashboard_base.html' %} {% load static %} {% block content %}
-
+{% load tz %}
+{% get_current_timezone as TIME_ZONE %}
 <div class="pt-5">
   <div class="login-box">
   
@@ -54,7 +55,7 @@
         <div class="app-status">INCOMPLETE</div>
 
         <p class="status-subtitle pt-2">
-          Submit your application before 11:59pm CDT, 21st Sept 2019 to be considered.
+            Submit your application before {{active_wave_end}} {{TIME_ZONE}} to be considered.
         </p>
 
         <div class="row login-alt-options pt-4">
