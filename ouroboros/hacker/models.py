@@ -13,7 +13,7 @@ from django.core import mail
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from django.template.loader import render_to_string
+from django.urls import reverse_lazy
 from django.utils import html, timezone
 from multiselectfield import MultiSelectField
 
@@ -204,70 +204,8 @@ class Application(models.Model):
     def __str__(self):
         return "%s, %s - Application" % (self.hacker.last_name, self.hacker.first_name)
 
-
-@receiver(pre_save, sender=Application)
-def application_approved(sender, instance: Application, **kwargs):
-    try:
-        obj = sender.objects.get(pk=instance.pk)
-    except sender.DoesNotExist:
-        pass
-    else:
-        if not obj.approved and instance.approved:
-            deadline = timezone.now().replace(
-                hour=23, minute=59, second=59, microsecond=0
-            ) + datetime.timedelta(days=settings.DAYS_TO_RSVP)
-            instance.hacker.rsvp_deadline = deadline
-            instance.hacker.save()
-            send_application_approved_email(instance.hacker)
-
-
-def send_application_approved_email(hacker: Hacker):
-    # User has been approved!
-    email_template = "emails/application/approved.html"
-    subject = f"Your {settings.EVENT_NAME} application has been approved!"
-
-    html_message = render_to_string(
-        email_template,
-        context={"first_name": hacker.first_name, "event_name": settings.EVENT_NAME},
-    )
-    msg = html.strip_tags(html_message)
-    mail.send_mail(
-        subject,
-        msg,
-        settings.DEFAULT_FROM_EMAIL,
-        [hacker.email],
-        html_message=html_message,
-    )
-
-
-@receiver(post_save, sender=Application)
-def send_application_email(sender, instance: Application, **kwargs):
-    if instance.approved:
-        # Don't send two emails when a user's application gets approved.
-        # It's not like they'll be making edits to their application afterwards anyway
-        return
-    created: bool = kwargs["created"]
-
-    email_template = "emails/application/updated.html"
-    subject = f"Your {settings.EVENT_NAME} application has been updated!"
-    if created:
-        email_template = "emails/application/created.html"
-        subject = f"Your {settings.EVENT_NAME} application has been created!"
-
-    hacker: Hacker = instance.hacker
-    html_message = render_to_string(
-        email_template,
-        context={"first_name": hacker.first_name, "event_name": settings.EVENT_NAME},
-    )
-    msg = html.strip_tags(html_message)
-    mail.send_mail(
-        subject,
-        msg,
-        settings.DEFAULT_FROM_EMAIL,
-        [hacker.email],
-        html_message=html_message,
-    )
-
+    def get_absolute_url(self):
+        return reverse_lazy("application_update", args=[self.pk])
 
 class Rsvp(models.Model):
     """
@@ -289,28 +227,3 @@ class Rsvp(models.Model):
 
     def __str__(self):
         return "%s, %s - Rsvp" % (self.hacker.last_name, self.hacker.first_name)
-
-
-@receiver(post_save, sender=Rsvp)
-def send_rsvp_email(sender, **kwargs):
-    rsvp: Rsvp = kwargs["instance"]
-    created: bool = kwargs["created"]
-
-    email_template = "emails/rsvp/updated.html"
-    subject = f"Your {settings.EVENT_NAME} RSVP has been updated!"
-    if created:
-        email_template = "emails/rsvp/created.html"
-        subject = f"Your {settings.EVENT_NAME} RSVP has been created!"
-    hacker: Hacker = rsvp.hacker
-    html_message = render_to_string(
-        email_template,
-        context={"first_name": hacker.first_name, "event_name": settings.EVENT_NAME},
-    )
-    msg = html.strip_tags(html_message)
-    mail.send_mail(
-        subject,
-        msg,
-        settings.DEFAULT_FROM_EMAIL,
-        [hacker.email],
-        html_message=html_message,
-    )

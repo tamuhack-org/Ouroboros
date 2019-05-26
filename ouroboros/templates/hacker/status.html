@@ -3,65 +3,67 @@
 {% get_current_timezone as TIME_ZONE %}
 <div class="pt-5">
   <div class="login-box">
-  
+    
     <header>
       {% if COMPLETE or NEEDS_TO_RSVP %}
-        <ol class="timeline-24">
-      {% else %}
+      <ol class="timeline-24">
+        {% else %}
         <ol class="timeline">
-      {% endif %}
-
+          {% endif %}
+          
         <li>
           <p class="diplome">Submitted</p>
           {% if COMPLETE or REJECTED or PENDING or NEEDS_TO_RSVP %}
             <img src="{% static 'tick.svg' %}">
-          {% else %}
-            <span class="point"></span>
-          {% endif %}
-        </li>
-         <li>
-          <p class="diplome">Reviewed</p>
-          {% if COMPLETE or REJECTED or NEEDS_TO_RSVP or WAIT_UNTIL_NEXT_WAVE%}
-           <img src="{% static 'tick.svg' %}">
-          {% else %}
-            <span class="point"></span>
-          {% endif %}        
-        </li>
-        <li>
-          <p class="diplome">Decisions Released</p>
-          {% if COMPLETE or REJECTED or NEEDS_TO_RSVP %}
-            <img src="{% static 'tick.svg' %}"> 
-          {% else %}
-            <span class="point"></span>
-          {% endif %}
-        </li>
-        
-        {% if COMPLETE or NEEDS_TO_RSVP %}
-        <li>
-          <p class="diplome">RSVP</p>
-            {% if COMPLETE %}
-              <img src="{% static 'tick.svg' %}"> 
             {% else %}
-              <span class="point"></span>
+            <span class="point"></span>
             {% endif %}
-        </li>{% endif %}
-      </ol>
-    </header>
-
-    <div class="pt-4 text-center submit-pg">
-      <br>
-      {% if NEEDS_TO_APPLY %}
+          </li>
+          <li>
+            <p class="diplome">Reviewed</p>
+            {% if COMPLETE or REJECTED or NEEDS_TO_RSVP or WAIT_UNTIL_NEXT_WAVE%}
+            <img src="{% static 'tick.svg' %}">
+            {% else %}
+            <span class="point"></span>
+            {% endif %}        
+          </li>
+          <li>
+            <p class="diplome">Decisions Released</p>
+            {% if COMPLETE or REJECTED or NEEDS_TO_RSVP %}
+            <img src="{% static 'tick.svg' %}"> 
+            {% else %}
+            <span class="point"></span>
+            {% endif %}
+          </li>
+          
+          {% if COMPLETE or NEEDS_TO_RSVP %}
+          <li>
+            <p class="diplome">RSVP</p>
+            {% if COMPLETE %}
+            <img src="{% static 'tick.svg' %}"> 
+            {% else %}
+            <span class="point"></span>
+            {% endif %}
+          </li>{% endif %}
+        </ol>
+      </header>
+      
+      <div class="pt-4 text-center submit-pg">
+        <br>
+        {% if NEEDS_TO_APPLY %}
         <p> Your application is </p>
         <div class="app-status">INCOMPLETE</div>
-
+        
         <p class="status-subtitle pt-2">
-            Submit your application before {{active_wave_end}} {{TIME_ZONE}} to be considered.
+          {% localtime off %}
+          Submit your application before {{active_wave_end}} {{TIME_ZONE}} to be considered.
+          {% endlocaltime %}
         </p>
 
         <div class="row login-alt-options pt-4">
           <div class="col-sm-12 col-lg-12 text-center">
               <br>
-              <a href="{% url 'application' %}" class="btn btn-login">Complete Application</a>
+              <a href="{% url 'application_create' %}" class="btn btn-login">Complete Application</a>
           </div>
         </div>
 
@@ -70,13 +72,12 @@
       <div class="app-status">SUBMITTED</div>
 
       <p class="status-subtitle pt-2">
-        Check back soon! Decisions will be released 11:59pm CDT, 21st Sept 2019.
+        Check back soon! Decisions will be released soon.
       </p>
-
       <div class="row login-alt-options pt-4">
         <div class="col-sm-12 col-lg-12 text-center">
             <br>
-            <a href="{% url 'application' %}" class="btn btn-login">View Application</a>
+            <a href="{{application.get_absolute_url}}" class="btn btn-login">View Application</a>
         </div>
       </div>
 
@@ -85,7 +86,9 @@
       <div class="app-status">ACCEPTED</div>
 
       <p class="status-subtitle pt-2">
-        Please RSVP below by 11:59pm CDT, 21 Sept or you risk losing your spot.
+        {% localtime off %}
+        Please RSVP below by {{rsvp_deadline}} {{TIME_ZONE}} or you risk losing your spot.
+        {% endlocaltime %}
       </p>
        <div class="row login-alt-options pt-4">
         <div class="col-sm-12 col-lg-12 text-center">
@@ -118,7 +121,7 @@
       <div class="row login-alt-options pt-4">
         <div class="col-sm-12 col-lg-12 text-center">
             <br>
-            <a href="{% url 'application' %}" class="btn btn-login">View Application</a>
+            <a href="{% url 'application_create' %}" class="btn btn-login">View Application</a>
         </div>
       </div>{%endif%}
     </div>
