@@ -13,6 +13,7 @@ from django.core import mail
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils import html, timezone
 from multiselectfield import MultiSelectField
@@ -134,6 +135,16 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
             and self.rsvp_deadline < timezone.now()
         )
 
+    def email_hacker(self, subject, message, from_email=None, **kwargs):
+        """Send an email to this user."""
+        mail.send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    def email_html_hacker(self, template_name, context, subject):
+        """Send an HTML email to the hacker."""
+        html_msg = render_to_string(template_name, context)
+        msg = html.strip_tags(html_msg)
+        self.email_hacker(subject, msg, html_message=html_msg)
+
 
 class WaveManager(models.Manager):
     def next_wave(self, dt: datetime.datetime = timezone.now()):
@@ -207,6 +218,7 @@ class Application(models.Model):
     def get_absolute_url(self):
         return reverse_lazy("application_update", args=[self.pk])
 
+
 class Rsvp(models.Model):
     """
     Represents a `Hacker`'s confirmation that they are attending this hackathon.
@@ -227,3 +239,18 @@ class Rsvp(models.Model):
 
     def __str__(self):
         return "%s, %s - Rsvp" % (self.hacker.last_name, self.hacker.first_name)
+
+
+def send_rsvp_creation_email(hacker: Hacker) -> None:
+    email_template = "emails/rsvp/created.html"
+    subject = f"Your {settings.EVENT_NAME} RSVP has been received!"
+    context = {"first_name": hacker.first_name, "event_name": settings.EVENT_NAME}
+
+    hacker.email_html_hacker(email_template, context, subject)
+
+
+@receiver(signal=post_save, sender=Rsvp)
+def on_rsvp_post_save(sender, instance, *args, **kwargs):
+    created = kwargs["created"]
+    if created:
+        send_rsvp_creation_email(instance.hacker)
