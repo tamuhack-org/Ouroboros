@@ -41,10 +41,10 @@ class ApplicationViewTestCase(test.SharedTestCase):
         response = self.client.post(
             reverse_lazy("application_create"), self.application_fields
         )
-        app_pk = hacker_models.Application.objects.get(hacker=self.hacker).pk
+        app = hacker_models.Application.objects.get(hacker=self.hacker)
         response = self.client.post(
-            reverse_lazy("application_update", args=[app_pk]), self.updated_application_fields
+            reverse_lazy("application_update", args=[app.pk]), self.updated_application_fields
         )
 
-        app = hacker_models.Application.objects.get(hacker=self.hacker)
+        app.refresh_from_db()
         self.assertEqual(app.major, self.updated_application_fields["major"])

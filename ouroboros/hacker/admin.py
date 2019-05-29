@@ -78,6 +78,14 @@ def send_application_approval_email(hacker: Hacker) -> None:
     hacker.email_html_hacker(email_template, context, subject)
 
 
+def send_application_rejection_email(hacker: Hacker) -> None:
+    """Sends an email to this Hacker when their application has been rejected."""
+    email_template = "emails/application/rejected.html"
+    subject = f"Regarding your {settings.EVENT_NAME} application"
+    context = {"first_name": hacker.first_name, "event_name": settings.EVENT_NAME}
+    hacker.email_html_hacker(email_template, context, subject)
+
+
 def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
     with transaction.atomic():
         deadline = timezone.now().replace(
@@ -94,6 +102,7 @@ def reject(self, request, queryset):  # Needs to be Tested!!!
     with transaction.atomic():
         for instance in queryset:
             instance.approved = False
+            send_application_rejection_email(instance.hacker)
             instance.save()
 
 

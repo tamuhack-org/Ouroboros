@@ -1,4 +1,5 @@
 from shared import test
+from django.core.exceptions import ValidationError
 from hacker import models as hacker_models
 from django.utils import timezone
 import datetime
@@ -22,3 +23,8 @@ class WaveManagerTestCase(test.SharedTestCase):
     def test_next_wave(self):
         wave = hacker_models.Wave.objects.next_wave()
         self.assertEqual(wave, self.wave2)
+
+    def test_cant_have_end_before_start(self):
+        bad_wave = hacker_models.Wave(start=self.wave2_end, end=self.wave2_start)
+        with self.assertRaises(ValidationError):
+            bad_wave.full_clean()

@@ -32,14 +32,12 @@ class SharedTestCase(test.TestCase):
         self.first_name2 = "John"
         self.last_name2 = "Doe"
 
-        self.hacker2 = hacker_models.Hacker(
+        self.hacker2 = hacker_models.Hacker.objects.create_superuser(
             email=self.email2,
             password=self.password2,
             first_name=self.first_name2,
             last_name=self.last_name2,
-            is_active=True,
         )
-        self.hacker2.save()
 
         self.resume = SimpleUploadedFile("resume.txt", b"dummy")
         self.resume_file_data = {"resume": self.resume}

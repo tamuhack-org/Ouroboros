@@ -9,7 +9,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
-from django.core import mail
+from django.core import mail, exceptions
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
@@ -175,6 +175,10 @@ class Wave(models.Model):
 
     objects = WaveManager()
 
+    def clean(self):
+        super().clean()
+        if self.start >= self.end:
+            raise exceptions.ValidationError({"start": "Start date can't be after end date."})
 
 class Application(models.Model):
     """
