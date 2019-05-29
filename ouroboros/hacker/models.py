@@ -9,11 +9,12 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
-from django.core import mail
+from django.core import mail, exceptions
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string
+from django.urls import reverse_lazy
 from django.utils import html, timezone
 from multiselectfield import MultiSelectField
 
@@ -134,6 +135,16 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
             and self.rsvp_deadline < timezone.now()
         )
 
+    def email_hacker(self, subject, message, from_email=None, **kwargs):
+        """Send an email to this user."""
+        mail.send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    def email_html_hacker(self, template_name, context, subject):
+        """Send an HTML email to the hacker."""
+        html_msg = render_to_string(template_name, context)
+        msg = html.strip_tags(html_msg)
+        self.email_hacker(subject, msg, html_message=html_msg)
+
 
 class WaveManager(models.Manager):
     def next_wave(self, dt: datetime.datetime = timezone.now()):
@@ -163,6 +174,13 @@ class Wave(models.Model):
     end = models.DateTimeField()
 
     objects = WaveManager()
+
+    def clean(self):
+        super().clean()
+        if self.start >= self.end:
+            raise exceptions.ValidationError(
+                {"start": "Start date can't be after end date."}
+            )
 
 
 class Application(models.Model):
@@ -204,69 +222,8 @@ class Application(models.Model):
     def __str__(self):
         return "%s, %s - Application" % (self.hacker.last_name, self.hacker.first_name)
 
-
-@receiver(pre_save, sender=Application)
-def application_approved(sender, instance: Application, **kwargs):
-    try:
-        obj = sender.objects.get(pk=instance.pk)
-    except sender.DoesNotExist:
-        pass
-    else:
-        if not obj.approved and instance.approved:
-            deadline = timezone.now().replace(
-                hour=23, minute=59, second=59, microsecond=0
-            ) + datetime.timedelta(days=settings.DAYS_TO_RSVP)
-            instance.hacker.rsvp_deadline = deadline
-            instance.hacker.save()
-            send_application_approved_email(instance.hacker)
-
-
-def send_application_approved_email(hacker: Hacker):
-    # User has been approved!
-    email_template = "emails/application/approved.html"
-    subject = f"Your {settings.EVENT_NAME} application has been approved!"
-
-    html_message = render_to_string(
-        email_template,
-        context={"first_name": hacker.first_name, "event_name": settings.EVENT_NAME},
-    )
-    msg = html.strip_tags(html_message)
-    mail.send_mail(
-        subject,
-        msg,
-        settings.DEFAULT_FROM_EMAIL,
-        [hacker.email],
-        html_message=html_message,
-    )
-
-
-@receiver(post_save, sender=Application)
-def send_application_email(sender, instance: Application, **kwargs):
-    if instance.approved:
-        # Don't send two emails when a user's application gets approved.
-        # It's not like they'll be making edits to their application afterwards anyway
-        return
-    created: bool = kwargs["created"]
-
-    email_template = "emails/application/updated.html"
-    subject = f"Your {settings.EVENT_NAME} application has been updated!"
-    if created:
-        email_template = "emails/application/created.html"
-        subject = f"Your {settings.EVENT_NAME} application has been created!"
-
-    hacker: Hacker = instance.hacker
-    html_message = render_to_string(
-        email_template,
-        context={"first_name": hacker.first_name, "event_name": settings.EVENT_NAME},
-    )
-    msg = html.strip_tags(html_message)
-    mail.send_mail(
-        subject,
-        msg,
-        settings.DEFAULT_FROM_EMAIL,
-        [hacker.email],
-        html_message=html_message,
-    )
+    def get_absolute_url(self):
+        return reverse_lazy("application_update", args=[self.pk])
 
 
 class Rsvp(models.Model):
@@ -291,26 +248,16 @@ class Rsvp(models.Model):
         return "%s, %s - Rsvp" % (self.hacker.last_name, self.hacker.first_name)
 
 
-@receiver(post_save, sender=Rsvp)
-def send_rsvp_email(sender, **kwargs):
-    rsvp: Rsvp = kwargs["instance"]
-    created: bool = kwargs["created"]
+def send_rsvp_creation_email(hacker: Hacker) -> None:
+    email_template = "emails/rsvp/created.html"
+    subject = f"Your {settings.EVENT_NAME} RSVP has been received!"
+    context = {"first_name": hacker.first_name, "event_name": settings.EVENT_NAME}
 
-    email_template = "emails/rsvp/updated.html"
-    subject = f"Your {settings.EVENT_NAME} RSVP has been updated!"
+    hacker.email_html_hacker(email_template, context, subject)
+
+
+@receiver(signal=post_save, sender=Rsvp)
+def on_rsvp_post_save(sender, instance, *args, **kwargs):
+    created = kwargs["created"]
     if created:
-        email_template = "emails/rsvp/created.html"
-        subject = f"Your {settings.EVENT_NAME} RSVP has been created!"
-    hacker: Hacker = rsvp.hacker
-    html_message = render_to_string(
-        email_template,
-        context={"first_name": hacker.first_name, "event_name": settings.EVENT_NAME},
-    )
-    msg = html.strip_tags(html_message)
-    mail.send_mail(
-        subject,
-        msg,
-        settings.DEFAULT_FROM_EMAIL,
-        [hacker.email],
-        html_message=html_message,
-    )
+        send_rsvp_creation_email(instance.hacker)

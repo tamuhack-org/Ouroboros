@@ -37,21 +37,11 @@ class CreateUpdateView(
         return super(CreateUpdateView, self).post(request, *args, **kwargs)
 
 
-class ApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
-    """
-    A view for creating an `Application` for a `Hacker`. `GET` requests will
-    display a form that users will fill out, and `POST` requests will submit
-    that form for validation.
-    """
-
-    template_name = "hacker/application.html"
+class ApplicationCreateView(mixins.LoginRequiredMixin, generic.CreateView):
+    template_name = "hacker/application_create.html"
     form_class = hacker_forms.ApplicationModelForm
     success_url = reverse_lazy("status")
-
-    def get_object(self):
-        if getattr(self.request.user, "application", None) is None:
-            return None
-        return self.request.user.application
+    queryset = hacker_models.Application.objects.all()
 
     def form_valid(self, form: forms.Form):
         application: hacker_models.Application = form.save(commit=False)
@@ -62,7 +52,7 @@ class ApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
 
     def get(self, request, *args, **kwargs):
         if not hacker_models.Wave.objects.active_wave():
-            return redirect(reverse_lazy("status"))
+            return redirect(self.success_url)
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -75,6 +65,27 @@ class ApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
     class Meta:
         model = hacker_models.Application
 
+
+class ApplicationUpdateView(mixins.LoginRequiredMixin, generic.UpdateView):
+    template_name = "hacker/application_update.html"
+    form_class = hacker_forms.ApplicationModelForm
+    success_url = reverse_lazy("status")
+    queryset=hacker_models.Application.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        if not hacker_models.Wave.objects.active_wave():
+            return redirect(self.success_url)
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if not hacker_models.Wave.objects.active_wave():
+            raise exceptions.PermissionDenied(
+                "Applications can only be submitted during a registration wave."
+            )
+        return super().post(request, *args, **kwargs)
+
+    class Meta:
+        model = hacker_models.Application
 
 class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
     """
@@ -99,6 +110,7 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
                 kwargs["active_wave_end"] = active_wave.end
                 kwargs["NEEDS_TO_APPLY"] = True
             elif hacker.application.approved is None:
+                kwargs["application"] = hacker.application
                 kwargs["PENDING"] = True
             else:
                 # User application has response

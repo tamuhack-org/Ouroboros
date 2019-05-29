@@ -1,9 +1,14 @@
 import datetime
 
 from django import forms
+from django.conf import settings
 from django.contrib import admin
+from django.core import mail
+from django.db import transaction
+from django.template.loader import render_to_string
+from django.utils import html, timezone
 
-from .models import Hacker, Application, Rsvp, Wave
+from .models import Application, Hacker, Rsvp, Wave
 
 
 def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
@@ -44,14 +49,6 @@ class HackerAdmin(admin.ModelAdmin):
         return False
 
 
-def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
-    queryset.update(approved=True)
-
-
-def reject(self, request, queryset):  # Needs to be Tested!!!
-    queryset.update(approved=False)
-
-
 class ApplicationAdminForm(forms.ModelForm):
     class Meta:
         model = Application
@@ -66,6 +63,47 @@ class ApplicationAdminForm(forms.ModelForm):
 
 class WaveAdmin(admin.ModelAdmin):
     list_display = ("pk", "start", "end")
+
+
+def create_rsvp_deadline(hacker: Hacker, deadline: datetime.datetime) -> None:
+    hacker.rsvp_deadline = deadline
+    hacker.save()
+
+
+def send_application_approval_email(hacker: Hacker) -> None:
+    """Sends an email to this Hacker when their application has been approved."""
+    email_template = "emails/application/approved.html"
+    subject = f"Your {settings.EVENT_NAME} application has been approved!"
+    context = {"first_name": hacker.first_name, "event_name": settings.EVENT_NAME}
+    hacker.email_html_hacker(email_template, context, subject)
+
+
+def send_application_rejection_email(hacker: Hacker) -> None:
+    """Sends an email to this Hacker when their application has been rejected."""
+    email_template = "emails/application/rejected.html"
+    subject = f"Regarding your {settings.EVENT_NAME} application"
+    context = {"first_name": hacker.first_name, "event_name": settings.EVENT_NAME}
+    hacker.email_html_hacker(email_template, context, subject)
+
+
+def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
+    with transaction.atomic():
+        deadline = timezone.now().replace(
+            hour=23, minute=59, second=59, microsecond=0
+        ) + datetime.timedelta(settings.DAYS_TO_RSVP)
+        for instance in queryset:
+            instance.approved = True
+            create_rsvp_deadline(instance.hacker, deadline)
+            send_application_approval_email(instance.hacker)
+            instance.save()
+
+
+def reject(self, request, queryset):  # Needs to be Tested!!!
+    with transaction.atomic():
+        for instance in queryset:
+            instance.approved = False
+            send_application_rejection_email(instance.hacker)
+            instance.save()
 
 
 class ApplicationAdmin(admin.ModelAdmin):

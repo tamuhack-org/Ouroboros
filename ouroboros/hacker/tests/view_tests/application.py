@@ -8,20 +8,21 @@ from shared import test
 
 class ApplicationViewTestCase(test.SharedTestCase):
     def test_redirects_when_not_logged_in(self):
-        response = self.client.get(reverse_lazy("application"))
+        response = self.client.get(reverse_lazy("application_create"))
         self.assertRedirects(
-            response, f"{reverse_lazy('login')}?next={reverse_lazy('application')}"
+            response,
+            f"{reverse_lazy('login')}?next={reverse_lazy('application_create')}",
         )
 
     def test_redirects_when_no_active_wave(self):
         self.client.force_login(self.hacker)
-        response = self.client.get(reverse_lazy("application"))
+        response = self.client.get(reverse_lazy("application_create"))
         self.assertRedirects(response, reverse_lazy("status"))
 
     def test_rejects_when_no_active_wave(self):
         self.client.force_login(self.hacker)
         response = self.client.post(
-            reverse_lazy("application"), self.application_fields
+            reverse_lazy("application_create"), self.application_fields
         )
         self.assertEqual(response.status_code, 403)
 
@@ -29,7 +30,7 @@ class ApplicationViewTestCase(test.SharedTestCase):
         self.create_active_wave()
         self.client.force_login(self.hacker)
         response = self.client.post(
-            reverse_lazy("application"), self.application_fields
+            reverse_lazy("application_create"), self.application_fields
         )
         app = hacker_models.Application.objects.get(hacker=self.hacker)
         self.assertEqual(app.hacker, self.hacker)
@@ -38,11 +39,12 @@ class ApplicationViewTestCase(test.SharedTestCase):
         self.create_active_wave()
         self.client.force_login(self.hacker)
         response = self.client.post(
-            reverse_lazy("application"), self.application_fields
+            reverse_lazy("application_create"), self.application_fields
         )
+        app = hacker_models.Application.objects.get(hacker=self.hacker)
         response = self.client.post(
-            reverse_lazy("application"), self.updated_application_fields
+            reverse_lazy("application_update", args=[app.pk]), self.updated_application_fields
         )
 
-        app = hacker_models.Application.objects.get(hacker=self.hacker)
+        app.refresh_from_db()
         self.assertEqual(app.major, self.updated_application_fields["major"])
