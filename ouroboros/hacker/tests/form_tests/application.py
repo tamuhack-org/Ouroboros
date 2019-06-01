@@ -1,11 +1,9 @@
 from hacker import forms
 from shared import test
+from django.test import modify_settings
 
 
 class ApplicationModelFormTestCase(test.SharedTestCase):
-    def setUp(self):
-        super().setUp()
-
     def test_isnt_valid_when_no_active_wave(self):
         form = forms.ApplicationModelForm(
             self.application_fields, self.resume_file_data

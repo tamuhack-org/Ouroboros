@@ -211,7 +211,7 @@ class Application(models.Model):
         blank=True,
         help_text="Provide any additional notes and/or comments in the text box provided",
     )
-    resume = models.FileField(upload_to="hacker_resumes")
+    resume = models.FileField()
 
     approved = models.NullBooleanField(blank=True)
 

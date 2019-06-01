@@ -1,8 +1,10 @@
 import datetime
 import os
+import shutil
 from unittest import mock
 
 from django import test
+from django.test import override_settings
 from django.core import files
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.template.loader import render_to_string
@@ -10,7 +12,9 @@ from django.utils import html, timezone
 
 from hacker import models as hacker_models
 
+TEST_RESUME_DIR = "test_resume_dir"
 
+@override_settings(MEDIA_ROOT=TEST_RESUME_DIR)
 class SharedTestCase(test.TestCase):
     def setUp(self):
         self.email = "dummy@email.com"
@@ -75,3 +79,6 @@ class SharedTestCase(test.TestCase):
         html_output = render_to_string(template_name, context)
         stripped = html.strip_tags(html_output)
         self.assertEqual(email.body, stripped)
+
+    def tearDown(self):
+        shutil.rmtree(TEST_RESUME_DIR, ignore_errors=True)

@@ -28,3 +28,6 @@ DATABASES = {
 # Email Settings
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+
+# Upload Settings
+MEDIA_ROOT = "hacker_resumes"

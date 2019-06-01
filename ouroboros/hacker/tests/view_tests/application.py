@@ -1,7 +1,7 @@
 import json
 
 from django.urls import reverse_lazy
-
+from django.test import modify_settings
 from hacker import models as hacker_models
 from shared import test
 
