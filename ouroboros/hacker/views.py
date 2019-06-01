@@ -37,11 +37,16 @@ class CreateUpdateView(
         return super(CreateUpdateView, self).post(request, *args, **kwargs)
 
 
-class ApplicationCreateView(mixins.LoginRequiredMixin, generic.CreateView):
-    template_name = "hacker/application_create.html"
+class ApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
+    template_name = "hacker/application.html"
     form_class = hacker_forms.ApplicationModelForm
     success_url = reverse_lazy("status")
     queryset = hacker_models.Application.objects.all()
+
+    def get_object(self):
+        if getattr(self.request.user, "application", None) is None:
+            return None
+        return self.request.user.application
 
     def form_valid(self, form: forms.Form):
         application: hacker_models.Application = form.save(commit=False)
@@ -65,27 +70,6 @@ class ApplicationCreateView(mixins.LoginRequiredMixin, generic.CreateView):
     class Meta:
         model = hacker_models.Application
 
-
-class ApplicationUpdateView(mixins.LoginRequiredMixin, generic.UpdateView):
-    template_name = "hacker/application_update.html"
-    form_class = hacker_forms.ApplicationModelForm
-    success_url = reverse_lazy("status")
-    queryset=hacker_models.Application.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        if not hacker_models.Wave.objects.active_wave():
-            return redirect(self.success_url)
-        return super().get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        if not hacker_models.Wave.objects.active_wave():
-            raise exceptions.PermissionDenied(
-                "Applications can only be submitted during a registration wave."
-            )
-        return super().post(request, *args, **kwargs)
-
-    class Meta:
-        model = hacker_models.Application
 
 class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
     """

@@ -223,7 +223,7 @@ class Application(models.Model):
         return "%s, %s - Application" % (self.hacker.last_name, self.hacker.first_name)
 
     def get_absolute_url(self):
-        return reverse_lazy("application_update", args=[self.pk])
+        return reverse_lazy("application", args=[self.pk])
 
 
 class Rsvp(models.Model):

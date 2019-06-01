@@ -63,7 +63,7 @@
         <div class="row login-alt-options pt-4">
           <div class="col-sm-12 col-lg-12 text-center">
               <br>
-              <a href="{% url 'application_create' %}" class="btn btn-login">Complete Application</a>
+              <a href="{% url 'application' %}" class="btn btn-login">Complete Application</a>
           </div>
         </div>
 
@@ -77,7 +77,7 @@
       <div class="row login-alt-options pt-4">
         <div class="col-sm-12 col-lg-12 text-center">
             <br>
-            <a href="{{application.get_absolute_url}}" class="btn btn-login">View Application</a>
+            <a href="{% url 'application' %}" class="btn btn-login">View Application</a>
         </div>
       </div>
 
@@ -121,7 +121,7 @@
       <div class="row login-alt-options pt-4">
         <div class="col-sm-12 col-lg-12 text-center">
             <br>
-            <a href="{% url 'application_create' %}" class="btn btn-login">View Application</a>
+            <a href="{% url 'application' %}" class="btn btn-login">View Application</a>
         </div>
       </div>{%endif%}
     </div>

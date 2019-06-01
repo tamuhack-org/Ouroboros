@@ -61,7 +61,8 @@ class SharedTestCase(test.TestCase):
 
         self.updated_application_fields = dict(**self.application_fields)
         self.updated_application_fields["major"] = "ABCDEFG"
-        del self.updated_application_fields["resume"]
+        self.resume2 = SimpleUploadedFile("resume2.txt", b"dummy2")
+        self.updated_application_fields["resume"] = self.resume2
 
     def create_active_wave(self):
         start = timezone.now() - datetime.timedelta(days=1)
