@@ -65,6 +65,10 @@ class ApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
             raise exceptions.PermissionDenied(
                 "Applications can only be submitted during a registration wave."
             )
+        if request.user.cant_make_it:
+            raise exceptions.PermissionDenied(
+                "Applications can't be updated after declining admission."
+            )
         return super().post(request, *args, **kwargs)
 
     class Meta:
@@ -82,6 +86,10 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         hacker = self.request.user
         active_wave = hacker_models.Wave.objects.active_wave()
+        if hacker.cant_make_it:
+            kwargs["CANT_MAKE_IT"] = True
+            return super().get_context_data(**kwargs)
+
         if not active_wave:
             next_wave = hacker_models.Wave.objects.next_wave()
             if not next_wave:
@@ -127,16 +135,24 @@ class RsvpView(mixins.UserPassesTestMixin, CreateUpdateView):
     template_name = "hacker/rsvp.html"
     queryset = hacker_models.Rsvp.objects.all()
     success_url = reverse_lazy("status")
-    permission_denied_message = (
-        "You need to be both logged-in and have an approved application to RSVP."
-    )
     fields = ["shirt_size", "notes"]
+
+    def get_permission_denied_message(self):
+        if self.request.user.is_anonymous:
+            return "You need to be logged in to RSVP."
+        if getattr(self.request.user, "application", None) is None:
+            return "You must have submitted an application to RSVP."
+        if not self.request.user.application.approved:
+            return "Your application must be approved to RSVP."
+        if self.request.user.cant_make_it:
+            return f"You can't RSVP after relinquishing your spot."
 
     def test_func(self):
         return (
             not self.request.user.is_anonymous
             and getattr(self.request.user, "application", None) is not None
             and self.request.user.application.approved
+            and not self.request.user.cant_make_it
         )
 
     def get_object(self):
@@ -162,3 +178,15 @@ class RsvpView(mixins.UserPassesTestMixin, CreateUpdateView):
 
     class Meta:
         model = hacker_models.Rsvp
+
+
+class DeclineView(mixins.LoginRequiredMixin, views.View):
+    def post(self, request, *args, **kwargs):
+        if getattr(request.user, "application", None) is None:
+            raise exceptions.PermissionDenied(
+                "You can't decline admission without applying first."
+            )
+
+        request.user.cant_make_it = True
+        request.user.save()
+        return redirect(reverse_lazy("status"))

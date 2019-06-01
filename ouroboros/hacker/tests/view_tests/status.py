@@ -20,6 +20,16 @@ class StatusViewTestCase(test.SharedTestCase):
             response, f"{reverse_lazy('login')}?next={reverse_lazy('status')}"
         )
 
+    def test_cant_make_it_context(self):
+        self.create_active_wave()
+        app = hacker_models.Application(**self.application_fields, wave=self.wave1)
+        app.save()
+        self.hacker.cant_make_it = True
+        self.hacker.save()
+        self.client.force_login(self.hacker)
+        response = self.client.get(reverse_lazy("status"))
+        self.assertIn("CANT_MAKE_IT", response.context)
+
     def test_no_wave_context(self):
         self.client.force_login(self.hacker)
         response = self.client.get(reverse_lazy("status"))

@@ -29,6 +29,16 @@ class ApplicationViewTestCase(test.SharedTestCase):
         )
         self.assertEqual(response.status_code, 403)
 
+    def test_rejects_when_cant_make_it(self):
+        self.client.force_login(self.hacker)
+        response = self.client.post(
+            reverse_lazy("application"), self.application_fields
+        )
+        self.hacker.cant_make_it = True
+        self.hacker.save()
+        response = self.client.post(reverse_lazy("application"), self.updated_application_fields)
+        self.assertEqual(response.status_code, 403)
+
     def test_associates_application_with_user(self):
         self.create_active_wave()
         self.client.force_login(self.hacker)

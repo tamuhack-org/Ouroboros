@@ -113,6 +113,7 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255, blank=False, verbose_name="last name")
 
     rsvp_deadline = models.DateTimeField(null=True)
+    cant_make_it = models.BooleanField(default=False)
 
     checked_in = models.NullBooleanField(blank=True)
     checked_in_datetime = models.DateTimeField(null=True, blank=True)
