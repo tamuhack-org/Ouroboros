@@ -37,9 +37,7 @@ class SignupView(generic.FormView):
         to_email = form.cleaned_data.get("email")
         email = django_email.EmailMessage(subject, msg, to=[to_email])
         email.send()
-        return HttpResponse(
-            "Please confirm your email address to complete your registration!"
-        )
+        return render(self.request, "registration/check_email.html")
 
 
 class ActivateView(views.View):
