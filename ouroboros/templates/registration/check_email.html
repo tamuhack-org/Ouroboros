@@ -1,3 +1,7 @@
 {% extends 'base.html' %} {% block body %}
-<h1>{{ event_name }} 2019 APPLICATION</h1>
+<h1>{{ event_name | upper }} {% now 'Y' %} APPLICATION</h1>
+<p>Thanks for signing up!</p>
+
+<p>Please check your email for a verification link.</p>
+
 {% endblock %}
