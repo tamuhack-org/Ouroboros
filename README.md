@@ -47,6 +47,8 @@ You should only need to run the above command once.
 
 Follow the prompts provided, and you should be able to approve users' applications, and go through the rest of the site.
 
+Please note that when emails are sent in development mode, they're printed to the command line.
+
 ## Running on Host
 
 The other way of running the app is to run it on your local machine. This involves installing [PostgreSQL](https://www.postgresql.org/download/). In these instructions, it's assumed that Postgres is installed and running, and a database named `ouroboros` has been created.
@@ -57,7 +59,6 @@ The other way of running the app is to run it on your local machine. This involv
 4. `python3 manage.py migrate --run-syncdb`
 5. `python3 manage.py createsuperuser`
 6. `python3 manage.py runserver`
-
 
 ## Customization
 
