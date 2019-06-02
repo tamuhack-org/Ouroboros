@@ -78,10 +78,6 @@
         <div class="col-sm-12 col-lg-12 text-center">
             <br>
             <a href="{% url 'application' %}" class="btn btn-login">View Application</a>
-            <form method="POST" action="{% url 'decline' %}">
-                {% csrf_token %}
-              <button type="submit" class="btn">I Can't Make It</button>
-            </form>
         </div>
       </div>
 

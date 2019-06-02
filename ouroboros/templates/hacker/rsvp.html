@@ -1,12 +1,34 @@
 {% extends 'hacker/dashboard_base.html' %} {% block content %}
 <h1>RSVP</h1>
 <hr />
-<form method="POST" action="{% url 'rsvp' %}">
+<p>
+  Will you be able to attend {{ event_name }} {% now 'Y' %} on
+  {{ event_start_date }} for {{ event_start_date | timesince:event_end_date }}?
+</p>
+<button type="button" class="btn btn-lg btn-login" id="rsvp-yes">Yes</button>
+<form method="POST" action="{% url 'decline' %}">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-lg btn-login">
+    No
+  </button>
+</form>
+<form
+  method="POST"
+  action="{% url 'rsvp' %}"
+  id="rsvp-form"
+  style="display:none;"
+>
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit" class="btn btn-lg btn-block btn-login">
     Submit
   </button>
 </form>
+<script>
+  document.getElementById("rsvp-yes").addEventListener("click", e => {
+    e.preventDefault();
+    document.getElementById("rsvp-form").style.display = "inherit";
+  });
+</script>
 
 {% endblock %}
