@@ -37,7 +37,7 @@ docker exec -it ouroboros python3 ouroboros/manage.py migrate --settings=ourobor
 
 From there, you should be able to go through most of the website! Navigate to `http://localhost:8000/account/login`.
 
-In order to go through the entire registration progress, however, you'll need to create an admin user. You can do this by doing:
+In order to go through the entire registration progress, however, you'll need to create an admin user, who has exclusive access to `localhost:8000/admin`. You can do this by doing:
 
 ```sh
 docker exec -it ouroboros python3 ouroboros/manage.py createsuperuser --settings=ouroboros.settings.docker_dev
