@@ -1,7 +1,14 @@
-{% extends 'base.html' %} {% block body %}
-<h1>{{ event_name | upper }} {% now 'Y' %} APPLICATION</h1>
-<p>Thanks for signing up!</p>
+{% extends 'base.html' %} 
+{% block additional_CSS %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'check_email.css' %}" />
+{% endblock %}
+{% block body %}
+<div class="content-container">
+  <h1>{{ event_name | upper }} {% now 'Y' %} APPLICATION</h1>
+  <p>Thanks for signing up!</p>
 
-<p>Please check your email for a verification link.</p>
+  <p>Please check your email for a verification link.</p>
+</div>
 
 {% endblock %}
