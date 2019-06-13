@@ -6,6 +6,10 @@ h2, p {
   margin-bottom: 35px;
 }
 
+h2, p, h3, strong, span {
+  font-family: Questrial, sans-serif;
+}
+
 h3 {
   margin-bottom: 10px;
 }
