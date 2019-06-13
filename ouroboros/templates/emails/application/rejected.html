@@ -1,10 +1,16 @@
-<p>Howdy, {{ first_name }}!</p>
+{% load inlinecss %}
+{% inlinecss "static/email-styling.css" %}
 
-<p>
-  This is our rejection email! We definitely need to work on wording this
-  correctly.
-</p>
 
-<p>
-  <strong>The {{ event_name }} Team</strong>
-</p>
+<div class="content-container">
+
+	<h2>Hello {{ first_name }},</h2>
+  
+    <p>
+  		This is our rejection email! We definitely need to work on wording this correctly.
+	</p>
+
+    <h3>Thanks!</h3>
+    <strong>The {{ event_name }} Team</strong>
+    
+</div>

@@ -1,13 +1,15 @@
-<p>Congratulations, {{ first_name }}!</p>
+{% load inlinecss %}
+{% inlinecss "static/email-styling.css" %}
 
-<p>
-  We're excited to inform you that your {{ event_name }} application has been
-  approved! There's just one more step: we'd like a little more information from
-  you so we know what to order!
-</p>
 
-<p>Thanks!</p>
+<div class="content-container">
+	<h2>Congratulations, {{ first_name }}!</h2>
 
-<p>
-  <strong>The {{ event_name }} Team</strong>
-</p>
+	<p> We're excited to inform you that your {{ event_name }} application has been
+	  approved! There's just one more step: we'd like a little more information from
+	  you so we know what to order!
+	</p>
+
+    <h3>Thanks!</h3>
+    <strong>The {{ event_name }} Team</strong>
+</div>

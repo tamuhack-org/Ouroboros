@@ -1,2 +1,15 @@
-Hi {{ user.first_name }}, Please click on the link to confirm your registration:
-http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{% load inlinecss %}
+{% inlinecss "static/email-styling.css" %}
+
+
+<div class="content-container">
+	<h2>Hi {{ user.first_name }}, </h2>
+
+	<p>
+		Please click on the link to confirm your registration:
+		http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+	</p>
+
+    <h3>Thanks!</h3>
+    <strong>The {{ event_name }} Team</strong>
+</div>
