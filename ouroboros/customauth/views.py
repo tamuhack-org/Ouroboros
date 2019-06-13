@@ -1,4 +1,5 @@
 from django import views
+from django.conf import settings
 from django.contrib.auth import get_user_model, login
 from django.contrib.sites import shortcuts as site_shortcuts
 from django.core import mail as django_email
@@ -32,6 +33,7 @@ class SignupView(generic.FormView):
                 "domain": curr_domain,
                 "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                 "token": email_confirmation_generator.make_token(user),
+                "event_name": settings.EVENT_NAME
             },
         )
         to_email = form.cleaned_data.get("email")
