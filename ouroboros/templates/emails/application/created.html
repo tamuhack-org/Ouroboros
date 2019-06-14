@@ -1,17 +1,37 @@
-{% load inlinecss %}
-{% inlinecss "static/email-styling.css" %}
+<div style="width: 100vw; height: 100vh; background-color: #F9ECEE; z-index: -1; position: absolute; top: 0; left: 0">
 
+	<div style="font-family: Questrial, sans-serif; 
+			background: #fff;
+		    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+	  	    border-radius: 3px;
+  		    padding: 3em 5em !important; 
+	   	    max-width: 800px;
+	  	    display: block;
+	  	    margin: 20px auto;">
+		<h2 style="margin-bottom: 35px;">Hi {{ user.first_name }}!</h2>
 
-<div class="content-container">
+		<p style="margin-bottom: 35px;
+			  	  font-size: 20px;
+				  line-height: 30px;
+				  -webkit-font-smoothing: antialiased;  
+				  font-weight: normal;">
+			The purpose of this email is to confirm our receipt of your
+		    {{ event_name }} application! We'll be carefully reviewing your application,
+		    and will get back to you soon!
+		</p>
 
-	<h2>Hi, {{ first_name }}!</h2>
-	<p>
-	  The purpose of this email is to confirm our receipt of your
-	  {{ event_name }} application! We'll be carefully reviewing your application,
-	  and will get back to you soon!
-	</p>
+	    <h3 style=" margin-bottom: 10px;
+				    font-size: 20px;
+				    line-height: 30px;
+				    -webkit-font-smoothing: antialiased;  
+				    font-weight: normal;">
+			Thanks!
+		</h3>
 
-    <h3>Thanks!</h3>
-    <strong>The {{ event_name }} Team</strong>
-    
+	    <strong style=" color: #ED768B;
+						font-weight: bold;
+						font-size: 20px;">
+			The {{ event_name }} Team
+		</strong>
+	</div>
 </div>
