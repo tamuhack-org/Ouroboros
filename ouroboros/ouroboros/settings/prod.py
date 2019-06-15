@@ -28,8 +28,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "ouroboros",
-        "USER": open("/run/secrets/SECRET_POSTGRES_USER", "r").read(),
-        "PASSWORD": open("/run/secrets/SECRET_POSTGRES_PASS", "r").read(),
+        "USER": open("/run/secrets/SECRET_POSTGRES_USER", "r").read().strip(),
+        "PASSWORD": open("/run/secrets/SECRET_POSTGRES_PASS", "r").read().strip(),
         "HOST": "db",
         "PORT": "",
     }
