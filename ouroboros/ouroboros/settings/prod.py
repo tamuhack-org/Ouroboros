@@ -4,7 +4,7 @@ from .base import *
 SECRET_KEY = open("/run/secrets/SECRET_DJANGO_KEY", "r").read()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
