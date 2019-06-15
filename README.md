@@ -2,6 +2,10 @@
 
 A modular, open-source, fully-customizable hackathon management system.
 
+## Questions
+
+If you have questions, we might've answered them already on the wiki! Check it out.
+
 ## Setting Up
 
 There's two ways of running Ouroboros: by using Docker, or by installing the dependencies yourself.
@@ -59,17 +63,3 @@ The other way of running the app is to run it on your local machine. This involv
 4. `python3 manage.py migrate --run-syncdb`
 5. `python3 manage.py createsuperuser`
 6. `python3 manage.py runserver`
-
-## Customization
-
-Using Ouroboros for your own event? That's awesome!
-
-We tried to make the application as not hard-coded as possible, so you should
-be able to tweak some customization settings (found in `ouroboros/settings/customization.py`)
-that will enable you to customize the event to your needs.
-
-With that in mind, there were a couple of places where we couldn't (cleanly)
-avoid hard-coding. However, we've gone ahead and specified those places for you
-to easily change. We're working on reducing the hard-coding, though.
-
-- The password reset/change emails have the event name hard-coded into them.
