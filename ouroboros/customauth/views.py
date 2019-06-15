@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.conf import settings
 from django.views import generic
 
 from customauth import forms as confirm_forms
@@ -25,18 +26,15 @@ class SignupView(generic.FormView):
         user.save()
         curr_domain = site_shortcuts.get_current_site(self.request)
         subject = "Confirm your email address!"
-        msg = render_to_string(
-            "emails/activate_email.html",
-            {
-                "user": user,
-                "domain": curr_domain,
-                "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                "token": email_confirmation_generator.make_token(user),
-            },
-        )
-        to_email = form.cleaned_data.get("email")
-        email = django_email.EmailMessage(subject, msg, to=[to_email])
-        email.send()
+        template_name = "emails/activate_email.html"
+        context = {
+            "user": user,
+            "domain": curr_domain,
+            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+            "token": email_confirmation_generator.make_token(user),
+            "event_name": settings.EVENT_NAME
+        }
+        user.email_html_hacker(template_name, context, subject)
         return render(self.request, "registration/check_email.html")
 
 

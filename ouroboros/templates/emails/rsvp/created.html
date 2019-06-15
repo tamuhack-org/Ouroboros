@@ -1,16 +1,15 @@
-{% load inlinecss %}
-{% inlinecss "static/email-styling.css" %}
-
-
+<html>
 <div class="content-container">
 
 	<h2>Hi, {{ first_name }}!</h2>
 	<p>
-	  The purpose of this email is to confirm our receipt of your
-	  {{ event_name }} RSVP!
+		The purpose of this email is to confirm our receipt of your
+		{{ event_name }} RSVP!
 	</p>
 
-  <h3>Thanks!</h3>
-    <strong>The {{ event_name }} Team</strong>
-    
+	<h3>Thanks!</h3>
+	<strong>The {{ event_name }} Team</strong>
+
 </div>
+
+</html>

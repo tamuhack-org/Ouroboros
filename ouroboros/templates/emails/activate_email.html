@@ -1,7 +1,4 @@
-{% load inlinecss %}
-{% inlinecss "static/email-styling.css" %}
-
-
+<html>
 <div class="content-container">
 	<h2>Hi {{ user.first_name }}, </h2>
 
@@ -10,6 +7,8 @@
 		http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 	</p>
 
-    <h3>Thanks!</h3>
-    <strong>The {{ event_name }} Team</strong>
+	<h3>Thanks!</h3>
+	<strong>The {{ event_name }} Team</strong>
 </div>
+
+</html>
