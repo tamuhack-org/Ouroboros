@@ -9,7 +9,7 @@ services:
       POSTGRES_USER_FILE: /run/secrets/SECRET_POSTGRES_USER
       POSTGRES_DB: ouroboros
       POSTGRES_USER:
-      POSTGRES_PASS:
+      POSTGRES_PASSWORD:
     secrets:
       - SECRET_POSTGRES_PASS
       - SECRET_POSTGRES_USER
