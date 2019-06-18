@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_inlinecss",
     "hacker.apps.HackerConfig",
     "customauth.apps.CustomauthConfig",
     "multiselectfield",
