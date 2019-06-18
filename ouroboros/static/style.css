@@ -77,6 +77,11 @@
     max-height: 350px;
 }
 
+.sm {
+    padding: 3em 3.4em !important;
+    height: 200px;
+}
+
 .sign_up {
     background-color: #D8ECFE;
     height: 100vh !important;
