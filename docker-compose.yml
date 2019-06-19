@@ -12,7 +12,9 @@ services:
       - postgres-data:/var/lib/postgresql/data
   app:
     container_name: ouroboros
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     depends_on:
       - db
     ports:
