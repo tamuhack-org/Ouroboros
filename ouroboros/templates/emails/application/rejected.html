@@ -1,14 +1,36 @@
 <html>
-<div class="content-container">
+<div style="width: 100vw; height: 100vh; background-color: #dfdfdf; z-index: -1; position: absolute; top: 0; left: 0">
+	<div style="font-family: Questrial, sans-serif; 
+			background: #fff;
+		    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+	  	    border-radius: 3px;
+  		    padding: 3em 5em !important; 
+	   	    max-width: 800px;
+	  	    display: block;
+	  	    margin: 20px auto;">
+		<h2 style="margin-bottom: 35px;">Hello {{ user.first_name }},</h2>
 
-	<h2>Hello {{ first_name }},</h2>
-  
-    <p>
-  		This is our rejection email! We definitely need to work on wording this correctly.
-	</p>
+		<p style="margin-bottom: 35px;
+			  	  font-size: 20px;
+				  line-height: 30px;
+				  -webkit-font-smoothing: antialiased;  
+				  font-weight: normal;">
+	  		This is our rejection email! We definitely need to work on wording this correctly.
+		</p>
 
-    <h3>Thanks!</h3>
-    <strong>The {{ event_name }} Team</strong>
-    
+	    <h3 style=" margin-bottom: 10px;
+				    font-size: 20px;
+				    line-height: 30px;
+				    -webkit-font-smoothing: antialiased;  
+				    font-weight: normal;">
+			Thanks!
+		</h3>
+
+	    <strong style=" color: #ED768B;
+						font-weight: bold;
+						font-size: 20px;">
+			The {{ event_name }} Team
+		</strong>
+	</div>
 </div>
 </html>
