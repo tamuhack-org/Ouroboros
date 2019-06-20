@@ -1,5 +1,8 @@
-VSCode Settings files
+# VSCode Settings files
 .vscode
+
+# Collected static files
+public/
 
 hacker_resumes
 # Byte-compiled / optimized / DLL files
