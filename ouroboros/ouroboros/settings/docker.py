@@ -1,7 +1,8 @@
 from .base import *
+import os
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = open("/run/secrets/SECRET_DJANGO_KEY", "r").read()
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -28,39 +29,25 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "ouroboros",
-        "USER": open("/run/secrets/SECRET_POSTGRES_USER", "r").read().strip(),
-        "PASSWORD": open("/run/secrets/SECRET_POSTGRES_PASS", "r").read().strip(),
-        "HOST": "db",
-        "PORT": "",
+        "USER": os.getenv("DATABASE_USER"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
     }
 }
 
 # Email Configuration Global Settings
-
-"""
-Email settings should be in the format:
-
-{
-    "EMAIL_HOST": "smtp.gmail.com",
-    "EMAIL_HOST_USER": "enter your email address here", 
-    "EMAIL_HOST_PASSWORD": "enter your email password here", 
-    "EMAIL_PORT": 587
-}
-
-"""
-
-email_credentials_file = open("/run/secrets/SECRET_EMAIL_CONFIG", "r")
-email_credentials_data = json.load(email_credentials_file)
-email_credentials_file.close()
-
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = email_credentials_data["EMAIL_HOST"]
-EMAIL_HOST_PASSWORD = email_credentials_data["EMAIL_HOST_PASSWORD"]
-EMAIL_HOST_USER = email_credentials_data["EMAIL_HOST_USER"]
-EMAIL_PORT = email_credentials_data["EMAIL_PORT"]
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY")
+EMAIL_HOST_USER = "Howdy Hack Team <hello@tamuhack.com>"
+EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-# File Storage
-MEDIA_ROOT = "/resumes"
+# Static Files URL
+STATIC_URL = "http://storage.googleapis.com/ouroboros-static/static/"
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'ouroboros-hacker-resumes'

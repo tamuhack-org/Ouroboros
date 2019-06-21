@@ -1,5 +1,10 @@
-FROM python:3.6-slim
-WORKDIR /app
-COPY ouroboros /app/ouroboros
-COPY requirements.txt /app/requirements.txt
-RUN pip install -r requirements.txt
+FROM gcr.io/google_appengine/python
+
+RUN virtualenv -p python3 /env
+ENV PATH /env/bin:$PATH
+
+ADD requirements.txt /app/requirements.txt
+RUN /env/bin/pip install --upgrade pip && /env/bin/pip install -r /app/requirements.txt
+
+COPY ouroboros /app
+CMD gunicorn -b :$PORT ouroboros.wsgi:application
