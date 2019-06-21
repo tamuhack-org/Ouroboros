@@ -39,6 +39,7 @@ class EmailVerificationTestCase(test.SharedTestCase):
 
     def test_signup_sends_valid_confirmation_link(self):
         response = self.client.post(reverse_lazy("signup"), self.fields)
+        self.assertEqual(len(mail.outbox), 1)
         body = mail.outbox[0].body
         url, _, _ = re.findall(URL_REGEX, body)[0]
 

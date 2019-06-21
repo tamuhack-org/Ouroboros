@@ -5,7 +5,7 @@ import os
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -36,6 +36,7 @@ DATABASES = {
     }
 }
 
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -53,13 +54,15 @@ LOGGING = {
 }
 
 # Email Configuration Global Settings
-EMAIL_USE_TLS = True
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
 EMAIL_HOST = "smtp.sendgrid.net"
 EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY")
-EMAIL_HOST_USER = "Howdy Hack Team <hello@tamuhack.com>"
+EMAIL_HOST_USER = "apikey"
 EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_USE_TLS = True
+
+DEFAULT_FROM_EMAIL = "The Howdy Hack Team <hello@tamuhack.com>"
 
 
 # Static Files URL
