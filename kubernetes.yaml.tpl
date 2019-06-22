@@ -14,7 +14,7 @@ spec:
       containers:
       - name: ouroboros-app
         # Replace this with your project ID
-        image: gcr.io/ouroboros-244206/ouroboros
+        image: gcr.io/GOOGLE_CLOUD_PROJECT/ouroboros:COMMIT_SHA
         imagePullPolicy: Always
         env:
           - name: DATABASE_USER
@@ -42,7 +42,7 @@ spec:
       - image: gcr.io/cloudsql-docker/gce-proxy:1.05
         name: cloudsql-proxy
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
-                  "-instances=ouroboros-244206:us-central1:ouroboros-staging=tcp:5432",
+                  "-instances=GOOGLE_CLOUD_PROJECT:us-central1:ouroboros-staging=tcp:5432",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
         volumeMounts:
           - name: cloudsql-oauth-credentials
