@@ -28,10 +28,11 @@ steps:
 # https://cloud.google.com/cloud-build/docs/access-private-github-repos
 # This step decrypts the machine account's SSH key
 - name: 'gcr.io/cloud-builders/gcloud'
+  id: Decrypt tamuhack.staging SSH key
   args:
   - kms
   - decrypt
-  - --ciphertext-file=tamuhack.id_rsa.enc
+  - --ciphertext-file=tamuhack.staging.id_rsa.enc
   - --plaintext-file=/root/.ssh/id_rsa
   - --location=global
   - --keyring=tamuhack-staging-ssh
@@ -42,6 +43,7 @@ steps:
 
 # This step sets up git using the decrypted SSH key and domain
 - name: 'gcr.io/cloud-builders/git'
+  id: Set up git using decrypted SSH key and domain
   entrypoint: 'bash'
   args:
   - '-c'
@@ -58,6 +60,7 @@ steps:
 
 # This step clones tamuhack-org/snakeskin
 - name: 'gcr.io/cloud-builders/gcloud'
+  id: Clone snakeskin
   args:
   - '-c'
   - |
