@@ -1,6 +1,6 @@
 steps:
 # This step runs the Django unit tests
-- name: 'gcr.io/app_engine/python'
+- name: 'python:3.7-slim'
   id: Test
   entrypoint: /bin/sh
   args:
