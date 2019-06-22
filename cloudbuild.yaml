@@ -1,3 +1,4 @@
+# https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build
 steps:
 # This step runs the Django unit tests
 - name: 'python:3.7-slim'
@@ -22,3 +23,13 @@ steps:
   args:
   - 'push'
   - 'gcr.io/$PROJECT_ID/ouroboros:$SHORT_SHA'
+
+# TODO: Complete the following steps
+# https://cloud.google.com/cloud-build/docs/access-private-github-repos
+# This step decrypts the machine account's SSH key
+# This step sets up git using the decrypted SSH key and domain
+# This step clones ouroboros-env
+
+# https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build
+# This step generates the new manifest file
+# This step pushes the manifest back to ouroboros-env
