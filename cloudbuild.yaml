@@ -61,6 +61,7 @@ steps:
 # This step clones tamuhack-org/snakeskin
 - name: 'gcr.io/cloud-builders/gcloud'
   id: Clone snakeskin
+  entrypoint: /bin/sh
   args:
   - '-c'
   - |
