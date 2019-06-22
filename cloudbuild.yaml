@@ -1,0 +1,24 @@
+steps:
+# This step runs the Django unit tests
+- name: 'gcr.io/app_engine/python'
+  id: Test
+  entrypoint: /bin/sh
+  args:
+  - -c
+  - 'pip install -r requirements.txt && cd ouroboros && python manage.py test --settings=ouroboros.settings.docker'
+
+# This step builds the container image.
+- name: 'gcr.io/cloud-builders/docker'
+  id: Build
+  args:
+  - 'build'
+  - '-t'
+  - 'gcr.io/$PROJECT_ID/ouroboros:$SHORT_SHA'
+  - '.'
+
+# This step pushes the built image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  id: Push
+  args:
+  - 'push'
+  - 'gcr.io/$PROJECT_ID/ouroboros:$SHORT_SHA'
