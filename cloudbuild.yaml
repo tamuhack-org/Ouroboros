@@ -67,7 +67,8 @@ steps:
   - |
     git clone git@github.com:tamuhack-org/snakeskin && \
     cd snakeskin && \
-    git checkout candidate
+    git checkout candidate && \
+    git config user.email tamuhack.staging@gmail.com && \
   volumes:
   - name: 'ssh'
     path: /root/.ssh
