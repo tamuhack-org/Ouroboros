@@ -115,8 +115,13 @@ class ApplicationAdmin(admin.ModelAdmin):
             "Personal Information",
             {
                 "fields": [
+                    "adult",
+                    "first_name",
+                    "last_name",
                     "gender",
+                    "race",
                     "major",
+                    "phone_number",
                     "classification",
                     "grad_year",
                     "dietary_restrictions",
@@ -126,7 +131,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ),
         (
             "Hackathon Information",
-            {"fields": ["num_hackathons_attended", "previous_attendant"]},
+            {"fields": ["num_hackathons_attended", "previous_attendant", "shirt_size"]},
         ),
         (
             "Free Response Questions",

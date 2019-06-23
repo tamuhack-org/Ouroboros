@@ -13,15 +13,18 @@ class ApplicationModelForm(forms.ModelForm):
     class Meta:
         model = hacker_models.Application
         fields = [
+            "adult",
+            "first_name",
+            "last_name",
             "major",
             "gender",
+            "race",
             "classification",
             "grad_year",
-            "dietary_restrictions",
-            "travel_reimbursement_required",
             "num_hackathons_attended",
             "previous_attendant",
-            "tamu_student",
+            "dietary_restrictions",
+            "shirt_size",
             "interests",
             "essay1",
             "essay2",
