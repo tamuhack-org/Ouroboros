@@ -62,7 +62,7 @@ DEFAULT_FROM_EMAIL = "The Howdy Hack Team <hello@tamuhack.com>"
 
 
 # Static Files URL
-STATIC_URL = "http://storage.googleapis.com/ouroboros-static/static/"
+STATIC_URL = "http://storage.googleapis.com/ouroboros-static/"
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_BUCKET_NAME = 'ouroboros-hacker-resumes'
