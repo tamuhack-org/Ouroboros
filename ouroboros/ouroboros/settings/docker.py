@@ -1,5 +1,6 @@
 from .base import *
 import os
+from pprint import pprint
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -54,19 +55,14 @@ LOGGING = {
 }
 
 # Email Configuration Global Settings
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-EMAIL_HOST = "smtp.sendgrid.net"
-EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY")
-EMAIL_HOST_USER = "apikey"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 
 DEFAULT_FROM_EMAIL = "The Howdy Hack Team <hello@tamuhack.com>"
 
 
 # Static Files URL
-STATIC_URL = "http://storage.googleapis.com/ouroboros-static/static/"
+STATIC_URL = "http://storage.googleapis.com/tamuhack-staging-ouroboros-static/"
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'ouroboros-hacker-resumes'
+GS_BUCKET_NAME = 'tamuhack-staging-ouroboros-hacker-resumes'

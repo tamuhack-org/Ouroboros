@@ -37,12 +37,18 @@ spec:
               secretKeyRef:
                 name: sendgrid
                 key: apikey
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: "/etc/storage-creds/django-storages-creds.json"
+        volumeMounts:
+          - name: django-storage-credentials
+            mountPath: /etc/storage-creds
+            readOnly: true
         ports:
         - containerPort: 8080
       - image: gcr.io/cloudsql-docker/gce-proxy:1.05
         name: cloudsql-proxy
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
-                  "-instances=GOOGLE_CLOUD_PROJECT:us-central1:ouroboros-staging=tcp:5432",
+                  "-instances=GOOGLE_CLOUD_PROJECT:us-central1:ouroboros=tcp:5432",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
         volumeMounts:
           - name: cloudsql-oauth-credentials
@@ -61,6 +67,9 @@ spec:
             path: /etc/ssl/certs
         - name: cloudsql
           emptyDir:
+        - name: django-storage-credentials
+          secret:
+            secretName: django-storages-creds
 
 ---
 
