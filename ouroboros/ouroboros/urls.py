@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.contrib import auth
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
+from django.shortcuts import redirect, reverse
 from django.conf.urls import url
 from ouroboros.settings import customization as custom_settings
 
 urlpatterns = [
+    path("/", redirect(reverse("login"))),
     path("admin/", admin.site.urls),
     path("accounts/", include("customauth.urls")),
     path("", include("hacker.urls")),
