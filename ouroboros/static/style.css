@@ -1,3 +1,7 @@
+html, body {
+    overflow-x: hidden;
+}
+
 .navbar {
     -webkit-box-shadow: 0 8px 6px -6px #999;
     -moz-box-shadow: 0 8px 6px -6px #999;
@@ -270,6 +274,7 @@ input[type="submit"]{
     min-height: 100vh;
     min-width: 100vw;
     max-width: 100%;
+    overflow-x: hidden;
 }
 
 .alert {
@@ -314,12 +319,14 @@ input[type="submit"]{
 
 .application p {
     margin-bottom: 30px;
+    text-align: center;
 }
 
 .application label {
     display: block;
     font-weight: 600 !important;
-    margin-bottom: 3px;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 .application ul {
@@ -331,7 +338,7 @@ input[type="submit"]{
     font-weight: 400 !important;
 }
 .application input[type='text'], input[type='number'], .application textarea, .application select{
-    width: 80%;
+    width: 100%;
     padding: 8px;
     border-radius: 3px;
     border: 1px solid #bbb !important;
