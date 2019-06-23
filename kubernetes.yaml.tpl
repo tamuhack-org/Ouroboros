@@ -40,12 +40,16 @@ spec:
           - name: GOOGLE_APPLICATION_CREDENTIALS
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             value: "/etc/storage-creds/django-storages-creds.json"
 =======
             value: "/etc/django-storage-creds.json"
 =======
             value: "/etc/storage-creds/django-storages-creds.json"
 >>>>>>> Fixed volume, I think.
+=======
+            value: "/etc/storage-creds/django-storages-creds.json"
+>>>>>>> Re-configured for new GCP project, and modified README
         volumeMounts:
           - name: django-storage-credentials
             mountPath: /etc/storage-creds
