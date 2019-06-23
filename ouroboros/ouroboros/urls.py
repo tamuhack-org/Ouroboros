@@ -16,14 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib import auth
 from django.contrib.auth import views as auth_views
-from django.urls import path, include
-from django.shortcuts import redirect, reverse
+from django.urls import path, include, reverse_lazy
+from django.views.generic.base import RedirectView
+from django.shortcuts import redirect
 from django.conf.urls import url
 from ouroboros.settings import customization as custom_settings
 
 urlpatterns = [
-    path("/", redirect(reverse("login"))),
     path("admin/", admin.site.urls),
     path("accounts/", include("customauth.urls")),
+    url(r"^$", RedirectView.as_view(pattern_name="login")),
     path("", include("hacker.urls")),
 ]
