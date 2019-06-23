@@ -18,6 +18,11 @@ from django.urls import reverse_lazy
 from django.utils import html, timezone
 from multiselectfield import MultiSelectField
 
+TRUE_FALSE_CHOICES = (
+    (True, "Yes"),
+    (False, "No")
+)
+
 SHIRT_SIZES = (
     ("XS", "XS"),
     ("S", "S"),
@@ -32,6 +37,17 @@ GENDERS = (
     ("F", "Female"),
     ("NB", "Non-binary"),
     ("NA", "Prefer not to disclose"),
+)
+
+RACES = (
+    ("American Indian", "American Indian or Alaskan Native"),
+    ("Asian", "Asian"),
+    ("Black", "Black or African-American"),
+    ("Hispanic", "Hispanic or Latino White"),
+    ("Native Hawaiian", "Native Hawaiian or other Pacific Islander"),
+    ("White", "White or Caucasian"),
+    ("Two Races", "Two or more races"),
+    ("NA", "Decline to self-identify")
 )
 
 CLASSIFICATIONS = [("U1", "U1"), ("U2", "U2"), ("U3", "U3"), ("U4", "U4")]
@@ -189,19 +205,24 @@ class Application(models.Model):
     Represents a `Hacker`'s application to this hackathon.
     """
 
-    major = models.CharField(max_length=50)
-    gender = models.CharField(choices=GENDERS, max_length=2)
-    classification = models.CharField(choices=CLASSIFICATIONS, max_length=2)
-    grad_year = models.IntegerField(choices=GRAD_YEARS, verbose_name="graduation year")
+    adult = models.BooleanField("Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=False)
+    first_name = models.CharField("What's your first name?", default="", max_length=50)
+    last_name = models.CharField("What's your last name?", default="", max_length=50)
+    major = models.CharField("What's your major?", max_length=50)
+    gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
+    race = models.CharField("What race do you identify with?", choices=RACES, max_length=41)
+    classification = models.CharField("What classification are you?", choices=CLASSIFICATIONS, max_length=2)
+    grad_year = models.IntegerField("What is your anticipated graduation date?", choices=GRAD_YEARS)
     dietary_restrictions = MultiSelectField(
-        choices=DIETARY_RESTRICTIONS, verbose_name="dietary restrictions", blank=True
+        "Do you have any dietary restrictions that we should know about?", choices=DIETARY_RESTRICTIONS, blank=True
     )
     travel_reimbursement_required = models.BooleanField(default=False)
 
-    num_hackathons_attended = models.PositiveSmallIntegerField(default=0)
-    previous_attendant = models.BooleanField(default=False)
-    tamu_student = models.BooleanField(default=True)
+    num_hackathons_attended = models.PositiveSmallIntegerField("How many hackathons have you attended?", default=0)
+    previous_attendant = models.BooleanField("Have you attended Howdy Hack before?", choices=TRUE_FALSE_CHOICES, default=False)
+    tamu_student = models.BooleanField("Are you a Texas A&M student?", choices=TRUE_FALSE_CHOICES, default=True)
 
+    shirt_size = models.CharField("Shirt size?", choices=SHIRT_SIZES, max_length=3)
     interests = models.TextField(max_length=200)
     essay1 = models.TextField(max_length=200)
     essay2 = models.TextField(max_length=200, null=True, blank=True)
@@ -212,7 +233,7 @@ class Application(models.Model):
         blank=True,
         help_text="Provide any additional notes and/or comments in the text box provided",
     )
-    resume = models.FileField()
+    resume = models.FileField("Provide us a copy of your most recent resume so we can get you connected with companies")
 
     approved = models.NullBooleanField(blank=True)
 
