@@ -42,9 +42,10 @@ spec:
             value: "/etc/storage-creds/django-storages-creds.json"
 =======
             value: "/etc/django-storage-creds.json"
-          volumeMounts:
-            - name: django-storage-credentials
-              mountPath: /etc/django-storage-creds.json
+        volumeMounts:
+          - name: django-storage-credentials
+            mountPath: /etc/django-storage-creds.json
+            readOnly: true
         ports:
         - containerPort: 8080
       - image: gcr.io/cloudsql-docker/gce-proxy:1.05
