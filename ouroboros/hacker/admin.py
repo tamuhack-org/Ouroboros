@@ -108,20 +108,23 @@ def reject(self, request, queryset):  # Needs to be Tested!!!
 
 class ApplicationAdmin(admin.ModelAdmin):
     form = ApplicationAdminForm
-    list_display = ("major", "classification", "grad_year", "approved")
+    list_display = (
+        "hacker_name",
+        "classification",
+        "grad_year",
+        "approved",
+    )
     fieldsets = [
         ("Related Objects", {"fields": ["hacker"]}),
         (
             "Personal Information",
             {
                 "fields": [
+                    "hacker_name",
                     "adult",
-                    "first_name",
-                    "last_name",
                     "gender",
                     "race",
                     "major",
-                    "phone_number",
                     "classification",
                     "grad_year",
                     "dietary_restrictions",
@@ -139,6 +142,9 @@ class ApplicationAdmin(admin.ModelAdmin):
         ),
         ("Status", {"fields": ["approved"]}),
     ]
+
+    def hacker_name(self, obj: Application):
+        return " ".join([obj.hacker.first_name, obj.hacker.last_name])
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"

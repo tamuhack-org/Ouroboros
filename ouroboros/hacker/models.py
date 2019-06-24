@@ -206,8 +206,6 @@ class Application(models.Model):
     """
 
     adult = models.BooleanField("Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=False)
-    first_name = models.CharField("What's your first name?", default="", max_length=50)
-    last_name = models.CharField("What's your last name?", default="", max_length=50)
     major = models.CharField("What's your major?", max_length=50)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
     race = models.CharField("What race do you identify with?", choices=RACES, max_length=41)
