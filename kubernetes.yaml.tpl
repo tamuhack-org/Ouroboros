@@ -38,10 +38,10 @@ spec:
                 name: sendgrid
                 key: apikey
           - name: GOOGLE_APPLICATION_CREDENTIALS
-            value: "/etc/django-storage-creds.json"
+            value: "/etc/storage-creds/django-storages-creds.json"
         volumeMounts:
           - name: django-storage-credentials
-            mountPath: /etc/django-storage-creds.json
+            mountPath: /etc/storage-creds
             readOnly: true
         ports:
         - containerPort: 8080
