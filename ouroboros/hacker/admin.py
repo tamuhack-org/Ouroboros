@@ -121,7 +121,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "gender",
                     "race",
                     "major",
-                    "phone_number",
                     "classification",
                     "grad_year",
                     "dietary_restrictions",
@@ -154,16 +153,14 @@ class ApplicationAdmin(admin.ModelAdmin):
 class RsvpAdminForm(forms.ModelForm):
     class Meta:
         model = Rsvp
-        fields = ["shirt_size", "notes", "hacker"]
-        widgets = {"shirt_size": forms.RadioSelect}
+        fields = ["notes", "hacker"]
 
 
 class RsvpAdmin(admin.ModelAdmin):
     form = RsvpAdminForm
-    list_display = ("shirt_size", "notes")
     fieldsets = [
         ("Related Objects", {"fields": ["hacker"]}),
-        ("Logistical Information", {"fields": ["shirt_size", "notes"]}),
+        ("Logistical Information", {"fields": ["notes"]}),
     ]
 
     def has_add_permission(self, request, obj=None):
