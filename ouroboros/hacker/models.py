@@ -231,10 +231,6 @@ class Rsvp(models.Model):
     """
     Represents a `Hacker`'s confirmation that they are attending this hackathon.
     """
-
-    shirt_size = models.CharField(
-        max_length=3, choices=SHIRT_SIZES, verbose_name="shirt size"
-    )
     notes = models.TextField(
         max_length=300,
         blank=True,
