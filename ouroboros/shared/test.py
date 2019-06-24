@@ -60,7 +60,7 @@ class SharedTestCase(test.TestCase):
             "essay4": "D",
             "notes": "E",
             "hacker": self.hacker,
-            "race": "Black",
+            "race": ["Black"],
             "shirt_size": "XL",
             "adult": True,
             "previous_attendant": False,
