@@ -35,7 +35,7 @@ steps:
   - --ciphertext-file=tamuhack.staging.id_rsa.enc
   - --plaintext-file=/root/.ssh/id_rsa
   - --location=global
-  - --keyring=tamuhack-staging-ssh
+  - --keyring=tamuhack-staging-acct
   - --key=ssh
   volumes:
   - name: 'ssh'
