@@ -38,9 +38,10 @@ spec:
                 name: sendgrid
                 key: apikey
           - name: GOOGLE_APPLICATION_CREDENTIALS
-            valueFrom:
-              secretKeyRef:
-                name: django-storages-creds
+            value: "/etc/django-storage-creds.json"
+          volumeMounts:
+            - name: django-storage-credentials
+              mountPath: /etc/django-storage-creds.json
         ports:
         - containerPort: 8080
       - image: gcr.io/cloudsql-docker/gce-proxy:1.05
