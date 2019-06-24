@@ -125,6 +125,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "gender",
                     "race",
                     "major",
+                    "phone_number",
                     "classification",
                     "grad_year",
                     "dietary_restrictions",
