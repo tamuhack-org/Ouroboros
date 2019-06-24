@@ -415,7 +415,8 @@ li .point {
 }
 
 .rsvp-button{
-    display: inline-block;
+    display: inline-block !important;
+    margin: 0px 10px;
 }
 
 #rsvp-form{
@@ -424,6 +425,8 @@ li .point {
 
 textarea[name="notes"] {
     display: block;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 

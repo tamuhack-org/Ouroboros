@@ -5,8 +5,8 @@
   Will you be able to attend {{ event_name }} {% now 'Y' %} on
   {{ event_start_date }} for {{ event_start_date | timesince:event_end_date }}?
 </p>
-<button type="button" class="btn btn-lg btn-login" id="rsvp-yes">Yes</button>
-<form method="POST" action="{% url 'decline' %}">
+<button type="button" class="btn btn-lg btn-login rsvp-button" id="rsvp-yes">Yes</button>
+<form method="POST" action="{% url 'decline' %}" class="rsvp-button">
   {% csrf_token %}
   <button type="submit" class="btn btn-lg btn-login">
     No
