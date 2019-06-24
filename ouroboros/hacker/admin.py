@@ -149,16 +149,15 @@ class ApplicationAdmin(admin.ModelAdmin):
 class RsvpAdminForm(forms.ModelForm):
     class Meta:
         model = Rsvp
-        fields = ["shirt_size", "notes", "hacker"]
-        widgets = {"shirt_size": forms.RadioSelect}
+        fields = ["notes", "hacker"]
 
 
 class RsvpAdmin(admin.ModelAdmin):
     form = RsvpAdminForm
-    list_display = ("shirt_size", "notes")
+    list_display = ("hacker_name", "notes")
     fieldsets = [
         ("Related Objects", {"fields": ["hacker"]}),
-        ("Logistical Information", {"fields": ["shirt_size", "notes"]}),
+        ("Logistical Information", {"fields": ["notes"]}),
     ]
 
     def has_add_permission(self, request, obj=None):
@@ -170,6 +169,8 @@ class RsvpAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
+    def hacker_name(self, obj: Rsvp):
+        return " ".join([obj.hacker.first_name, obj.hacker.last_name])
 
 admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Application, ApplicationAdmin)
