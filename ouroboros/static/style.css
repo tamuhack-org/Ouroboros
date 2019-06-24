@@ -414,6 +414,18 @@ li .point {
     margin-right: auto;
 }
 
+.rsvp-button{
+    display: inline-block;
+}
+
+#rsvp-form{
+    margin-top: 20px;
+}
+
+textarea[name="notes"] {
+    display: block;
+}
+
 
 @media only screen and (max-width: 770px) {
     .navbar a:last-child  {
