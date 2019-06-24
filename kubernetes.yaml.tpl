@@ -44,17 +44,7 @@ spec:
             mountPath: /etc/storage-creds
             readOnly: true
         ports:
-        - containerPort: 8080
-      - image: gcr.io/cloudsql-docker/gce-proxy:1.05
-        name: cloudsql-proxy
-        command: ["/cloud_sql_proxy", "--dir=/cloudsql",
-                  "-instances=GOOGLE_CLOUD_PROJECT:us-central1:ouroboros=tcp:5432",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
-        volumeMounts:
-          - name: cloudsql-oauth-credentials
-            mountPath: /secrets/cloudsql
-            readOnly: true
-          - name: ssl-certs
             mountPath: /etc/ssl/certs
           - name: cloudsql
             mountPath: /cloudsql
