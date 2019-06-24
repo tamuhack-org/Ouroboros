@@ -92,6 +92,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
 STATIC_ROOT = "public/"
 APPEND_SLASH = True
 
+MEDIA_ROOT = "resumes/"
+MEDIA_URL = "/resumes/"
+
 
 # Import Global Settings
 

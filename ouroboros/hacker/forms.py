@@ -14,8 +14,6 @@ class ApplicationModelForm(forms.ModelForm):
         model = hacker_models.Application
         fields = [
             "adult",
-            "first_name",
-            "last_name",
             "major",
             "gender",
             "race",

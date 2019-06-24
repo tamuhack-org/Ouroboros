@@ -60,6 +60,10 @@ class SharedTestCase(test.TestCase):
             "essay4": "D",
             "notes": "E",
             "hacker": self.hacker,
+            "race": "Black",
+            "shirt_size": "XL",
+            "adult": True,
+            "previous_attendant": False,
             **self.resume_file_data,
         }
 
