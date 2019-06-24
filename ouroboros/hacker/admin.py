@@ -165,6 +165,7 @@ class RsvpAdminForm(forms.ModelForm):
 
 class RsvpAdmin(admin.ModelAdmin):
     form = RsvpAdminForm
+    list_display = ("hacker_name", "notes")
     fieldsets = [
         ("Related Objects", {"fields": ["hacker"]}),
         ("Logistical Information", {"fields": ["notes"]}),
@@ -179,6 +180,8 @@ class RsvpAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
+    def hacker_name(self, obj: Rsvp):
+        return " ".join([obj.hacker.first_name, obj.hacker.last_name])
 
 admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Application, ApplicationAdmin)
