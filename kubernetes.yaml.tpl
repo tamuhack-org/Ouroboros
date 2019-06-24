@@ -39,12 +39,16 @@ spec:
                 key: apikey
           - name: GOOGLE_APPLICATION_CREDENTIALS
 <<<<<<< HEAD
+<<<<<<< HEAD
             value: "/etc/storage-creds/django-storages-creds.json"
 =======
             value: "/etc/django-storage-creds.json"
+=======
+            value: "/etc/storage-creds/django-storages-creds.json"
+>>>>>>> Fixed volume, I think.
         volumeMounts:
           - name: django-storage-credentials
-            mountPath: /etc/django-storage-creds.json
+            mountPath: /etc/storage-creds
             readOnly: true
         ports:
         - containerPort: 8080
