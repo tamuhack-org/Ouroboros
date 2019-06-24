@@ -37,6 +37,10 @@ spec:
               secretKeyRef:
                 name: sendgrid
                 key: apikey
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            valueFrom:
+              secretKeyRef:
+                name: django-storages-creds
         ports:
         - containerPort: 8080
       - image: gcr.io/cloudsql-docker/gce-proxy:1.05
@@ -61,6 +65,9 @@ spec:
             path: /etc/ssl/certs
         - name: cloudsql
           emptyDir:
+        - name: django-storage-credentials
+          secret:
+            secretName: django-storages-creds
 
 ---
 
