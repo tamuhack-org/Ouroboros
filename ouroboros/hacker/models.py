@@ -46,7 +46,6 @@ RACES = (
     ("Hispanic", "Hispanic or Latino White"),
     ("Native Hawaiian", "Native Hawaiian or other Pacific Islander"),
     ("White", "White or Caucasian"),
-    ("Two Races", "Two or more races"),
     ("NA", "Decline to self-identify")
 )
 
