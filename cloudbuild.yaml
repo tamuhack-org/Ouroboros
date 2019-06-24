@@ -1,0 +1,103 @@
+# https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build
+steps:
+# This step runs the Django unit tests
+- name: 'python:3.7-slim'
+  id: Test
+  entrypoint: /bin/sh
+  args:
+  - -c
+  - 'pip install -r requirements.txt && cd ouroboros && python manage.py test'
+
+# This step builds the container image.
+- name: 'gcr.io/cloud-builders/docker'
+  id: Build
+  args:
+  - 'build'
+  - '-t'
+  - 'gcr.io/$PROJECT_ID/ouroboros:$SHORT_SHA'
+  - '.'
+
+# This step pushes the built image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  id: Push
+  args:
+  - 'push'
+  - 'gcr.io/$PROJECT_ID/ouroboros:$SHORT_SHA'
+
+# TODO: Complete the following steps
+# https://cloud.google.com/cloud-build/docs/access-private-github-repos
+# This step decrypts the machine account's SSH key
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Decrypt tamuhack.staging SSH key
+  args:
+  - kms
+  - decrypt
+  - --ciphertext-file=tamuhack.staging.id_rsa.enc
+  - --plaintext-file=/root/.ssh/id_rsa
+  - --location=global
+  - --keyring=tamuhack-staging-acct
+  - --key=ssh
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# This step sets up git using the decrypted SSH key and domain
+- name: 'gcr.io/cloud-builders/git'
+  id: Set up git using decrypted SSH key and domain
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    chmod 600 /root/.ssh/id_rsa
+    cat <<EOF >/root/.ssh/config
+    Hostname github.com
+    IdentityFile /root/.ssh/id_rsa
+    EOF
+    mv known_hosts /root/.ssh/known_hosts
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# This step clones tamuhack-org/snakeskin
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Clone snakeskin
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    git clone git@github.com:tamuhack-org/snakeskin && \
+    cd snakeskin && \
+    git checkout candidate && \
+    git config user.email tamuhack.staging@gmail.com
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# This step generates the new manifest
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Generate manifest
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+     sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" kubernetes.yaml.tpl | \
+     sed "s/COMMIT_SHA/${SHORT_SHA}/g" > snakeskin/kubernetes.yaml
+
+# This step pushes the manifest back to snakeskin
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Push manifest
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    set -x && \
+    cd snakeskin && \
+    git add kubernetes.yaml && \
+    git commit -m "Deploying image gcr.io/${PROJECT_ID}/ouroboros:${SHORT_SHA}
+    Built from commit ${COMMIT_SHA} of repository ouroboros
+    Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
+    git push origin candidate
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+    

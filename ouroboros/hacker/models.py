@@ -46,7 +46,6 @@ RACES = (
     ("Hispanic", "Hispanic or Latino White"),
     ("Native Hawaiian", "Native Hawaiian or other Pacific Islander"),
     ("White", "White or Caucasian"),
-    ("Two Races", "Two or more races"),
     ("NA", "Decline to self-identify")
 )
 
@@ -206,11 +205,9 @@ class Application(models.Model):
     """
 
     adult = models.BooleanField("Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=False)
-    first_name = models.CharField("What's your first name?", default="", max_length=50)
-    last_name = models.CharField("What's your last name?", default="", max_length=50)
     major = models.CharField("What's your major?", max_length=50)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
-    race = models.CharField("What race do you identify with?", choices=RACES, max_length=41)
+    race = MultiSelectField("What race do you identify with?", choices=RACES, max_length=41)
     classification = models.CharField("What classification are you?", choices=CLASSIFICATIONS, max_length=2)
     grad_year = models.IntegerField("What is your anticipated graduation date?", choices=GRAD_YEARS)
     dietary_restrictions = MultiSelectField(
@@ -233,7 +230,7 @@ class Application(models.Model):
         blank=True,
         help_text="Provide any additional notes and/or comments in the text box provided",
     )
-    resume = models.FileField("Provide us a copy of your most recent resume so we can get you connected with companies")
+    resume = models.FileField("Provide us a copy of your most recent resume so we can get you connected with companies.")
 
     approved = models.NullBooleanField(blank=True)
 
