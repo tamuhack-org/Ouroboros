@@ -319,7 +319,13 @@ input[type="submit"]{
 
 .application p {
     margin-bottom: 30px;
-    text-align: center;
+    text-align: left;
+}
+
+.helptext {
+    text-align: left;
+    font-size: 14px;
+    font-style: italic;
 }
 
 .application label {
@@ -334,8 +340,12 @@ input[type="submit"]{
     padding: 0;
     margin-top: -30px;
 }
+.application ul li {
+    height: 0px;
+}
 .application ul li label {
     font-weight: 400 !important;
+    margin: 0px !important;
 }
 .application input[type='text'], input[type='number'], .application textarea, .application select{
     width: 100%;
@@ -429,6 +439,9 @@ textarea[name="notes"] {
     margin-bottom: 10px;
 }
 
+ul label{
+    margin: 0px;
+}
 
 @media only screen and (max-width: 770px) {
     .navbar a:last-child  {
