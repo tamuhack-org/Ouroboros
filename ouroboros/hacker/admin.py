@@ -138,7 +138,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ),
         (
             "Free Response Questions",
-            {"fields": ["interests", "essay1", "notes", "resume"]},
+            {"fields": ["extra_links", "programming_joke", "unlimited_resource", "cool_prize", "notes"]},
         ),
         ("Status", {"fields": ["approved"]}),
     ]

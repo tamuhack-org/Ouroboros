@@ -49,7 +49,7 @@ RACES = (
     ("NA", "Decline to self-identify")
 )
 
-CLASSIFICATIONS = [("U1", "U1"), ("U2", "U2"), ("U3", "U3"), ("U4", "U4")]
+CLASSIFICATIONS = [("Fr", "Freshman"), ("So", "Sophomore"), ("Jr", "Junior"), ("Sr", "Senior"), ("Ot", "Other")]
 
 DIETARY_RESTRICTIONS = (
     ("Vegan", "Vegan"),
@@ -59,14 +59,22 @@ DIETARY_RESTRICTIONS = (
     ("Food Allergies", "Food Allergies"),
 )
 
+HACKATHON_TIMES = [("0", "This will be my first!"), ("1-3", "1-3"), ("4-7", "4-7"), ("8-10", "8-10"), ("10+", "10+")]
 
-GRAD_YEARS = [
-    (i, i)
-    for i in range(
-        timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION
-    )
-]
+# GRAD_YEARS = [
+#     (i, i)
+#     for i in range(
+#         timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION
+#     )
+# ]
 
+
+GRAD_YEARS = []
+for i in range(timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION):
+    for j in ['Spring', 'Fall']:
+        GRAD_YEARS.append(("%s %i"%(j,i), "%s %i"%(j,i)))
+GRAD_YEARS = GRAD_YEARS[1:-1]
+GRAD_YEARS.append(("Other", "Other"))
 
 class HackerManager(BaseUserManager):
     """
@@ -204,7 +212,7 @@ class Application(models.Model):
     Represents a `Hacker`'s application to this hackathon.
     """
 
-    adult = models.BooleanField("Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=False)
+    adult = models.BooleanField("Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=False, help_text="NOTE: We are able to admit minors only if they are accompanied by a college student (18+) who is planning on participating in the hackathon. Have additional questions? Email us at highschool@tamuhack.com")
     major = models.CharField("What's your major?", max_length=50)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
     race = MultiSelectField("What race do you identify with?", choices=RACES, max_length=41)
@@ -213,18 +221,15 @@ class Application(models.Model):
     dietary_restrictions = MultiSelectField(
         "Do you have any dietary restrictions that we should know about?", choices=DIETARY_RESTRICTIONS, blank=True
     )
-    travel_reimbursement_required = models.BooleanField(default=False)
-
-    num_hackathons_attended = models.PositiveSmallIntegerField("How many hackathons have you attended?", default=0)
+    num_hackathons_attended = models.CharField("How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES)
     previous_attendant = models.BooleanField("Have you attended Howdy Hack before?", choices=TRUE_FALSE_CHOICES, default=False)
     tamu_student = models.BooleanField("Are you a Texas A&M student?", choices=TRUE_FALSE_CHOICES, default=True)
 
     shirt_size = models.CharField("Shirt size?", choices=SHIRT_SIZES, max_length=3)
-    interests = models.TextField(max_length=200)
-    essay1 = models.TextField(max_length=200)
-    essay2 = models.TextField(max_length=200, null=True, blank=True)
-    essay3 = models.TextField(max_length=200, null=True, blank=True)
-    essay4 = models.TextField(max_length=200, null=True, blank=True)
+    extra_links = models.CharField("Point us to anything you'd like us to look at while considering your application", max_length=200, help_text="Links to LinkedIn, GitHub, Devpost, Personal Website, etc.")
+    programming_joke = models.TextField("Tell us your best programming joke", max_length=500)
+    unlimited_resource = models.TextField("What is the one thing you'd build if you had unlimited resources?", max_length=500)
+    cool_prize = models.TextField("What is a cool prize you'd like to win at TAMUhack?", max_length=500)
     notes = models.TextField(
         max_length=300,
         blank=True,
@@ -254,7 +259,7 @@ class Rsvp(models.Model):
         max_length=300,
         blank=True,
         help_text="Provide any additional notes and/or comments in the text box provided",
-    )
+    ) 
 
     date_rsvped = models.DateField(auto_now_add=True, blank=True)
 
