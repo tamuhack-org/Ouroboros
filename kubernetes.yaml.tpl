@@ -38,18 +38,7 @@ spec:
                 name: sendgrid
                 key: apikey
           - name: GOOGLE_APPLICATION_CREDENTIALS
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
             value: "/etc/storage-creds/django-storages-creds.json"
-=======
-            value: "/etc/django-storage-creds.json"
-=======
-            value: "/etc/storage-creds/django-storages-creds.json"
->>>>>>> Fixed volume, I think.
-=======
-            value: "/etc/storage-creds/django-storages-creds.json"
->>>>>>> Re-configured for new GCP project, and modified README
         volumeMounts:
           - name: django-storage-credentials
             mountPath: /etc/storage-creds
@@ -61,13 +50,11 @@ spec:
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
                   "-instances=GOOGLE_CLOUD_PROJECT:us-central1:ouroboros=tcp:5432",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
->>>>>>> Changed Kubernetes template.
         volumeMounts:
-          - name: django-storage-credentials
-            mountPath: /etc/storage-creds
+          - name: cloudsql-oauth-credentials
+            mountPath: /secrets/cloudsql
             readOnly: true
-        ports:
-                  "-credential_file=/secrets/cloudsql/credentials.json"]
+          - name: ssl-certs
             mountPath: /etc/ssl/certs
           - name: cloudsql
             mountPath: /cloudsql

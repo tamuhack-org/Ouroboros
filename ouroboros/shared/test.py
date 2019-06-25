@@ -54,7 +54,7 @@ class SharedTestCase(test.TestCase):
             "dietary_restrictions": ["Vegan"],
             "num_hackathons_attended": 0,
             "hacker": self.hacker,
-            "race": ["NA", "Black"],
+            "race": ["NA"],
             "shirt_size": "XL",
             "extra_links": "A",
             "programming_joke": "B",

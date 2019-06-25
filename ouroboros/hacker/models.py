@@ -61,13 +61,12 @@ DIETARY_RESTRICTIONS = (
 
 HACKATHON_TIMES = [("0", "This will be my first!"), ("1-3", "1-3"), ("4-7", "4-7"), ("8-10", "8-10"), ("10+", "10+")]
 
-# GRAD_YEARS = [
-#     (i, i)
-#     for i in range(
-#         timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION
-#     )
-# ]
-
+GRAD_YEARS = []
+for i in range(timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION):
+    for j in ['Spring', 'Fall']:
+        GRAD_YEARS.append(("%s %i"%(j,i), "%s %i"%(j,i)))
+GRAD_YEARS = GRAD_YEARS[1:-1]
+GRAD_YEARS.append(("Other", "Other"))
 
 GRAD_YEARS = []
 for i in range(timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION):
