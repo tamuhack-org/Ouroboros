@@ -12,7 +12,7 @@ class ApplicationModelForm(forms.ModelForm):
 
     class Meta:
         model = hacker_models.Application
-        widgets = {'race': forms.RadioSelect, 'adult': forms.RadioSelect, "previous_attendant": forms.RadioSelect}
+        widgets = {'adult': forms.RadioSelect, "previous_attendant": forms.RadioSelect}
         fields = [
             "adult",
             "major",

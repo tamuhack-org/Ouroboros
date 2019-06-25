@@ -217,7 +217,7 @@ class Application(models.Model):
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
     race = MultiSelectField("What race do you identify with?", choices=RACES, max_length=41)
     classification = models.CharField("What classification are you?", choices=CLASSIFICATIONS, max_length=2)
-    grad_year = models.IntegerField("What is your anticipated graduation date?", choices=GRAD_YEARS)
+    grad_year = models.CharField("What is your anticipated graduation date?", choices=GRAD_YEARS, max_length=11)
     dietary_restrictions = MultiSelectField(
         "Do you have any dietary restrictions that we should know about?", choices=DIETARY_RESTRICTIONS, blank=True
     )
