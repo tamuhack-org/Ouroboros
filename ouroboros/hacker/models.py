@@ -146,6 +146,13 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
         msg = html.strip_tags(html_msg)
         self.email_hacker(subject, msg, html_message=html_msg)
 
+    def clean(self):
+        super().clean()
+        if any(char.isdigit() for char in self.first_name):
+            raise exceptions.ValidationError("First name can't contain any numbers")
+        if any(char.isdigit() for char in self.last_name):
+            raise exceptions.ValidationError("Last name can't contain any numbers")
+
 
 class WaveManager(models.Manager):
     def next_wave(self, dt: datetime.datetime = timezone.now()):
