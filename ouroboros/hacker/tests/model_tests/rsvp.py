@@ -11,7 +11,7 @@ class RsvpModelTestCase(test.SharedTestCase):
         self.app = hacker_models.Application(**self.application_fields, wave=self.wave1)
         self.app.full_clean()
         self.app.save()
-        self.rsvp_fields = {"shirt_size": "S", "notes": ""}
+        self.rsvp_fields = { "notes": ""}
 
     def sends_email_on_rsvp_creation(self):
         self.rsvp = hacker_models.Rsvp(**self.rsvp_fields, hacker=self.hacker)
