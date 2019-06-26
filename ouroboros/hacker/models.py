@@ -221,14 +221,14 @@ class Application(models.Model):
         "Do you have any dietary restrictions that we should know about?", choices=DIETARY_RESTRICTIONS, blank=True
     )
     num_hackathons_attended = models.CharField("How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES)
-    previous_attendant = models.BooleanField("Have you attended Howdy Hack before?", choices=TRUE_FALSE_CHOICES, default=False)
+    previous_attendant = models.BooleanField(f"Have you attended {settings.EVENT_NAME} before?", choices=TRUE_FALSE_CHOICES, default=False)
     tamu_student = models.BooleanField("Are you a Texas A&M student?", choices=TRUE_FALSE_CHOICES, default=True)
 
     shirt_size = models.CharField("Shirt size?", choices=SHIRT_SIZES, max_length=3)
     extra_links = models.CharField("Point us to anything you'd like us to look at while considering your application", max_length=200, help_text="Links to LinkedIn, GitHub, Devpost, Personal Website, etc.")
     programming_joke = models.TextField("Tell us your best programming joke", max_length=500)
     unlimited_resource = models.TextField("What is the one thing you'd build if you had unlimited resources?", max_length=500)
-    cool_prize = models.TextField("What is a cool prize you'd like to win at TAMUhack?", max_length=500)
+    cool_prize = models.TextField(f"What is a cool prize you'd like to win at {settings.EVENT_NAME}?", max_length=500)
     notes = models.TextField(
         max_length=300,
         blank=True,
