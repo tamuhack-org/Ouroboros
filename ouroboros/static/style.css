@@ -1,3 +1,7 @@
+html, body {
+    overflow-x: hidden;
+}
+
 .navbar {
     -webkit-box-shadow: 0 8px 6px -6px #999;
     -moz-box-shadow: 0 8px 6px -6px #999;
@@ -270,6 +274,7 @@ input[type="submit"]{
     min-height: 100vh;
     min-width: 100vw;
     max-width: 100%;
+    overflow-x: hidden;
 }
 
 .alert {
@@ -314,12 +319,20 @@ input[type="submit"]{
 
 .application p {
     margin-bottom: 30px;
+    text-align: left;
+}
+
+.helptext {
+    text-align: left;
+    font-size: 14px;
+    font-style: italic;
 }
 
 .application label {
     display: block;
     font-weight: 600 !important;
-    margin-bottom: 3px;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 .application ul {
@@ -327,11 +340,15 @@ input[type="submit"]{
     padding: 0;
     margin-top: -30px;
 }
+.application ul li {
+    height: 0px;
+}
 .application ul li label {
     font-weight: 400 !important;
+    margin: 0px !important;
 }
 .application input[type='text'], input[type='number'], .application textarea, .application select{
-    width: 80%;
+    width: 100%;
     padding: 8px;
     border-radius: 3px;
     border: 1px solid #bbb !important;
@@ -407,6 +424,24 @@ li .point {
     margin-right: auto;
 }
 
+.rsvp-button{
+    display: inline-block !important;
+    margin: 0px 10px;
+}
+
+#rsvp-form{
+    margin-top: 20px;
+}
+
+textarea[name="notes"] {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+ul label{
+    margin: 0px;
+}
 
 @media only screen and (max-width: 770px) {
     .navbar a:last-child  {
