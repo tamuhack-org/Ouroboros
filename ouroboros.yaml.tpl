@@ -45,6 +45,10 @@ spec:
             readOnly: true
         ports:
         - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /healthy/
+            port: containerPort
       - image: gcr.io/cloudsql-docker/gce-proxy:1.05
         name: cloudsql-proxy
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
@@ -85,27 +89,3 @@ spec:
     targetPort: 8080
   selector:
     app: ouroboros
-
----
-
-apiVersion: networking.gke.io/v1beta1
-kind: ManagedCertificate
-metadata:
-  name: ouroboros-certificate
-spec:
-  domains:
-    - tamuhack.com
-
----
-
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: ouroboros-ingress
-  annotations:
-    kubernetes.io/ingress.global-static-ip-name:  34.67.144.238
-    networking.gke.io/managed-certificates: ouroboros-certificate
-spec:
-  backend:
-    serviceName: ouroboros-nodeport-service
-    servicePort: 80
