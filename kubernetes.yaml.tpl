@@ -73,25 +73,39 @@ spec:
 
 ---
 
-# [START service]
-# The ouroboros service provides a load-balancing proxy over the ouroboros app
-# pods. By specifying the type as a 'LoadBalancer', Container Engine will
-# create an external HTTP load balancer.
-# For more information about Services see:
-#   https://cloud.google.com/container-engine/docs/services/
-# For more information about external HTTP load balancing see:
-#   https://cloud.google.com/container-engine/docs/load-balancer
 apiVersion: v1
 kind: Service
 metadata:
-  name: ouroboros
-  labels:
-    app: ouroboros
+  name: ouroboros-nodeport-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
-  - port: 80
+  - protocol: TCP
+    port: 80
     targetPort: 8080
   selector:
     app: ouroboros
-# [END service]
+
+---
+
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: ouroboros-certificate
+spec:
+  domains:
+    - tamuhack.com
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ouroboros-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name:  34.67.144.238
+    networking.gke.io/managed-certificates: ouroboros-certificate
+spec:
+  backend:
+    serviceName: ouroboros-nodeport-service
+    servicePort: 80
