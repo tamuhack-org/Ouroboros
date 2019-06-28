@@ -92,7 +92,7 @@ steps:
   - |
     set -x && \
     cd snakeskin && \
-    git add kubernetes.yaml && \
+    git add ouroboros.yaml && \
     git commit -m "Deploying image gcr.io/${PROJECT_ID}/ouroboros:${SHORT_SHA}
     Built from commit ${COMMIT_SHA} of repository ouroboros
     Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
