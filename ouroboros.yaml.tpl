@@ -45,10 +45,13 @@ spec:
             readOnly: true
         ports:
         - containerPort: 8080
+        - name: liveness-port
+          containerPort: 8080
+          hostPort: 8080
         livenessProbe:
           httpGet:
             path: /healthy/
-            port: containerPort
+            port: liveness-port
       - image: gcr.io/cloudsql-docker/gce-proxy:1.05
         name: cloudsql-proxy
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
