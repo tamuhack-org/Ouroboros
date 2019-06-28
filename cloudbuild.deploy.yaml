@@ -80,8 +80,8 @@ steps:
   args:
   - '-c'
   - |
-     sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" kubernetes.yaml.tpl | \
-     sed "s/COMMIT_SHA/${SHORT_SHA}/g" > snakeskin/kubernetes.yaml
+     sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" ouroboros.yaml.tpl | \
+     sed "s/COMMIT_SHA/${SHORT_SHA}/g" > snakeskin/ouroboros.yaml
 
 # This step pushes the manifest back to snakeskin
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -92,7 +92,7 @@ steps:
   - |
     set -x && \
     cd snakeskin && \
-    git add kubernetes.yaml && \
+    git add ouroboros.yaml && \
     git commit -m "Deploying image gcr.io/${PROJECT_ID}/ouroboros:${SHORT_SHA}
     Built from commit ${COMMIT_SHA} of repository ouroboros
     Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
