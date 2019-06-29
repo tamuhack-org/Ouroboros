@@ -45,10 +45,10 @@ spec:
             readOnly: true
         ports:
         - containerPort: 8080
-        - name: liveness-port
+        - name: readiness-port
           containerPort: 8080
           hostPort: 8080
-        livenessProbe:
+        readinessProbe:
           httpGet:
             path: /healthy/
             port: liveness-port
