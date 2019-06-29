@@ -86,10 +86,11 @@ kind: Service
 metadata:
   name: ouroboros-nodeport-service
 spec:
-  type: NodePort
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
   selector:
     app: ouroboros
+  ports:
+  - protocol: TCP
+    port: 9000
+    targetPort: 8080
+  type: NodePort
+ 
