@@ -42,7 +42,7 @@ html, body {
 }
 
 ._content p {
-    font-family: Helvetica;
+    font-family: 'Helvetica';
     line-height: 2em;
 }
 
@@ -326,6 +326,7 @@ input[type="submit"]{
     text-align: left;
     font-size: 14px;
     font-style: italic;
+    font-family: 'Open Sans';
 }
 
 .application label {
@@ -339,13 +340,15 @@ input[type="submit"]{
     list-style: none;
     padding: 0;
     margin-top: -30px;
+    margin-bottom: 20px;
 }
 .application ul li {
     height: 0px;
 }
 .application ul li label {
     font-weight: 400 !important;
-    margin: 0px !important;
+    margin: 10px 0px !important;
+    margin-right: 20px !important;
 }
 .application input[type='text'], input[type='number'], .application textarea, .application select{
     width: 100%;
@@ -357,6 +360,8 @@ input[type="submit"]{
 
 .application select option {
     background-color: white;
+    padding: 8px  !important;
+    font-size: 14px;
 }
 
 .p-caution {
@@ -442,6 +447,52 @@ textarea[name="notes"] {
 ul label{
     margin: 0px;
 }
+
+input[type="radio"], input[type="checkbox"]
+{
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;
+     display: inline-block;
+     position: relative;
+     background-color: #f1f1f1;
+     color: #666;
+     top: 10px;
+     height: 30px;
+     width: 30px;
+     border: 0;
+     border-radius: 3px;
+     cursor: pointer;     
+     margin-right: 7px;
+     outline: none;
+}
+input[type="radio"]:checked::before, input[type="checkbox"]:checked::before
+{
+     position: absolute;
+     font: 13px/1 'Open Sans', sans-serif;
+     left: 11px;
+     top: 7px;
+     content: '\02143';
+     transform: rotate(40deg);
+}
+input[type="radio"]:hover, input[type="checkbox"]:hover
+{
+     background-color: #f7f7f7;
+}
+input[type="radio"]:checked, input[type="checkbox"]:checked
+{
+     background-color: #f1f1f1;
+}
+
+label
+{
+     font: 15px/1.7 'Open Sans', sans-serif;
+     color: #333;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+     cursor: pointer;
+     margin-right: 20px;
+} 
 
 @media only screen and (max-width: 770px) {
     .navbar a:last-child  {
