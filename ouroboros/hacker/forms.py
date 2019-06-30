@@ -8,6 +8,7 @@ class ApplicationModelForm(forms.ModelForm):
             self.add_error(
                 None, "Applications may only be submitted during a registration wave."
             )
+        return super().is_valid()
 
     class Meta:
         model = hacker_models.Application
