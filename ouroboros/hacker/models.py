@@ -220,7 +220,7 @@ class Application(models.Model):
     Represents a `Hacker`'s application to this hackathon.
     """
 
-    adult = models.BooleanField("Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=False, help_text="NOTE: We are able to admit minors only if they are accompanied by a college student (18+) who is planning on participating in the hackathon. Have additional questions? Email us at highschool@tamuhack.com")
+    adult = models.BooleanField("Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=False, help_text="NOTE: We are able to admit minors only if they are accompanied by a college student (18+) who is planning on participating in the hackathon")
     major = models.CharField("What's your major?", choices=MAJORS, max_length=50)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
     race = MultiSelectField("What race(s) do you identify with?", choices=RACES, max_length=41)
@@ -260,18 +260,18 @@ class Application(models.Model):
     def clean(self):
         super().clean()
         if not self.adult:
-            self.errors['adult'] = "Unfortunately, we cannot accept hackers under the age of 18"
+            raise exceptions.ValidationError("Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email us at highschool@tamuhack.com.")
 
 
 class Rsvp(models.Model):
     """
     Represents a `Hacker`'s confirmation that they are attending this hackathon.
     """
-    notes = models.TextField(
+    notes = models.TextField("Anything else you want us to know?",
         max_length=300,
         blank=True,
-        help_text="Provide any additional notes and/or comments in the text box provided",
-    ) 
+        help_text="Please let us know if there's anything else we can do to make %s an amazing experience for you!"%(settings.EVENT_NAME),
+    )
 
     date_rsvped = models.DateField(auto_now_add=True, blank=True)
 

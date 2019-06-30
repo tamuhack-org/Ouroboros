@@ -342,9 +342,6 @@ input[type="submit"]{
     margin-top: -30px;
     margin-bottom: 20px;
 }
-.application ul li {
-    height: 0px;
-}
 .application ul li label {
     font-weight: 400 !important;
     margin: 10px 0px !important;
@@ -494,6 +491,38 @@ label
      margin-right: 20px;
 } 
 
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+.errorlist > li{
+    color: #a94442;
+    font-size: 14px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.errorlist{
+    background-color: #f2dede;
+    border-radius: 4px;
+    margin-top: 10px !important;
+}
+
+.errorlist > li::before{
+    content: '\f06a';
+    font-family:FontAwesome;
+    font-style:normal;
+    font-weight:400;
+    speak:none;
+    display:inline-block;
+    text-decoration:inherit;
+    width:1em;
+    margin-right: 10px;
+    text-align:center;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1em;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+}
+
 @media only screen and (max-width: 770px) {
     .navbar a:last-child  {
         text-align: right!important;
@@ -508,5 +537,3 @@ label
         line-height: 14px;
     }
 }
-
-
