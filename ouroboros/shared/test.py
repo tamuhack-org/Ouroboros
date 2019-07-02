@@ -47,7 +47,7 @@ class SharedTestCase(test.TestCase):
         self.resume_file_data = {"resume": self.resume}
 
         self.application_fields = {
-            "major": "A",
+            "major": "Computer Science",
             "gender": "M",
             "classification": "Fr",
             "grad_year": "Other",
@@ -66,7 +66,7 @@ class SharedTestCase(test.TestCase):
         }
 
         self.updated_application_fields = dict(**self.application_fields)
-        self.updated_application_fields["major"] = "ABCDEFG"
+        self.updated_application_fields["major"] = "Accounting"
         self.resume2 = SimpleUploadedFile("resume2.txt", b"dummy2")
         self.updated_application_fields["resume"] = self.resume2
 

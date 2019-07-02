@@ -59,6 +59,8 @@ DIETARY_RESTRICTIONS = (
     ("Food Allergies", "Food Allergies"),
 )
 
+MAJORS = [('Accounting', 'Accounting'), ('Actuarial Science', 'Actuarial Science'), ('Advertising', 'Advertising'), ('Agriculture', 'Agriculture'), ('Agricultural and Biological Engineering', 'Agricultural and Biological Engineering'), ('Agricultural Business Management', 'Agricultural Business Management'), ('Agriculture Economics', 'Agriculture Economics'), ('Animal Bioscience', 'Animal Bioscience'), ('Animal Sciences', 'Animal Sciences'), ('Anthropology', 'Anthropology'), ('Applied Mathematics', 'Applied Mathematics'), ('Archaeology', 'Archaeology'), ('Architectural Engineering', 'Architectural Engineering'), ('Architecture', 'Architecture'), ('Art History', 'Art History'), ('Studio Art', 'Studio Art'), ('Art Education', 'Art Education'), ('Biobehavioral Health', 'Biobehavioral Health'), ('Biochemistry', 'Biochemistry'), ('Bioengineering', 'Bioengineering'), ('Biology', 'Biology'), ('Biophysics', 'Biophysics'), ('Biotechnology', 'Biotechnology'), ('Business Administration and Management', 'Business Administration and Management'), ('Business Logistics', 'Business Logistics'), ('Chemical Engineering', 'Chemical Engineering'), ('Chemistry', 'Chemistry'), ('Children', 'Children'), ('Civil Engineering', 'Civil Engineering'), ('Computer Engineering', 'Computer Engineering'), ('Computer Science', 'Computer Science'), ('Crime, Law, and Justice', 'Crime, Law, and Justice'), ('Dance', 'Dance'), ('Earth Sciences', 'Earth Sciences'), ('Economics', 'Economics'), ('Electrical Engineering', 'Electrical Engineering'), ('Elementary and Kindergarten Education', 'Elementary and Kindergarten Education'), ('Engineering Science', 'Engineering Science'), ('English', 'English'), ('Environmental Systems Engineering', 'Environmental Systems Engineering'), ('Environmental Sciences', 'Environmental Sciences'), ('Environmental Resource Management', 'Environmental Resource Management'), ('Film and Video', 'Film and Video'), ('Finance', 'Finance'), ('Food Science', 'Food Science'), ('Forest Science', 'Forest Science'), ('Forest Technology', 'Forest Technology'), ('General Science', 'General Science'), ('Geography', 'Geography'), ('Geosciences', 'Geosciences'), ('Graphic Design and Photography', 'Graphic Design and Photography'), ('Health and Physical Education', 'Health and Physical Education'), ('Health Policy and Administration', 'Health Policy and Administration'), ('History', 'History'), ('Horticulture', 'Horticulture'), ('Hotel, Restaurant, and Institutional Management', 'Hotel, Restaurant, and Institutional Management'), ('Human Development and Family Studies', 'Human Development and Family Studies'), ('Individual and Family Studies', 'Individual and Family Studies'), ('Industrial Engineering', 'Industrial Engineering'), ('Information Sciences and Technology', 'Information Sciences and Technology'), ('Journalism', 'Journalism'), ('Kinesiology', 'Kinesiology'), ('Landscape Architecture', 'Landscape Architecture'), ('Law Enforcement and Correction', 'Law Enforcement and Correction'), ('Marine Biology', 'Marine Biology'), ('Marketing', 'Marketing'), ('Mathematics', 'Mathematics'), ('Mechanical Engineering', 'Mechanical Engineering'), ('Media Studies', 'Media Studies'), ('Meteorology', 'Meteorology'), ('Microbiology', 'Microbiology'), ('Mineral Economics', 'Mineral Economics'), ('Modern Languages', 'Modern Languages'), ('Music Education', 'Music Education'), ('Nuclear Engineering', 'Nuclear Engineering'), ('Nursing', 'Nursing'), ('Nutrition', 'Nutrition'), ('Philosophy', 'Philosophy'), ('Physics', 'Physics'), ('Physiology', 'Physiology'), ('Political Science', 'Political Science'), ('Pre-medicine', 'Pre-medicine'), ('Psychology', 'Psychology'), ('Public Relations', 'Public Relations'), ('Real Estate', 'Real Estate'), ('Recreation and Parks', 'Recreation and Parks'), ('Rehabilitation Services', 'Rehabilitation Services'), ('Religious Studies', 'Religious Studies'), ('Secondary Education', 'Secondary Education'), ('Sociology', 'Sociology'), ('Social Work', 'Social Work'), ('Special Education', 'Special Education'), ('Speech Communication', 'Speech Communication'), ('Speech Pathology and Audiology/Communication Disorder', 'Speech Pathology and Audiology/Communication Disorder'), ('Statistics', 'Statistics'), ('Telecommunications', 'Telecommunications'), ('Theater', 'Theater'), ('Wildlife and Fishery Science', 'Wildlife and Fishery Science'), ('Wildlife Technology', 'Wildlife Technology'), ("Women's Studies", "Women's Studies")]
+
 HACKATHON_TIMES = [("0", "This will be my first!"), ("1-3", "1-3"), ("4-7", "4-7"), ("8-10", "8-10"), ("10+", "10+")]
 
 GRAD_YEARS = []
@@ -218,10 +220,10 @@ class Application(models.Model):
     Represents a `Hacker`'s application to this hackathon.
     """
 
-    adult = models.BooleanField("Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=False, help_text="NOTE: We are able to admit minors only if they are accompanied by a college student (18+) who is planning on participating in the hackathon. Have additional questions? Email us at highschool@tamuhack.com")
-    major = models.CharField("What's your major?", max_length=50)
+    adult = models.BooleanField("Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=False, help_text="NOTE: We are able to admit minors only if they are accompanied by a college student (18+) who is planning on participating in the hackathon")
+    major = models.CharField("What's your major?", choices=MAJORS, max_length=50)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
-    race = MultiSelectField("What race do you identify with?", choices=RACES, max_length=41)
+    race = MultiSelectField("What race(s) do you identify with?", choices=RACES, max_length=41)
     classification = models.CharField("What classification are you?", choices=CLASSIFICATIONS, max_length=2)
     grad_year = models.CharField("What is your anticipated graduation date?", choices=GRAD_YEARS, max_length=11)
     dietary_restrictions = MultiSelectField(
@@ -254,17 +256,22 @@ class Application(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy("application", args=[self.pk])
+    
+    def clean(self):
+        super().clean()
+        if not self.adult:
+            raise exceptions.ValidationError("Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email us at highschool@tamuhack.com.")
 
 
 class Rsvp(models.Model):
     """
     Represents a `Hacker`'s confirmation that they are attending this hackathon.
     """
-    notes = models.TextField(
+    notes = models.TextField("Anything else you want us to know?",
         max_length=300,
         blank=True,
-        help_text="Provide any additional notes and/or comments in the text box provided",
-    ) 
+        help_text="Please let us know if there's anything else we can do to make %s an amazing experience for you!"%(settings.EVENT_NAME),
+    )
 
     date_rsvped = models.DateField(auto_now_add=True, blank=True)
 
