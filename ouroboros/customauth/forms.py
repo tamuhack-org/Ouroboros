@@ -37,3 +37,11 @@ class LoginForm(auth_forms.AuthenticationForm):
 
     class Meta:
         fields = ["username", "password"]
+
+
+class PlaceholderPasswordResetForm(auth_forms.PasswordResetForm):
+    """
+    It's the same as the parent form, just overriding the attributes to be placeholders
+    instead of labels.
+    """
+    email = forms.EmailField(widget=widgets.EmailInput(attrs={"placeholder": "Email"}), label="")
