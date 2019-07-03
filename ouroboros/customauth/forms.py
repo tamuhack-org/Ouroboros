@@ -2,6 +2,7 @@ from django import forms
 from django.forms import widgets
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth import password_validation
 
 
 class SignupForm(auth_forms.UserCreationForm):
@@ -45,3 +46,19 @@ class PlaceholderPasswordResetForm(auth_forms.PasswordResetForm):
     instead of labels.
     """
     email = forms.EmailField(widget=widgets.EmailInput(attrs={"placeholder": "Email"}), label="")
+
+class PlaceholderSetPasswordForm(auth_forms.SetPasswordForm):
+    """
+    It's the same as the parent form, just overriding attributes to be placeholders instead of labels.
+    """
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "New password"}),
+        strip=False,
+        help_text=password_validation.password_validators_help_text_html(),
+        label=""
+    )
+    new_password2 = forms.CharField(
+        strip=False,
+        widget=forms.PasswordInput(attrs={"placeholder": "Confirm new password"}),
+        label=""
+    )
