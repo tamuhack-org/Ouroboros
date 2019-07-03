@@ -17,17 +17,9 @@ def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
 
 
 class HackerAdmin(admin.ModelAdmin):
-    list_display = (
-        "email",
-        "is_active",
-        "is_staff",
-        "checked_in",
-    )
+    list_display = ("email", "is_active", "is_staff", "checked_in")
     fieldsets = [
-        (
-            "User Information",
-            {"fields": ["email", "password"]},
-        ),
+        ("User Information", {"fields": ["email", "password"]}),
         (
             "Advanced",
             {
@@ -104,8 +96,26 @@ def reject(self, request, queryset):  # Needs to be Tested!!!
             instance.save()
 
 
+def custom_titled_filter(title):
+    class Wrapper(admin.FieldListFilter):
+        def __new__(cls, *args, **kwargs):
+            instance = admin.FieldListFilter.create(*args, **kwargs)
+            instance.title = title
+            return instance
+
+    return Wrapper
+
+
 class ApplicationAdmin(admin.ModelAdmin):
     form = ApplicationAdminForm
+    list_filter = (
+        ("gender", custom_titled_filter("gender")),
+        ("race", custom_titled_filter("race")),
+        ("classification", custom_titled_filter("classification")),
+        ("grad_year", custom_titled_filter("graduation year")),
+        ("dietary_restrictions", custom_titled_filter("dietary restrictions")),
+        ("tamu_student", custom_titled_filter("if TAMU student")),
+    )
     list_display = (
         "first_name",
         "last_name",
@@ -138,7 +148,15 @@ class ApplicationAdmin(admin.ModelAdmin):
         ),
         (
             "Free Response Questions",
-            {"fields": ["extra_links", "programming_joke", "unlimited_resource", "cool_prize", "notes"]},
+            {
+                "fields": [
+                    "extra_links",
+                    "programming_joke",
+                    "unlimited_resource",
+                    "cool_prize",
+                    "notes",
+                ]
+            },
         ),
         ("Status", {"fields": ["approved"]}),
     ]
@@ -179,6 +197,7 @@ class RsvpAdmin(admin.ModelAdmin):
 
     def hacker_name(self, obj: Rsvp):
         return " ".join([obj.hacker.first_name, obj.hacker.last_name])
+
 
 admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Application, ApplicationAdmin)
