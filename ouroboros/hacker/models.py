@@ -131,10 +131,6 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
         default=False,
         help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
     )
-    first_name = models.CharField(
-        max_length=255, blank=False, verbose_name="first name"
-    )
-    last_name = models.CharField(max_length=255, blank=False, verbose_name="last name")
 
     rsvp_deadline = models.DateTimeField(null=True)
     cant_make_it = models.BooleanField(default=False)
@@ -169,14 +165,6 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
         html_msg = render_to_string(template_name, context)
         msg = html.strip_tags(html_msg)
         self.email_hacker(subject, msg, html_message=html_msg)
-
-    def clean(self):
-        super().clean()
-        if any(char.isdigit() for char in self.first_name):
-            raise exceptions.ValidationError("First name can't contain any numbers")
-        if any(char.isdigit() for char in self.last_name):
-            raise exceptions.ValidationError("Last name can't contain any numbers")
-
 
 class WaveManager(models.Manager):
     def next_wave(self, dt: datetime.datetime = timezone.now()):
@@ -220,6 +208,10 @@ class Application(models.Model):
     Represents a `Hacker`'s application to this hackathon.
     """
 
+    first_name = models.CharField(
+        max_length=255, blank=False, null=False, verbose_name="first name", 
+    )
+    last_name = models.CharField(max_length=255, blank=False, null=False, verbose_name="last name")
     adult = models.BooleanField("Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=False, help_text="NOTE: We are able to admit minors only if they are accompanied by a college student (18+) who is planning on participating in the hackathon")
     major = models.CharField("What's your major?", choices=MAJORS, max_length=50)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
@@ -261,6 +253,10 @@ class Application(models.Model):
         super().clean()
         if not self.adult:
             raise exceptions.ValidationError("Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email us at highschool@tamuhack.com.")
+        if any(char.isdigit() for char in self.first_name):
+            raise exceptions.ValidationError("First name can't contain any numbers")
+        if any(char.isdigit() for char in self.last_name):
+            raise exceptions.ValidationError("Last name can't contain any numbers")
 
 
 class Rsvp(models.Model):
@@ -278,13 +274,13 @@ class Rsvp(models.Model):
     hacker = models.OneToOneField(Hacker, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "%s, %s - Rsvp" % (self.hacker.last_name, self.hacker.first_name)
+        return "%s, %s - Rsvp" % (self.hacker.application.last_name, self.hacker.application.first_name)
 
 
 def send_rsvp_creation_email(hacker: Hacker) -> None:
     email_template = "emails/rsvp/created.html"
     subject = f"Your {settings.EVENT_NAME} RSVP has been received!"
-    context = {"first_name": hacker.first_name, "event_name": settings.EVENT_NAME}
+    context = {"first_name": hacker.application.first_name, "event_name": settings.EVENT_NAME}
 
     hacker.email_html_hacker(email_template, context, subject)
 

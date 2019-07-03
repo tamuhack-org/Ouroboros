@@ -10,9 +10,8 @@
 	  	    display: block;
 	  	    margin: 20px auto;">
 
-		<h2 style="margin-bottom: 35px;">Hi {{ user.first_name }}, </h2>
+		<h2 style="margin-bottom: 35px;">Howdy!</h2>
 		{% autoescape off %}
-		Hi {{ user.username }},
 		Please click on the link to confirm your registration,
 
 		http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
