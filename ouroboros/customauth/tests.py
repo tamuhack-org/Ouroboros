@@ -19,8 +19,6 @@ class EmailVerificationTestCase(test.SharedTestCase):
             "email": self.email,
             "password1": self.password,
             "password2": self.password,
-            "first_name": self.first_name,
-            "last_name": self.last_name,
         }
 
     def test_signup_creates_hacker(self):

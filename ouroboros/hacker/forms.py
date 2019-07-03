@@ -14,6 +14,8 @@ class ApplicationModelForm(forms.ModelForm):
         model = hacker_models.Application
         widgets = {'adult': forms.RadioSelect, "previous_attendant": forms.RadioSelect}
         fields = [
+            "first_name",
+            "last_name",
             "adult",
             "major",
             "gender",
