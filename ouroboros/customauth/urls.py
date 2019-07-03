@@ -13,7 +13,7 @@ urlpatterns = [
     ),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path(
-        "password_reset/", auth_views.PasswordResetView.as_view(), name="password_reset"
+        "password_reset/", views.PlaceholderPasswordResetView.as_view(), name="password_reset"
     ),
     path(
         "password_reset/done/",
@@ -22,7 +22,7 @@ urlpatterns = [
     ),
     path(
         "reset/<uidb64>/<token>/",
-        auth_views.PasswordResetConfirmView.as_view(),
+        views.PlaceholderPasswordResetConfirmView.as_view(),
         name="password_reset_confirm",
     ),
     path(

@@ -1,5 +1,6 @@
 from django import views
 from django.contrib.auth import get_user_model, login
+from django.contrib.auth import views as auth_views
 from django.contrib.sites import shortcuts as site_shortcuts
 from django.core import mail as django_email
 from django.http import HttpResponse
@@ -11,13 +12,13 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.conf import settings
 from django.views import generic
 
-from customauth import forms as confirm_forms
+from customauth import forms as customauth_forms
 from customauth.tokens import email_confirmation_generator
 
 
 # Create your views here.
 class SignupView(generic.FormView):
-    form_class = confirm_forms.SignupForm
+    form_class = customauth_forms.SignupForm
     template_name = "registration/signup.html"
 
     def form_valid(self, form):
@@ -60,3 +61,15 @@ class ActivateView(views.View):
             return redirect(reverse_lazy("status"))
         else:
             return HttpResponse("Activation link is invalid.")
+
+class PlaceholderPasswordResetView(auth_views.PasswordResetView):
+    """
+    Uses PlaceholderPasswordResetForm instead of default PasswordResetForm.
+    """
+    form_class = customauth_forms.PlaceholderPasswordResetForm
+
+class PlaceholderPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    """
+    Uses PlaceholderSetPasswordForm instead of default SetPasswordForm.
+    """
+    form_class = customauth_forms.PlaceholderSetPasswordForm
