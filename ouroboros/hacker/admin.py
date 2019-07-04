@@ -137,14 +137,13 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "major",
                     "classification",
                     "grad_year",
-                    "dietary_restrictions",
                     "tamu_student",
                 ]
             },
         ),
         (
             "Hackathon Information",
-            {"fields": ["num_hackathons_attended", "previous_attendant", "shirt_size"]},
+            {"fields": ["num_hackathons_attended", "previous_attendant"]},
         ),
         (
             "Free Response Questions",
@@ -183,7 +182,7 @@ class RsvpAdmin(admin.ModelAdmin):
     list_display = ("hacker_name", "notes")
     fieldsets = [
         ("Related Objects", {"fields": ["hacker"]}),
-        ("Logistical Information", {"fields": ["notes"]}),
+        ("Logistical Information", {"fields": ["notes", "dietary_restrictions", "shirt_size"]}),
     ]
 
     def has_add_permission(self, request, obj=None):

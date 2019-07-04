@@ -12,11 +12,10 @@ class ApplicationModelForm(forms.ModelForm):
 
     class Meta:
         model = hacker_models.Application
-        widgets = {'adult': forms.RadioSelect, "previous_attendant": forms.RadioSelect}
+        widgets = {'adult': forms.RadioSelect, "previous_attendant": forms.RadioSelect, 'extra_links': forms.TextInput(attrs={'placeholder': 'ex. GitHub, Devpost, personal website, LinkedIn, etc.'})}
         fields = [
             "first_name",
             "last_name",
-            "adult",
             "major",
             "gender",
             "race",
@@ -24,13 +23,12 @@ class ApplicationModelForm(forms.ModelForm):
             "grad_year",
             "num_hackathons_attended",
             "previous_attendant",
-            "dietary_restrictions",
-            "shirt_size",
-            "extra_links",
             "programming_joke",
             "unlimited_resource",
             "cool_prize",
-            "notes",
+            "adult",
             "resume",
+            "extra_links",
+            "notes",
         ]
 
