@@ -113,7 +113,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("race", custom_titled_filter("race")),
         ("classification", custom_titled_filter("classification")),
         ("grad_year", custom_titled_filter("graduation year")),
-        ("dietary_restrictions", custom_titled_filter("dietary restrictions")),
         ("tamu_student", custom_titled_filter("if TAMU student")),
     )
     list_display = (
@@ -174,7 +173,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 class RsvpAdminForm(forms.ModelForm):
     class Meta:
         model = Rsvp
-        fields = ["notes", "hacker"]
+        fields = ["hacker", "dietary_restrictions", "shirt_size"]
 
 
 class RsvpAdmin(admin.ModelAdmin):

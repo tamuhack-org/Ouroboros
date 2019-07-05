@@ -594,6 +594,13 @@ button{
     margin-bottom: 0px !important;
 }
 
+.secondary{
+    background: #3E678C;
+}
+.secondary:hover{
+    background: #325270;
+}
+
 
 
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');

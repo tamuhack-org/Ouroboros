@@ -135,7 +135,7 @@ class RsvpView(mixins.UserPassesTestMixin, CreateUpdateView):
     template_name = "hacker/rsvp.html"
     queryset = hacker_models.Rsvp.objects.all()
     success_url = reverse_lazy("status")
-    fields = ["notes"]
+    fields = ["dietary_restrictions", "shirt_size"]
 
     def get_permission_denied_message(self):
         if self.request.user.is_anonymous:
