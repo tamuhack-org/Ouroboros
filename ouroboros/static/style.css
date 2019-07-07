@@ -453,7 +453,7 @@ li .point {
 }
 
 #rsvp-form{
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 textarea[name="notes"] {
@@ -601,7 +601,10 @@ button{
     background: #325270;
 }
 
-
+#id_shirt_size{
+    margin-top: -16px !important;
+    margin-bottom: 40px !important;
+}
 
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 

@@ -24,7 +24,6 @@ TRUE_FALSE_CHOICES = (
 )
 
 SHIRT_SIZES = (
-    (None, "-- Select Option --"),
     ("XS", "XS"),
     ("S", "S"),
     ("M", "M"),
@@ -266,7 +265,7 @@ class Rsvp(models.Model):
     dietary_restrictions = MultiSelectField(
         "Do you have any dietary restrictions that we should know about?", choices=DIETARY_RESTRICTIONS, blank=True
     )
-    shirt_size = models.CharField("Shirt size?", choices=SHIRT_SIZES, max_length=3)
+    shirt_size = models.CharField("Shirt size?", choices=SHIRT_SIZES, default=None, max_length=3)
 
     def __str__(self):
         return "%s, %s - Rsvp" % (self.hacker.application.last_name, self.hacker.application.first_name)

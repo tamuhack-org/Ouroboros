@@ -33,3 +33,11 @@ class ApplicationModelForm(forms.ModelForm):
             "notes",
         ]
 
+class RsvpModelForm(forms.ModelForm):
+    class Meta:
+        model = hacker_models.Rsvp
+        widgets = {'shirt_size': forms.RadioSelect}
+        fields = [
+            "dietary_restrictions",
+            "shirt_size",
+        ]
