@@ -12,7 +12,7 @@ class RsvpViewTestCase(test.SharedTestCase):
     def setUp(self):
         super().setUp()
 
-        self.rsvp_fields = { "notes": ""}
+        self.rsvp_fields = {"notes": "", "dietary_restrictions": "Vegan", "shirt_size": "XL"}
 
     def test_redirects_when_not_logged_in(self):
         response = self.client.get(reverse_lazy("rsvp"))

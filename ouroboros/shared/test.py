@@ -49,17 +49,16 @@ class SharedTestCase(test.TestCase):
             "gender": "M",
             "classification": "Fr",
             "grad_year": "Other",
-            "dietary_restrictions": ["Vegan"],
             "num_hackathons_attended": 0,
             "hacker": self.hacker,
             "race": ["NA"],
-            "shirt_size": "XL",
             "extra_links": "A",
             "programming_joke": "B",
             "unlimited_resource": "C",
             "cool_prize": "D",
             "adult": True,
             "previous_attendant": False,
+            "additional_accommodations": "E",
             **self.resume_file_data,
         }
 

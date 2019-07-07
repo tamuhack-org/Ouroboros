@@ -153,6 +153,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "unlimited_resource",
                     "cool_prize",
                     "notes",
+                    "additional_accommodations"
                 ]
             },
         ),

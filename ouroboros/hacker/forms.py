@@ -29,6 +29,7 @@ class ApplicationModelForm(forms.ModelForm):
             "adult",
             "resume",
             "extra_links",
+            "additional_accommodations",
             "notes",
         ]
 

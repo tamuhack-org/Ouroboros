@@ -226,6 +226,7 @@ class Application(models.Model):
         blank=True,
     )
     resume = models.FileField("Upload your resume", help_text="Companies will use this resume to offer interviews for internships and full-time positions.")
+    additional_accommodations = models.TextField("Do you require any special accommodations at the event?", max_length=500)
 
     approved = models.NullBooleanField(blank=True)
 
