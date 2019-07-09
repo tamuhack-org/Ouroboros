@@ -2,6 +2,11 @@ html, body {
     overflow-x: hidden;
 }
 
+.inner-container{
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .navbar {
     -webkit-box-shadow: 0 8px 6px -6px #999;
     -moz-box-shadow: 0 8px 6px -6px #999;
@@ -168,11 +173,15 @@ input[type="submit"]{
     letter-spacing: 1px;
 }
 
-.login-box {
+.application, .login-box {
     background: #fff;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
     border-radius: 3px;
-    padding: 3em 5em !important; 
+    padding: 5em 8em; 
+}
+
+.login-box{
+    padding: 6em !important;
 }
 
 .flat-field {
@@ -307,7 +316,8 @@ input[type="submit"]{
 }
 
 .application {
-    margin-bottom: 7vh !important;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .application h5 {
@@ -318,8 +328,12 @@ input[type="submit"]{
 }
 
 .application p {
-    margin-bottom: 30px;
+    margin-bottom: 16px;
     text-align: left;
+}
+
+.application p > input, .application p > select, .application p > textarea {
+    margin-bottom: 15px;
 }
 
 .helptext {
@@ -332,7 +346,7 @@ input[type="submit"]{
 .application label {
     display: block;
     font-weight: 600 !important;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     text-align: left;
 }
 
@@ -344,7 +358,6 @@ input[type="submit"]{
 }
 .application ul li label {
     font-weight: 400 !important;
-    margin: 10px 0px !important;
     margin-right: 20px !important;
 }
 .application input[type='text'], input[type='number'], .application textarea, .application select{
@@ -355,9 +368,17 @@ input[type="submit"]{
     font-size: 14px;
 }
 
+.application select{
+    background: white;
+    width: 50%;
+}
+
 .application select option {
-    background-color: white;
-    padding: 8px  !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: white !important;
+    padding: 100px !important;
     font-size: 14px;
 }
 
@@ -387,7 +408,7 @@ li {
     margin: auto;
     font-size: 12px;
     font-weight: 600;
-    height: 50px;
+    height: 40px;
 }
 
 li img {
@@ -432,7 +453,7 @@ li .point {
 }
 
 #rsvp-form{
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 textarea[name="notes"] {
@@ -445,41 +466,91 @@ ul label{
     margin: 0px;
 }
 
-input[type="radio"], input[type="checkbox"]
+input[type="radio"]
 {
      -webkit-appearance: none;
      -moz-appearance: none;
      appearance: none;
      display: inline-block;
      position: relative;
-     background-color: #f1f1f1;
-     color: #666;
+     border: #c5c5c5 solid 1px;
+     border-radius: 100px;
+     color: #FF90A4;
      top: 10px;
      height: 30px;
      width: 30px;
-     border: 0;
+     cursor: pointer;     
+     margin-right: 7px;
+     outline: none;
+}
+input[type="radio"]:checked::after
+{
+     position: absolute;
+     left: 50%;
+     top: 50%;
+     transform: translate(-50%, -50%);
+     background: #FF90A4;
+     border-radius: 100px;
+     content: ' ';
+     height: 20px;
+     width: 20px;
+}
+
+
+input[type="checkbox"]
+{
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;
+     display: inline-block;
+     position: relative;
+     border: #c5c5c5 solid 1px;
+     color: white;
+     top: 10px;
+     height: 30px;
+     width: 30px;
      border-radius: 3px;
      cursor: pointer;     
      margin-right: 7px;
      outline: none;
 }
-input[type="radio"]:checked::before, input[type="checkbox"]:checked::before
+input[type="checkbox"]:checked::before
 {
-     position: absolute;
-     font: 13px/1 'Open Sans', sans-serif;
-     left: 11px;
-     top: 7px;
-     content: '\02143';
-     transform: rotate(40deg);
+    position: absolute;
+    font: 20px/1 'Open Sans', sans-serif;
+    top: 4px;
+    left: 4px;
+    content: '\f00c';
+    font-family:FontAwesome;
 }
-input[type="radio"]:hover, input[type="checkbox"]:hover
+input[type="checkbox"]:checked
 {
-     background-color: #f7f7f7;
+     background-color: #FF90A4;
 }
-input[type="radio"]:checked, input[type="checkbox"]:checked
-{
-     background-color: #f1f1f1;
+input[type="file"]{
+    height: 48px;
+    margin-bottom: -10px !important;
 }
+
+input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+    padding-right:90px;
+    padding-top: 5px;
+  }
+  input[type="file"]::before {
+    content: 'UPLOAD';
+    display: inline-block;
+    background: #3E678C;
+    border-radius: .3rem;
+    padding: .5rem 3rem !important;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    color: white;
+    line-height: 1.5;
+    font-size: 1.25rem;
+  }
 
 label
 {
@@ -490,6 +561,50 @@ label
      cursor: pointer;
      margin-right: 20px;
 } 
+
+#id_adult, #id_previous_attendant {
+    margin-top: -10px;
+    margin-bottom: 25px;
+}
+#id_race, #id_dietary_restrictions{
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+#id_adult li, #id_previous_attendant li{
+    display: inline-block;
+    width: 100%;
+}
+#id_race li, #id_dietary_restrictions li{
+    margin-bottom: 10px;
+}
+button{
+    padding: .5rem 3rem !important;
+    width: auto !important;
+}
+
+.application textarea{
+    height: 100px;
+}
+
+.application textarea[name="notes"]{
+    margin-bottom: 35px;
+}
+
+.application form > p:nth-child(21), #id_notes{
+    margin-bottom: 0px !important;
+}
+
+.secondary{
+    background: #3E678C;
+}
+.secondary:hover{
+    background: #325270;
+}
+
+#id_shirt_size{
+    margin-top: -16px !important;
+    margin-bottom: 40px !important;
+}
 
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
@@ -535,5 +650,11 @@ label
     li .diplome {
         font-size: 12px;
         line-height: 14px;
+    }
+    .application{
+        padding: 5em 3em; 
+    }
+    .application select{
+        width: 100%;
     }
 }

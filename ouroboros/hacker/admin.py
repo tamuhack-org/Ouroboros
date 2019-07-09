@@ -113,7 +113,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("race", custom_titled_filter("race")),
         ("classification", custom_titled_filter("classification")),
         ("grad_year", custom_titled_filter("graduation year")),
-        ("dietary_restrictions", custom_titled_filter("dietary restrictions")),
         ("tamu_student", custom_titled_filter("if TAMU student")),
     )
     list_display = (
@@ -137,14 +136,13 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "major",
                     "classification",
                     "grad_year",
-                    "dietary_restrictions",
                     "tamu_student",
                 ]
             },
         ),
         (
             "Hackathon Information",
-            {"fields": ["num_hackathons_attended", "previous_attendant", "shirt_size"]},
+            {"fields": ["num_hackathons_attended", "previous_attendant"]},
         ),
         (
             "Free Response Questions",
@@ -155,6 +153,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "unlimited_resource",
                     "cool_prize",
                     "notes",
+                    "additional_accommodations"
                 ]
             },
         ),
@@ -175,7 +174,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 class RsvpAdminForm(forms.ModelForm):
     class Meta:
         model = Rsvp
-        fields = ["notes", "hacker"]
+        fields = ["hacker", "dietary_restrictions", "shirt_size"]
 
 
 class RsvpAdmin(admin.ModelAdmin):
@@ -183,7 +182,7 @@ class RsvpAdmin(admin.ModelAdmin):
     list_display = ("hacker_name", "notes")
     fieldsets = [
         ("Related Objects", {"fields": ["hacker"]}),
-        ("Logistical Information", {"fields": ["notes"]}),
+        ("Logistical Information", {"fields": ["notes", "dietary_restrictions", "shirt_size"]}),
     ]
 
     def has_add_permission(self, request, obj=None):

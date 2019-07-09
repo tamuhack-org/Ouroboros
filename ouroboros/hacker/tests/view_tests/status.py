@@ -11,8 +11,7 @@ from shared import test
 class StatusViewTestCase(test.SharedTestCase):
     def setUp(self):
         super().setUp()
-
-        self.rsvp_fields = {"notes": "", "hacker": self.hacker}
+        self.rsvp_fields = {"shirt_size": "XL", "dietary_restrictions": "Vegan", "hacker": self.hacker}
 
     def test_redirects_when_not_logged_in(self):
         response = self.client.get(reverse_lazy("status"))

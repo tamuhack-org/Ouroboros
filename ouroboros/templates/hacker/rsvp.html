@@ -1,4 +1,5 @@
 {% extends 'hacker/dashboard_base.html' %} {% block content %}
+<div class="application">
 <h1>RSVP</h1>
 <p>Congrats! We can't wait to see what you build at {{ event_name }}!</p>
 <hr />
@@ -9,7 +10,7 @@
 <button type="button" class="btn btn-lg btn-login rsvp-button" id="rsvp-yes">Yes</button>
 <form method="POST" action="{% url 'decline' %}" class="rsvp-button">
   {% csrf_token %}
-  <button type="submit" class="btn btn-lg btn-login">
+  <button type="submit" class="btn btn-lg btn-login secondary">
     No
   </button>
 </form>
@@ -25,6 +26,7 @@
     Submit
   </button>
 </form>
+</div>
 <script>
   document.getElementById("rsvp-yes").addEventListener("click", e => {
     e.preventDefault();
