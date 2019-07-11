@@ -80,6 +80,7 @@ class Migration(migrations.Migration):
                 ('approved', models.NullBooleanField()),
                 ('hacker', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
                 ('wave', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hacker.Wave')),
+                ('mlh_coc', multiselectfield.db.fields.MultiSelectField(choices=[('Agree', '')], default='Agree', help_text='<a href=https://static.mlh.io/docs/mlh-code-of-conduct.pdf target="_blank">MLH Code of Conduct</a>', max_length=10, verbose_name='I agree to the MLH Code of Conduct'))
             ],
         ),
     ]

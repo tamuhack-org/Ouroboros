@@ -56,9 +56,10 @@ class SharedTestCase(test.TestCase):
             "programming_joke": "B",
             "unlimited_resource": "C",
             "cool_prize": "D",
-            "adult": True,
+            "adult": ["Agree"],
             "previous_attendant": False,
             "additional_accommodations": "E",
+            "mlh_coc": ["Agree"],
             **self.resume_file_data,
         }
 
