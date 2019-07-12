@@ -58,7 +58,7 @@ LOGGING = {
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 
-DEFAULT_FROM_EMAIL = "The Howdy Hack Team <hello@tamuhack.com>"
+DEFAULT_FROM_EMAIL = "The HowdyHack Team <hello@tamuhack.com>"
 
 
 # Static Files URL
