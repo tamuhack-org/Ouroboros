@@ -29,7 +29,6 @@ class SignupView(generic.FormView):
         template_name = "emails/activate_email.html"
         context = {
             "user": user,
-            "protocol": "https://" if curr_domain is not "localhost" else "http://",
             "domain": curr_domain,
             "uid": urlsafe_base64_encode(force_bytes(user.pk)),
             "token": email_confirmation_generator.make_token(user),
