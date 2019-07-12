@@ -36,7 +36,9 @@ class ApplicationViewTestCase(test.SharedTestCase):
         )
         self.hacker.cant_make_it = True
         self.hacker.save()
-        response = self.client.post(reverse_lazy("application"), self.updated_application_fields)
+        response = self.client.post(
+            reverse_lazy("application"), self.updated_application_fields
+        )
         self.assertEqual(response.status_code, 403)
 
     def test_associates_application_with_user(self):
@@ -61,3 +63,21 @@ class ApplicationViewTestCase(test.SharedTestCase):
 
         app.refresh_from_db()
         self.assertEqual(app.major, self.updated_application_fields["major"])
+
+    def test_isnt_valid_when_already_approved(self):
+        self.create_active_wave()
+        self.client.force_login(self.hacker)
+        self.client.post(reverse_lazy("application"), self.application_fields)
+        app = hacker_models.Application.objects.get(hacker=self.hacker)
+        app.approved = True
+        app.save()
+        response = self.client.post(
+            reverse_lazy("application"), self.updated_application_fields
+        )
+        errors = response.context["form"].errors.as_json()
+        self.assertFormError(
+            response,
+            "form",
+            "__all__",
+            "Your application has already been approved, no further changes are allowed.",
+        )
