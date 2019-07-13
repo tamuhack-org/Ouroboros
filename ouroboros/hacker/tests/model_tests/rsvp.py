@@ -2,7 +2,6 @@ from shared import test
 from hacker import models as hacker_models
 from django.core import mail
 from django.conf import settings
-import qrcode
 
 
 class RsvpModelTestCase(test.SharedTestCase):

@@ -23,11 +23,14 @@ idna==2.8
 isort==4.3.18
 lazy-object-proxy==1.4.1
 mccabe==0.6.1
+pkg-resources==0.0.0
 protobuf==3.8.0
 psycopg2-binary==2.8.2
 pyasn1==0.4.5
 pyasn1-modules==0.2.5
 pylint==2.3.1
+pypng==0.0.19
+PyQRCode==1.2.1
 python-http-client==3.1.0
 pytz==2019.1
 requests==2.22.0
