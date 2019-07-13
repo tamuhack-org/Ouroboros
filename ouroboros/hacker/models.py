@@ -364,9 +364,10 @@ class Application(models.Model):
     extra_links = models.CharField(
         "Point us to anything you'd like us to look at while considering your application",
         max_length=200,
+        blank=True,
     )
     programming_joke = models.TextField(
-        "Tell us your best programming joke", max_length=500
+        "Tell us your best programming joke", max_length=500,
     )
     unlimited_resource = models.TextField(
         "What is the one thing you'd build if you had unlimited resources?",
@@ -384,7 +385,9 @@ class Application(models.Model):
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
     )
     additional_accommodations = models.TextField(
-        "Do you require any special accommodations at the event?", max_length=500
+        "Do you require any special accommodations at the event?",
+        max_length=500,
+        blank=True,
     )
 
     approved = models.NullBooleanField(blank=True)
