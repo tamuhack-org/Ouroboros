@@ -2,6 +2,7 @@ from shared import test
 from hacker import models as hacker_models
 from django.core import mail
 from django.conf import settings
+import qrcode
 
 
 class RsvpModelTestCase(test.SharedTestCase):
@@ -11,9 +12,9 @@ class RsvpModelTestCase(test.SharedTestCase):
         self.app = hacker_models.Application(**self.application_fields, wave=self.wave1)
         self.app.full_clean()
         self.app.save()
-        self.rsvp_fields = { "notes": "", "dietary_restrictions": "", "shirt_size": ""}
+        self.rsvp_fields = {"notes": "", "dietary_restrictions": "", "shirt_size": ""}
 
-    def sends_email_on_rsvp_creation(self):
+    def test_sends_email_on_rsvp_creation(self):
         self.rsvp = hacker_models.Rsvp(**self.rsvp_fields, hacker=self.hacker)
         self.rsvp.save()
         self.assertEqual(len(mail.outbox), 1)
@@ -21,3 +22,4 @@ class RsvpModelTestCase(test.SharedTestCase):
             mail.outbox[0].subject,
             f"Your {settings.EVENT_NAME} RSVP has been received!",
         )
+        self.assertEqual(len(mail.outbox[0].attachments), 1)

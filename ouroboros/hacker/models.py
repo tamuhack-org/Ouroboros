@@ -2,7 +2,7 @@ import datetime
 import json
 import random
 import string
-
+from io import BytesIO
 from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -17,6 +17,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils import html, timezone
 from multiselectfield import MultiSelectField
+import pyqrcode
 
 TRUE_FALSE_CHOICES = ((True, "Yes"), (False, "No"))
 
@@ -454,7 +455,23 @@ def send_rsvp_creation_email(hacker: Hacker) -> None:
         "event_name": settings.EVENT_NAME,
     }
 
-    hacker.email_html_hacker(email_template, context, subject)
+    html_msg = render_to_string(email_template, context)
+    msg = html.strip_tags(html_msg)
+    email = mail.EmailMultiAlternatives(subject, msg, from_email=None, to=[hacker.email])
+    email.attach_alternative(html_msg, "text/html")
+
+    qr_content = json.dumps({
+        "first_name": hacker.application.first_name,
+        "last_name": hacker.application.last_name,
+        "email": hacker.email,
+        "university": "Texas A&M University" # TODO: Remove this hard-coding.
+    })
+    qr_code = pyqrcode.create(qr_content)
+    qr_stream = BytesIO()
+    qr_code.png(qr_stream, scale=5)
+    email.attach("code.png", qr_stream.getvalue(), "text/png")
+    email.send()
+
 
 
 @receiver(signal=post_save, sender=Rsvp)
