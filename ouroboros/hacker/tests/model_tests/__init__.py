@@ -1,2 +1,2 @@
-from .rsvp import *
+from .rsvp import RsvpModelTestCase
 from .wave import *

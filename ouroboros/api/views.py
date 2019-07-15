@@ -1,6 +1,7 @@
 from django import shortcuts
 from django.shortcuts import render
 from rest_framework import authentication, permissions, status, response
+from api.permissions import IsVolunteer
 from rest_framework.authtoken import views
 
 from api import models
@@ -17,7 +18,7 @@ obtain_email_auth_token = EmailObtainAuthToken.as_view()
 
 
 class CreateFoodEvent(views.APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsVolunteer]
     authentication_classes = [authentication.TokenAuthentication]
 
     def post(self, request, format=None):
@@ -40,7 +41,7 @@ class CreateFoodEvent(views.APIView):
 
 
 class CreateWorkshopEvent(views.APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsVolunteer]
     authentication_classes = [authentication.TokenAuthentication]
 
     def post(self, request, format=None):

@@ -1,8 +1,12 @@
-from shared import test
-from rest_framework.authtoken.models import Token
-from django.shortcuts import reverse
-from hacker import models as hacker_models
 import json
+
+from django.shortcuts import reverse
+from django.conf import settings
+from django.contrib.auth.models import Group
+from rest_framework.authtoken.models import Token
+
+from hacker import models as hacker_models
+from shared import test
 
 
 class TokenAuthTestCase(test.SharedTestCase):
@@ -16,12 +20,19 @@ class TokenAuthTestCase(test.SharedTestCase):
         self.volunteer.set_password(self.volunteer_password)
         self.volunteer.save()
 
-    def get_token(self):
-        post_body = {"email": self.volunteer_email, "password": self.volunteer_password}
+        self.volunteer_group = Group(name=settings.VOLUNTEER_GROUP_NAME)
+        self.volunteer_group.save()
+        self.volunteer.groups.add(self.volunteer_group)
+
+    def get_token(self, email, password):
+        post_body = {"email": email, "password": password}
         response = self.client.post(reverse("api-login"), data=post_body)
         response_body = json.loads(response.content)
         self.assertIn("token", response_body)
         return " ".join(["Token", response_body["token"]])
+
+    def get_volunteer_token(self):
+        return self.get_token(self.volunteer_email, self.volunteer_password)
 
 
 class ApiLoginViewTestCase(TokenAuthTestCase):
@@ -41,8 +52,24 @@ class ApiLoginViewTestCase(TokenAuthTestCase):
 
 
 class CreateFoodEventViewTestCase(TokenAuthTestCase):
+    def test_cant_access_unless_volunteer(self):
+        hacker_token = self.get_token(self.email, self.password)
+        post_body = {
+            "email": self.hacker.email,
+            "meal": "Breakfast",
+            "restrictions": "Vegan",
+        }
+        response = self.client.post(
+            reverse("create-food-event"), post_body, HTTP_AUTHORIZATION=hacker_token
+        )
+        self.assertEqual(response.status_code, 403)
+
+        volunteer_token = self.get_volunteer_token()
+        response = self.client.post(reverse("create-food-event"), post_body, HTTP_AUTHORIZATION=volunteer_token)
+        self.assertEqual(response.status_code, 200)
+
     def test_creates_food_event(self):
-        token = self.get_token()
+        token = self.get_volunteer_token()
         post_body = {
             "email": self.hacker.email,
             "meal": "Breakfast",
@@ -54,7 +81,7 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_bad_request_when_missing_field(self):
-        token = self.get_token()
+        token = self.get_volunteer_token()
         post_body = {
             "email": self.hacker.email,
             "meal": "Breakfast",
@@ -69,11 +96,11 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
             post_body[key] = val
 
     def test_bad_request_when_hacker_doesnt_exist(self):
-        token = self.get_token()
-        post_body = {
-            "email": "totally_unknown_email@flibbertigibbet.com"
-        }
-        response = self.client.post(reverse("create-food-event"), post_body, HTTP_AUTHORIZATION=token)
+        token = self.get_volunteer_token()
+        post_body = {"email": "totally_unknown_email@flibbertigibbet.com"}
+        response = self.client.post(
+            reverse("create-food-event"), post_body, HTTP_AUTHORIZATION=token
+        )
         self.assertEqual(response.status_code, 400)
 
     def test_denies_access_when_no_auth(self):
@@ -87,8 +114,23 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
 
 
 class CreateWorkshopEventViewTestCase(TokenAuthTestCase):
+    def test_cant_access_unless_volunteer(self):
+        hacker_token = self.get_token(self.email, self.password)
+        post_body = {
+            "email": self.hacker.email,
+            "meal": "Breakfast",
+            "restrictions": "Vegan",
+        }
+        response = self.client.post(
+            reverse("create-food-event"), post_body, HTTP_AUTHORIZATION=hacker_token
+        )
+        self.assertEqual(response.status_code, 403)
+
+        volunteer_token = self.get_volunteer_token()
+        response = self.client.post(reverse("create-food-event"), post_body, HTTP_AUTHORIZATION=volunteer_token)
+        self.assertEqual(response.status_code, 200)
     def test_creates_workshop_event(self):
-        token = self.get_token()
+        token = self.get_volunteer_token()
         post_body = {"email": self.hacker.email}
         response = self.client.post(
             reverse("create-workshop-event"), post_body, HTTP_AUTHORIZATION=token
@@ -96,7 +138,7 @@ class CreateWorkshopEventViewTestCase(TokenAuthTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_bad_request_when_missing_field(self):
-        token = self.get_token()
+        token = self.get_volunteer_token()
         post_body = {"email": self.hacker.email}
         for key, val in post_body.items():
             del post_body[key]
@@ -107,7 +149,7 @@ class CreateWorkshopEventViewTestCase(TokenAuthTestCase):
             post_body[key] = val
 
     def test_bad_request_when_hacker_doesnt_exist(self):
-        token = self.get_token()
+        token = self.get_volunteer_token()
         post_body = {"email": "totally_unknown_email@flibbertigibbet.com"}
         response = self.client.post(
             reverse("create-workshop-event"), post_body, HTTP_AUTHORIZATION=token
