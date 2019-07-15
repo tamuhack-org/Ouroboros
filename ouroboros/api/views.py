@@ -17,6 +17,25 @@ class EmailObtainAuthToken(views.ObtainAuthToken):
 obtain_email_auth_token = EmailObtainAuthToken.as_view()
 
 
+class CheckinHacker(views.APIView):
+    permission_classes = [permissions.IsAuthenticated, IsVolunteer]
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def post(self, request, format=None):
+        email = request.data.get("email", None)
+        if not email:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        hacker: hacker_models.Hacker = None
+        try:
+            hacker = hacker_models.Hacker.objects.get(email=email)
+        except hacker_models.Hacker.DoesNotExist:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
+        hacker.checked_in = True
+        hacker.save()
+        return response.Response(status=status.HTTP_200_OK)
+
+
 class CreateFoodEvent(views.APIView):
     permission_classes = [permissions.IsAuthenticated, IsVolunteer]
     authentication_classes = [authentication.TokenAuthentication]
