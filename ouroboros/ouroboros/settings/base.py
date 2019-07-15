@@ -112,5 +112,5 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     )
 }
-ACCOUNT_AUTHENTICATION_METHOD = "email"
 
+VOLUNTEER_GROUP_NAME = "volunteer"

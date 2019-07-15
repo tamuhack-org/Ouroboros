@@ -27,6 +27,7 @@ class SharedTestCase(test.TestCase):
             password=self.password,
             is_active=True,
         )
+        self.hacker.set_password(self.password)
         self.hacker.save()
 
         self.email2 = "dummy2@email.com"
