@@ -17,8 +17,6 @@ class EmailObtainAuthToken(views.ObtainAuthToken):
 obtain_email_auth_token = EmailObtainAuthToken.as_view()
 
 
-<<<<<<< Updated upstream
-=======
 class CheckinHacker(views.APIView):
     permission_classes = [
         permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
@@ -40,7 +38,6 @@ class CheckinHacker(views.APIView):
         return response.Response(status=status.HTTP_200_OK)
 
 
->>>>>>> Stashed changes
 class CreateFoodEvent(views.APIView):
     permission_classes = [
         permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)

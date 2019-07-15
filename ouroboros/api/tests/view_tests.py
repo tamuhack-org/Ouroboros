@@ -65,7 +65,9 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
         self.assertEqual(response.status_code, 403)
 
         volunteer_token = self.get_volunteer_token()
-        response = self.client.post(reverse("create-food-event"), post_body, HTTP_AUTHORIZATION=volunteer_token)
+        response = self.client.post(
+            reverse("create-food-event"), post_body, HTTP_AUTHORIZATION=volunteer_token
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_creates_food_event(self):
@@ -116,19 +118,20 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
 class CreateWorkshopEventViewTestCase(TokenAuthTestCase):
     def test_cant_access_unless_volunteer(self):
         hacker_token = self.get_token(self.email, self.password)
-        post_body = {
-            "email": self.hacker.email,
-            "meal": "Breakfast",
-            "restrictions": "Vegan",
-        }
+        post_body = {"email": self.hacker.email}
         response = self.client.post(
-            reverse("create-food-event"), post_body, HTTP_AUTHORIZATION=hacker_token
+            reverse("create-workshop-event"), post_body, HTTP_AUTHORIZATION=hacker_token
         )
         self.assertEqual(response.status_code, 403)
 
         volunteer_token = self.get_volunteer_token()
-        response = self.client.post(reverse("create-food-event"), post_body, HTTP_AUTHORIZATION=volunteer_token)
+        response = self.client.post(
+            reverse("create-workshop-event"),
+            post_body,
+            HTTP_AUTHORIZATION=volunteer_token,
+        )
         self.assertEqual(response.status_code, 200)
+
     def test_creates_workshop_event(self):
         token = self.get_volunteer_token()
         post_body = {"email": self.hacker.email}
@@ -160,3 +163,30 @@ class CreateWorkshopEventViewTestCase(TokenAuthTestCase):
         post_body = {"email": self.hacker.email}
         response = self.client.post(reverse("create-workshop-event"), post_body)
         self.assertEqual(response.status_code, 401)
+
+
+class CheckinHackerViewTestCase(TokenAuthTestCase):
+    def test_cant_access_unless_volunteer(self):
+        hacker_token = self.get_token(self.email, self.password)
+        post_body = {"email": self.hacker.email}
+        response = self.client.post(
+            reverse("checkin-hacker"), post_body, HTTP_AUTHORIZATION=hacker_token
+        )
+        self.assertEqual(response.status_code, 403)
+
+        volunteer_token = self.get_volunteer_token()
+        response = self.client.post(
+            reverse("checkin-hacker"), post_body, HTTP_AUTHORIZATION=volunteer_token
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_checks_in_hacker(self):
+        volunteer_token = self.get_volunteer_token()
+        post_body = {"email": self.hacker.email}
+        response = self.client.post(
+            reverse("checkin-hacker"), post_body, HTTP_AUTHORIZATION=volunteer_token
+        )
+        self.assertEqual(response.status_code, 200)
+
+        self.hacker.refresh_from_db()
+        self.assertTrue(self.hacker.checked_in)
