@@ -40,7 +40,7 @@ class SharedTestCase(test.TestCase):
             password=self.password2,
         )
 
-        self.resume = SimpleUploadedFile("resume.txt", b"dummy")
+        self.resume = SimpleUploadedFile("resume.pdf", b"dummy")
         self.resume_file_data = {"resume": self.resume}
 
         self.application_fields = {
@@ -65,7 +65,7 @@ class SharedTestCase(test.TestCase):
 
         self.updated_application_fields = dict(**self.application_fields)
         self.updated_application_fields["major"] = "Accounting"
-        self.resume2 = SimpleUploadedFile("resume2.txt", b"dummy2")
+        self.resume2 = SimpleUploadedFile("resume2.pdf", b"dummy2")
         self.updated_application_fields["resume"] = self.resume2
 
     def create_active_wave(self):
