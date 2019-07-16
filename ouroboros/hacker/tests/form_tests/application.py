@@ -1,6 +1,7 @@
 from hacker import forms
 from shared import test
 from django.test import modify_settings
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class ApplicationModelFormTestCase(test.SharedTestCase):
@@ -16,6 +17,14 @@ class ApplicationModelFormTestCase(test.SharedTestCase):
             self.application_fields, self.resume_file_data
         )
         self.assertTrue(form.is_valid())
+    
+    def test_isnt_valid_when_non_pdf(self):
+        
+        self.application_fields["resume"] = SimpleUploadedFile("resume.txt", b"dummy")
+        form = forms.ApplicationModelForm(
+            self.application_fields, {"resume": self.application_fields["resume"]}
+        )
+        self.assertFalse(form.is_valid())
 
     def test_isnt_valid_when_first_name_has_numbers(self):
         self.create_active_wave()

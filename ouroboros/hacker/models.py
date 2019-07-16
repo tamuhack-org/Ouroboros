@@ -9,6 +9,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
+from django.core.validators import FileExtensionValidator
 from django.core import mail, exceptions
 from django.db import models
 from django.db.models.signals import post_save, pre_save
@@ -123,6 +124,7 @@ MAJORS = [
     ("General Science", "General Science"),
     ("Geography", "Geography"),
     ("Geosciences", "Geosciences"),
+    ("General Engineering", "General Engineering"),
     ("Graphic Design and Photography", "Graphic Design and Photography"),
     ("Health and Physical Education", "Health and Physical Education"),
     ("Health Policy and Administration", "Health Policy and Administration"),
@@ -384,6 +386,7 @@ class Application(models.Model):
     resume = models.FileField(
         "Upload your resume",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
+        validators=[FileExtensionValidator(allowed_extensions=["pdf"])]
     )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
