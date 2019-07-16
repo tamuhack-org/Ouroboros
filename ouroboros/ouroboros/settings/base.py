@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "hacker.apps.HackerConfig",
     "customauth.apps.CustomauthConfig",
     "multiselectfield",
+    "ouroboros",
 ]
 
 MIDDLEWARE = [
