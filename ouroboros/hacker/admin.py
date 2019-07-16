@@ -7,8 +7,10 @@ from django.core import mail
 from django.db import transaction
 from django.template.loader import render_to_string
 from django.utils import html, timezone
+from django.contrib.auth.models import Group
 
-from .models import Application, Hacker, Rsvp, Wave
+from hacker.models import Application, Hacker, Rsvp, Wave
+from hacker.forms import GroupAdminForm
 
 
 def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
@@ -198,6 +200,18 @@ class RsvpAdmin(admin.ModelAdmin):
         return " ".join([obj.hacker.first_name, obj.hacker.last_name])
 
 
+# Unregister the original Group admin.
+admin.site.unregister(Group)
+
+# Create a new Group admin.
+class GroupAdmin(admin.ModelAdmin):
+    # Use our custom form.
+    form = GroupAdminForm
+    # Filter permissions horizontal as well.
+    filter_horizontal = ['permissions']
+
+# Register the new Group ModelAdmin.
+admin.site.register(Group, GroupAdmin)
 admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Rsvp, RsvpAdmin)
