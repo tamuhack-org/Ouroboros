@@ -201,6 +201,11 @@ class Wave(models.Model):
             raise exceptions.ValidationError(
                 {"start": "Start date can't be after end date."}
             )
+        for wave in Wave.objects.all():
+            start_overlap = (wave.start < self.start < wave.end)
+            end_overlap = (wave.start < self.end < wave.end)
+            if start_overlap or end_overlap:
+                raise exceptions.ValidationError("Cannot create wave; another wave with an overlapping time range that overlaps exists.")
 
 
 class Application(models.Model):
