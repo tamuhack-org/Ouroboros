@@ -123,6 +123,7 @@ MAJORS = [
     ("General Science", "General Science"),
     ("Geography", "Geography"),
     ("Geosciences", "Geosciences"),
+    ("General Engineering", "General Engineering"),
     ("Graphic Design and Photography", "Graphic Design and Photography"),
     ("Health and Physical Education", "Health and Physical Education"),
     ("Health Policy and Administration", "Health Policy and Administration"),
