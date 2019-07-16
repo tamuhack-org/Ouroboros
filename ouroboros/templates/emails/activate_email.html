@@ -14,7 +14,8 @@
 		{% autoescape off %}
 		Please click on the link to confirm your registration,
 
-		https://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+		<a
+			href="https://{{ domain }}{% url 'activate' uidb64=uid token=token %}">https://{{ domain }}{% url 'activate' uidb64=uid token=token %}</a>
 		{% endautoescape %}
 		<h3 style=" margin-bottom: 10px;
 				    font-size: 20px;
