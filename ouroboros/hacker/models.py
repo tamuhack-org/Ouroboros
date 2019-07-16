@@ -205,7 +205,7 @@ class Wave(models.Model):
             start_overlap = (wave.start < self.start < wave.end)
             end_overlap = (wave.start < self.end < wave.end)
             if start_overlap or end_overlap:
-                raise exceptions.ValidationError("Cannot create wave; another wave with an overlapping time range that overlaps exists.")
+                raise exceptions.ValidationError("Cannot create wave; another wave with an overlapping time range exists.")
 
 
 class Application(models.Model):
