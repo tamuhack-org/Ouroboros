@@ -2,13 +2,14 @@ import datetime
 import json
 import random
 import string
-
+from io import BytesIO
 from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin,
 )
+from django.core.validators import FileExtensionValidator
 from django.core import mail, exceptions
 from django.db import models
 from django.db.models.signals import post_save, pre_save
@@ -17,11 +18,9 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils import html, timezone
 from multiselectfield import MultiSelectField
+import pyqrcode
 
-TRUE_FALSE_CHOICES = (
-    (True, "Yes"),
-    (False, "No")
-)
+TRUE_FALSE_CHOICES = ((True, "Yes"), (False, "No"))
 
 SHIRT_SIZES = (
     ("XS", "XS"),
@@ -33,6 +32,7 @@ SHIRT_SIZES = (
 )
 
 GENDERS = (
+    (None, "-- Select Option --"),
     ("M", "Male"),
     ("F", "Female"),
     ("NB", "Non-binary"),
@@ -46,10 +46,17 @@ RACES = (
     ("Hispanic", "Hispanic or Latino White"),
     ("Native Hawaiian", "Native Hawaiian or other Pacific Islander"),
     ("White", "White or Caucasian"),
-    ("NA", "Decline to self-identify")
+    ("NA", "Decline to self-identify"),
 )
 
-CLASSIFICATIONS = [("Fr", "Freshman"), ("So", "Sophomore"), ("Jr", "Junior"), ("Sr", "Senior"), ("Ot", "Other")]
+CLASSIFICATIONS = [
+    (None, "-- Select Option --"),
+    ("Fr", "Freshman"),
+    ("So", "Sophomore"),
+    ("Jr", "Junior"),
+    ("Sr", "Senior"),
+    ("Ot", "Other"),
+]
 
 DIETARY_RESTRICTIONS = (
     ("Vegan", "Vegan"),
@@ -59,21 +66,140 @@ DIETARY_RESTRICTIONS = (
     ("Food Allergies", "Food Allergies"),
 )
 
-HACKATHON_TIMES = [("0", "This will be my first!"), ("1-3", "1-3"), ("4-7", "4-7"), ("8-10", "8-10"), ("10+", "10+")]
+MAJORS = [
+    (None, "-- Select Option --"),
+    ("Accounting", "Accounting"),
+    ("Actuarial Science", "Actuarial Science"),
+    ("Advertising", "Advertising"),
+    ("Agriculture", "Agriculture"),
+    (
+        "Agricultural and Biological Engineering",
+        "Agricultural and Biological Engineering",
+    ),
+    ("Agricultural Business Management", "Agricultural Business Management"),
+    ("Agriculture Economics", "Agriculture Economics"),
+    ("Animal Bioscience", "Animal Bioscience"),
+    ("Animal Sciences", "Animal Sciences"),
+    ("Anthropology", "Anthropology"),
+    ("Applied Mathematics", "Applied Mathematics"),
+    ("Archaeology", "Archaeology"),
+    ("Architectural Engineering", "Architectural Engineering"),
+    ("Architecture", "Architecture"),
+    ("Art History", "Art History"),
+    ("Studio Art", "Studio Art"),
+    ("Art Education", "Art Education"),
+    ("Biobehavioral Health", "Biobehavioral Health"),
+    ("Biochemistry", "Biochemistry"),
+    ("Bioengineering", "Bioengineering"),
+    ("Biology", "Biology"),
+    ("Biophysics", "Biophysics"),
+    ("Biotechnology", "Biotechnology"),
+    (
+        "Business Administration and Management",
+        "Business Administration and Management",
+    ),
+    ("Business Logistics", "Business Logistics"),
+    ("Chemical Engineering", "Chemical Engineering"),
+    ("Chemistry", "Chemistry"),
+    ("Children", "Children"),
+    ("Civil Engineering", "Civil Engineering"),
+    ("Computer Engineering", "Computer Engineering"),
+    ("Computer Science", "Computer Science"),
+    ("Crime, Law, and Justice", "Crime, Law, and Justice"),
+    ("Dance", "Dance"),
+    ("Earth Sciences", "Earth Sciences"),
+    ("Economics", "Economics"),
+    ("Electrical Engineering", "Electrical Engineering"),
+    ("Elementary and Kindergarten Education", "Elementary and Kindergarten Education"),
+    ("Engineering Science", "Engineering Science"),
+    ("English", "English"),
+    ("Environmental Systems Engineering", "Environmental Systems Engineering"),
+    ("Environmental Sciences", "Environmental Sciences"),
+    ("Environmental Resource Management", "Environmental Resource Management"),
+    ("Film and Video", "Film and Video"),
+    ("Finance", "Finance"),
+    ("Food Science", "Food Science"),
+    ("Forest Science", "Forest Science"),
+    ("Forest Technology", "Forest Technology"),
+    ("General Science", "General Science"),
+    ("Geography", "Geography"),
+    ("Geosciences", "Geosciences"),
+    ("General Engineering", "General Engineering"),
+    ("Graphic Design and Photography", "Graphic Design and Photography"),
+    ("Health and Physical Education", "Health and Physical Education"),
+    ("Health Policy and Administration", "Health Policy and Administration"),
+    ("History", "History"),
+    ("Horticulture", "Horticulture"),
+    (
+        "Hotel, Restaurant, and Institutional Management",
+        "Hotel, Restaurant, and Institutional Management",
+    ),
+    ("Human Development and Family Studies", "Human Development and Family Studies"),
+    ("Individual and Family Studies", "Individual and Family Studies"),
+    ("Industrial Engineering", "Industrial Engineering"),
+    ("Information Sciences and Technology", "Information Sciences and Technology"),
+    ("Journalism", "Journalism"),
+    ("Kinesiology", "Kinesiology"),
+    ("Landscape Architecture", "Landscape Architecture"),
+    ("Law Enforcement and Correction", "Law Enforcement and Correction"),
+    ("Marine Biology", "Marine Biology"),
+    ("Marketing", "Marketing"),
+    ("Mathematics", "Mathematics"),
+    ("Mechanical Engineering", "Mechanical Engineering"),
+    ("Media Studies", "Media Studies"),
+    ("Meteorology", "Meteorology"),
+    ("Microbiology", "Microbiology"),
+    ("Mineral Economics", "Mineral Economics"),
+    ("Modern Languages", "Modern Languages"),
+    ("Music Education", "Music Education"),
+    ("Nuclear Engineering", "Nuclear Engineering"),
+    ("Nursing", "Nursing"),
+    ("Nutrition", "Nutrition"),
+    ("Philosophy", "Philosophy"),
+    ("Physics", "Physics"),
+    ("Physiology", "Physiology"),
+    ("Political Science", "Political Science"),
+    ("Pre-medicine", "Pre-medicine"),
+    ("Psychology", "Psychology"),
+    ("Public Relations", "Public Relations"),
+    ("Real Estate", "Real Estate"),
+    ("Recreation and Parks", "Recreation and Parks"),
+    ("Rehabilitation Services", "Rehabilitation Services"),
+    ("Religious Studies", "Religious Studies"),
+    ("Secondary Education", "Secondary Education"),
+    ("Sociology", "Sociology"),
+    ("Social Work", "Social Work"),
+    ("Special Education", "Special Education"),
+    ("Speech Communication", "Speech Communication"),
+    (
+        "Speech Pathology and Audiology/Communication Disorder",
+        "Speech Pathology and Audiology/Communication Disorder",
+    ),
+    ("Statistics", "Statistics"),
+    ("Telecommunications", "Telecommunications"),
+    ("Theater", "Theater"),
+    ("Wildlife and Fishery Science", "Wildlife and Fishery Science"),
+    ("Wildlife Technology", "Wildlife Technology"),
+    ("Women's Studies", "Women's Studies"),
+]
+
+HACKATHON_TIMES = [
+    (None, "-- Select Option --"),
+    ("0", "This will be my first!"),
+    ("1-3", "1-3"),
+    ("4-7", "4-7"),
+    ("8-10", "8-10"),
+    ("10+", "10+"),
+]
 
 GRAD_YEARS = []
 for i in range(timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION):
-    for j in ['Spring', 'Fall']:
-        GRAD_YEARS.append(("%s %i"%(j,i), "%s %i"%(j,i)))
+    for j in ["Spring", "Fall"]:
+        GRAD_YEARS.append(("%s %i" % (j, i), "%s %i" % (j, i)))
 GRAD_YEARS = GRAD_YEARS[1:-1]
+GRAD_YEARS.insert(0, (None, "-- Select Option --"))
 GRAD_YEARS.append(("Other", "Other"))
 
-GRAD_YEARS = []
-for i in range(timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION):
-    for j in ['Spring', 'Fall']:
-        GRAD_YEARS.append(("%s %i"%(j,i), "%s %i"%(j,i)))
-GRAD_YEARS = GRAD_YEARS[1:-1]
-GRAD_YEARS.append(("Other", "Other"))
 
 class HackerManager(BaseUserManager):
     """
@@ -129,10 +255,6 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
         default=False,
         help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
     )
-    first_name = models.CharField(
-        max_length=255, blank=False, verbose_name="first name"
-    )
-    last_name = models.CharField(max_length=255, blank=False, verbose_name="last name")
 
     rsvp_deadline = models.DateTimeField(null=True)
     cant_make_it = models.BooleanField(default=False)
@@ -167,13 +289,6 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
         html_msg = render_to_string(template_name, context)
         msg = html.strip_tags(html_msg)
         self.email_hacker(subject, msg, html_message=html_msg)
-
-    def clean(self):
-        super().clean()
-        if any(char.isdigit() for char in self.first_name):
-            raise exceptions.ValidationError("First name can't contain any numbers")
-        if any(char.isdigit() for char in self.last_name):
-            raise exceptions.ValidationError("Last name can't contain any numbers")
 
 
 class WaveManager(models.Manager):
@@ -211,6 +326,11 @@ class Wave(models.Model):
             raise exceptions.ValidationError(
                 {"start": "Start date can't be after end date."}
             )
+        for wave in Wave.objects.all():
+            has_start_overlap = (wave.start < self.start < wave.end)
+            has_end_overlap = (wave.start < self.end < wave.end)
+            if has_start_overlap or has_end_overlap:
+                raise exceptions.ValidationError("Cannot create wave; another wave with an overlapping time range exists.")
 
 
 class Application(models.Model):
@@ -218,30 +338,66 @@ class Application(models.Model):
     Represents a `Hacker`'s application to this hackathon.
     """
 
-    adult = models.BooleanField("Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=False, help_text="NOTE: We are able to admit minors only if they are accompanied by a college student (18+) who is planning on participating in the hackathon. Have additional questions? Email us at highschool@tamuhack.com")
-    major = models.CharField("What's your major?", max_length=50)
+    first_name = models.CharField(
+        max_length=255, blank=False, null=False, verbose_name="first name"
+    )
+    last_name = models.CharField(
+        max_length=255, blank=False, null=False, verbose_name="last name"
+    )
+    adult = models.BooleanField(
+        "Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=None
+    )
+    major = models.CharField("What's your major?", choices=MAJORS, max_length=50)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
-    race = MultiSelectField("What race do you identify with?", choices=RACES, max_length=41)
-    classification = models.CharField("What classification are you?", choices=CLASSIFICATIONS, max_length=2)
-    grad_year = models.CharField("What is your anticipated graduation date?", choices=GRAD_YEARS, max_length=11)
-    dietary_restrictions = MultiSelectField(
-        "Do you have any dietary restrictions that we should know about?", choices=DIETARY_RESTRICTIONS, blank=True
+    race = MultiSelectField(
+        "What race(s) do you identify with?", choices=RACES, max_length=41
     )
-    num_hackathons_attended = models.CharField("How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES)
-    previous_attendant = models.BooleanField(f"Have you attended {settings.EVENT_NAME} before?", choices=TRUE_FALSE_CHOICES, default=False)
-    tamu_student = models.BooleanField("Are you a Texas A&M student?", choices=TRUE_FALSE_CHOICES, default=True)
-
-    shirt_size = models.CharField("Shirt size?", choices=SHIRT_SIZES, max_length=3)
-    extra_links = models.CharField("Point us to anything you'd like us to look at while considering your application", max_length=200, help_text="Links to LinkedIn, GitHub, Devpost, Personal Website, etc.")
-    programming_joke = models.TextField("Tell us your best programming joke", max_length=500)
-    unlimited_resource = models.TextField("What is the one thing you'd build if you had unlimited resources?", max_length=500)
-    cool_prize = models.TextField(f"What is a cool prize you'd like to win at {settings.EVENT_NAME}?", max_length=500)
-    notes = models.TextField(
-        max_length=300,
+    classification = models.CharField(
+        "What classification are you?", choices=CLASSIFICATIONS, max_length=2
+    )
+    grad_year = models.CharField(
+        "What is your anticipated graduation date?", choices=GRAD_YEARS, max_length=11
+    )
+    num_hackathons_attended = models.CharField(
+        "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
+    )
+    previous_attendant = models.BooleanField(
+        f"Have you attended {settings.EVENT_NAME} before?",
+        choices=TRUE_FALSE_CHOICES,
+        default=False,
+    )
+    tamu_student = models.BooleanField(
+        "Are you a Texas A&M student?", choices=TRUE_FALSE_CHOICES, default=True
+    )
+    extra_links = models.CharField(
+        "Point us to anything you'd like us to look at while considering your application",
+        max_length=200,
         blank=True,
-        help_text="Provide any additional notes and/or comments in the text box provided",
     )
-    resume = models.FileField("Provide us a copy of your most recent resume so we can get you connected with companies.")
+    programming_joke = models.TextField(
+        "Tell us your best programming joke", max_length=500,
+    )
+    unlimited_resource = models.TextField(
+        "What is the one thing you'd build if you had unlimited resources?",
+        max_length=500,
+    )
+    cool_prize = models.TextField(
+        f"What is a cool prize you'd like to win at {settings.EVENT_NAME}?",
+        max_length=500,
+    )
+    notes = models.TextField(
+        "Anything else you would like us to know?", max_length=300, blank=True
+    )
+    resume = models.FileField(
+        "Upload your resume",
+        help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
+        validators=[FileExtensionValidator(allowed_extensions=["pdf"])]
+    )
+    additional_accommodations = models.TextField(
+        "Do you require any special accommodations at the event?",
+        max_length=500,
+        blank=True,
+    )
 
     approved = models.NullBooleanField(blank=True)
 
@@ -255,31 +411,75 @@ class Application(models.Model):
     def get_absolute_url(self):
         return reverse_lazy("application", args=[self.pk])
 
+    def clean(self):
+        super().clean()
+        if not self.adult:
+            raise exceptions.ValidationError(
+                "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email us at highschool@tamuhack.com."
+            )
+        if any(char.isdigit() for char in self.first_name):
+            raise exceptions.ValidationError("First name can't contain any numbers")
+        if any(char.isdigit() for char in self.last_name):
+            raise exceptions.ValidationError("Last name can't contain any numbers")
+
 
 class Rsvp(models.Model):
     """
     Represents a `Hacker`'s confirmation that they are attending this hackathon.
     """
+
     notes = models.TextField(
+        "Anything else you want us to know?",
         max_length=300,
         blank=True,
-        help_text="Provide any additional notes and/or comments in the text box provided",
-    ) 
+        help_text="Please let us know if there's anything else we can do to make %s an amazing experience for you!"
+        % (settings.EVENT_NAME),
+    )
 
     date_rsvped = models.DateField(auto_now_add=True, blank=True)
 
     hacker = models.OneToOneField(Hacker, on_delete=models.CASCADE)
+    dietary_restrictions = MultiSelectField(
+        "Do you have any dietary restrictions that we should know about?",
+        choices=DIETARY_RESTRICTIONS,
+        blank=True,
+    )
+    shirt_size = models.CharField(
+        "Shirt size?", choices=SHIRT_SIZES, default=None, max_length=3
+    )
 
     def __str__(self):
-        return "%s, %s - Rsvp" % (self.hacker.last_name, self.hacker.first_name)
+        return "%s, %s - Rsvp" % (
+            self.hacker.application.last_name,
+            self.hacker.application.first_name,
+        )
 
 
 def send_rsvp_creation_email(hacker: Hacker) -> None:
     email_template = "emails/rsvp/created.html"
     subject = f"Your {settings.EVENT_NAME} RSVP has been received!"
-    context = {"first_name": hacker.first_name, "event_name": settings.EVENT_NAME}
+    context = {
+        "first_name": hacker.application.first_name,
+        "event_name": settings.EVENT_NAME,
+    }
 
-    hacker.email_html_hacker(email_template, context, subject)
+    html_msg = render_to_string(email_template, context)
+    msg = html.strip_tags(html_msg)
+    email = mail.EmailMultiAlternatives(subject, msg, from_email=None, to=[hacker.email])
+    email.attach_alternative(html_msg, "text/html")
+
+    qr_content = json.dumps({
+        "first_name": hacker.application.first_name,
+        "last_name": hacker.application.last_name,
+        "email": hacker.email,
+        "university": "Texas A&M University" # TODO: Remove this hard-coding.
+    })
+    qr_code = pyqrcode.create(qr_content)
+    qr_stream = BytesIO()
+    qr_code.png(qr_stream, scale=5)
+    email.attach("code.png", qr_stream.getvalue(), "text/png")
+    email.send()
+
 
 
 @receiver(signal=post_save, sender=Rsvp)

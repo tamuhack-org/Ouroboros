@@ -7,8 +7,10 @@ from django.core import mail
 from django.db import transaction
 from django.template.loader import render_to_string
 from django.utils import html, timezone
+from django.contrib.auth.models import Group
 
-from .models import Application, Hacker, Rsvp, Wave
+from hacker.models import Application, Hacker, Rsvp, Wave
+from hacker.forms import GroupAdminForm
 
 
 def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
@@ -17,19 +19,9 @@ def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
 
 
 class HackerAdmin(admin.ModelAdmin):
-    list_display = (
-        "email",
-        "first_name",
-        "last_name",
-        "is_active",
-        "is_staff",
-        "checked_in",
-    )
+    list_display = ("email", "is_active", "is_staff", "checked_in")
     fieldsets = [
-        (
-            "User Information",
-            {"fields": ["first_name", "last_name", "email", "password"]},
-        ),
+        ("User Information", {"fields": ["email", "password"]}),
         (
             "Advanced",
             {
@@ -70,20 +62,20 @@ def create_rsvp_deadline(hacker: Hacker, deadline: datetime.datetime) -> None:
     hacker.save()
 
 
-def send_application_approval_email(hacker: Hacker) -> None:
+def send_application_approval_email(application: Application) -> None:
     """Sends an email to this Hacker when their application has been approved."""
     email_template = "emails/application/approved.html"
     subject = f"Your {settings.EVENT_NAME} application has been approved!"
-    context = {"first_name": hacker.first_name, "event_name": settings.EVENT_NAME}
-    hacker.email_html_hacker(email_template, context, subject)
+    context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME}
+    application.hacker.email_html_hacker(email_template, context, subject)
 
 
-def send_application_rejection_email(hacker: Hacker) -> None:
+def send_application_rejection_email(application: Application) -> None:
     """Sends an email to this Hacker when their application has been rejected."""
     email_template = "emails/application/rejected.html"
     subject = f"Regarding your {settings.EVENT_NAME} application"
-    context = {"first_name": hacker.first_name, "event_name": settings.EVENT_NAME}
-    hacker.email_html_hacker(email_template, context, subject)
+    context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME}
+    application.hacker.email_html_hacker(email_template, context, subject)
 
 
 def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
@@ -94,7 +86,7 @@ def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
         for instance in queryset:
             instance.approved = True
             create_rsvp_deadline(instance.hacker, deadline)
-            send_application_approval_email(instance.hacker)
+            send_application_approval_email(instance)
             instance.save()
 
 
@@ -102,14 +94,32 @@ def reject(self, request, queryset):  # Needs to be Tested!!!
     with transaction.atomic():
         for instance in queryset:
             instance.approved = False
-            send_application_rejection_email(instance.hacker)
+            send_application_rejection_email(instance)
             instance.save()
+
+
+def custom_titled_filter(title):
+    class Wrapper(admin.FieldListFilter):
+        def __new__(cls, *args, **kwargs):
+            instance = admin.FieldListFilter.create(*args, **kwargs)
+            instance.title = title
+            return instance
+
+    return Wrapper
 
 
 class ApplicationAdmin(admin.ModelAdmin):
     form = ApplicationAdminForm
+    list_filter = (
+        ("gender", custom_titled_filter("gender")),
+        ("race", custom_titled_filter("race")),
+        ("classification", custom_titled_filter("classification")),
+        ("grad_year", custom_titled_filter("graduation year")),
+        ("tamu_student", custom_titled_filter("if TAMU student")),
+    )
     list_display = (
-        "hacker_name",
+        "first_name",
+        "last_name",
         "classification",
         "grad_year",
         "approved",
@@ -120,31 +130,37 @@ class ApplicationAdmin(admin.ModelAdmin):
             "Personal Information",
             {
                 "fields": [
-                    "hacker_name",
+                    "first_name",
+                    "last_name",
                     "adult",
                     "gender",
                     "race",
                     "major",
                     "classification",
                     "grad_year",
-                    "dietary_restrictions",
                     "tamu_student",
                 ]
             },
         ),
         (
             "Hackathon Information",
-            {"fields": ["num_hackathons_attended", "previous_attendant", "shirt_size"]},
+            {"fields": ["num_hackathons_attended", "previous_attendant"]},
         ),
         (
             "Free Response Questions",
-            {"fields": ["extra_links", "programming_joke", "unlimited_resource", "cool_prize", "notes"]},
+            {
+                "fields": [
+                    "extra_links",
+                    "programming_joke",
+                    "unlimited_resource",
+                    "cool_prize",
+                    "notes",
+                    "additional_accommodations"
+                ]
+            },
         ),
         ("Status", {"fields": ["approved"]}),
     ]
-
-    def hacker_name(self, obj: Application):
-        return " ".join([obj.hacker.first_name, obj.hacker.last_name])
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"
@@ -186,7 +202,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 class RsvpAdminForm(forms.ModelForm):
     class Meta:
         model = Rsvp
-        fields = ["notes", "hacker"]
+        fields = ["hacker", "dietary_restrictions", "shirt_size"]
 
 
 class RsvpAdmin(admin.ModelAdmin):
@@ -194,7 +210,7 @@ class RsvpAdmin(admin.ModelAdmin):
     list_display = ("hacker_name", "notes")
     fieldsets = [
         ("Related Objects", {"fields": ["hacker"]}),
-        ("Logistical Information", {"fields": ["notes"]}),
+        ("Logistical Information", {"fields": ["notes", "dietary_restrictions", "shirt_size"]}),
     ]
 
     def has_add_permission(self, request, obj=None):
@@ -209,6 +225,19 @@ class RsvpAdmin(admin.ModelAdmin):
     def hacker_name(self, obj: Rsvp):
         return " ".join([obj.hacker.first_name, obj.hacker.last_name])
 
+
+# Unregister the original Group admin.
+admin.site.unregister(Group)
+
+# Create a new Group admin.
+class GroupAdmin(admin.ModelAdmin):
+    # Use our custom form.
+    form = GroupAdminForm
+    # Filter permissions horizontal as well.
+    filter_horizontal = ['permissions']
+
+# Register the new Group ModelAdmin.
+admin.site.register(Group, GroupAdmin)
 admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Rsvp, RsvpAdmin)

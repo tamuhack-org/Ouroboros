@@ -8,12 +8,6 @@ class SignupForm(auth_forms.UserCreationForm):
     email = forms.EmailField(
         widget=widgets.EmailInput(attrs={"placeholder": "Email"}), label=""
     )
-    first_name = forms.CharField(
-        widget=widgets.Input(attrs={"placeholder": "First Name"}), label=""
-    )
-    last_name = forms.CharField(
-        widget=widgets.Input(attrs={"placeholder": "Last Name"}), label=""
-    )
     password1 = forms.CharField(
         widget=widgets.PasswordInput(attrs={"placeholder": "Enter Password"}), label=""
     )
@@ -24,7 +18,7 @@ class SignupForm(auth_forms.UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        fields = ("email", "first_name", "last_name", "password1", "password2")
+        fields = ("email", "password1", "password2")
 
 
 class LoginForm(auth_forms.AuthenticationForm):

@@ -1,6 +1,6 @@
 import datetime
 
-EVENT_NAME = "Howdy Hack"
+EVENT_NAME = "HowdyHack"
 EMAIL_CONFIRM_CODE_LENGTH = 6
 MAX_YEARS_ADMISSION = 5
 DAYS_TO_RSVP = 7

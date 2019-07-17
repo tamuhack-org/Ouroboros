@@ -6,4 +6,4 @@ steps:
   entrypoint: /bin/sh
   args:
   - -c
-  - 'pip install -r requirements.txt && cd ouroboros && python manage.py test'
+  - 'pip install -r requirements.txt && cd ouroboros && python manage.py test --parallel'

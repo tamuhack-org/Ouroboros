@@ -7,8 +7,12 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
 ALLOWED_HOSTS = ["*"]
+SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+CSRF_COOKIE_SECURE = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
 
 
 # Password validation
@@ -58,11 +62,11 @@ LOGGING = {
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 
-DEFAULT_FROM_EMAIL = "The Howdy Hack Team <hello@tamuhack.com>"
+DEFAULT_FROM_EMAIL = "The HowdyHack Team <hello@tamuhack.com>"
 
 
 # Static Files URL
-STATIC_URL = "http://storage.googleapis.com/tamuhack-staging-ouroboros-static/"
+STATIC_URL = "https://storage.googleapis.com/tamuhack-staging-ouroboros-static/"
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_BUCKET_NAME = 'tamuhack-staging-ouroboros-hacker-resumes'

@@ -21,12 +21,18 @@ from django.contrib.auth import views as auth_views
 from django.shortcuts import redirect
 from django.urls import include, path, reverse_lazy
 from django.views.generic.base import RedirectView
+from django import http
 
 from ouroboros.settings import customization as custom_settings
+
+def healthcheck(request):
+    return http.HttpResponse('')
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("customauth.urls")),
+    path("healthy/", healthcheck),
     url(r"^$", RedirectView.as_view(pattern_name="login")),
+    path("api/", include("api.urls")),
     path("", include("hacker.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

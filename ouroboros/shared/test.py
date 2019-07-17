@@ -25,10 +25,9 @@ class SharedTestCase(test.TestCase):
         self.hacker = hacker_models.Hacker(
             email=self.email,
             password=self.password,
-            first_name=self.first_name,
-            last_name=self.last_name,
             is_active=True,
         )
+        self.hacker.set_password(self.password)
         self.hacker.save()
 
         self.email2 = "dummy2@email.com"
@@ -39,35 +38,34 @@ class SharedTestCase(test.TestCase):
         self.hacker2 = hacker_models.Hacker.objects.create_superuser(
             email=self.email2,
             password=self.password2,
-            first_name=self.first_name2,
-            last_name=self.last_name2,
         )
 
-        self.resume = SimpleUploadedFile("resume.txt", b"dummy")
+        self.resume = SimpleUploadedFile("resume.pdf", b"dummy")
         self.resume_file_data = {"resume": self.resume}
 
         self.application_fields = {
-            "major": "A",
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "major": "Computer Science",
             "gender": "M",
             "classification": "Fr",
             "grad_year": "Other",
-            "dietary_restrictions": ["Vegan"],
             "num_hackathons_attended": 0,
             "hacker": self.hacker,
             "race": ["NA"],
-            "shirt_size": "XL",
             "extra_links": "A",
             "programming_joke": "B",
             "unlimited_resource": "C",
             "cool_prize": "D",
             "adult": True,
             "previous_attendant": False,
+            "additional_accommodations": "E",
             **self.resume_file_data,
         }
 
         self.updated_application_fields = dict(**self.application_fields)
-        self.updated_application_fields["major"] = "ABCDEFG"
-        self.resume2 = SimpleUploadedFile("resume2.txt", b"dummy2")
+        self.updated_application_fields["major"] = "Accounting"
+        self.resume2 = SimpleUploadedFile("resume2.pdf", b"dummy2")
         self.updated_application_fields["resume"] = self.resume2
 
     def create_active_wave(self):

@@ -50,6 +50,12 @@ class ApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
 
     def form_valid(self, form: forms.Form):
         application: hacker_models.Application = form.save(commit=False)
+        if application.approved:
+            form.add_error(
+                None,
+                "Your application has already been approved, no further changes are allowed.",
+            )
+            return self.form_invalid(form)
         application.hacker = self.request.user
         application.wave = hacker_models.Wave.objects.active_wave()
         application.save()
@@ -133,9 +139,9 @@ class RsvpView(mixins.UserPassesTestMixin, CreateUpdateView):
     """
 
     template_name = "hacker/rsvp.html"
+    form_class = hacker_forms.RsvpModelForm
     queryset = hacker_models.Rsvp.objects.all()
     success_url = reverse_lazy("status")
-    fields = ["notes"]
 
     def get_permission_denied_message(self):
         if self.request.user.is_anonymous:

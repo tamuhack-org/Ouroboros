@@ -32,7 +32,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "hacker.apps.HackerConfig",
+    "api.apps.ApiConfig",
     "customauth.apps.CustomauthConfig",
+    "rest_framework",
+    "rest_framework.authtoken",
     "multiselectfield",
 ]
 
@@ -68,6 +71,7 @@ TEMPLATES = [
     }
 ]
 
+
 WSGI_APPLICATION = "ouroboros.wsgi.application"
 
 # Internationalization
@@ -101,3 +105,12 @@ MEDIA_URL = "/resumes/"
 AUTH_USER_MODEL = "hacker.Hacker"
 LOGIN_REDIRECT_URL = reverse_lazy("status")
 LOGOUT_REDIRECT_URL = reverse_lazy("login")
+
+# Rest Framework Settings
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+    )
+}
+
+VOLUNTEER_GROUP_NAME = "volunteer"

@@ -45,6 +45,14 @@ spec:
             readOnly: true
         ports:
         - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /healthy/
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /healthy/
+            port: 8080
       - image: gcr.io/cloudsql-docker/gce-proxy:1.05
         name: cloudsql-proxy
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
@@ -73,25 +81,16 @@ spec:
 
 ---
 
-# [START service]
-# The ouroboros service provides a load-balancing proxy over the ouroboros app
-# pods. By specifying the type as a 'LoadBalancer', Container Engine will
-# create an external HTTP load balancer.
-# For more information about Services see:
-#   https://cloud.google.com/container-engine/docs/services/
-# For more information about external HTTP load balancing see:
-#   https://cloud.google.com/container-engine/docs/load-balancer
 apiVersion: v1
 kind: Service
 metadata:
-  name: ouroboros
-  labels:
-    app: ouroboros
+  name: ouroboros-nodeport-service
 spec:
-  type: LoadBalancer
-  ports:
-  - port: 80
-    targetPort: 8080
   selector:
     app: ouroboros
-# [END service]
+  ports:
+  - protocol: TCP
+    port: 9000
+    targetPort: 8080
+  type: NodePort
+ 
