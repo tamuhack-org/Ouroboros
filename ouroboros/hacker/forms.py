@@ -44,6 +44,7 @@ class ApplicationModelForm(forms.ModelForm):
             "extra_links",
             "additional_accommodations",
             "notes",
+            "mlh_coc",
         ]
 
 
