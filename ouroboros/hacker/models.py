@@ -20,6 +20,8 @@ from django.utils import html, timezone
 from multiselectfield import MultiSelectField
 import pyqrcode
 
+AGREE = ((True, "Agree"),)
+
 TRUE_FALSE_CHOICES = ((True, "Yes"), (False, "No"))
 
 SHIRT_SIZES = (
@@ -37,6 +39,7 @@ GENDERS = (
     ("F", "Female"),
     ("NB", "Non-binary"),
     ("NA", "Prefer not to disclose"),
+    ('Other', 'Other'),
 )
 
 RACES = (
@@ -47,6 +50,7 @@ RACES = (
     ("Native Hawaiian", "Native Hawaiian or other Pacific Islander"),
     ("White", "White or Caucasian"),
     ("NA", "Decline to self-identify"),
+    ('Other', 'Other'),
 )
 
 CLASSIFICATIONS = [
@@ -344,9 +348,6 @@ class Application(models.Model):
     last_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="last name"
     )
-    adult = models.BooleanField(
-        "Are you at least 18 or older?", choices=TRUE_FALSE_CHOICES, default=None
-    )
     major = models.CharField("What's your major?", choices=MAJORS, max_length=50)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
     race = MultiSelectField(
@@ -398,6 +399,11 @@ class Application(models.Model):
         max_length=500,
         blank=True,
     )
+    adult = models.BooleanField(
+        "Please confirm you are 18 or older", choices=AGREE, default=None, help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas A&M."
+    )
+
+    mlh_coc = models.BooleanField('I agree to the MLH Code of Conduct', choices=AGREE, default=None)
 
     approved = models.NullBooleanField(blank=True)
 
@@ -415,7 +421,7 @@ class Application(models.Model):
         super().clean()
         if not self.adult:
             raise exceptions.ValidationError(
-                "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email us at highschool@tamuhack.com."
+                "Unfortunately, we agreecannot accept hackers under the age of 18. Have additional questions? Email us at highschool@tamuhack.com."
             )
         if any(char.isdigit() for char in self.first_name):
             raise exceptions.ValidationError("First name can't contain any numbers")
