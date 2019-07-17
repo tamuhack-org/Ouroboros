@@ -154,8 +154,34 @@ class ApplicationAdmin(admin.ModelAdmin):
         return True
 
     def has_change_permission(self, request, obj=None):
-        return False
+        return True
 
+    def get_readonly_fields(self, request, obj=None):
+        fields = [
+                "hacker",
+                "hacker_name",
+                "adult",
+                "gender",
+                "race",
+                "major",
+                "classification",
+                "grad_year",
+                "dietary_restrictions",
+                "tamu_student",
+                "num_hackathons_attended",
+                "previous_attendant",
+                "shirt_size",
+                "extra_links",
+                "programming_joke",
+                "unlimited_resource",
+                "cool_prize",
+                "notes"
+            ]
+        if obj:
+            status = getattr(obj, "approved", None)
+            if status is not None:
+                fields.append("approved")
+        return fields
 
 class RsvpAdminForm(forms.ModelForm):
     class Meta:

@@ -46,9 +46,11 @@ html, body {
     line-height: 2em;
 }
 
+ 
 .signin {
     background-color: #F9ECEE;
-    padding-top: 12vh;
+    padding-top: 12vh !important;
+    padding-bottom: 12vh !important;
     height: 100vh;
     width: 100vw;
     max-width: 100%;
@@ -60,12 +62,16 @@ html, body {
     background-size: cover;
 }
 
+.row.justify-content-md-center.text-center {
+    margin-bottom: 12vh !important;
+}
+
 .password-reset {
     background-color: #F9ECEE;
     height: 100vh;
     width: 100vw;
     max-width: 100%;
-    display: flex;
+    display: block;
     justify-content: center;
 
 }
@@ -91,7 +97,8 @@ html, body {
     background-color: #D8ECFE;
     height: 100vh !important;
     margin-bottom: 0;
-    padding-top: 3vh !important;
+    padding-top: 12vh !important;
+    padding-bottom: 12vh !important;
 }
 
 header {
