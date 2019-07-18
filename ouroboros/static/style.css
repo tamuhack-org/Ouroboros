@@ -344,7 +344,7 @@ input[type="submit"]{
     text-align: left;
 }
 
-.application p > input, .application p > select {
+.application p > select {
     margin-bottom: 10px;
 }
 
@@ -750,4 +750,19 @@ button{
 .application p > label[for="id_notes"]::after {
     content:" "!important;
     clear: both;
+}
+
+.application p > #id_notes {
+    margin-bottom: 30px!important;
+}
+
+.application p > label[for="id_adult"], .application p > label[for="id_mlh_coc"]{
+    margin-left: 20px;
+    display: inline;
+}
+
+.application p > #id_adult, .application p > #id_mlh_coc {
+    margin: 0;
+    float: left;
+    margin-top: -12px;
 }
