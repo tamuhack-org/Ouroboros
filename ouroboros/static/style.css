@@ -71,26 +71,8 @@ html, body {
     margin-bottom: 12vh !important;
 }
 
-.password-reset {
-    background-color: #F9ECEE;
-    height: 100vh;
-    width: 100vw;
-    max-width: 100%;
-    display: block;
-    justify-content: center;
-
-}
-
 .reset-container{
-    margin: 80px 40px;
-    background: #fff;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
-    padding: 3em 5em !important; 
-    min-width: 500px;
-    width: 50vw;
-    max-width: 600px;
-    max-height: 350px;
+    background-color: #F9ECEE;
 }
 
 .sm {
@@ -121,7 +103,7 @@ header {
 }
 
 .signin a {
-    text-align: right !important;
+    text-align: right;
 }
 
 .signin input, input[type="email"]  {
@@ -247,6 +229,14 @@ input[type="submit"]{
     background: #E86E84;
 }
 
+.a-btn {
+    text-align: center!important;
+}
+.a-btn:hover {
+    color: white;
+    text-decoration: none;
+}
+
 .no-border {
     border: none;
     border: transparent;
@@ -354,7 +344,7 @@ input[type="submit"]{
     text-align: left;
 }
 
-.application p > input, .application p > select {
+.application p > select {
     margin-bottom: 10px;
 }
 
@@ -555,8 +545,8 @@ input[type="checkbox"]
      border: #c5c5c5 solid 1px;
      color: white;
      top: 10px;
-     height: 30px;
-     width: 30px;
+     height: 30px !important;
+     width: 30px !important;
      border-radius: 3px;
      cursor: pointer;     
      margin-right: 7px;
@@ -645,6 +635,15 @@ label
     font-size: 14px;
 }
 
+#id_mlh_coc {
+    margin-top: -10px;
+}
+
+.rsvp-here{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
 button{
     padding: .5rem 3rem !important;
@@ -714,6 +713,7 @@ button{
 }
 
 @media only screen and (max-width: 770px) {
+
     .application p > input[type=text] {
         width: 100%!important;
     }
@@ -735,6 +735,13 @@ button{
     .application select{
         width: 100%;
     }
+    .login-box{
+        padding: 2rem !important;
+    }
+    .password-box {
+        padding-top: 100px!important;
+        padding-bottom: 100px!important;
+    }
 }
 
 
@@ -743,4 +750,19 @@ button{
 .application p > label[for="id_notes"]::after {
     content:" "!important;
     clear: both;
+}
+
+.application p > #id_notes {
+    margin-bottom: 30px!important;
+}
+
+.application p > label[for="id_adult"], .application p > label[for="id_mlh_coc"]{
+    margin-left: 20px;
+    display: inline;
+}
+
+.application p > #id_adult, .application p > #id_mlh_coc {
+    margin: 0;
+    float: left;
+    margin-top: -12px;
 }
