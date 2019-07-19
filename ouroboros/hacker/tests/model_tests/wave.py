@@ -28,3 +28,9 @@ class WaveManagerTestCase(test.SharedTestCase):
         bad_wave = hacker_models.Wave(start=self.wave2_end, end=self.wave2_start)
         with self.assertRaises(ValidationError):
             bad_wave.full_clean()
+
+    def test_cant_create_overlapping_waves(self):
+        bad_wave_start, bad_wave_end = self.wave2_start, self.wave2_start + datetime.timedelta(days=15)
+        bad_wave = hacker_models.Wave(start=bad_wave_start, end=bad_wave_end)
+        with self.assertRaises(ValidationError):
+            bad_wave.full_clean()

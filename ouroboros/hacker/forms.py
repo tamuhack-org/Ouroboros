@@ -18,7 +18,8 @@ class ApplicationModelForm(forms.ModelForm):
     class Meta:
         model = hacker_models.Application
         widgets = {
-            "adult": forms.RadioSelect,
+            "adult": forms.CheckboxInput,
+            "mlh_coc": forms.CheckboxInput,
             "previous_attendant": forms.RadioSelect,
             "extra_links": forms.TextInput(
                 attrs={
@@ -39,11 +40,12 @@ class ApplicationModelForm(forms.ModelForm):
             "programming_joke",
             "unlimited_resource",
             "cool_prize",
-            "adult",
             "resume",
             "extra_links",
             "additional_accommodations",
             "notes",
+            "adult",
+            "mlh_coc",
         ]
 
 

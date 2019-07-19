@@ -60,6 +60,7 @@ class SharedTestCase(test.TestCase):
             "adult": True,
             "previous_attendant": False,
             "additional_accommodations": "E",
+            "mlh_coc": True,
             **self.resume_file_data,
         }
 
