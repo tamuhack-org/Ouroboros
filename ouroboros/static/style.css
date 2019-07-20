@@ -188,6 +188,11 @@ input[type="submit"]{
     margin-bottom: 5em;
 }
 
+.submit-pg .status-box {
+    margin-bottom: 40px;
+    padding: 20px;
+}
+
 .flat-field {
     margin-bottom: 20px;
     outline: none;
@@ -311,7 +316,6 @@ input[type="submit"]{
 
 .submit-pg p {
     font-weight: 300;
-    margin-bottom: 5px;
 }
 
 .submit-pg a {
@@ -323,8 +327,8 @@ input[type="submit"]{
 }
 
 .status-subtitle {
-    padding: 0 14vw;
-    font-size: 14px;
+    padding: 0 50px;
+    margin-bottom: 30px;
 }
 
 .application {
@@ -446,14 +450,14 @@ li {
     margin: auto;
     font-size: 12px;
     font-weight: 600;
-    height: 40px;
+    height: 50px;
 }
 
 li img {
     display: block;
-    width: 27px;
-    height: 27px;
-    border: 3px solid #ED768B;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #ED768B;
     border-radius: 50%;
     background-color: #ED768B;
     margin-left: auto;
@@ -461,11 +465,11 @@ li img {
 }
 
 .timeline li {
-    width:30%;
+    width: 32%;
 }
 
 .timeline-24 li {
-    width: 23%;
+    width: 23.5%;
 }
 
 li .diplome {
@@ -741,6 +745,19 @@ button{
     .password-box {
         padding-top: 100px!important;
         padding-bottom: 100px!important;
+    }
+    .status-box {
+        padding: 30px 20px;
+    }
+    .status-box .app-status {
+        margin-bottom: 10px;
+    }
+    .status-box .status-subtitle {
+        padding: 0;
+        margin-bottom: 20px;
+    }
+    .status-box p {
+        font-size: 14px;
     }
 }
 
