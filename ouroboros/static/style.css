@@ -681,22 +681,21 @@ button{
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
 .errorlist > li{
-    color: #a94442;
+    color: #721c24;
     font-size: 14px;
     padding: 15px;
-    margin-bottom: 20px;
 }
 .errorlist{
-    background-color: #f2dede;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
     border-radius: 4px;
     margin-top: 10px !important;
+    padding: 0;
 }
 
 .errorlist > li::before{
-    content: '\f06a';
-    font-family:FontAwesome;
     font-style:normal;
-    font-weight:400;
+    font-weight:600;
     speak: none;
     display:inline-block;
     text-decoration:inherit;
