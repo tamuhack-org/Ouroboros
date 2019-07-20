@@ -5,7 +5,7 @@
   <div class="status-box">
     
     <header>
-      {% if COMPLETE or NEEDS_TO_RSVP %}
+      {% if COMPLETE or NEEDS_TO_RSVP or CANT_MAKE_IT %}
       <ol class="timeline-24">
         {% else %}
         <ol class="timeline">
@@ -13,15 +13,15 @@
           
         <li>
           <p class="diplome">Submitted</p>
-          {% if COMPLETE or REJECTED or PENDING or NEEDS_TO_RSVP %}
+          {% if COMPLETE or REJECTED or PENDING or NEEDS_TO_RSVP or CANT_MAKE_IT %}
             <img src="{% static 'tick.svg' %}">
             {% else %}
             <span class="point"></span>
             {% endif %}
           </li>
           <li>
-            <p class="diplome">Reviewed</p>
-            {% if COMPLETE or REJECTED or NEEDS_TO_RSVP or WAIT_UNTIL_NEXT_WAVE%}
+            <p class="diplome">In Review</p>
+            {% if COMPLETE or REJECTED or NEEDS_TO_RSVP or WAIT_UNTIL_NEXT_WAVE or CANT_MAKE_IT%}
             <img src="{% static 'tick.svg' %}">
             {% else %}
             <span class="point"></span>
@@ -29,17 +29,17 @@
           </li>
           <li>
             <p class="diplome">Decisions Released</p>
-            {% if COMPLETE or REJECTED or NEEDS_TO_RSVP %}
+            {% if COMPLETE or REJECTED or NEEDS_TO_RSVP or CANT_MAKE_IT%}
             <img src="{% static 'tick.svg' %}"> 
             {% else %}
             <span class="point"></span>
             {% endif %}
           </li>
           
-          {% if COMPLETE or NEEDS_TO_RSVP %}
+          {% if COMPLETE or NEEDS_TO_RSVP or CANT_MAKE_IT%}
           <li>
             <p class="diplome">RSVP</p>
-            {% if COMPLETE %}
+            {% if COMPLETE or CANT_MAKE_IT %}
             <img src="{% static 'tick.svg' %}"> 
             {% else %}
             <span class="point"></span>
@@ -74,7 +74,7 @@
       <p class="status-subtitle pt-2">
         Check back soon! Decisions will be released soon.
       </p>
-      <div class="row login-alt-options pt-4">
+      <div class="row login-alt-options">
         <div class="col-sm-12 col-lg-12 text-center">
             <br>
             <a href="{% url 'application' %}" class="btn btn-login">View Application</a>
@@ -90,7 +90,7 @@
         Please RSVP below by {{rsvp_deadline}} {{TIME_ZONE}} or you risk losing your spot.
         {% endlocaltime %}
       </p>
-       <div class="row login-alt-options pt-4">
+       <div class="row login-alt-options">
         <div class="col-sm-12 col-lg-12 text-center">
             <br>
             <a href="{% url 'rsvp' %}" class="btn btn-login"
@@ -106,7 +106,7 @@
         Prepare for the event by visiting our FAQ for tips and info. See you soon!
       </p>
 
-      <p class="pt-5">
+      <p>
         Have additional questions? Email us at hello@tamuhack.com
       </p>
 
@@ -124,9 +124,12 @@
             <a href="{% url 'application' %}" class="btn btn-login">View Application</a>
         </div>
       {% elif CANT_MAKE_IT %}
-      <p>We're sorry to hear you can't make it! Thanks for telling us!</p>
-      </div>
-      {% elif NO_MORE_WAVES %}
+        <p> You have RSVP'd </p>
+        <div class="app-status">Not Attending</div>
+        
+        <p class="pt-2">We're sorry to hear you can't make it! Thanks for telling us!</p>
+      
+        {% elif NO_MORE_WAVES %}
       <p>Sorry, we have closed registration and are longer accepting applications.</p>
       </div>
       {%endif%}
