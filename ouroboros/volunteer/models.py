@@ -3,7 +3,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from django.db import models
-from hacker.models import Hacker, DIETARY_RESTRICTIONS
+from phonenumber_field.modelfields import PhoneNumberField
+from django.conf import settings
+from multiselectfield import MultiSelectField
+import calendar
+from hacker.models import Hacker, DIETARY_RESTRICTIONS, GRAD_YEARS, SHIRT_SIZES
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -30,3 +34,32 @@ class FoodEvent(Event):
 
 class WorkshopEvent(Event):
     pass
+
+
+class VolunteerApplication(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    phone_number = PhoneNumberField()
+    grad_year = models.CharField(
+        "What is your anticipated graduation date?", choices=GRAD_YEARS, max_length=11
+    )
+    shirt_size = models.CharField(
+        "Shirt size?", choices=SHIRT_SIZES, default=None, max_length=3
+    )
+    engr_honors = models.BooleanField(
+        "Do you need to receive Engineering Honors credit?", default=False
+    )
+
+
+class Shift(models.Model):
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+
+    volunteers = models.ManyToManyField(VolunteerApplication, related_name="shifts")
+
+    def __str__(self):
+        start_str = self.start.strftime(
+            f"{calendar.day_name[self.start.weekday()][:3]} %H:%M"
+        )
+        end_str = self.end.strftime(f"{calendar.day_name[self.end.weekday()]} %H:%M")
+        return f"{start_str} - {end_str} ({settings.MAX_VOLUNTEERS_PER_SHIFT - len(self.volunteers.all())} spots remaining)"

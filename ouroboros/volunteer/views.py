@@ -3,13 +3,16 @@ import json
 from django import shortcuts
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse_lazy
+from django.views import generic
 from rest_framework import authentication, permissions, response, status
 from rest_framework.authtoken import views
 
+from hacker import models as hacker_models
 from volunteer import models
+from volunteer.forms import VolunteerApplicationModelForm
 from volunteer.permissions import IsVolunteer
 from volunteer.serializers import EmailAuthTokenSerializer
-from hacker import models as hacker_models
 
 HACKER_NOT_CHECKED_IN_MSG = (
     "This hacker has not been checked in. Please find an organizer immediately."
@@ -116,3 +119,11 @@ class CreateWorkshopEventView(views.APIView):
 
 #     def get(self, request, *args, **kwargs):
 #         matches = hacker_models.Hacker.objects.annotate()
+
+
+class VolunteerApplicationView(generic.FormView):
+    success_url = reverse_lazy("status")
+
+    form_class = VolunteerApplicationModelForm
+    template_name = "volunteer/signup.html"
+

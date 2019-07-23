@@ -21,5 +21,12 @@ class WorkshopEventAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return False
 
+
+class ShiftAdmin(admin.ModelAdmin):
+    list_display = ("start", "end")
+    ordering = ("start",)
+
+
 admin.site.register(models.FoodEvent, FoodEventAdmin)
 admin.site.register(models.WorkshopEvent, WorkshopEventAdmin)
+admin.site.register(models.Shift, ShiftAdmin)

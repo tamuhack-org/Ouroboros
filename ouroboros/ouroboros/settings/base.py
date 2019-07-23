@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "hacker.apps.HackerConfig",
     "volunteer.apps.VolunteerConfig",
+    "phonenumber_field",
     "customauth.apps.CustomauthConfig",
     "rest_framework",
     "rest_framework.authtoken",

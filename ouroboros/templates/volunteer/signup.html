@@ -1,0 +1,11 @@
+{% extends 'hacker/dashboard_base.html' %} {% block content %}{% load static %}
+<form method="POST" action="{% url 'volunteer-signup' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br />
+    <button type="submit" class="btn btn-lg btn-block btn-login btn-width">
+        Submit
+    </button>
+</form>
+
+{% endblock %}
