@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api import models
+from volunteer import models
 
 # Register your models here.
 class FoodEventAdmin(admin.ModelAdmin):

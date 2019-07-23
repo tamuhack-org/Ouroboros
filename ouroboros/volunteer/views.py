@@ -6,9 +6,9 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework import authentication, permissions, response, status
 from rest_framework.authtoken import views
 
-from api import models
-from api.permissions import IsVolunteer
-from api.serializers import EmailAuthTokenSerializer
+from volunteer import models
+from volunteer.permissions import IsVolunteer
+from volunteer.serializers import EmailAuthTokenSerializer
 from hacker import models as hacker_models
 
 HACKER_NOT_CHECKED_IN_MSG = (
@@ -106,6 +106,7 @@ class CreateWorkshopEventView(views.APIView):
             )
         models.WorkshopEvent.objects.create(hacker=hacker)
         return response.Response(status=status.HTTP_200_OK)
+
 
 # class SearchView(views.APIView):
 #     permission_classes = [
