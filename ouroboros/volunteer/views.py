@@ -12,6 +12,7 @@ from hacker import models as hacker_models
 from volunteer import models
 from volunteer.forms import VolunteerApplicationModelForm
 from volunteer.permissions import IsVolunteer
+from django.contrib.auth.models import Group
 from volunteer.serializers import EmailAuthTokenSerializer
 
 HACKER_NOT_CHECKED_IN_MSG = (
@@ -127,3 +128,10 @@ class VolunteerApplicationView(generic.FormView):
     form_class = VolunteerApplicationModelForm
     template_name = "volunteer/signup.html"
 
+    def form_valid(self, form: VolunteerApplicationModelForm):
+        volunteer_application: models.VolunteerApplication = form.save()
+        volunteer_application.shifts.set(form.cleaned_data["shifts"])
+        group, _ = Group.objects.get_or_create(name="volunteer")
+        self.request.user.groups.add(group)
+        self.request.user.save()
+        return super().form_valid(form)

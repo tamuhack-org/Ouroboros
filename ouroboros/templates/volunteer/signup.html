@@ -1,4 +1,8 @@
 {% extends 'hacker/dashboard_base.html' %} {% block content %}{% load static %}
+{% load tz %}
+{% get_current_timezone as TIME_ZONE %}
+
+{% localtime off %}
 <form method="POST" action="{% url 'volunteer-signup' %}">
     {% csrf_token %}
     {{ form.as_p }}
@@ -7,5 +11,6 @@
         Submit
     </button>
 </form>
+{% endlocaltime %}
 
 {% endblock %}

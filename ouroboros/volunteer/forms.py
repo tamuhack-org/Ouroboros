@@ -7,11 +7,6 @@ from django.db.models import Count
 from django.forms import ValidationError
 
 
-def validate_shift(shift: Shift):
-    if len(shift.volunteers.all()) >= settings.MAX_VOLUNTEERS_PER_SHIFT:
-        raise ValidationError("Please select a shift with spots remaining.")
-
-
 class VolunteerApplicationModelForm(forms.ModelForm):
     shifts = forms.ModelMultipleChoiceField(
         queryset=Shift.objects.annotate(volunteers_len=Count("volunteers"))
@@ -32,4 +27,14 @@ class VolunteerApplicationModelForm(forms.ModelForm):
         ]
 
     def clean(self):
-        return super().clean()
+        cleaned_data = super().clean()
+        shifts = cleaned_data.get("shifts")
+        if shifts:
+            if (
+                shifts.annotate(volunteers_len=Count("volunteers"))
+                .filter(volunteers_len__gte=settings.MAX_VOLUNTEERS_PER_SHIFT)
+                .exists()
+            ):
+                self.add_error(
+                    "shifts", "Please select shifts that still have spots remaining."
+                )
