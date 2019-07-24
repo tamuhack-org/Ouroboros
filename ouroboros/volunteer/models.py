@@ -37,6 +37,7 @@ class WorkshopEvent(Event):
 
 
 class VolunteerApplication(models.Model):
+    hacker = models.OneToOneField(Hacker, related_name="volunteer_app", on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     phone_number = PhoneNumberField()

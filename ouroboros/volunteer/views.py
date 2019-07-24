@@ -1,6 +1,7 @@
 import json
 
 from django import shortcuts
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
@@ -14,6 +15,9 @@ from volunteer.forms import VolunteerApplicationModelForm
 from volunteer.permissions import IsVolunteer
 from django.contrib.auth.models import Group
 from volunteer.serializers import EmailAuthTokenSerializer
+from django.contrib.auth import mixins
+
+from shared.views import CreateUpdateView
 
 HACKER_NOT_CHECKED_IN_MSG = (
     "This hacker has not been checked in. Please find an organizer immediately."
@@ -122,16 +126,23 @@ class CreateWorkshopEventView(views.APIView):
 #         matches = hacker_models.Hacker.objects.annotate()
 
 
-class VolunteerApplicationView(generic.FormView):
+class VolunteerApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
     success_url = reverse_lazy("status")
 
     form_class = VolunteerApplicationModelForm
     template_name = "volunteer/signup.html"
 
+    def get_object(self):
+        if getattr(self.request.user, "volunteer_app", None) is None:
+            return None
+        return self.request.user.volunteer_app
+
     def form_valid(self, form: VolunteerApplicationModelForm):
         volunteer_application: models.VolunteerApplication = form.save()
+        volunteer_application.hacker = self.request.user
         volunteer_application.shifts.set(form.cleaned_data["shifts"])
-        group, _ = Group.objects.get_or_create(name="volunteer")
+        volunteer_application.save()
+        group, _ = Group.objects.get_or_create(name=settings.VOLUNTEER_GROUP_NAME)
         self.request.user.groups.add(group)
         self.request.user.save()
         return super().form_valid(form)
