@@ -23,6 +23,10 @@ html, body {
     color: black;
 }
 
+.navbar-custom a:hover {
+    color: #666666;
+}
+
 .navbar-custom a.btn-logout {
     margin-right: 0px;
     margin-left: 40px;
