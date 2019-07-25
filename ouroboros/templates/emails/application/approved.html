@@ -1,36 +1,115 @@
 <html>
-  <div style="width: 100vw; height: 100vh; background-color: #F9ECEE; z-index: -1; position: absolute; top: 0; left: 0">
-	<div style="font-family: Questrial, sans-serif; 
-			background: #fff;
-		    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
-	  	    border-radius: 3px;
-  		    padding: 3em 5em !important; 
-	   	    max-width: 800px;
-	  	    display: block;
-	  	    margin: 20px auto;">
-		<h2 style="margin-bottom: 35px;">Congratulations, {{ user.first_name }}! </h2>
+	<div style="max-width:800px; background-color: #F9ECEE; z-index: -1; position: absolute; top: 0; left: 0; padding: 20px">
 
-		<p style="margin-bottom: 35px;
-			  	  font-size: 20px;
-				  line-height: 30px;
-				  -webkit-font-smoothing: antialiased;  
-				  font-weight: normal;">
-			We're excited to inform you that your {{ event_name }} application has been
-		    approved! There's just one more step: we'd like a little more information from
-		    you so we know what to order!
+		<div style="font-family: Questrial, sans-serif; 
+			background: #fff;
+			box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+			border-radius: 3px;
+			padding: 50px!important; 
+			max-width: 500px;
+			display: block;
+			margin: 20px auto;">
+	
+		<h2 style="margin-bottom: 20px; font-size: 16px; color: #777777">Congratulations, {{ user.first_name }}! </h2>
+
+		<p style="line-height: 20px; -webkit-font-smoothing: antialiased;  
+				  font-weight: normal;
+				  color: #777777;
+				  margin-bottom: 20px;">
+			You have been accepted to {{ event_name }}! We were impressed by your application and have handpicked you to attend. 
+		</p>
+		<p style="line-height: 20px; 
+				-webkit-font-smoothing: antialiased;  
+				font-weight: normal;
+				color: #777777;
+				margin-bottom: 20px;">
+			Please <span style="color: #ED768B; font-weight: 700">RSVP at the link below by Friday, January 11th</span> to confirm your attendance. If you do not RSVP by then, you risk giving up your spot.
 		</p>
 
-	    <h3 style=" margin-bottom: 10px;
-				    font-size: 20px;
+		<p style="line-height: 20px; -webkit-font-smoothing: antialiased;  
+				  font-weight: 700;
+				  color: #777777;
+				  border-bottom: 1px solid #DEDEDE; padding-bottom: 20px; margin-bottom: 20px;">
+			Please read the following important information before filling out the RSVP form.
+		</p>
+
+		<div style="margin-bottom: 20px; color: #777777">
+			<h5 style="text-align: center; font-size: 16px; margin-bottom: 5px; margin-top: 0;">
+				Event Details:
+			</h5>
+			<p style="line-height: 20px; text-align: center; margin-top: 0; margin-bottom: 0px;">
+				January 26th – 27th, 2019
+			</p>
+			<p style="line-height: 20px; text-align: center; margin-top: 0; margin-bottom: 0px;">
+				Memorial Student Center 
+			</p>
+			<p style="line-height: 20px; text-align: center; margin-top: 0; margin-bottom: 0px;">
+				Texas A&M University, College Station
+			</p>
+		</div>
+
+		<p style="line-height: 20px; color: #777777; margin-bottom: 15px;">
+			Here's a sneak peek of our itinerary for the event (full schedule on website):
+		</p>
+
+		<p style="line-height: 20px; font-weight: 700; color: #777777; margin-bottom: 5px;">
+			Saturday, September 7th:
+		</p>
+
+		<ul style="color: #777777; margin-top: 0;">
+			<li>
+				9 AM: Doors open, registration begins
+			</li>
+			<li>
+				9 AM: Doors open, registration begins
+			</li>
+			<li>
+				9 AM: Doors open, registration begins
+			</li>
+		</ul>
+
+		<p style="line-height: 20px; font-weight: 700; color: #777777; margin-bottom: 5px;">
+			Sunday, September 8th:
+		</p>
+	
+		<ul style= "color: #777777; margin-top: 0; margin-bottom: 30px;">
+			<li>
+				9 AM: Doors open, registration begins
+			</li>
+			<li>
+				9 AM: Doors open, registration begins
+			</li>
+			<li>
+				9 AM: Doors open, registration begins
+			</li>
+		</ul>
+	
+		<p style="line-height: 20px; color: #777777; margin-bottom: 20px;">
+			We will be sending another email closer to the hackathon with more details including bus pick-up/drop-off times and locations, what to bring, where to park, and anything else you might want to know. 
+		</p>
+
+		<p style="line-height: 20px; color: #777777; border-bottom: 1px solid #DEDEDE; padding-bottom: 20px; margin-bottom: 20px;">
+			In the meantime, feel free to email <a href="mailto:hello@tamuhack.com" style="color: #00ADD8">hello@tamuhack.com</a> if you have any questions.
+		</p>
+
+		<h4 style="color:#ED768B; margin-bottom: 10px;">Required: Sign into your account and RSVP to let us know whether you will be attending TAMUhack.</h4>
+		<a href="#" style="display: inline-block; background-color: #ED768B; color: white; font-weight: 700; padding: 15px 20px; text-decoration: none; border-radius: 5px;">RSVP HERE</a>
+
+		<p style="line-height: 20px; color: #777777; margin-top: 20px; margin-bottom: 10px;">Optional: If you are also interested in mentoring other hackers at TAMUhack, please fill this form out too!</p>
+		<a href="#" style="display: inline-block; background-color: #4E678A; color: white; font-weight: 700; padding: 15px 20px; text-decoration: none; border-radius: 5px;">MENTOR FORM</a>
+
+	    <h3 style=" margin-bottom: 5px;
+				    font-size: 14px;
 				    line-height: 30px;
 				    -webkit-font-smoothing: antialiased;  
-				    font-weight: normal;">
+					font-weight: normal;
+					color: #777777;
+					border-top: 1px solid #DEDEDE; padding-top: 20px; margin-top: 20px;">
 			Thanks!
 		</h3>
 
-	    <strong style=" color: #ED768B;
-						font-weight: bold;
-						font-size: 20px;">
+	    <strong style="color: #ED768B;
+						font-size: 14px;">
 			The {{ event_name }} Team
 		</strong>
 	</div>

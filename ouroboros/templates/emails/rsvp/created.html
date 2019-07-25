@@ -1,38 +1,127 @@
 <html>
-<div style="width: 100vw; height: 100vh; background-color: #F9ECEE; z-index: -1; position: absolute; top: 0; left: 0">
+	<div style="max-width:800px; background-color: #F9ECEE; z-index: -1; position: absolute; top: 0; left: 0; padding: 20px">
 
-	<div style="font-family: Questrial, sans-serif; 
-			background: #fff;
-		    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
-	  	    border-radius: 3px;
-  		    padding: 3em 5em !important; 
-	   	    max-width: 800px;
-	  	    display: block;
-	  	    margin: 20px auto;">
-		<h2 style="margin-bottom: 35px;">Hi {{ user.first_name }}!</h2>
+		<div style="font-family: Questrial, sans-serif; 
+					background: #fff;
+					box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+					border-radius: 3px;
+					padding: 50px!important; 
+					max-width: 500px;
+					display: block;
+					margin: 20px auto;">
+		<h2 style="margin-bottom: 20px; font-size: 14px; color: #777777">Hi {{ user.first_name }}!</h2>
 
-		<p style="margin-bottom: 35px;
-			  	  font-size: 20px;
-				  line-height: 30px;
-				  -webkit-font-smoothing: antialiased;  
-				  font-weight: normal;">
-		    The purpose of this email is to confirm our receipt of your
-		    {{ event_name }} RSVP!
+		<p style="line-height: 20px; -webkit-font-smoothing: antialiased;  
+				font-weight: normal;
+				color: #777777;
+				margin-bottom: 20px;">
+				We're so glad you're coming to {{ event_name}}!
 		</p>
 
-	    <h3 style=" margin-bottom: 10px;
-				    font-size: 20px;
+		<p style="line-height: 20px; -webkit-font-smoothing: antialiased;  
+				 font-weight: normal;
+				 color: #777777;
+				 margin-bottom: 20px;">
+				We're counting down the days and just wanted to provide you with some more details! </p>
+		
+		<p style="line-height: 20px; -webkit-font-smoothing: antialiased;  
+				font-weight: normal;
+				color: #777777;
+				margin-bottom: 20px;">
+				We have tons of workshops, mini-events, great food, and amazing mentors + sponsors lined up for you. We also went a little over budget on prizes and giveaways. Oops.</p>
+
+		<p style="line-height: 20px; -webkit-font-smoothing: antialiased;  
+				font-weight: normal;
+				color: #777777;
+				margin-bottom: 20px;">
+				Below, you'll find all the information that you need to plan your weekend with us.</p>
+				
+		<div style="margin-bottom: 20px; color: #777777">
+			<h5 style="text-align: center; font-size: 16px; margin-bottom: 5px; margin-top: 0;">
+				Event Details:
+			</h5>
+			<p style="line-height: 20px; text-align: center; margin-top: 0; margin-bottom: 0px;">
+				January 26th – 27th, 2019
+			</p>
+			<p style="line-height: 20px; text-align: center; margin-top: 0; margin-bottom: 0px;">
+				Memorial Student Center 
+			</p>
+			<p style="line-height: 20px; text-align: center; margin-top: 0; margin-bottom: 0px;">
+				Texas A&M University, College Station
+			</p>
+		</div>
+
+		<h4 style="color: #777777; font-size: 16px">Check-in</h4>
+		<p style="line-height: 20px; margin-top: 0; margin-bottom: 10px; color: #ED768B; font-weight: 700">	You will use the QR code attached to this email and your Student ID to check-in. Please make sure you have both.</p>
+		
+		<p style="line-height: 20px; margin-top: 0; margin-bottom: 10px; color: #777777">
+			Once inside the Memorial Student Center (MSC), follow TAMUhack signs to the Bethancourt Ballroom on the 2nd floor (MSC 2300).
+		</p>
+		<p style="line-height: 20px; margin-top: 0; margin-bottom: 5px; color: #777777">
+			<b>9AM:</b> Doors open and check-in begins
+		</p>
+		<p style="line-height: 20px; margin-top: 0; margin-bottom: 5px; color: #777777">
+			<b>11AM:</b> Check-in ends and opening ceremony begins
+		</p>
+
+		<p style="line-height: 20px; margin-top: 0; padding-bottom: 20px; color: #777777; margin-bottom: 20px; border-bottom: 1px solid #DEDEDE">
+			If you are arriving late, email us at <a href="mailto:hello@tamuhack.com" style="color:#00ADD8">hello@tamuhack.com</a> if you haven't already done so, or you risk losing your spot.
+		</p>
+
+		<p style="line-height: 20px; font-weight: 700; color: #777777; margin-bottom: 5px; font-size: 16px;">
+			What should you bring?
+		</p>
+	
+		<ul style= "color: #777777; margin-top: 0; margin-bottom: 15px;">
+			<li> Student ID (required) </li>
+			<li>Laptop, charger, dongles</li>
+			<li>Phone charger</li>
+			<li>Pillow / blanket</li>
+			<li>Hygienic essential</li>
+			<li>Ethernet cable (optional, but encouraged)</li>
+			<li>Hardware for your hack (optional)</li>
+		</ul>
+
+		<p style="line-height: 20px; font-weight: 700; color: #777777; margin-bottom: 5px; font-size: 16px;">
+				What should you NOT bring?
+			</p>
+		
+			<ul style= "color: #777777; margin-top: 0; margin-bottom: 30px;">
+				<li>Pets (no matter how cute they are)</li>
+				<li>Weapons</li>
+				<li>Soldering Irons</li>
+				<li>Anything you wouldn't bring on a plane</li>
+				<li>Behavior that doesn't follow the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf" target="_blank" style="color:#00ADD8"">MLH Code of Conduct</a></li>
+			</ul>
+				
+			<p style="line-height: 20px; margin-top: 0; margin-bottom: 30px; color: #777777">
+				We highly encourage you to download any software/tools you may need before the hackathon to take the initial load off our systems. :) Bringing an ethernet cable will also help!
+			</p>
+
+			<p style="line-height: 20px; margin-top: 0; color: #777777; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #DEDEDE">
+				We're super excited for TAMUhack 2019 and are working hard to make sure it's a perfect weekend for you! Please don't hesitate to reach out to us at <a href="mailto:hello@tamuhack.com" style="color:#00ADD8">hello@tamuhack.com</a> if you have any questions.
+			</p>
+		<h3 style=" margin-bottom: 5px;
+				    font-size: 14px;
 				    line-height: 30px;
 				    -webkit-font-smoothing: antialiased;  
-				    font-weight: normal;">
-			Thanks!
+					font-weight: normal;
+					color: #777777">
+			See you soon! :)
 		</h3>
 
-	    <strong style=" color: #ED768B;
-						font-weight: bold;
-						font-size: 20px;">
+		<strong style=" color: #ED768B;
+						font-size: 14px;
+						margin-bottom: 30px;">
 			The {{ event_name }} Team
 		</strong>
+
+		<p style="line-height: 20px; -webkit-font-smoothing: antialiased;  
+				font-weight: normal;
+				color: #777777;
+				margin-bottom: 20px;">
+				P.S. Don't be scared if this is your first hackathon! TAMUhack is very beginner friendly (prizes for first timers, special workshops) while also being challenging enough for experts with many different sponsor categories!</p>
+
 	</div>
   </div>
 </html>
