@@ -6,6 +6,7 @@ from django.urls import reverse
 from shared import test
 from volunteer.models import Shift, VolunteerApplication
 
+from shared import test
 
 class VolunteerApplicationViewTestCase(test.SharedTestCase):
     def setUp(self):
