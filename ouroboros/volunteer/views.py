@@ -145,4 +145,5 @@ class VolunteerApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
         group, _ = Group.objects.get_or_create(name=settings.VOLUNTEER_GROUP_NAME)
         self.request.user.groups.add(group)
         self.request.user.save()
+        
         return super().form_valid(form)
