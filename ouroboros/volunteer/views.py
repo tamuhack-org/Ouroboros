@@ -138,11 +138,8 @@ class VolunteerApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
         return self.request.user.volunteer_app
 
     def form_valid(self, form: VolunteerApplicationModelForm):
-        volunteer_application: models.VolunteerApplication = form.save()
+        volunteer_application: models.VolunteerApplication = form.save(commit=False)
         volunteer_application.hacker = self.request.user
-        volunteer_application.shifts.set(form.cleaned_data["shifts"])
         volunteer_application.save()
-        group, _ = Group.objects.get_or_create(name=settings.VOLUNTEER_GROUP_NAME)
-        self.request.user.groups.add(group)
-        self.request.user.save()
+        volunteer_application.shifts.set(form.cleaned_data["shifts"])
         return super().form_valid(form)
