@@ -1,6 +1,13 @@
 {% load static %}
 
-<nav id="logo_bar" class="nav navbar sticky-top ">
-	<a class="navbar-brand col-sm-4 col-md-4 col-lg-4 offset-sm-2" href="{% url 'status' %}"><img class="nav-logo" src="{% static 'howdyHackLogo.svg' %}"></a>
-	<a class="col-sm-2 col-md-2 col-lg-2" href="{% url 'logout' %}">Log Out</a>
+<nav class="navbar-custom row">
+	<img class="nav-brand col-2 offset-lg-2 offset-sm-1" src="{% static 'howdyHackLogo.svg' %}">
+
+	<ul class="pt-3 col-6">
+		<a href="{% url 'status' %}">Status</a>
+		<a href="{% url 'volunteer-signup' %}" style="padding:0;">Volunteer</a>
+	</ul>
+	<ul class="pt-3 col-2">
+		<a href="{% url 'logout' %}" class="btn-logout">Log Out</a>
+	</ul>
 </nav>

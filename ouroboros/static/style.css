@@ -7,25 +7,33 @@ html, body {
     transform: translateX(-50%);
 }
 
-.navbar {
+.navbar-custom {
     -webkit-box-shadow: 0 8px 6px -6px #999;
     -moz-box-shadow: 0 8px 6px -6px #999;
     box-shadow: 0 8px 6px -6px #999;
     font-family: sans-serif;
     text-transform: uppercase;
+    background-color: white;
+    padding: 10px 0;
 }
 
-.navbar a {
-    color: #232323 !important;
-    width:40%;
+.navbar-custom a {
+    display: inline;
+    margin-right: 20px;
+    color: black;
 }
 
-.navbar-brand {
-    font-weight: bold;
+.navbar-custom a:hover {
+    color: #666666;
+}
+
+.navbar-custom a.btn-logout {
+    margin-right: 0px;
+    margin-left: 40px;
+    white-space: nowrap;
 }
 
 #logo_bar {
-    max-width: 100%;
     background-color: white !important;
 }
 
@@ -106,7 +114,7 @@ header {
     text-align: right;
 }
 
-.signin input, input[type="email"]  {
+.signin input, input[type="email"] {
     border: 1px solid #999999;
     border-radius: 5px;
     width: 100%;
@@ -157,8 +165,9 @@ input[type="submit"]{
     margin-bottom: 20px;
 }
 
-.nav-logo {
-    max-width: 50px;
+.nav-brand {
+    max-width: 80px!important;
+    margin-left: 10px;
 }
 
 .signin h1, .reset-container h3 {
@@ -356,7 +365,7 @@ input[type="submit"]{
     height: 50px;
 }
 
-.application p > input[type=text] {
+.application p > input[type=text], .application p > input[type=tel] {
     width: 50%!important;
 }
 
@@ -402,7 +411,7 @@ input[type="submit"]{
     font-weight: 400 !important;
     margin-right: 20px !important;
 }
-.application input[type='text'], input[type='number'], .application textarea, .application select{
+.application input[type='text'], input[type='number'], input[type="tel"], .application textarea, .application select{
     width: 100%;
     padding: 8px;
     border-radius: 3px;
@@ -673,11 +682,6 @@ button{
     background: #325270;
 }
 
-#id_shirt_size{
-    margin-top: -16px !important;
-    margin-bottom: 40px !important;
-}
-
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
 .errorlist > li{
@@ -715,13 +719,16 @@ button{
     }
 }
 
-@media only screen and (max-width: 770px) {
-
-    .application p > input[type=text] {
-        width: 100%!important;
+@media only screen and (max-width: 992px ) {
+    .navbar-custom a.btn-logout {
+        margin-left: 80px;
     }
-    .navbar a:last-child  {
-        text-align: right!important;
+}
+
+@media only screen and (max-width: 768px) {
+
+    .application p > input[type=text], .application p > input[type=tel] {
+        width: 100%!important;
     }
     .status-subtitle {
         padding: 0 5vw;
@@ -758,6 +765,12 @@ button{
     .status-box p {
         font-size: 14px;
     }
+    .navbar-custom a {
+        font-size: 14px;
+    }
+    .navbar-custom a.btn-logout {
+        margin-left: 60px;
+    }
 }
 
 
@@ -781,4 +794,12 @@ button{
     margin: 0;
     float: left;
     margin-top: -12px;
+}
+
+#id_shifts {
+    margin-top: 2px;
+}
+
+#id_engr_honors {
+    margin-bottom: 20px;
 }

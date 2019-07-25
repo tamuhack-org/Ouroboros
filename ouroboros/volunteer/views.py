@@ -1,15 +1,23 @@
 import json
 
 from django import shortcuts
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse_lazy
+from django.views import generic
 from rest_framework import authentication, permissions, response, status
 from rest_framework.authtoken import views
 
-from api import models
-from api.permissions import IsVolunteer
-from api.serializers import EmailAuthTokenSerializer
 from hacker import models as hacker_models
+from volunteer import models
+from volunteer.forms import VolunteerApplicationModelForm
+from volunteer.permissions import IsVolunteer
+from django.contrib.auth.models import Group
+from volunteer.serializers import EmailAuthTokenSerializer
+from django.contrib.auth import mixins
+
+from shared.views import CreateUpdateView
 
 HACKER_NOT_CHECKED_IN_MSG = (
     "This hacker has not been checked in. Please find an organizer immediately."
@@ -107,6 +115,7 @@ class CreateWorkshopEventView(views.APIView):
         models.WorkshopEvent.objects.create(hacker=hacker)
         return response.Response(status=status.HTTP_200_OK)
 
+
 # class SearchView(views.APIView):
 #     permission_classes = [
 #         permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
@@ -115,3 +124,22 @@ class CreateWorkshopEventView(views.APIView):
 
 #     def get(self, request, *args, **kwargs):
 #         matches = hacker_models.Hacker.objects.annotate()
+
+
+class VolunteerApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
+    success_url = reverse_lazy("status")
+
+    form_class = VolunteerApplicationModelForm
+    template_name = "volunteer/signup.html"
+
+    def get_object(self):
+        if getattr(self.request.user, "volunteer_app", None) is None:
+            return None
+        return self.request.user.volunteer_app
+
+    def form_valid(self, form: VolunteerApplicationModelForm):
+        volunteer_application: models.VolunteerApplication = form.save(commit=False)
+        volunteer_application.hacker = self.request.user
+        volunteer_application.save()
+        volunteer_application.shifts.set(form.cleaned_data["shifts"])
+        return super().form_valid(form)

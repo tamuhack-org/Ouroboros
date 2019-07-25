@@ -6,35 +6,10 @@ from django.shortcuts import redirect, render_to_response
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
-from django.views.generic.detail import SingleObjectTemplateResponseMixin
-from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
 from hacker import forms as hacker_forms
 from hacker import models as hacker_models
-
-
-class CreateUpdateView(
-    SingleObjectTemplateResponseMixin, ModelFormMixin, ProcessFormView
-):
-    """
-    If the instance requested by the user does not exist, the user is
-    redirected to a CreateView, otherwise they're redirected to a view
-    containing their instance for updating.
-    """
-
-    def get_object(self, queryset=None):
-        try:
-            return super(CreateUpdateView, self).get_object(queryset)
-        except AttributeError:
-            return None
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super(CreateUpdateView, self).get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super(CreateUpdateView, self).post(request, *args, **kwargs)
+from shared.views import CreateUpdateView
 
 
 class ApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
