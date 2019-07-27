@@ -79,7 +79,7 @@ steps:
   args:
   - '-c'
   - |
-     sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" ouroboros.yaml.tpl | \
+     sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" deployment/ouroboros.yaml.tpl | \
      sed "s/COMMIT_SHA/${SHORT_SHA}/g" > snakeskin/ouroboros.yaml
 
 # This step pushes the manifest back to snakeskin
