@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "customauth.apps.CustomauthConfig",
     "rest_framework",
+    "anymail",
     "rest_framework.authtoken",
     "multiselectfield",
 ]
