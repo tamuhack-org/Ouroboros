@@ -1,4 +1,5 @@
 # https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build
+# TODO(jay-khatri): consider using a shared email for git ssh key.
 steps:
 # This step runs the Django unit tests
 - name: 'python:3.7-slim'
@@ -67,7 +68,7 @@ steps:
   - |
     git clone git@github.com:tamuhack-org/snakeskin && \
     cd snakeskin && \
-    git checkout candidate && \
+    git checkout jay-khatri-testing-deploys && \
     git config user.email khatri.florida@gmail.com
   volumes:
   - name: 'ssh'
@@ -93,10 +94,10 @@ steps:
     set -x && \
     cd snakeskin && \
     git add ouroboros.yaml && \
-    git commit -m "Deploying image gcr.io/${PROJECT_ID}/ouroboros:${SHORT_SHA}
+    git commit --allow-empty -m "Deploying image gcr.io/${PROJECT_ID}/ouroboros:${SHORT_SHA}
     Built from commit ${COMMIT_SHA} of repository ouroboros
     Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
-    git push origin candidate
+    git push origin jay-khatri-testing-deploys
   volumes:
   - name: 'ssh'
     path: /root/.ssh
