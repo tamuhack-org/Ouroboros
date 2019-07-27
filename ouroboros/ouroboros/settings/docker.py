@@ -64,7 +64,8 @@ DEFAULT_FROM_EMAIL = "The HowdyHack Team <hello@tamuhack.com>"
 
 
 # Static Files URL
-STATIC_URL = "https://storage.googleapis.com/tamuhack-staging-ouroboros-static/"
+STATIC_URL = "https://storage.googleapis.com/tamuhack-prod-ouroboros-static/"
 
 DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-GS_BUCKET_NAME = "tamuhack-staging-ouroboros-hacker-resumes"
+GS_BUCKET_NAME = "tamuhack-resume-data"
+GS_LOCATION = "howdyhack-20"
