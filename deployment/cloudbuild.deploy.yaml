@@ -24,19 +24,18 @@ steps:
   - 'push'
   - 'gcr.io/$PROJECT_ID/ouroboros:$SHORT_SHA'
 
-# TODO: Complete the following steps
 # https://cloud.google.com/cloud-build/docs/access-private-github-repos
 # This step decrypts the machine account's SSH key
 - name: 'gcr.io/cloud-builders/gcloud'
-  id: Decrypt tamuhack.staging SSH key
+  id: Decrypt tamuhack-prod SSH key
   args:
   - kms
   - decrypt
-  - --ciphertext-file=tamuhack.staging.id_rsa.enc
+  - --ciphertext-file=deployment/tamuhack-prod.id_rsa.enc
   - --plaintext-file=/root/.ssh/id_rsa
   - --location=global
-  - --keyring=tamuhack-staging-acct
-  - --key=ssh
+  - --keyring=tamuhack-prod-keyring
+  - --key=tamuhack-prod-key
   volumes:
   - name: 'ssh'
     path: /root/.ssh
@@ -53,7 +52,7 @@ steps:
     Hostname github.com
     IdentityFile /root/.ssh/id_rsa
     EOF
-    mv known_hosts /root/.ssh/known_hosts
+    mv deployment/known_hosts /root/.ssh/known_hosts
   volumes:
   - name: 'ssh'
     path: /root/.ssh
@@ -67,7 +66,7 @@ steps:
   - |
     git clone git@github.com:tamuhack-org/snakeskin && \
     cd snakeskin && \
-    git checkout candidate && \
+    git checkout jay-khatri-testing-deploys && \
     git config user.email tamuhack.staging@gmail.com
   volumes:
   - name: 'ssh'
@@ -93,10 +92,10 @@ steps:
     set -x && \
     cd snakeskin && \
     git add ouroboros.yaml && \
-    git commit -m "Deploying image gcr.io/${PROJECT_ID}/ouroboros:${SHORT_SHA}
+    git commit --allow-empty -m "Deploying image gcr.io/${PROJECT_ID}/ouroboros:${SHORT_SHA}
     Built from commit ${COMMIT_SHA} of repository ouroboros
     Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
-    git push origin candidate
+    git push origin jay-khatri-testing-deploys
   volumes:
   - name: 'ssh'
     path: /root/.ssh
