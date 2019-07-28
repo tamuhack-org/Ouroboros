@@ -1,6 +1,6 @@
 from .base import *
 import os
-from google.cloud import logging
+from pprint import pprint
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -41,21 +41,17 @@ DATABASES = {
     }
 }
 
-# StackDriver setup
-client = logging.Client()
-client.setup_logging()
-
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {
-        "stackdriver": {
-            "class": "google.cloud.logging.handlers.CloudLoggingHandler",
-            "client": client,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
         }
     },
-    "loggers": {"": {"handlers": ["stackdriver"], "level": "INFO"}},
 }
 
 # Email Configuration Global Settings
