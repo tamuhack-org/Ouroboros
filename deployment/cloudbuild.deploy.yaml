@@ -66,7 +66,7 @@ steps:
   - |
     git clone git@github.com:tamuhack-org/snakeskin && \
     cd snakeskin && \
-    git checkout jay-khatri-testing-deploys && \
+    git checkout candidate && \
     git config user.email tamuhack.staging@gmail.com
   volumes:
   - name: 'ssh'
@@ -95,7 +95,7 @@ steps:
     git commit --allow-empty -m "Deploying image gcr.io/${PROJECT_ID}/ouroboros:${SHORT_SHA}
     Built from commit ${COMMIT_SHA} of repository ouroboros
     Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
-    git push origin jay-khatri-testing-deploys
+    git push origin candidate
   volumes:
   - name: 'ssh'
     path: /root/.ssh
