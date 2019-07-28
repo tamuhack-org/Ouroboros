@@ -67,7 +67,13 @@ DEFAULT_FROM_EMAIL = "The HowdyHack Team <hello@tamuhack.com>"
 
 
 # Static Files URL
-STATIC_URL = "https://storage.googleapis.com/tamuhack-staging-ouroboros-static/"
+# TODO(jaykhatri): get rid of this.
+# STATIC_URL = "https://storage.googleapis.com/tamuhack-staging-ouroboros-static/"
 
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'tamuhack-staging-ouroboros-hacker-resumes'
+# DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+# GS_BUCKET_NAME = 'tamuhack-staging-ouroboros-hacker-resumes'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # noqa: F405
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+SECRET_KEY = 'jay-is-the-best'
