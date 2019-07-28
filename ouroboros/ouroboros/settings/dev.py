@@ -19,6 +19,5 @@ DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "db.sql
 # Email Settings
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-
 # Upload Settings
 MEDIA_ROOT = "hacker_resumes"

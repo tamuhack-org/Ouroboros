@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
+from django.conf import settings
 
 from customauth import forms, views
 
@@ -13,7 +14,12 @@ urlpatterns = [
     ),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path(
-        "password_reset/", views.PlaceholderPasswordResetView.as_view(), name="password_reset"
+        "password_reset/",
+        views.PlaceholderPasswordResetView.as_view(
+            html_email_template_name="registration/password_reset_email.html",
+            extra_email_context={"event_name": settings.EVENT_NAME},
+        ),
+        name="password_reset",
     ),
     path(
         "password_reset/done/",

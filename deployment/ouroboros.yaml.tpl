@@ -32,10 +32,10 @@ spec:
               secretKeyRef:
                 name: django-sk
                 key: secret_key
-          - name: SENDGRID_API_KEY
+          - name: MAILGUN_API_KEY
             valueFrom:
               secretKeyRef:
-                name: sendgrid
+                name: mailgun
                 key: apikey
           - name: GOOGLE_APPLICATION_CREDENTIALS
             value: "/etc/storage-creds/django-storages-creds.json"
