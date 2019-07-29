@@ -12,4 +12,5 @@ urlpatterns = [
         views.CreateWorkshopEventView.as_view(),
         name="create-workshop-event",
     ),
+    path("search", views.SearchView.as_view(), name="search-hackers"),
 ]
