@@ -2,22 +2,24 @@ import json
 
 from django import shortcuts
 from django.conf import settings
+from django.contrib.auth import mixins
+from django.contrib.auth.models import Group
+from django.db.models import F, Value
+from django.db.models.functions import Concat
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views import generic
 from rest_framework import authentication, permissions, response, status
 from rest_framework.authtoken import views
+from django import http
 
 from hacker import models as hacker_models
+from shared.views import CreateUpdateView
 from volunteer import models
 from volunteer.forms import VolunteerApplicationModelForm
 from volunteer.permissions import IsVolunteer
-from django.contrib.auth.models import Group
 from volunteer.serializers import EmailAuthTokenSerializer
-from django.contrib.auth import mixins
-
-from shared.views import CreateUpdateView
 
 HACKER_NOT_CHECKED_IN_MSG = (
     "This hacker has not been checked in. Please find an organizer immediately."
@@ -116,14 +118,22 @@ class CreateWorkshopEventView(views.APIView):
         return response.Response(status=status.HTTP_200_OK)
 
 
-# class SearchView(views.APIView):
-#     permission_classes = [
-#         permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
-#     ]
-#     authentication_classes = [authentication.TokenAuthentication]
+class SearchView(views.APIView):
+    permission_classes = [
+        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
+    ]
+    authentication_classes = [authentication.TokenAuthentication]
 
-#     def get(self, request, *args, **kwargs):
-#         matches = hacker_models.Hacker.objects.annotate()
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get("q")
+        matches = list(
+            hacker_models.Application.objects.annotate(
+                full_name=Concat("first_name", Value(" "), "last_name")
+            )
+            .filter(full_name__icontains=query)
+            .values("first_name", "last_name", email=F("hacker__email"))
+        )
+        return http.JsonResponse(data={"results": matches})
 
 
 class VolunteerApplicationView(mixins.LoginRequiredMixin, CreateUpdateView):
