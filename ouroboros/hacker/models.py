@@ -412,7 +412,7 @@ class Application(models.Model):
     hacker = models.OneToOneField(Hacker, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "%s, %s - Application" % (self.hacker.last_name, self.hacker.first_name)
+        return "%s, %s - Application" % (self.last_name, self.first_name)
 
     def get_absolute_url(self):
         return reverse_lazy("application", args=[self.pk])
