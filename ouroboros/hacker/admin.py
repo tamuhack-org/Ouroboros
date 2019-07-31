@@ -67,7 +67,7 @@ def send_application_approval_email(application: Application, rsvp_deadline) -> 
     """Sends an email to this Hacker when their application has been approved."""
     email_template = "emails/application/approved.html"
     subject = f"Your {settings.EVENT_NAME} application has been approved!"
-    context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME, "rsvp_deadline" = rsvp_deadline}
+    context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME, "rsvp_deadline": rsvp_deadline}
     application.hacker.email_html_hacker(email_template, context, subject)
 
 
