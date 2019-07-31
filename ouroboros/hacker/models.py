@@ -39,7 +39,7 @@ GENDERS = (
     ("F", "Female"),
     ("NB", "Non-binary"),
     ("NA", "Prefer not to disclose"),
-    ('Other', 'Other'),
+    ("Other", "Other"),
 )
 
 RACES = (
@@ -50,7 +50,7 @@ RACES = (
     ("Native Hawaiian", "Native Hawaiian or other Pacific Islander"),
     ("White", "White or Caucasian"),
     ("NA", "Decline to self-identify"),
-    ('Other', 'Other'),
+    ("Other", "Other"),
 )
 
 CLASSIFICATIONS = [
@@ -331,10 +331,12 @@ class Wave(models.Model):
                 {"start": "Start date can't be after end date."}
             )
         for wave in Wave.objects.all():
-            has_start_overlap = (wave.start < self.start < wave.end)
-            has_end_overlap = (wave.start < self.end < wave.end)
+            has_start_overlap = wave.start < self.start < wave.end
+            has_end_overlap = wave.start < self.end < wave.end
             if has_start_overlap or has_end_overlap:
-                raise exceptions.ValidationError("Cannot create wave; another wave with an overlapping time range exists.")
+                raise exceptions.ValidationError(
+                    "Cannot create wave; another wave with an overlapping time range exists."
+                )
 
 
 class Application(models.Model):
@@ -376,7 +378,7 @@ class Application(models.Model):
         blank=True,
     )
     programming_joke = models.TextField(
-        "Tell us your best programming joke", max_length=500,
+        "Tell us your best programming joke", max_length=500
     )
     unlimited_resource = models.TextField(
         "What is the one thing you'd build if you had unlimited resources?",
@@ -392,7 +394,7 @@ class Application(models.Model):
     resume = models.FileField(
         "Upload your resume",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
-        validators=[FileExtensionValidator(allowed_extensions=["pdf"])]
+        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
     )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
@@ -400,10 +402,13 @@ class Application(models.Model):
         blank=True,
     )
     adult = models.BooleanField(
-        "Please confirm you are 18 or older", choices=AGREE, default=None, help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas A&M."
+        "Please confirm you are 18 or older",
+        choices=AGREE,
+        default=None,
+        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas A&M.",
     )
 
-    mlh_coc = models.BooleanField('I agree to the MLH Code of Conduct', choices=AGREE, default=None)
+    mlh_coc = models.BooleanField(choices=AGREE, default=None)
 
     approved = models.NullBooleanField(blank=True)
 
@@ -471,21 +476,24 @@ def send_rsvp_creation_email(hacker: Hacker) -> None:
 
     html_msg = render_to_string(email_template, context)
     msg = html.strip_tags(html_msg)
-    email = mail.EmailMultiAlternatives(subject, msg, from_email=None, to=[hacker.email])
+    email = mail.EmailMultiAlternatives(
+        subject, msg, from_email=None, to=[hacker.email]
+    )
     email.attach_alternative(html_msg, "text/html")
 
-    qr_content = json.dumps({
-        "first_name": hacker.application.first_name,
-        "last_name": hacker.application.last_name,
-        "email": hacker.email,
-        "university": "Texas A&M University" # TODO: Remove this hard-coding.
-    })
+    qr_content = json.dumps(
+        {
+            "first_name": hacker.application.first_name,
+            "last_name": hacker.application.last_name,
+            "email": hacker.email,
+            "university": "Texas A&M University",  # TODO: Remove this hard-coding.
+        }
+    )
     qr_code = pyqrcode.create(qr_content)
     qr_stream = BytesIO()
     qr_code.png(qr_stream, scale=5)
     email.attach("code.png", qr_stream.getvalue(), "text/png")
     email.send()
-
 
 
 @receiver(signal=post_save, sender=Rsvp)
