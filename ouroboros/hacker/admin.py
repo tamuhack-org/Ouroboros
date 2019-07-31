@@ -22,6 +22,10 @@ class HackerAdmin(admin.ModelAdmin):
     list_display = ("email", "is_active", "is_staff", "checked_in")
     fieldsets = [
         ("User Information", {"fields": ["email", "password"]}),
+<<<<<<< Updated upstream
+=======
+        ("RSVP Deadline", {"fields": ["rsvp_deadline"]}),
+>>>>>>> Stashed changes
         (
             "Advanced",
             {
