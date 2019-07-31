@@ -22,6 +22,7 @@ class HackerAdmin(admin.ModelAdmin):
     list_display = ("email", "is_active", "is_staff", "checked_in")
     fieldsets = [
         ("User Information", {"fields": ["email", "password"]}),
+        ("RSVP Deadline", {"fields": ["rsvp_deadline"]}),
         (
             "Advanced",
             {
@@ -223,7 +224,7 @@ class RsvpAdmin(admin.ModelAdmin):
         return False
 
     def hacker_name(self, obj: Rsvp):
-        return " ".join([obj.hacker.first_name, obj.hacker.last_name])
+        return " ".join([obj.hacker.application.first_name, obj.hacker.application.last_name])
 
 
 # Unregister the original Group admin.

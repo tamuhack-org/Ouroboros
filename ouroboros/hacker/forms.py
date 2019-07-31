@@ -3,11 +3,14 @@ from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-
+from django.utils.safestring import mark_safe
 from hacker import models as hacker_models
 
 
 class ApplicationModelForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["mlh_coc"].label = mark_safe('I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>')
     def is_valid(self):
         if not hacker_models.Wave.objects.active_wave():
             self.add_error(
