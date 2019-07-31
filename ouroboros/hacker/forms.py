@@ -8,8 +8,8 @@ from hacker import models as hacker_models
 
 
 class ApplicationModelForm(forms.ModelForm):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.fields["mlh_coc"].label = mark_safe('I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>')
     def is_valid(self):
         if not hacker_models.Wave.objects.active_wave():
