@@ -39,7 +39,7 @@ GENDERS = (
     ("F", "Female"),
     ("NB", "Non-binary"),
     ("NA", "Prefer not to disclose"),
-    ("Other", "Other"),
+    ("O", "Other"),
 )
 
 RACES = (
@@ -350,7 +350,7 @@ class Application(models.Model):
     last_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="last name"
     )
-    major = models.CharField("What's your major?", choices=MAJORS, max_length=50)
+    major = models.CharField("What's your major?", choices=MAJORS, max_length=255)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
     race = MultiSelectField(
         "What race(s) do you identify with?", choices=RACES, max_length=41
