@@ -157,7 +157,8 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "unlimited_resource",
                     "cool_prize",
                     "notes",
-                    "additional_accommodations"
+                    "additional_accommodations",
+                    "resume"
                 ]
             },
         ),
@@ -191,6 +192,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "shirt_size",
                 "extra_links",
                 "programming_joke",
+                "resume",
                 "unlimited_resource",
                 "cool_prize",
                 "notes"
