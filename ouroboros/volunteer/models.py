@@ -37,7 +37,9 @@ class WorkshopEvent(Event):
 
 
 class VolunteerApplication(models.Model):
-    hacker = models.OneToOneField(Hacker, related_name="volunteer_app", on_delete=models.CASCADE)
+    hacker = models.OneToOneField(
+        Hacker, related_name="volunteer_app", on_delete=models.CASCADE
+    )
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     phone_number = PhoneNumberField()
@@ -57,7 +59,7 @@ class Shift(models.Model):
 
     def __str__(self):
         start_str = self.start.strftime(
-            f"{calendar.day_name[self.start.weekday()][:3]} %H:%M"
+            f"{calendar.day_name[self.start.weekday()]} %H:%M"
         )
         end_str = self.end.strftime(f"{calendar.day_name[self.end.weekday()]} %H:%M")
         return f"{start_str} - {end_str} ({settings.MAX_VOLUNTEERS_PER_SHIFT - len(self.volunteers.all())} spots remaining)"
