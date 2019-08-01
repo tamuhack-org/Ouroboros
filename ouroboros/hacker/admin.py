@@ -63,12 +63,13 @@ def create_rsvp_deadline(hacker: Hacker, deadline: datetime.datetime) -> None:
     hacker.save()
 
 
-def send_application_approval_email(application: Application) -> None:
+def send_application_approval_email(application: Application, rsvp_deadline) -> None:
     """Sends an email to this Hacker when their application has been approved."""
     email_template = "emails/application/approved.html"
     subject = f"Your {settings.EVENT_NAME} application has been approved!"
-    context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME}
+    context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME, "rsvp_deadline": rsvp_deadline}
     application.hacker.email_html_hacker(email_template, context, subject)
+
 
 
 def send_application_rejection_email(application: Application) -> None:
@@ -87,7 +88,7 @@ def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
         for instance in queryset:
             instance.approved = True
             create_rsvp_deadline(instance.hacker, deadline)
-            send_application_approval_email(instance)
+            send_application_approval_email(instance, deadline)
             instance.save()
 
 
