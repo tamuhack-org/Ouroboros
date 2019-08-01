@@ -23,7 +23,6 @@ class VolunteerApplicationModelForm(forms.ModelForm):
             "phone_number",
             "grad_year",
             "shirt_size",
-            "engr_honors",
         ]
 
     def clean(self):

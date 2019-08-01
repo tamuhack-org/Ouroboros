@@ -17,7 +17,6 @@ class VolunteerApplicationViewTestCase(test.SharedTestCase):
             "phone_number": "+12125552368",
             "grad_year": "Spring 2020",
             "shirt_size": "L",
-            "engr_honors": True,
         }
 
     def create_shift(self) -> Shift:

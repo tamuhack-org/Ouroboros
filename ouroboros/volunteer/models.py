@@ -47,9 +47,6 @@ class VolunteerApplication(models.Model):
     shirt_size = models.CharField(
         "Shirt size?", choices=SHIRT_SIZES, default=None, max_length=3
     )
-    engr_honors = models.BooleanField(
-        "Do you need to receive Engineering Honors credit?", default=False
-    )
 
 
 class Shift(models.Model):
