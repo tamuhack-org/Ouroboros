@@ -41,4 +41,4 @@ class Command(BaseCommand):
                 end=start_datetime
                 + datetime.timedelta(hours=options["shift_duration"]),
             )
-            start_datetime += datetime.timedelta(hours=options["shift_duration"])
+            start_datetime += datetime.timedelta(hours=options["shift_duration"] - 0.5)
