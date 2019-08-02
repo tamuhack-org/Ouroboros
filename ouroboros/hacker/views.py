@@ -65,13 +65,12 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
     template_name = "hacker/status.html"
 
     def get_context_data(self, **kwargs):
-        hacker = self.request.user
+        hacker: hacker_models.Hacker = self.request.user
         active_wave = hacker_models.Wave.objects.active_wave()
         if hacker.cant_make_it:
             kwargs["CANT_MAKE_IT"] = True
             return super().get_context_data(**kwargs)
-
-        if not active_wave:
+        if not active_wave and not getattr(hacker, "application", None):
             next_wave = hacker_models.Wave.objects.next_wave()
             if not next_wave:
                 kwargs["NO_MORE_WAVES"] = True
