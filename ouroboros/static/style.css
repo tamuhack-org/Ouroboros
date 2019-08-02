@@ -747,6 +747,7 @@ button{
     }
     .login-box{
         padding: 2rem !important;
+        margin-bottom: 80px;
     }
     .password-box {
         padding-top: 100px!important;
@@ -771,6 +772,7 @@ button{
     .navbar-custom a.btn-logout {
         margin-left: 60px;
     }
+
 }
 
 
