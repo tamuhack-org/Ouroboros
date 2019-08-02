@@ -60,7 +60,7 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
     def test_not_found_when_hacker_doesnt_exist(self):
         token = self.get_volunteer_token()
         post_body = {
-            "email": "totally_unknown_email@flibbertigibbet.com",
+            "email": "totally_unknown_email@tamu.edu",
             "meal": "Breakfast",
             "restrictions": "Vegan",
         }

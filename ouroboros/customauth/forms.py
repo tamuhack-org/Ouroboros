@@ -17,6 +17,14 @@ class SignupForm(auth_forms.UserCreationForm):
         label="",
     )
 
+    def clean_email(self):
+        email: str = self.cleaned_data["email"]
+        _, domain = email.split("@")
+        # TODO(SaltyQuetzals) Delete this line when HH over to enable TH registration
+        if not domain.lower().endswith("tamu.edu"):
+            raise forms.ValidationError("You must sign up with your TAMU email")
+        return email
+
     class Meta:
         model = get_user_model()
         fields = ("email", "password1", "password2")

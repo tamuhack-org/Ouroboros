@@ -12,7 +12,7 @@ from shared import test
 class TokenAuthTestCase(test.SharedTestCase):
     def setUp(self):
         super().setUp()
-        self.volunteer_email = "volunteer@email.com"
+        self.volunteer_email = "volunteer@tamu.email"
         self.volunteer_password = "volunteering_is_good"
         self.volunteer = hacker_models.Hacker(
             email=self.volunteer_email, is_active=True

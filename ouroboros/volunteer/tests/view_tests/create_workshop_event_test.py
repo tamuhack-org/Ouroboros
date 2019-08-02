@@ -45,7 +45,7 @@ class CreateWorkshopEventViewTestCase(TokenAuthTestCase):
 
     def test_not_found_when_hacker_doesnt_exist(self):
         token = self.get_volunteer_token()
-        post_body = {"email": "totally_unknown_email@flibbertigibbet.com"}
+        post_body = {"email": "totally_unknown_email@tamu.edu"}
         response = self.client.post(
             reverse("create-workshop-event"), post_body, HTTP_AUTHORIZATION=token
         )

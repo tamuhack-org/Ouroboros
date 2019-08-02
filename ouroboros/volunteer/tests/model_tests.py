@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 class TokenTestCase(test.SharedTestCase):
     def test_token_created_on_user_creation(self):
         new_user_fields = {
-            "email": "email@address.com",
+            "email": "email@tamu.edu",
             "password": "password",
             "is_active": True,
         }

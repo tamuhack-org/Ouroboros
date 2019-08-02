@@ -17,7 +17,7 @@ TEST_RESUME_DIR = "test_resume_dir"
 @override_settings(MEDIA_ROOT=TEST_RESUME_DIR)
 class SharedTestCase(test.TestCase):
     def setUp(self):
-        self.email = "dummy@email.com"
+        self.email = "dummy@tamu.edu"
         self.password = "dummypwd"
         self.first_name = "Kennedy"
         self.last_name = "Doe"
@@ -30,7 +30,7 @@ class SharedTestCase(test.TestCase):
         self.hacker.set_password(self.password)
         self.hacker.save()
 
-        self.email2 = "dummy2@email.com"
+        self.email2 = "dummy2@tamu.edu"
         self.password2 = "bigdummypwd"
         self.first_name2 = "John"
         self.last_name2 = "Doe"

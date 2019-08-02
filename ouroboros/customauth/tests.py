@@ -11,7 +11,7 @@ URL_REGEX = r"(?P<url>https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\b([-a-zA-
 
 class EmailVerificationTestCase(test.SharedTestCase):
     def setUp(self):
-        self.email = "hacker@email.com"
+        self.email = "hacker@tamu.edu"
         self.first_name = "Kennedy"
         self.last_name = "Doe"
         self.password = "dummypassword"
@@ -20,6 +20,20 @@ class EmailVerificationTestCase(test.SharedTestCase):
             "password1": self.password,
             "password2": self.password,
         }
+
+    def test_disallows_non_tamu_email(self):
+        fields = self.fields
+        fields["email"] = "someone@otheremaildomain.com"
+        self.client.post(reverse_lazy("signup"), fields)
+        self.assertFalse(
+            hacker_models.Hacker.objects.filter(email=fields["email"]).exists()
+        )
+
+    def test_allows_tamu_email(self):
+        self.client.post(reverse_lazy("signup"), self.fields)
+        self.assertTrue(
+            hacker_models.Hacker.objects.filter(email=self.fields["email"]).exists()
+        )
 
     def test_signup_creates_hacker(self):
         response = self.client.post(reverse_lazy("signup"), self.fields)
