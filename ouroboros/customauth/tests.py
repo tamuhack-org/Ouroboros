@@ -34,6 +34,15 @@ class EmailVerificationTestCase(test.SharedTestCase):
         self.assertTrue(
             hacker_models.Hacker.objects.filter(email=self.fields["email"]).exists()
         )
+    
+    def test_allows_tamu_subdomain_emails(self):
+        fields = self.fields
+        for subdomain_email in ["person@email.tamu.edu", "person@neo.tamu.edu", "maybe@cse.tamu.edu"]:
+            fields["email"] = subdomain_email
+            self.client.post(reverse_lazy("signup"), fields)
+            self.assertTrue(
+                hacker_models.Hacker.objects.filter(email=subdomain_email).exists()
+            )
 
     def test_signup_creates_hacker(self):
         response = self.client.post(reverse_lazy("signup"), self.fields)
