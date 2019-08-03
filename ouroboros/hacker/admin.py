@@ -20,8 +20,10 @@ def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
 
 class HackerAdmin(admin.ModelAdmin):
     list_display = ("email", "is_active", "is_staff", "checked_in")
+    readonly_fields = ("email", "password", "is_active")
     fieldsets = [
         ("User Information", {"fields": ["email", "password"]}),
+        ("Checkin Status", {"fields": ["checked_in"]}),
         ("RSVP Deadline", {"fields": ["rsvp_deadline"]}),
         (
             "Advanced",
@@ -39,8 +41,7 @@ class HackerAdmin(admin.ModelAdmin):
         return True
 
     def has_change_permission(self, request, obj=None):
-        return False
-
+        return True
 
 class ApplicationAdminForm(forms.ModelForm):
     class Meta:
@@ -67,9 +68,12 @@ def send_application_approval_email(application: Application, rsvp_deadline) -> 
     """Sends an email to this Hacker when their application has been approved."""
     email_template = "emails/application/approved.html"
     subject = f"Your {settings.EVENT_NAME} application has been approved!"
-    context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME, "rsvp_deadline": rsvp_deadline}
+    context = {
+        "first_name": application.first_name,
+        "event_name": settings.EVENT_NAME,
+        "rsvp_deadline": rsvp_deadline,
+    }
     application.hacker.email_html_hacker(email_template, context, subject)
-
 
 
 def send_application_rejection_email(application: Application) -> None:
@@ -158,7 +162,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "cool_prize",
                     "notes",
                     "additional_accommodations",
-                    "resume"
+                    "resume",
                 ]
             },
         ),
@@ -177,31 +181,32 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         fields = [
-                "hacker",
-                "hacker_name",
-                "adult",
-                "gender",
-                "race",
-                "major",
-                "classification",
-                "grad_year",
-                "dietary_restrictions",
-                "tamu_student",
-                "num_hackathons_attended",
-                "previous_attendant",
-                "shirt_size",
-                "extra_links",
-                "programming_joke",
-                "resume",
-                "unlimited_resource",
-                "cool_prize",
-                "notes"
-            ]
+            "hacker",
+            "hacker_name",
+            "adult",
+            "gender",
+            "race",
+            "major",
+            "classification",
+            "grad_year",
+            "dietary_restrictions",
+            "tamu_student",
+            "num_hackathons_attended",
+            "previous_attendant",
+            "shirt_size",
+            "extra_links",
+            "programming_joke",
+            "resume",
+            "unlimited_resource",
+            "cool_prize",
+            "notes",
+        ]
         if obj:
             status = getattr(obj, "approved", None)
             if status is not None:
                 fields.append("approved")
         return fields
+
 
 class RsvpAdminForm(forms.ModelForm):
     class Meta:
@@ -214,7 +219,10 @@ class RsvpAdmin(admin.ModelAdmin):
     list_display = ("hacker_name", "notes")
     fieldsets = [
         ("Related Objects", {"fields": ["hacker"]}),
-        ("Logistical Information", {"fields": ["notes", "dietary_restrictions", "shirt_size"]}),
+        (
+            "Logistical Information",
+            {"fields": ["notes", "dietary_restrictions", "shirt_size"]},
+        ),
     ]
 
     def has_add_permission(self, request, obj=None):
@@ -227,7 +235,9 @@ class RsvpAdmin(admin.ModelAdmin):
         return False
 
     def hacker_name(self, obj: Rsvp):
-        return " ".join([obj.hacker.application.first_name, obj.hacker.application.last_name])
+        return " ".join(
+            [obj.hacker.application.first_name, obj.hacker.application.last_name]
+        )
 
 
 # Unregister the original Group admin.
@@ -238,7 +248,8 @@ class GroupAdmin(admin.ModelAdmin):
     # Use our custom form.
     form = GroupAdminForm
     # Filter permissions horizontal as well.
-    filter_horizontal = ['permissions']
+    filter_horizontal = ["permissions"]
+
 
 # Register the new Group ModelAdmin.
 admin.site.register(Group, GroupAdmin)
