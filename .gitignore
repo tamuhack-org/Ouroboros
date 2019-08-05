@@ -1,6 +1,6 @@
 # VSCode Settings files
 .vscode
-
+.idea
 # Collected static files
 public/
 
