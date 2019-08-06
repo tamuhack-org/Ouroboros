@@ -7,7 +7,7 @@ cachetools==3.1.1
 certifi==2019.6.16
 chardet==3.0.4
 Click==7.0
-Django==2.2.3
+Django==2.2.4
 django-anymail==6.1.0
 django-multiselectfield==0.1.8
 django-phonenumber-field==3.0.1
