@@ -116,6 +116,25 @@ def custom_titled_filter(title):
 
 class ApplicationAdmin(admin.ModelAdmin):
     form = ApplicationAdminForm
+    readonly_fields = [
+        "hacker",
+        "adult",
+        "gender",
+        "race",
+        "major",
+        "classification",
+        "grad_year",
+        "tamu_student",
+        "num_hackathons_attended",
+        "previous_attendant",
+        "extra_links",
+        "programming_joke",
+        "resume",
+        "unlimited_resource",
+        "cool_prize",
+        "notes",
+        "approved"
+    ]
     list_filter = (
         ("gender", custom_titled_filter("gender")),
         ("race", custom_titled_filter("race")),
@@ -178,34 +197,6 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return True
-
-    def get_readonly_fields(self, request, obj=None):
-        fields = [
-            "hacker",
-            "hacker_name",
-            "adult",
-            "gender",
-            "race",
-            "major",
-            "classification",
-            "grad_year",
-            "dietary_restrictions",
-            "tamu_student",
-            "num_hackathons_attended",
-            "previous_attendant",
-            "shirt_size",
-            "extra_links",
-            "programming_joke",
-            "resume",
-            "unlimited_resource",
-            "cool_prize",
-            "notes",
-        ]
-        if obj:
-            status = getattr(obj, "approved", None)
-            if status is not None:
-                fields.append("approved")
-        return fields
 
 
 class RsvpAdminForm(forms.ModelForm):
