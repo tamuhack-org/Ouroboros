@@ -2,7 +2,7 @@ from django.contrib.auth import models as auth_models
 from django.db import models
 
 
-class UserManager(auth_models.UserManager):
+class EmailUserManager(auth_models.UserManager):
 
     def _create_user(self, email, password, **extra_fields):
         if not email:
@@ -28,7 +28,7 @@ class User(auth_models.AbstractUser):
     """
     Overrides the AbstractUser class to make the email field required, and the old Django fields not.
     """
-    objects = UserManager()
+    objects = EmailUserManager()
 
     # Set email to the primary lookup field
     email = models.EmailField(unique=True, null=False, blank=False)
