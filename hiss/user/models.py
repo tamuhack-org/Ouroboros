@@ -33,10 +33,10 @@ class User(auth_models.AbstractUser):
     # Set email to the primary lookup field
     email = models.EmailField(unique=True, null=False, blank=False)
 
-    # Explicitly set the originally-required fields to be optional
-    username = models.CharField(max_length=150, null=True, blank=True)
-    first_name = models.CharField(max_length=30, blank=True, null=True)
-    last_name = models.CharField(max_length=150, blank=True, null=True)
+    # Explicitly set the originally-required fields to not exist
+    username = None
+    first_name = None
+    last_name = None
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
