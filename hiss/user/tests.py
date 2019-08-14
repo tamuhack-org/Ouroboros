@@ -11,3 +11,7 @@ class UserTestCase(TestCase):
     def test_email_is_lookup(self):
         User.objects.create_user(self.email, self.password)
         self.assertTrue(User.objects.filter(email=self.email).exists())
+
+    def test_user_is_inactive_by_default(self):
+        User.objects.create_user(self.email, self.password)
+        self.assertFalse(User.objects.get(email=self.email).is_active)
