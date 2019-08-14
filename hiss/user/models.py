@@ -46,6 +46,7 @@ class User(auth_models.AbstractUser):
     last_name = None
 
     # Registration system-specific fields
+
     # Applying
     # application = models.ForeignKey('Application', null=True)
 
