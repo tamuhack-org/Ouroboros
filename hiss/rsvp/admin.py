@@ -8,12 +8,12 @@ from rsvp.models import Rsvp
 class RsvpAdminForm(forms.ModelForm):
     class Meta:
         model = Rsvp
-        fields = ["user", "dietary_restrictions", "shirt_size"]
+        fields = ["dietary_restrictions", "shirt_size", "notes"]
 
 
 class RsvpAdmin(admin.ModelAdmin):
     form = RsvpAdminForm
-    list_display = ("user", "notes")
+    list_display = ("full_name", "notes")
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),
         (
@@ -30,3 +30,7 @@ class RsvpAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+    def full_name(self, obj: Rsvp) -> str:
+        # TODO(SaltyQuetzals): Add a way to reference user's full name.
+        return ""
