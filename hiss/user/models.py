@@ -1,6 +1,8 @@
 from django.contrib.auth import models as auth_models
 from django.db import models
 
+from rsvp.models import Rsvp
+
 
 class EmailUserManager(auth_models.UserManager):
     """
@@ -51,7 +53,7 @@ class User(auth_models.AbstractUser):
     # application = models.ForeignKey('Application', null=True)
 
     # RSVPing
-    # rsvp = models.ForeignKey('Rsvp', null=True)
+    rsvp = models.ForeignKey(Rsvp, null=True, on_delete=models.SET_NULL)
     rsvp_deadline = models.DateTimeField(null=True, blank=True)
     declined_acceptance = models.BooleanField(default=False)
 
