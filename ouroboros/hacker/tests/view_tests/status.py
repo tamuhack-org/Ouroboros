@@ -37,7 +37,8 @@ class StatusViewTestCase(test.SharedTestCase):
     def test_wait_until_next_wave_context(self):
         next_wave_start = timezone.now() + datetime.timedelta(days=7)
         next_wave_end = timezone.now() + datetime.timedelta(days=10)
-        next_wave = hacker_models.Wave(start=next_wave_start, end=next_wave_end)
+        next_wave_num_days_to_rsvp = 7
+        next_wave = hacker_models.Wave(start=next_wave_start, end=next_wave_end, num_days_to_rsvp=next_wave_num_days_to_rsvp)
         next_wave.save()
 
         self.client.force_login(self.hacker)

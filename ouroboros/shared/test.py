@@ -49,18 +49,18 @@ class SharedTestCase(test.TestCase):
             "major": "Computer Science",
             "gender": "M",
             "classification": "Fr",
-            "grad_year": "Other",
-            "num_hackathons_attended": 0,
+            "grad_term": "Other",
             "hacker": self.hacker,
             "race": ["NA"],
             "extra_links": "A",
-            "programming_joke": "B",
-            "unlimited_resource": "C",
-            "cool_prize": "D",
-            "adult": True,
+            "question1": "B",
+            "question2": "C",
+            "question3": "D",
+            "is_adult": True,
             "previous_attendant": False,
             "additional_accommodations": "E",
-            "mlh_coc": True,
+            "agree_to_coc": True,
+            "tamu_student": True,
             **self.resume_file_data,
         }
 
@@ -72,8 +72,9 @@ class SharedTestCase(test.TestCase):
     def create_active_wave(self):
         start = timezone.now() - datetime.timedelta(days=1)
         end = start + datetime.timedelta(days=30)
+        num_days_to_rsvp = 7
 
-        self.wave1 = hacker_models.Wave(start=start, end=end)
+        self.wave1 = hacker_models.Wave(start=start, end=end, num_days_to_rsvp=num_days_to_rsvp)
         self.wave1.save()
 
     def assertEmailBodiesEqual(self, template_name, context, email):

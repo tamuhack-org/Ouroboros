@@ -56,7 +56,7 @@ class ApplicationAdminForm(forms.ModelForm):
 
 
 class WaveAdmin(admin.ModelAdmin):
-    list_display = ("pk", "start", "end")
+    list_display = ("pk", "start", "end", "num_days_to_rsvp")
 
 
 def create_rsvp_deadline(hacker: Hacker, deadline: datetime.datetime) -> None:
@@ -118,35 +118,36 @@ class ApplicationAdmin(admin.ModelAdmin):
     form = ApplicationAdminForm
     readonly_fields = [
         "hacker",
-        "adult",
+        "major",
         "gender",
         "race",
-        "major",
         "classification",
-        "grad_year",
-        "tamu_student",
-        "num_hackathons_attended",
+        "grad_term",
         "previous_attendant",
+        "tamu_student",
         "extra_links",
-        "programming_joke",
+        "question1",
+        "question2",
+        "approved",
+        "agree_to_coc",
+        "is_adult",
+        "additional_accommodations",
         "resume",
-        "unlimited_resource",
-        "cool_prize",
         "notes",
-        "approved"
+        "question3",
     ]
     list_filter = (
         ("gender", custom_titled_filter("gender")),
         ("race", custom_titled_filter("race")),
         ("classification", custom_titled_filter("classification")),
-        ("grad_year", custom_titled_filter("graduation year")),
+        ("grad_term", custom_titled_filter("graduation year")),
         ("tamu_student", custom_titled_filter("if TAMU student")),
     )
     list_display = (
         "first_name",
         "last_name",
         "classification",
-        "grad_year",
+        "grad_term",
         "approved",
     )
     fieldsets = [
@@ -162,23 +163,23 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "race",
                     "major",
                     "classification",
-                    "grad_year",
+                    "grad_term",
                     "tamu_student",
                 ]
             },
         ),
         (
             "Hackathon Information",
-            {"fields": ["num_hackathons_attended", "previous_attendant"]},
+            {"fields": ["previous_attendant"]},
         ),
         (
             "Free Response Questions",
             {
                 "fields": [
                     "extra_links",
-                    "programming_joke",
-                    "unlimited_resource",
-                    "cool_prize",
+                    "question1",
+                    "question2",
+                    "question3",
                     "notes",
                     "additional_accommodations",
                     "resume",

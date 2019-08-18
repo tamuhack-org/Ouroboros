@@ -204,6 +204,9 @@ GRAD_YEARS = GRAD_YEARS[1:-1]
 GRAD_YEARS.insert(0, (None, "-- Select Option --"))
 GRAD_YEARS.append(("Other", "Other"))
 
+QUESTION1_TEXT = "Tell us your best programming joke"
+QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
+QUESTION3_TEXT = f"What is a cool prize you'd like to win at {settings.EVENT_NAME}?"
 
 class HackerManager(BaseUserManager):
     """
@@ -321,6 +324,7 @@ class Wave(models.Model):
 
     start = models.DateTimeField()
     end = models.DateTimeField()
+    num_days_to_rsvp = models.IntegerField()
 
     objects = WaveManager()
 
@@ -344,6 +348,7 @@ class Application(models.Model):
     Represents a `Hacker`'s application to this hackathon.
     """
 
+    datetime_submitted = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="first name"
     )
@@ -358,11 +363,8 @@ class Application(models.Model):
     classification = models.CharField(
         "What classification are you?", choices=CLASSIFICATIONS, max_length=2
     )
-    grad_year = models.CharField(
+    grad_term = models.CharField(
         "What is your anticipated graduation date?", choices=GRAD_YEARS, max_length=11
-    )
-    num_hackathons_attended = models.CharField(
-        "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
     previous_attendant = models.BooleanField(
         f"Have you attended {settings.EVENT_NAME} before?",
@@ -377,40 +379,40 @@ class Application(models.Model):
         max_length=200,
         blank=True,
     )
-    programming_joke = models.TextField(
-        "Tell us your best programming joke", max_length=500
+    question1 = models.TextField(
+        QUESTION1_TEXT, max_length=500
     )
-    unlimited_resource = models.TextField(
-        "What is the one thing you'd build if you had unlimited resources?",
+    question2 = models.TextField(
+        QUESTION2_TEXT,
         max_length=500,
     )
-    cool_prize = models.TextField(
-        f"What is a cool prize you'd like to win at {settings.EVENT_NAME}?",
-        max_length=500,
-    )
-    notes = models.TextField(
-        "Anything else you would like us to know?", max_length=300, blank=True
-    )
-    resume = models.FileField(
-        "Upload your resume",
-        help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
-        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
+    approved = models.NullBooleanField(blank=True)
+    agree_to_coc = models.BooleanField(choices=AGREE, default=None)
+    is_adult = models.BooleanField(
+        "Please confirm you are 18 or older",
+        choices=AGREE,
+        default=None,
+        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas A&M.",
     )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
         max_length=500,
         blank=True,
     )
-    adult = models.BooleanField(
-        "Please confirm you are 18 or older",
-        choices=AGREE,
-        default=None,
-        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas A&M.",
+    resume = models.FileField(
+        "Upload your resume",
+        help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
+        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
     )
 
-    mlh_coc = models.BooleanField(choices=AGREE, default=None)
+    notes = models.TextField(
+        "Anything else you would like us to know?", max_length=300, blank=True
+    )
 
-    approved = models.NullBooleanField(blank=True)
+    question3 = models.TextField(
+        QUESTION3_TEXT,
+        max_length=500,
+    )
 
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
 
@@ -424,7 +426,7 @@ class Application(models.Model):
 
     def clean(self):
         super().clean()
-        if not self.adult:
+        if not self.is_adult:
             raise exceptions.ValidationError(
                 "Unfortunately, we agreecannot accept hackers under the age of 18. Have additional questions? Email us at highschool@tamuhack.com."
             )
