@@ -43,18 +43,6 @@ class HackerAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return True
 
-class ApplicationAdminForm(forms.ModelForm):
-    class Meta:
-        model = Application
-        fields = "__all__"
-        widgets = {
-            "gender": forms.RadioSelect,
-            "classification": forms.RadioSelect,
-            "grad_year": forms.RadioSelect,
-            "status": forms.RadioSelect,
-        }
-
-
 class WaveAdmin(admin.ModelAdmin):
     list_display = ("pk", "start", "end", "num_days_to_rsvp")
 
@@ -112,92 +100,6 @@ def custom_titled_filter(title):
             return instance
 
     return Wrapper
-
-
-class ApplicationAdmin(admin.ModelAdmin):
-    form = ApplicationAdminForm
-    readonly_fields = [
-        "hacker",
-        "major",
-        "gender",
-        "race",
-        "classification",
-        "grad_term",
-        "previous_attendant",
-        "tamu_student",
-        "extra_links",
-        "question1",
-        "question2",
-        "approved",
-        "agree_to_coc",
-        "is_adult",
-        "additional_accommodations",
-        "resume",
-        "notes",
-        "question3",
-    ]
-    list_filter = (
-        ("gender", custom_titled_filter("gender")),
-        ("race", custom_titled_filter("race")),
-        ("classification", custom_titled_filter("classification")),
-        ("grad_term", custom_titled_filter("graduation year")),
-        ("tamu_student", custom_titled_filter("if TAMU student")),
-    )
-    list_display = (
-        "first_name",
-        "last_name",
-        "classification",
-        "grad_term",
-        "approved",
-    )
-    fieldsets = [
-        ("Related Objects", {"fields": ["hacker"]}),
-        (
-            "Personal Information",
-            {
-                "fields": [
-                    "first_name",
-                    "last_name",
-                    "adult",
-                    "gender",
-                    "race",
-                    "major",
-                    "classification",
-                    "grad_term",
-                    "tamu_student",
-                ]
-            },
-        ),
-        (
-            "Hackathon Information",
-            {"fields": ["previous_attendant"]},
-        ),
-        (
-            "Free Response Questions",
-            {
-                "fields": [
-                    "extra_links",
-                    "question1",
-                    "question2",
-                    "question3",
-                    "notes",
-                    "additional_accommodations",
-                    "resume",
-                ]
-            },
-        ),
-        ("Status", {"fields": ["approved"]}),
-    ]
-
-    approve.short_description = "Approve Selected Applications"
-    reject.short_description = "Reject Selected Applications"
-    actions = [approve, reject]
-
-    def has_add_permission(self, request, obj=None):
-        return True
-
-    def has_change_permission(self, request, obj=None):
-        return True
 
 
 class RsvpAdminForm(forms.ModelForm):
