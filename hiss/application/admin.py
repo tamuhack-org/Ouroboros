@@ -4,7 +4,7 @@ from django import forms
 from django.conf import settings
 from django.contrib import admin
 from django.db import transaction
-from django.utils import html, timezone
+from django.utils import timezone
 from application.models import Application
 from user.models import User
 

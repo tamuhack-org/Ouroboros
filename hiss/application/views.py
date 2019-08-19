@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import mixins
 from django.core import exceptions
-from django.shortcuts import redirect, render_to_response
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
 from user import models as user_models
