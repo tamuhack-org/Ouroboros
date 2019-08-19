@@ -1,0 +1,5 @@
+Django==2.2.4
+django-multiselectfield==0.1.8
+djangorestframework==3.10.2
+pytz==2019.2
+sqlparse==0.3.0
