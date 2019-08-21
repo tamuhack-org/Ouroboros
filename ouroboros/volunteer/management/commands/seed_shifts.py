@@ -1,11 +1,10 @@
 import argparse
-from django.utils import timezone
+import calendar
 
 import pytz
-import calendar
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
-from django.utils import dateparse
+from django.utils import dateparse, timezone
 
 from volunteer.models import Shift
 
