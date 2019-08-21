@@ -34,3 +34,11 @@ class WaveManagerTestCase(test.SharedTestCase):
         bad_wave = hacker_models.Wave(start=bad_wave_start, end=bad_wave_end)
         with self.assertRaises(ValidationError):
             bad_wave.full_clean()
+    
+    def test_can_modify_existing_wave(self):
+        new_end = timezone.now()
+        self.wave1.end = new_end
+        self.wave1.full_clean()
+        self.wave1.save()
+        self.wave1.refresh_from_db()
+        self.assertEqual(new_end, self.wave1.end)
