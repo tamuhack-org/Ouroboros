@@ -19,4 +19,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run ouroboros unit tests
       run: |
-        python ouroboros/manage.py test --parallel
+        cd ouroboros && python manage.py test --parallel
