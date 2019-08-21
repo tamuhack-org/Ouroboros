@@ -43,7 +43,7 @@ class RsvpViewTestCase(test.SharedTestCase):
         app.approved = True
         app.save()
 
-        self.hacker.rsvp_deadline = timezone.now() - datetime.timedelta(
+        self.hacker.rsvp_deadline = timezone.now() - timezone.timedelta(
             days=settings.DAYS_TO_RSVP * 100
         )
         self.hacker.save()
@@ -60,7 +60,7 @@ class RsvpViewTestCase(test.SharedTestCase):
         app.approved = True
         app.save()
 
-        self.hacker.rsvp_deadline = timezone.now() - datetime.timedelta(
+        self.hacker.rsvp_deadline = timezone.now() - timezone.timedelta(
             days=settings.DAYS_TO_RSVP * 100
         )
         self.hacker.save()

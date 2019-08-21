@@ -70,8 +70,8 @@ class SharedTestCase(test.TestCase):
         self.updated_application_fields["resume"] = self.resume2
 
     def create_active_wave(self):
-        start = timezone.now() - datetime.timedelta(days=1)
-        end = start + datetime.timedelta(days=30)
+        start = timezone.now() - timezone.timedelta(days=1)
+        end = start + timezone.timedelta(days=30)
 
         self.wave1 = hacker_models.Wave(start=start, end=end)
         self.wave1.save()

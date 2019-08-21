@@ -15,7 +15,7 @@ from hacker.forms import GroupAdminForm
 
 def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
     queryset.update(checked_in=True)
-    queryset.update(checked_in_datetime=datetime.datetime.now())
+    queryset.update(checked_in_datetime=timezone.datetime.now())
 
 
 class HackerAdmin(admin.ModelAdmin):
@@ -59,7 +59,7 @@ class WaveAdmin(admin.ModelAdmin):
     list_display = ("pk", "start", "end")
 
 
-def create_rsvp_deadline(hacker: Hacker, deadline: datetime.datetime) -> None:
+def create_rsvp_deadline(hacker: Hacker, deadline: timezone.datetime) -> None:
     hacker.rsvp_deadline = deadline
     hacker.save()
 
@@ -88,7 +88,7 @@ def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
     with transaction.atomic():
         deadline = timezone.now().replace(
             hour=23, minute=59, second=59, microsecond=0
-        ) + datetime.timedelta(settings.DAYS_TO_RSVP)
+        ) + timezone.timedelta(settings.DAYS_TO_RSVP)
         for instance in queryset:
             instance.approved = True
             create_rsvp_deadline(instance.hacker, deadline)

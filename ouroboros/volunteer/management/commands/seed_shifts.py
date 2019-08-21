@@ -1,5 +1,5 @@
 import argparse
-import datetime
+from django.utils import timezone
 
 import pytz
 import calendar
@@ -39,6 +39,6 @@ class Command(BaseCommand):
             Shift.objects.create(
                 start=start_datetime,
                 end=start_datetime
-                + datetime.timedelta(hours=options["shift_duration"]),
+                + timezone.timedelta(hours=options["shift_duration"]),
             )
-            start_datetime += datetime.timedelta(hours=options["shift_duration"] - 0.5)
+            start_datetime += timezone.timedelta(hours=options["shift_duration"] - 0.5)

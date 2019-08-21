@@ -35,8 +35,8 @@ class StatusViewTestCase(test.SharedTestCase):
         self.assertIn("NO_MORE_WAVES", response.context)
 
     def test_wait_until_next_wave_context(self):
-        next_wave_start = timezone.now() + datetime.timedelta(days=7)
-        next_wave_end = timezone.now() + datetime.timedelta(days=10)
+        next_wave_start = timezone.now() + timezone.timedelta(days=7)
+        next_wave_end = timezone.now() + timezone.timedelta(days=10)
         next_wave = hacker_models.Wave(start=next_wave_start, end=next_wave_end)
         next_wave.save()
 
@@ -71,7 +71,7 @@ class StatusViewTestCase(test.SharedTestCase):
         application.approved = True
         application.save()
 
-        self.hacker.rsvp_deadline = timezone.now() - datetime.timedelta(
+        self.hacker.rsvp_deadline = timezone.now() - timezone.timedelta(
             settings.DAYS_TO_RSVP * 100
         )
         self.hacker.save()
