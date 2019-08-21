@@ -1,0 +1,62 @@
+on: push
+name: Deploy
+jobs:
+  buildDockerImage:
+    name: 'Build docker image '
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: 'Build docker image '
+      uses: actions/docker/cli@aea64bb1b97c42fa69b90523667fef56b90d7cff
+      with:
+        args: build -t githubactions .
+    - name: Get Auth for Google Cloud
+      uses: actions/gcloud/auth@df59b3263b6597df4053a74e4e4376c045d9087e
+      env:
+        GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+    - name: Tag Docker for gcloud
+      uses: actions/docker/tag@8cdf801b322af5f369e00d85e9cf3a7122f49108
+      env:
+        APP: ${{ secrets.APP }}
+        PROJECT: ${{ secrets.PROJECT }}
+      with:
+        args: githubactions gcr.io/$PROJECT/$APP
+    - name: Get Gcloud Auth
+      uses: actions/gcloud/cli@df59b3263b6597df4053a74e4e4376c045d9087e
+      env:
+        GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+      with:
+        args: auth configure-docker --quiet
+    - name: Push Image to Registery
+      uses: actions/gcloud/cli@df59b3263b6597df4053a74e4e4376c045d9087e
+      env:
+        APP: ${{ secrets.APP }}
+        PROJECT: ${{ secrets.PROJECT }}
+      with:
+        args: docker "-- push" gcr.io/$PROJECT/$APP
+    - name: Get K8s Auth
+      uses: actions/gcloud/cli@df59b3263b6597df4053a74e4e4376c045d9087e
+      env:
+        CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
+        GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+        PROJECT: ${{ secrets.PROJECT }}
+      with:
+        args: container clusters get-credentials $CLUSTER_NAME --zone us-central1-a
+          --project $PROJECT
+    - name: Update Deployment
+      uses: docker://gcr.io/cloud-builders/kubectl
+      env:
+        APPLICATION_NAME: ${{ secrets.APPLICATION_NAME }}
+        NAMESPACE: ${{ secrets.NAMESPACE }}
+        PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      with:
+        entrypoint: sh
+        args: -l -c "SHORT_REF=$(echo ${GITHUB_SHA} | head -c7) && cat ${{ github.workspace
+          }}/deploy.yml | sed 's/PROJECT_ID/'\"$PROJECT_ID\"'/' | sed 's/APPLICATION_NAME/'\"$APPLICATION_NAME\"'/'
+          | sed 's/TAG/'\"$SHORT_REF\"'/' | kubectl apply -n $NAMESPACE -f -"
+    - name: GitHub Action for Slack
+      uses: Ilshidur/action-slack@6286a077a2b77159fcc4f425a9e714173d374616
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      with:
+        args: '*Deployment Successful*'
