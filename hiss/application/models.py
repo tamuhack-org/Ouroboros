@@ -244,7 +244,8 @@ class Application(models.Model):
         "Please confirm you are 18 or older",
         choices=AGREE,
         default=None,
-        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas A&M.",
+        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
+                  "A&M.",
     )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
@@ -280,9 +281,55 @@ class Application(models.Model):
         super().clean()
         if not self.is_adult:
             raise exceptions.ValidationError(
-                "Unfortunately, we agreecannot accept hackers under the age of 18. Have additional questions? Email us at highschool@tamuhack.com."
+                "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
+                "us at highschool@tamuhack.com. "
             )
-        if any(char.isdigit() for char in self.first_name):
+        if self.first_name.isalpha():
             raise exceptions.ValidationError("First name can't contain any numbers")
-        if any(char.isdigit() for char in self.last_name):
+        if self.last_name.isalpha():
             raise exceptions.ValidationError("Last name can't contain any numbers")
+
+
+class WaveManager(models.Manager):
+    def next_wave(self, dt: timezone.datetime = timezone.now()):
+        """
+        Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
+        `active_wave`.
+        """
+        qs = self.get_queryset().filter(start__gt=dt).order_by("start")
+        return qs.first()
+
+    def active_wave(self, dt: timezone.datetime = timezone.now()):
+        """
+        Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
+        `next_wave`.
+        """
+        qs = self.get_queryset().filter(start__lte=dt, end__gt=dt).order_by("start")
+        return qs.first()
+
+
+class Wave(models.Model):
+    """
+    Representation of a registration period. `Application`s must be created during
+    a `Wave`, and are automatically associated with a wave through the `Application`'s `pre_save` handler.
+    """
+
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    num_days_to_rsvp = models.IntegerField()
+
+    objects = WaveManager()
+
+    def clean(self):
+        super().clean()
+        if self.start >= self.end:
+            raise exceptions.ValidationError(
+                {"start": "Start date can't be after end date."}
+            )
+        for wave in Wave.objects.exclude(pk=self.pk).all():
+            has_start_overlap = wave.start < self.start < wave.end
+            has_end_overlap = wave.start < self.end < wave.end
+            if has_start_overlap or has_end_overlap:
+                raise exceptions.ValidationError(
+                    "Cannot create wave; another wave with an overlapping time range exists."
+                )
