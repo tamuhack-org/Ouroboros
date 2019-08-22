@@ -89,7 +89,6 @@ def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
         deadline = timezone.now().replace(
             hour=23, minute=59, second=59, microsecond=0
         ) + timezone.timedelta(settings.DAYS_TO_RSVP)
-        print("GABRIELBRITAIN", deadline.tzname())
         for instance in queryset:
             instance.approved = True
             create_rsvp_deadline(instance.hacker, deadline)
