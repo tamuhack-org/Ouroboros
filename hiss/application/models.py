@@ -291,7 +291,7 @@ class Application(models.Model):
 
 
 class WaveManager(models.Manager):
-    def next_wave(self, dt: datetime.datetime = timezone.now()):
+    def next_wave(self, dt: timezone.datetime = timezone.now()):
         """
         Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
         `active_wave`.
