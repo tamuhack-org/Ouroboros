@@ -1,5 +1,3 @@
-from django.utils import timezone
-
 from django.conf import settings
 from django.core import exceptions
 from django.core.validators import FileExtensionValidator
@@ -246,7 +244,8 @@ class Application(models.Model):
         "Please confirm you are 18 or older",
         choices=AGREE,
         default=None,
-        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas A&M.",
+        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
+                  "A&M.",
     )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
@@ -282,11 +281,12 @@ class Application(models.Model):
         super().clean()
         if not self.is_adult:
             raise exceptions.ValidationError(
-                "Unfortunately, we agreecannot accept hackers under the age of 18. Have additional questions? Email us at highschool@tamuhack.com."
+                "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
+                "us at highschool@tamuhack.com. "
             )
-        if any(char.isdigit() for char in self.first_name):
+        if self.first_name.isalpha():
             raise exceptions.ValidationError("First name can't contain any numbers")
-        if any(char.isdigit() for char in self.last_name):
+        if self.last_name.isalpha():
             raise exceptions.ValidationError("Last name can't contain any numbers")
 
 
