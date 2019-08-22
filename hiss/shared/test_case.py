@@ -6,7 +6,7 @@ from user.models import User
 class SharedTestCase(TestCase):
     """A shared test case that provides utility functions for testing code easily."""
 
-    def __init__(self):
+    def setUp(self) -> None:
         self.email = "email@dummy.com"
         self.password = "password"
         self.user = User.objects.create_user(email=self.email, password=self.password, is_active=True)
