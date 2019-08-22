@@ -299,7 +299,7 @@ class WaveManager(models.Manager):
         qs = self.get_queryset().filter(start__gt=dt).order_by("start")
         return qs.first()
 
-    def active_wave(self, dt: datetime.datetime = timezone.now()):
+    def active_wave(self, dt: timezone.datetime = timezone.now()):
         """
         Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
         `next_wave`.
