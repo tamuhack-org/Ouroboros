@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user.apps.UserConfig',
+    'application.apps.ApplicationConfig',
     'rsvp.apps.RsvpConfig'
 ]
 
@@ -115,3 +116,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'user.User'
+
+# Customization
+MAX_YEARS_ADMISSION = 5
+EVENT_NAME = "HowdyHack"
