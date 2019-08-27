@@ -122,6 +122,8 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("classification", custom_titled_filter("classification")),
         ("grad_year", custom_titled_filter("graduation year")),
         ("tamu_student", custom_titled_filter("if TAMU student")),
+        ("approved", custom_titled_filter("approved")),
+        ("num_hackathons_attended", custom_titled_filter("number of attended hackathons"))
     )
     list_display = (
         "first_name",
