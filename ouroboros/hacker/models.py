@@ -296,7 +296,7 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
 
 
 class WaveManager(models.Manager):
-    def next_wave(self, dt: datetime.datetime = timezone.now()):
+    def next_wave(self, dt: timezone.datetime = timezone.now()):
         """
         Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
         `active_wave`.
@@ -304,7 +304,7 @@ class WaveManager(models.Manager):
         qs = self.get_queryset().filter(start__gt=dt).order_by("start")
         return qs.first()
 
-    def active_wave(self, dt: datetime.datetime = timezone.now()):
+    def active_wave(self, dt: timezone.datetime = timezone.now()):
         """
         Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
         `next_wave`.
@@ -330,7 +330,7 @@ class Wave(models.Model):
             raise exceptions.ValidationError(
                 {"start": "Start date can't be after end date."}
             )
-        for wave in Wave.objects.all():
+        for wave in Wave.objects.exclude(pk=self.pk).all():
             has_start_overlap = wave.start < self.start < wave.end
             has_end_overlap = wave.start < self.end < wave.end
             if has_start_overlap or has_end_overlap:

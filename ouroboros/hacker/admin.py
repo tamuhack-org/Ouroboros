@@ -15,7 +15,7 @@ from hacker.forms import GroupAdminForm
 
 def check_in(modeladmin, request, queryset):  # Needs to be Tested!!!
     queryset.update(checked_in=True)
-    queryset.update(checked_in_datetime=datetime.datetime.now())
+    queryset.update(checked_in_datetime=timezone.datetime.now())
 
 
 class HackerAdmin(admin.ModelAdmin):
@@ -59,7 +59,7 @@ class WaveAdmin(admin.ModelAdmin):
     list_display = ("pk", "start", "end")
 
 
-def create_rsvp_deadline(hacker: Hacker, deadline: datetime.datetime) -> None:
+def create_rsvp_deadline(hacker: Hacker, deadline: timezone.datetime) -> None:
     hacker.rsvp_deadline = deadline
     hacker.save()
 
@@ -88,7 +88,7 @@ def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
     with transaction.atomic():
         deadline = timezone.now().replace(
             hour=23, minute=59, second=59, microsecond=0
-        ) + datetime.timedelta(settings.DAYS_TO_RSVP)
+        ) + timezone.timedelta(settings.DAYS_TO_RSVP)
         for instance in queryset:
             instance.approved = True
             create_rsvp_deadline(instance.hacker, deadline)
@@ -116,6 +116,25 @@ def custom_titled_filter(title):
 
 class ApplicationAdmin(admin.ModelAdmin):
     form = ApplicationAdminForm
+    readonly_fields = [
+        "hacker",
+        "adult",
+        "gender",
+        "race",
+        "major",
+        "classification",
+        "grad_year",
+        "tamu_student",
+        "num_hackathons_attended",
+        "previous_attendant",
+        "extra_links",
+        "programming_joke",
+        "resume",
+        "unlimited_resource",
+        "cool_prize",
+        "notes",
+        "approved"
+    ]
     list_filter = (
         ("gender", custom_titled_filter("gender")),
         ("race", custom_titled_filter("race")),
@@ -180,34 +199,6 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return True
-
-    def get_readonly_fields(self, request, obj=None):
-        fields = [
-            "hacker",
-            "hacker_name",
-            "adult",
-            "gender",
-            "race",
-            "major",
-            "classification",
-            "grad_year",
-            "dietary_restrictions",
-            "tamu_student",
-            "num_hackathons_attended",
-            "previous_attendant",
-            "shirt_size",
-            "extra_links",
-            "programming_joke",
-            "resume",
-            "unlimited_resource",
-            "cool_prize",
-            "notes",
-        ]
-        if obj:
-            status = getattr(obj, "approved", None)
-            if status is not None:
-                fields.append("approved")
-        return fields
 
 
 class RsvpAdminForm(forms.ModelForm):

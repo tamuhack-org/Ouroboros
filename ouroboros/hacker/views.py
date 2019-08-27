@@ -65,25 +65,26 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
     template_name = "hacker/status.html"
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         hacker: hacker_models.Hacker = self.request.user
         active_wave = hacker_models.Wave.objects.active_wave()
         if hacker.cant_make_it:
-            kwargs["CANT_MAKE_IT"] = True
-            return super().get_context_data(**kwargs)
+            context["CANT_MAKE_IT"] = True
+            return context
         if not active_wave and not getattr(hacker, "application", None):
             next_wave = hacker_models.Wave.objects.next_wave()
             if not next_wave:
-                kwargs["NO_MORE_WAVES"] = True
+                context["NO_MORE_WAVES"] = True
             else:
-                kwargs["WAIT_UNTIL_NEXT_WAVE"] = True
-                kwargs["next_wave_start"] = next_wave.start
+                context["WAIT_UNTIL_NEXT_WAVE"] = True
+                context["next_wave_start"] = next_wave.start
         else:
             if getattr(hacker, "application", None) is None:
-                kwargs["active_wave_end"] = active_wave.end
-                kwargs["NEEDS_TO_APPLY"] = True
+                context["active_wave_end"] = active_wave.end
+                context["NEEDS_TO_APPLY"] = True
             elif hacker.application.approved is None:
-                kwargs["application"] = hacker.application
-                kwargs["PENDING"] = True
+                context["application"] = hacker.application
+                context["PENDING"] = True
             else:
                 # User application has response
                 if hacker.application.approved:
@@ -92,16 +93,16 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
                         # User hasn't RSVPd
                         if hacker.didnt_rsvp_in_time():
                             # User can't RSVP anymore, they ran out of time
-                            kwargs["RSVP_DEADLINE_EXPIRED"] = True
+                            context["RSVP_DEADLINE_EXPIRED"] = True
                         else:
                             # User can still RSVP
-                            kwargs["rsvp_deadline"] = hacker.rsvp_deadline
-                            kwargs["NEEDS_TO_RSVP"] = True
+                            context["rsvp_deadline"] = hacker.rsvp_deadline
+                            context["NEEDS_TO_RSVP"] = True
                     else:
-                        kwargs["COMPLETE"] = True
+                        context["COMPLETE"] = True
                 else:
-                    kwargs["REJECTED"] = True
-        return super().get_context_data(**kwargs)
+                    context["REJECTED"] = True
+        return context
 
 
 class RsvpView(mixins.UserPassesTestMixin, CreateUpdateView):
