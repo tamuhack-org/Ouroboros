@@ -10,7 +10,10 @@ from hacker import models as hacker_models
 class ApplicationModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["mlh_coc"].label = mark_safe('I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>')
+        self.fields["mlh_coc"].label = mark_safe(
+            'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
+        )
+
     def is_valid(self):
         if not hacker_models.Wave.objects.active_wave():
             self.add_error(
@@ -66,10 +69,10 @@ class GroupAdminForm(forms.ModelForm):
 
     # Add the users field.
     users = forms.ModelMultipleChoiceField(
-         queryset=hacker_models.Hacker.objects.all(), 
-         required=False,
-         # Use the pretty 'filter_horizontal widget'.
-         widget=FilteredSelectMultiple('users', False)
+        queryset=hacker_models.Hacker.objects.all(),
+        required=False,
+        # Use the pretty 'filter_horizontal widget'.
+        widget=FilteredSelectMultiple("users", False),
     )
 
     def __init__(self, *args, **kwargs):
@@ -78,11 +81,11 @@ class GroupAdminForm(forms.ModelForm):
         # If it is an existing group (saved objects have a pk).
         if self.instance.pk:
             # Populate the users field with the current Group users.
-            self.fields['users'].initial = self.instance.user_set.all()
+            self.fields["users"].initial = self.instance.user_set.all()
 
     def save_m2m(self):
         # Add the users to the Group.
-        self.instance.user_set.set(self.cleaned_data['users'])
+        self.instance.user_set.set(self.cleaned_data["users"])
 
     def save(self, *args, **kwargs):
         # Default save

@@ -40,7 +40,8 @@ class SharedTestCase(test.TestCase):
             password=self.password2,
         )
 
-        self.resume = SimpleUploadedFile("resume.pdf", b"dummy")
+        self.resume_file_name = "resume.pdf"
+        self.resume = SimpleUploadedFile(self.resume_file_name, b"dummy")
         self.resume_file_data = {"resume": self.resume}
 
         self.application_fields = {

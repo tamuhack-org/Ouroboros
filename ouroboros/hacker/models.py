@@ -2,15 +2,18 @@ import datetime
 import json
 import random
 import string
+import uuid
 from io import BytesIO
+
+import pyqrcode
 from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin,
 )
+from django.core import exceptions, mail
 from django.core.validators import FileExtensionValidator
-from django.core import mail, exceptions
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
@@ -18,7 +21,6 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils import html, timezone
 from multiselectfield import MultiSelectField
-import pyqrcode
 
 AGREE = ((True, "Agree"),)
 
@@ -339,6 +341,12 @@ class Wave(models.Model):
                 )
 
 
+def uuid_generator(instance, filename: str):
+    ext = filename.split(".")[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return filename
+
+
 class Application(models.Model):
     """
     Represents a `Hacker`'s application to this hackathon.
@@ -395,6 +403,7 @@ class Application(models.Model):
         "Upload your resume",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
+        upload_to=uuid_generator,
     )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
