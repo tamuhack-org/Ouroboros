@@ -1,9 +1,8 @@
-from django.conf.urls import url
 from django.contrib.auth import views as auth_views
-from django.urls import include, path
-from django.conf import settings
-
 from customauth import forms, views
+from django.conf import settings
+from django.contrib.auth import views as auth_views
+from django.urls import path
 
 urlpatterns = [
     path("signup/", views.SignupView.as_view(), name="signup"),
@@ -12,6 +11,7 @@ urlpatterns = [
         auth_views.LoginView.as_view(authentication_form=forms.LoginForm),
         name="login",
     ),
+    path("resend_email/", views.ResendActivationEmailView.as_view(), name="resend_email"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path(
         "password_reset/",

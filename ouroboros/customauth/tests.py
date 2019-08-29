@@ -2,7 +2,6 @@ import re
 
 from django.core import mail
 from django.urls import reverse_lazy
-
 from hacker import models as hacker_models
 from shared import test
 
@@ -34,7 +33,7 @@ class EmailVerificationTestCase(test.SharedTestCase):
         self.assertTrue(
             hacker_models.Hacker.objects.filter(email=self.fields["email"]).exists()
         )
-    
+
     def test_allows_tamu_subdomain_emails(self):
         fields = self.fields
         for subdomain_email in ["person@email.tamu.edu", "person@neo.tamu.edu", "maybe@cse.tamu.edu"]:
@@ -60,6 +59,33 @@ class EmailVerificationTestCase(test.SharedTestCase):
 
     def test_signup_sends_valid_confirmation_link(self):
         response = self.client.post(reverse_lazy("signup"), self.fields)
+        self.assertEqual(len(mail.outbox), 1)
+        body, _ = mail.outbox[0].alternatives[0]
+        url, _, _ = re.findall(URL_REGEX, body)[0]
+
+        response = self.client.get(url)
+        hacker = hacker_models.Hacker.objects.get(email=self.email)
+        self.assertTrue(hacker.is_active)
+
+
+class ResendActivationEmailView(test.SharedTestCase):
+    def setUp(self):
+        self.email = "hacker@tamu.edu"
+        self.password = "dummypassword"
+        self.inactive_user = hacker_models.Hacker.objects._create_user(email=self.email, password=self.password)
+
+    def test_submitting_valid_form_sends_email(self):
+        fields = {
+            "email": self.email
+        }
+        response = self.client.post(reverse_lazy("resend_email"), fields)
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_clicking_sent_email_link_is_valid(self):
+        fields = {
+            "email": self.email,
+        }
+        response = self.client.post(reverse_lazy("resend_email"), fields)
         self.assertEqual(len(mail.outbox), 1)
         body, _ = mail.outbox[0].alternatives[0]
         url, _, _ = re.findall(URL_REGEX, body)[0]
