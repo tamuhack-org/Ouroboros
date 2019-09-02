@@ -5,8 +5,8 @@ from django.utils import html, timezone
 from django.contrib.auth import models as auth_models
 from django.db import models
 
-# from application.models import Application
-# from rsvp.models import Rsvp
+from application.models import Application
+from rsvp.models import Rsvp
 
 
 class EmailUserManager(auth_models.UserManager):
@@ -34,7 +34,7 @@ class EmailUserManager(auth_models.UserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class User(auth_models.AbstractUser, auth_models.PermissionsMixin):
+class User(auth_models.AbstractUser):
     """
     A representation of a user within the registration system. Users are uniquely identified by their email,
     and are inactive until they confirm their email.
@@ -63,10 +63,10 @@ class User(auth_models.AbstractUser, auth_models.PermissionsMixin):
     # Registration system-specific fields
 
     # Applying
-    application = models.ForeignKey("Application", null=True, on_delete=models.SET_NULL)
+    application = models.ForeignKey(Application, null=True, on_delete=models.SET_NULL)
 
     # RSVPing
-    rsvp = models.ForeignKey("Rsvp", null=True, on_delete=models.SET_NULL, related_name="user")
+    rsvp = models.ForeignKey(Rsvp, null=True, on_delete=models.SET_NULL, related_name="user")
     rsvp_deadline = models.DateTimeField(null=True, blank=True)
     declined_acceptance = models.BooleanField(default=False)
 

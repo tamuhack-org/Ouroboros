@@ -8,8 +8,6 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from multiselectfield import MultiSelectField
 
-from user.models import User
-
 AGREE = ((True, "Agree"),)
 
 TRUE_FALSE_CHOICES = ((True, "Yes"), (False, "No"))
@@ -243,10 +241,12 @@ class Wave(models.Model):
                     "Cannot create wave; another wave with an overlapping time range exists."
                 )
 
+
 def uuid_generator(instance, filename: str):
     ext = filename.split(".")[-1]
     filename = "%s.%s" % (uuid.uuid4(), ext)
     return filename
+
 
 class Application(models.Model):
     """
@@ -322,8 +322,6 @@ class Application(models.Model):
     )
 
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
-    
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return "%s, %s - Application" % (self.last_name, self.first_name)
