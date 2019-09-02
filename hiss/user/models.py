@@ -31,7 +31,7 @@ class EmailUserManager(auth_models.UserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class User(auth_models.AbstractUser, auth_models.PermissionsMixin):
+class User(auth_models.AbstractUser):
     """
     A representation of a user within the registration system. Users are uniquely identified by their email,
     and are inactive until they confirm their email.
