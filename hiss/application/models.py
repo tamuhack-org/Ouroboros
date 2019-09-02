@@ -1,3 +1,5 @@
+import uuid
+
 from django.conf import settings
 from django.core import exceptions
 from django.core.validators import FileExtensionValidator
@@ -5,6 +7,8 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
 from multiselectfield import MultiSelectField
+
+from user.models import User
 
 AGREE = ((True, "Agree"),)
 
@@ -195,101 +199,6 @@ QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resourc
 QUESTION3_TEXT = f"What is a cool prize you'd like to win at {settings.EVENT_NAME}?"
 
 
-class Application(models.Model):
-    """
-    Represents a `Hacker`'s application to this hackathon.
-    """
-
-    datetime_submitted = models.DateTimeField(auto_now_add=True)
-    first_name = models.CharField(
-        max_length=255, blank=False, null=False, verbose_name="first name"
-    )
-    last_name = models.CharField(
-        max_length=255, blank=False, null=False, verbose_name="last name"
-    )
-    major = models.CharField("What's your major?", choices=MAJORS, max_length=255)
-    gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
-    race = MultiSelectField(
-        "What race(s) do you identify with?", choices=RACES, max_length=41
-    )
-    classification = models.CharField(
-        "What classification are you?", choices=CLASSIFICATIONS, max_length=2
-    )
-    grad_term = models.CharField(
-        "What is your anticipated graduation date?", choices=GRAD_YEARS, max_length=11
-    )
-    previous_attendant = models.BooleanField(
-        f"Have you attended {settings.EVENT_NAME} before?",
-        choices=TRUE_FALSE_CHOICES,
-        default=False,
-    )
-    tamu_student = models.BooleanField(
-        "Are you a Texas A&M student?", choices=TRUE_FALSE_CHOICES, default=True
-    )
-    extra_links = models.CharField(
-        "Point us to anything you'd like us to look at while considering your application",
-        max_length=200,
-        blank=True,
-    )
-    question1 = models.TextField(
-        QUESTION1_TEXT, max_length=500
-    )
-    question2 = models.TextField(
-        QUESTION2_TEXT,
-        max_length=500,
-    )
-    approved = models.NullBooleanField(blank=True)
-    agree_to_coc = models.BooleanField(choices=AGREE, default=None)
-    is_adult = models.BooleanField(
-        "Please confirm you are 18 or older",
-        choices=AGREE,
-        default=None,
-        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
-                  "A&M.",
-    )
-    additional_accommodations = models.TextField(
-        "Do you require any special accommodations at the event?",
-        max_length=500,
-        blank=True,
-    )
-    resume = models.FileField(
-        "Upload your resume",
-        help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
-        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
-    )
-
-    notes = models.TextField(
-        "Anything else you would like us to know?", max_length=300, blank=True
-    )
-
-    question3 = models.TextField(
-        QUESTION3_TEXT,
-        max_length=500,
-    )
-
-    # wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
-    #
-    # hacker = models.OneToOneField(Hacker, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return "%s, %s - Application" % (self.last_name, self.first_name)
-
-    def get_absolute_url(self):
-        return reverse_lazy("application", args=[self.pk])
-
-    def clean(self):
-        super().clean()
-        if not self.is_adult:
-            raise exceptions.ValidationError(
-                "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
-                "us at highschool@tamuhack.com. "
-            )
-        if self.first_name.isalpha():
-            raise exceptions.ValidationError("First name can't contain any numbers")
-        if self.last_name.isalpha():
-            raise exceptions.ValidationError("Last name can't contain any numbers")
-
-
 class WaveManager(models.Manager):
     def next_wave(self, dt: timezone.datetime = timezone.now()):
         """
@@ -333,3 +242,103 @@ class Wave(models.Model):
                 raise exceptions.ValidationError(
                     "Cannot create wave; another wave with an overlapping time range exists."
                 )
+
+def uuid_generator(instance, filename: str):
+    ext = filename.split(".")[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return filename
+
+class Application(models.Model):
+    """
+    Represents a `Hacker`'s application to this hackathon.
+    """
+
+    datetime_submitted = models.DateTimeField(auto_now_add=True)
+    first_name = models.CharField(
+        max_length=255, blank=False, null=False, verbose_name="first name"
+    )
+    last_name = models.CharField(
+        max_length=255, blank=False, null=False, verbose_name="last name"
+    )
+    major = models.CharField("What's your major?", choices=MAJORS, max_length=255)
+    gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
+    race = MultiSelectField(
+        "What race(s) do you identify with?", choices=RACES, max_length=41
+    )
+    classification = models.CharField(
+        "What classification are you?", choices=CLASSIFICATIONS, max_length=2
+    )
+    grad_term = models.CharField(
+        "What is your anticipated graduation date?", choices=GRAD_YEARS, max_length=11
+    )
+    num_hackathons_attended = models.CharField(
+        "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
+    )
+    previous_attendant = models.BooleanField(
+        f"Have you attended {settings.EVENT_NAME} before?",
+        choices=TRUE_FALSE_CHOICES,
+        default=False,
+    )
+    tamu_student = models.BooleanField(
+        "Are you a Texas A&M student?", choices=TRUE_FALSE_CHOICES, default=True
+    )
+    extra_links = models.CharField(
+        "Point us to anything you'd like us to look at while considering your application",
+        max_length=200,
+        blank=True,
+    )
+    question1 = models.TextField(
+        QUESTION1_TEXT, max_length=500
+    )
+    question2 = models.TextField(
+        QUESTION2_TEXT, max_length=500
+    )
+    question3 = models.TextField(
+        QUESTION3_TEXT, max_length=500
+    )
+    approved = models.NullBooleanField(blank=True)
+    agree_to_coc = models.BooleanField(choices=AGREE, default=None)
+    is_adult = models.BooleanField(
+        "Please confirm you are 18 or older",
+        choices=AGREE,
+        default=None,
+        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
+                  "A&M.",
+    )
+    additional_accommodations = models.TextField(
+        "Do you require any special accommodations at the event?",
+        max_length=500,
+        blank=True,
+    )
+    resume = models.FileField(
+        "Upload your resume",
+        help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
+        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
+        upload_to=uuid_generator,
+    )
+
+    notes = models.TextField(
+        "Anything else you would like us to know?", max_length=300, blank=True
+    )
+
+    wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "%s, %s - Application" % (self.last_name, self.first_name)
+
+    def get_absolute_url(self):
+        return reverse_lazy("application", args=[self.pk])
+
+    def clean(self):
+        super().clean()
+        if not self.is_adult:
+            raise exceptions.ValidationError(
+                "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
+                "us at highschool@tamuhack.com. "
+            )
+        if self.first_name.isalpha():
+            raise exceptions.ValidationError("First name can't contain any numbers")
+        if self.last_name.isalpha():
+            raise exceptions.ValidationError("Last name can't contain any numbers")
