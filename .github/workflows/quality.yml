@@ -16,4 +16,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: cclauss/GitHub-Action-for-Flake@0.0.1
+      - uses: cclauss/GitHub-Action-for-Flake8@0.0.1
