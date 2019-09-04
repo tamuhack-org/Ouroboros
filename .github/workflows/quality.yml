@@ -11,8 +11,9 @@ jobs:
       - uses: lgeiger/black-action@v1.0.1
         with:
           args: ". --check --exclude=\".*/migrations\""
-#  pylint:
-#    name: 'Check code health with Pylint'
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: cclauss/GitHub-Action-for-pylint@0.6.1
+  flake:
+    name: 'Check code health with Flake8'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: cclauss/GitHub-Action-for-Flake@0.0.1
