@@ -3,10 +3,13 @@ name: Code Quality Checks
 on: [push]
 
 jobs:
-  build:
-    name: Check Code Quality
+  black:
+    name: 'Check compliance with Black formatting style'
+    runs-on: ubuntu-latest
     steps:
-      - name: 'Check compliance with Black formatting style'
-        uses: lgeiger/black-action@v1.0.1
-      - name: 'Check code health with Pylint'
-        uses: cclauss/GitHub-Action-for-pylint@0.6.1
+      - uses: lgeiger/black-action@v1.0.1
+  pylint:
+    name: 'Check code health with Pylint'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cclauss/GitHub-Action-for-pylint@0.6.1
