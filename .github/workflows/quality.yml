@@ -17,3 +17,5 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: cclauss/GitHub-Action-for-Flake8@0.0.1
+        with:
+          args: "flake8 ."
