@@ -3,7 +3,9 @@ name: Code Quality Checks
 on: [push]
 
 jobs:
-  checkQuality:
+  build:
+    name: Check Code Quality
+    runs-on: ubuntu-latest
     steps:
       - name: 'Compliant with Black formatting style'
         uses: lgeiger/black-action@v1.0.1
