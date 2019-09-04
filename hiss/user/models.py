@@ -19,13 +19,13 @@ class EmailUserManager(auth_models.UserManager):
         return user
 
     def create_user(self, email=None, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', False)
-        extra_fields.setdefault('is_superuser', False)
+        extra_fields.setdefault("is_staff", False)
+        extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
         return self._create_user(email, password, **extra_fields)
 
 
@@ -34,13 +34,17 @@ class User(auth_models.AbstractUser):
     A representation of a user within the registration system. Users are uniquely identified by their email,
     and are inactive until they confirm their email.
     """
+
     objects = EmailUserManager()
 
     # Set email to the primary lookup field
     email = models.EmailField(unique=True, null=False, blank=False)
-    is_active = models.BooleanField('active', default=False,
-                                    help_text='Designates whether this user should be treated as active. Unselect '
-                                              'this instead of deleting accounts.')
+    is_active = models.BooleanField(
+        "active",
+        default=False,
+        help_text="Designates whether this user should be treated as active. Unselect "
+        "this instead of deleting accounts.",
+    )
 
     # Explicitly delete Django's old fields
     username = None
@@ -53,7 +57,9 @@ class User(auth_models.AbstractUser):
     # application = models.ForeignKey('Application', null=True)
 
     # RSVPing
-    rsvp = models.ForeignKey(Rsvp, null=True, on_delete=models.SET_NULL, related_name="user")
+    rsvp = models.ForeignKey(
+        Rsvp, null=True, on_delete=models.SET_NULL, related_name="user"
+    )
     rsvp_deadline = models.DateTimeField(null=True, blank=True)
     declined_acceptance = models.BooleanField(default=False)
 

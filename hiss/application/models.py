@@ -231,13 +231,8 @@ class Application(models.Model):
         max_length=200,
         blank=True,
     )
-    question1 = models.TextField(
-        QUESTION1_TEXT, max_length=500
-    )
-    question2 = models.TextField(
-        QUESTION2_TEXT,
-        max_length=500,
-    )
+    question1 = models.TextField(QUESTION1_TEXT, max_length=500)
+    question2 = models.TextField(QUESTION2_TEXT, max_length=500)
     approved = models.NullBooleanField(blank=True)
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
     is_adult = models.BooleanField(
@@ -245,7 +240,7 @@ class Application(models.Model):
         choices=AGREE,
         default=None,
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
-                  "A&M.",
+        "A&M.",
     )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
@@ -262,10 +257,7 @@ class Application(models.Model):
         "Anything else you would like us to know?", max_length=300, blank=True
     )
 
-    question3 = models.TextField(
-        QUESTION3_TEXT,
-        max_length=500,
-    )
+    question3 = models.TextField(QUESTION3_TEXT, max_length=500)
 
     # wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     #

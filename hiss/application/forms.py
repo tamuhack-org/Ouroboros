@@ -8,7 +8,8 @@ class ApplicationModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["agree_to_coc"].label = mark_safe(
-            'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>')
+            'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
+        )
 
     def is_valid(self):
         if not wave_models.Wave.objects.active_wave():

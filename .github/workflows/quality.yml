@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: lgeiger/black-action@v1.0.1
+        with:
+          args: "hiss --check --exclude=\".*/migrations\""
   pylint:
     name: 'Check code health with Pylint'
     runs-on: ubuntu-latest
