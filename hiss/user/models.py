@@ -72,30 +72,3 @@ class User(auth_models.AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
-
-    def __str__(self):
-        return self.email
-
-    def get_full_name(self):
-        return self.email
-
-    def get_short_name(self):
-        return self.email
-
-    def didnt_rsvp_in_time(self):
-        return (
-            not getattr(self, "rsvp", None)
-            and getattr(self, "rsvp_deadline", None) is not None
-            and self.rsvp_deadline < timezone.now()
-    )
-
-    def email_hacker(self, subject, message, from_email=None, **kwargs):
-        """Send an email to this user."""
-        mail.send_mail(subject, message, from_email, [self.email], **kwargs)
-
-    def email_html_hacker(self, template_name, context, subject):
-        """Send an HTML email to the hacker."""
-        html_msg = render_to_string(template_name, context)
-        msg = html.strip_tags(html_msg)
-        self.email_hacker(subject, msg, html_message=html_msg)
-
