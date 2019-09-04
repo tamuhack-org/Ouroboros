@@ -1,9 +1,6 @@
 name: Code Quality Checks
 
-on:
-  push:
-    branches:
-      - v2
+on: [push]
 
 jobs:
   black:
