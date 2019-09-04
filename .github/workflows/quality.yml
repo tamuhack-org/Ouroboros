@@ -5,9 +5,8 @@ on: [push]
 jobs:
   build:
     name: Check Code Quality
-    runs-on: ubuntu-latest
     steps:
-      - name: 'Compliant with Black formatting style'
+      - name: 'Check compliance with Black formatting style'
         uses: lgeiger/black-action@v1.0.1
-      - name: 'Passes Pylint checks'
+      - name: 'Check code health with Pylint'
         uses: cclauss/GitHub-Action-for-pylint@0.6.1
