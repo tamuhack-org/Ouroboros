@@ -1,17 +1,21 @@
 name: Code Quality Checks
 
-on: [push]
+on:
+  push:
+    branches:
+      - v2
 
 jobs:
   black:
     name: 'Check compliance with Black formatting style'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: lgeiger/black-action@v1.0.1
         with:
           args: "hiss --check --exclude=\".*/migrations\""
-  pylint:
-    name: 'Check code health with Pylint'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: cclauss/GitHub-Action-for-pylint@0.6.1
+#  pylint:
+#    name: 'Check code health with Pylint'
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: cclauss/GitHub-Action-for-pylint@0.6.1
