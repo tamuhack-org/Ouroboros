@@ -16,3 +16,4 @@ For local development, this application is self-contained (it uses a SQLite tabl
 4. `python3 manage.py migrate --run-syncdb`
 5. `python3 manage.py createsuperuser`
 6. `python3 manage.py runserver`
+
