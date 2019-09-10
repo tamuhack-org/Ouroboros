@@ -1,8 +1,6 @@
 from django.contrib.auth import models as auth_models
 from django.db import models
 
-from rsvp.models import Rsvp
-
 
 class EmailUserManager(auth_models.UserManager):
     """
@@ -54,17 +52,19 @@ class User(auth_models.AbstractUser):
     # Registration system-specific fields
 
     # Applying
-    # application = models.ForeignKey('Application', null=True)
+    application = models.ForeignKey(
+        "application.Application", null=True, on_delete=models.SET_NULL
+    )
 
     # RSVPing
     rsvp = models.ForeignKey(
-        Rsvp, null=True, on_delete=models.SET_NULL, related_name="user"
+        "rsvp.Rsvp", null=True, on_delete=models.SET_NULL, related_name="user"
     )
     rsvp_deadline = models.DateTimeField(null=True, blank=True)
     declined_acceptance = models.BooleanField(default=False)
 
     # Volunteering
-    # volunteer_application = models.ForeignKey("VolunteerApplication", null=True)
+    # volunteer_application = models.ForeignKey("VolunteerApplication", null=True, on_delete=models.SET_NULL)
 
     # Day-of
     checked_in = models.BooleanField(default=False)
