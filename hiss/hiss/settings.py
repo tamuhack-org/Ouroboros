@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user.apps.UserConfig',
     'application.apps.ApplicationConfig',
-    'rsvp.apps.RsvpConfig'
+    'rsvp.apps.RsvpConfig',
+    'phonenumber_field'
 ]
 
 MIDDLEWARE = [

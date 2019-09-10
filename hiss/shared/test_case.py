@@ -1,5 +1,6 @@
+from django import test
+from django.test import override_settings
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
 from django.utils import timezone
 
 from user.models import User
@@ -7,7 +8,8 @@ from application.models import Wave
 
 TEST_RESUME_DIR = "test_resume_dir"
 
-class SharedTestCase(TestCase):
+@override_settings(MEDIA_ROOT=TEST_RESUME_DIR)
+class SharedTestCase(test.TestCase):
     """A shared test case that provides utility functions for testing code easily."""
 
     def setUp(self) -> None:
