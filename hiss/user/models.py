@@ -1,7 +1,3 @@
-from django.core import mail
-from django.template.loader import render_to_string
-from django.utils import html, timezone
-
 from django.contrib.auth import models as auth_models
 from django.db import models
 

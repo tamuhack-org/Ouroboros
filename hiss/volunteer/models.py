@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib.auth import models as auth_models
 from django.db import models
 from django.utils import timezone
 
