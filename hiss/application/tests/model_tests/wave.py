@@ -7,17 +7,22 @@ from shared import test_case
 
 
 class WaveManagerTestCase(test_case.SharedTestCase):
-
     def test_active_wave(self):
-        curr_wave = Wave(start=timezone.now() - timezone.timedelta(days=5),
-                         end=timezone.now() + timezone.timedelta(days=5), num_days_to_rsvp=5)
+        curr_wave = Wave(
+            start=timezone.now() - timezone.timedelta(days=5),
+            end=timezone.now() + timezone.timedelta(days=5),
+            num_days_to_rsvp=5,
+        )
         curr_wave.save()
         wave = Wave.objects.active_wave()
         self.assertEqual(wave, curr_wave)
 
     def test_next_wave_gets_next_existing_wave(self):
-        next_wave = Wave(start=timezone.now() + timezone.timedelta(days=5),
-                         end=timezone.now() + timezone.timedelta(days=6), num_days_to_rsvp=5)
+        next_wave = Wave(
+            start=timezone.now() + timezone.timedelta(days=5),
+            end=timezone.now() + timezone.timedelta(days=6),
+            num_days_to_rsvp=5,
+        )
         next_wave.save()
         wave = Wave.objects.next_wave()
         self.assertEqual(wave, next_wave)
@@ -27,11 +32,18 @@ class WaveManagerTestCase(test_case.SharedTestCase):
         self.assertIsNone(wave)
 
     def test_waves_transition_correctly(self):
-        expiring_wave = Wave(start=timezone.now() - timezone.timedelta(days=5), end=timezone.now(), num_days_to_rsvp=5)
+        expiring_wave = Wave(
+            start=timezone.now() - timezone.timedelta(days=5),
+            end=timezone.now(),
+            num_days_to_rsvp=5,
+        )
         expiring_wave.save()
 
-        future_wave = Wave(start=timezone.now() + timezone.timedelta(seconds=1),
-                           end=timezone.now() + timezone.timedelta(days=6), num_days_to_rsvp=5)
+        future_wave = Wave(
+            start=timezone.now() + timezone.timedelta(seconds=1),
+            end=timezone.now() + timezone.timedelta(days=6),
+            num_days_to_rsvp=5,
+        )
         future_wave.save()
 
         self.assertEqual(Wave.objects.next_wave(), future_wave)

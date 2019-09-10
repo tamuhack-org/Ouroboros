@@ -43,7 +43,7 @@ class VolunteerApplication(models.Model):
         max_length=255, blank=False, null=False, verbose_name="last name"
     )
     phone_number = PhoneNumberField()
-    
+
     grad_year = models.CharField(
         "What is your anticipated graduation date?", choices=GRAD_YEARS, max_length=11
     )

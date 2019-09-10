@@ -56,10 +56,14 @@ class User(auth_models.AbstractUser):
     # Registration system-specific fields
 
     # Applying
-    application = models.ForeignKey("application.Application", null=True, on_delete=models.SET_NULL)
+    application = models.ForeignKey(
+        "application.Application", null=True, on_delete=models.SET_NULL
+    )
 
     # RSVPing
-    rsvp = models.ForeignKey("rsvp.Rsvp", null=True, on_delete=models.SET_NULL, related_name="user")
+    rsvp = models.ForeignKey(
+        "rsvp.Rsvp", null=True, on_delete=models.SET_NULL, related_name="user"
+    )
     rsvp_deadline = models.DateTimeField(null=True, blank=True)
     declined_acceptance = models.BooleanField(default=False)
 

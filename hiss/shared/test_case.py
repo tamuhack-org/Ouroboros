@@ -8,6 +8,7 @@ from application.models import Wave
 
 TEST_RESUME_DIR = "test_resume_dir"
 
+
 @override_settings(MEDIA_ROOT=TEST_RESUME_DIR)
 class SharedTestCase(test.TestCase):
     """A shared test case that provides utility functions for testing code easily."""
@@ -18,11 +19,15 @@ class SharedTestCase(test.TestCase):
         self.first_name = "Kennedy"
         self.last_name = "Doe"
 
-        self.user = User.objects.create_user(email=self.email, password=self.password, is_active=True)
+        self.user = User.objects.create_user(
+            email=self.email, password=self.password, is_active=True
+        )
 
         self.admin_email = "admin@official.com"
         self.admin_password = "admin_password"
-        self.admin = User.objects.create_superuser(self.admin_email, self.admin_password, is_active=True)
+        self.admin = User.objects.create_superuser(
+            self.admin_email, self.admin_password, is_active=True
+        )
 
         self.resume_file_name = "resume.pdf"
         self.resume = SimpleUploadedFile(self.resume_file_name, b"dummy")
