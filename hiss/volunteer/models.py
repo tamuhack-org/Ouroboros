@@ -24,7 +24,6 @@ GRAD_YEARS.append(("Other", "Other"))
 
 
 class Shift(models.Model):
-    """ tbd """
     start = models.DateTimeField()
     end = models.DateTimeField()
     capacity = models.IntegerField()
