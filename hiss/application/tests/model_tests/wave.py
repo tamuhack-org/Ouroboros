@@ -7,17 +7,22 @@ from shared import test_case
 
 
 class WaveManagerTestCase(test_case.SharedTestCase):
-
     def test_active_wave(self):
-        curr_wave = Wave(start=timezone.now() - timezone.timedelta(days=5),
-                         end=timezone.now() + timezone.timedelta(days=5), num_days_to_rsvp=5)
+        curr_wave = Wave(
+            start=timezone.now() - timezone.timedelta(days=5),
+            end=timezone.now() + timezone.timedelta(days=5),
+            num_days_to_rsvp=5,
+        )
         curr_wave.save()
         wave = Wave.objects.active_wave()
         self.assertEqual(wave, curr_wave)
 
     def test_next_wave_gets_next_existing_wave(self):
-        next_wave = Wave(start=timezone.now() + timezone.timedelta(days=5),
-                         end=timezone.now() + timezone.timedelta(days=6), num_days_to_rsvp=5)
+        next_wave = Wave(
+            start=timezone.now() + timezone.timedelta(days=5),
+            end=timezone.now() + timezone.timedelta(days=6),
+            num_days_to_rsvp=5,
+        )
         next_wave.save()
         wave = Wave.objects.next_wave()
         self.assertEqual(wave, next_wave)
@@ -42,7 +47,9 @@ class WaveModelTestCase(test_case.SharedTestCase):
         super().setUp()
         self.wave2_start = timezone.datetime(3000, 9, 7, 3, tzinfo=pytz.utc)
         self.wave2_end = self.wave2_start + timezone.timedelta(days=30)
-        self.wave2 = Wave(start=self.wave2_start, end=self.wave2_end, num_days_to_rsvp=5)
+        self.wave2 = Wave(
+            start=self.wave2_start, end=self.wave2_end, num_days_to_rsvp=5
+        )
         self.wave2.save()
 
     def test_cant_have_end_before_start(self):
@@ -51,7 +58,10 @@ class WaveModelTestCase(test_case.SharedTestCase):
             bad_wave.full_clean()
 
     def test_cant_create_overlapping_waves(self):
-        bad_wave_start, bad_wave_end = self.wave2_start, self.wave2_start + timezone.timedelta(days=15)
+        bad_wave_start, bad_wave_end = (
+            self.wave2_start,
+            self.wave2_start + timezone.timedelta(days=15),
+        )
         bad_wave = Wave(start=bad_wave_start, end=bad_wave_end, num_days_to_rsvp=5)
         with self.assertRaises(ValidationError):
             bad_wave.full_clean()

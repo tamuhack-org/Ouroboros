@@ -303,7 +303,7 @@ class Application(models.Model):
         choices=AGREE,
         default=None,
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
-                  "A&M.",
+        "A&M.",
     )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",

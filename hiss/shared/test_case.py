@@ -18,11 +18,15 @@ class SharedTestCase(test.TestCase):
         self.first_name = "Kennedy"
         self.last_name = "Doe"
 
-        self.user = User.objects.create_user(email=self.email, password=self.password, is_active=True)
+        self.user = User.objects.create_user(
+            email=self.email, password=self.password, is_active=True
+        )
 
         self.admin_email = "admin@official.com"
         self.admin_password = "admin_password"
-        self.admin = User.objects.create_superuser(self.admin_email, self.admin_password, is_active=True)
+        self.admin = User.objects.create_superuser(
+            self.admin_email, self.admin_password, is_active=True
+        )
 
         self.resume_file_name = "resume.pdf"
         self.resume = SimpleUploadedFile(self.resume_file_name, b"dummy")
