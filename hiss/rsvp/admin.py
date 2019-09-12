@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib import admin
 
-# Register your models here.
 from rsvp.models import Rsvp
 
 
@@ -34,3 +33,5 @@ class RsvpAdmin(admin.ModelAdmin):
     def full_name(self, obj: Rsvp) -> str:
         # TODO(SaltyQuetzals): Add a way to reference user's full name.
         return ""
+
+admin.site.register(Rsvp, RsvpAdmin)
