@@ -147,7 +147,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 
 
 class WaveAdmin(admin.ModelAdmin):
-    list_display = ("pk", "start", "end")
+    list_display = ("start", "end")
 
 
 admin.site.register(Application, ApplicationAdmin)
