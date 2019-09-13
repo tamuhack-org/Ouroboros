@@ -7,28 +7,46 @@ from shared import test_case
 
 
 class WaveManagerTestCase(test_case.SharedTestCase):
-    def setUp(self):
-        super().setUp()
-        self.wave1 = Wave(
+    def test_active_wave(self):
+        curr_wave = Wave(
             start=timezone.now() - timezone.timedelta(days=5),
             end=timezone.now() + timezone.timedelta(days=5),
             num_days_to_rsvp=5,
         )
-        self.wave1.save()
-        self.wave2_start = timezone.datetime(3000, 9, 7, 3, tzinfo=pytz.utc)
-        self.wave2_end = self.wave2_start + timezone.timedelta(days=30)
-        self.wave2 = Wave(
-            start=self.wave2_start, end=self.wave2_end, num_days_to_rsvp=5
-        )
-        self.wave2.save()
-
-    def test_active_wave(self):
+        curr_wave.save()
         wave = Wave.objects.active_wave()
-        self.assertEqual(wave, self.wave1)
+        self.assertEqual(wave, curr_wave)
 
-    def test_next_wave(self):
+    def test_next_wave_gets_next_existing_wave(self):
+        next_wave = Wave(
+            start=timezone.now() + timezone.timedelta(days=5),
+            end=timezone.now() + timezone.timedelta(days=6),
+            num_days_to_rsvp=5,
+        )
+        next_wave.save()
         wave = Wave.objects.next_wave()
-        self.assertEqual(wave, self.wave2)
+        self.assertEqual(wave, next_wave)
+
+    def test_next_wave_returns_none_if_no_more_waves(self):
+        wave = Wave.objects.next_wave()
+        self.assertIsNone(wave)
+
+    def test_waves_transition_correctly(self):
+        expiring_wave = Wave(
+            start=timezone.now() - timezone.timedelta(days=5),
+            end=timezone.now(),
+            num_days_to_rsvp=5,
+        )
+        expiring_wave.save()
+
+        future_wave = Wave(
+            start=timezone.now() + timezone.timedelta(seconds=1),
+            end=timezone.now() + timezone.timedelta(days=6),
+            num_days_to_rsvp=5,
+        )
+        future_wave.save()
+
+        self.assertEqual(Wave.objects.next_wave(), future_wave)
 
 
 class WaveModelTestCase(test_case.SharedTestCase):

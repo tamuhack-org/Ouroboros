@@ -3,3 +3,5 @@ django-multiselectfield==0.1.8
 djangorestframework==3.10.2
 pytz==2019.2
 sqlparse==0.3.0
+django-phonenumber-field==3.0.1
+phonenumbers==8.10.15

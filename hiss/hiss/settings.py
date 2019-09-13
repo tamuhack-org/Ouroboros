@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "user.apps.UserConfig",
     "application.apps.ApplicationConfig",
     "rsvp.apps.RsvpConfig",
+    "phonenumber_field",
 ]
 
 MIDDLEWARE = [
