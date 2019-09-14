@@ -252,7 +252,7 @@ class Application(models.Model):
     """
     Represents a `Hacker`'s application to this hackathon.
     """
-
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     datetime_submitted = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="first name"
@@ -297,7 +297,7 @@ class Application(models.Model):
         choices=AGREE,
         default=None,
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
-        "A&M.",
+                  "A&M.",
     )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
@@ -321,7 +321,7 @@ class Application(models.Model):
         return "%s, %s - Application" % (self.last_name, self.first_name)
 
     def get_absolute_url(self):
-        return reverse_lazy("application", args=[self.pk])
+        return reverse_lazy("application", args=[self.id])
 
     def clean(self):
         super().clean()
