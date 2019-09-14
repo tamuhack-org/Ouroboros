@@ -8,6 +8,7 @@ from application.models import Wave
 
 TEST_RESUME_DIR = "test_resume_dir"
 
+
 @override_settings(MEDIA_ROOT=TEST_RESUME_DIR)
 class SharedTestCase(test.TestCase):
     """A shared test case that provides utility functions for testing code easily."""

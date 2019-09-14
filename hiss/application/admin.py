@@ -1,5 +1,3 @@
-import datetime
-
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -8,7 +6,6 @@ from django.utils import timezone
 
 from application.models import Application, Wave
 from user.models import User
-
 
 
 class ApplicationAdminForm(forms.ModelForm):
@@ -22,7 +19,6 @@ class ApplicationAdminForm(forms.ModelForm):
             "status": forms.RadioSelect,
         }
 
-
 def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
     user.rsvp_deadline = deadline
     user.save()
@@ -30,6 +26,7 @@ def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
 # def send_application_approval_email( ... )
 
 # def send_application_rejection_email( ... )
+
 
 def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
     with transaction.atomic():
@@ -42,12 +39,14 @@ def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
             # send_application_approval_email(instance, deadline)
             instance.save()
 
+
 def reject(self, request, queryset):  # Needs to be Tested!!!
     with transaction.atomic():
         for instance in queryset:
             instance.approved = False
             # send_application_rejection_email(instance)
             instance.save()
+
 
 def custom_titled_filter(title):
     class Wrapper(admin.FieldListFilter):
@@ -57,6 +56,7 @@ def custom_titled_filter(title):
             return instance
 
     return Wrapper
+
 
 class ApplicationAdmin(admin.ModelAdmin):
     form = ApplicationAdminForm

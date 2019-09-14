@@ -34,4 +34,5 @@ class RsvpAdmin(admin.ModelAdmin):
         # TODO(SaltyQuetzals): Add a way to reference user's full name.
         return ""
 
+
 admin.site.register(Rsvp, RsvpAdmin)
