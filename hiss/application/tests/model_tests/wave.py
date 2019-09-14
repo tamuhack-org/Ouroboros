@@ -32,11 +32,18 @@ class WaveManagerTestCase(test_case.SharedTestCase):
         self.assertIsNone(wave)
 
     def test_waves_transition_correctly(self):
-        expiring_wave = Wave(start=timezone.now() - timezone.timedelta(days=5), end=timezone.now(), num_days_to_rsvp=5)
+        expiring_wave = Wave(
+            start=timezone.now() - timezone.timedelta(days=5),
+            end=timezone.now(),
+            num_days_to_rsvp=5,
+        )
         expiring_wave.save()
 
-        future_wave = Wave(start=timezone.now() + timezone.timedelta(seconds=1),
-                           end=timezone.now() + timezone.timedelta(days=6), num_days_to_rsvp=5)
+        future_wave = Wave(
+            start=timezone.now() + timezone.timedelta(seconds=1),
+            end=timezone.now() + timezone.timedelta(days=6),
+            num_days_to_rsvp=5,
+        )
         future_wave.save()
 
         self.assertEqual(Wave.objects.next_wave(), future_wave)

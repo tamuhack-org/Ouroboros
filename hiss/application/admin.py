@@ -19,16 +19,21 @@ class ApplicationAdminForm(forms.ModelForm):
             "status": forms.RadioSelect,
         }
 
+
 def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
     user.rsvp_deadline = deadline
     user.save()
 
-# def send_application_approval_email( ... )
 
-# def send_application_rejection_email( ... )
+def send_application_approval_email(user: User, deadline: timezone.datetime) -> None:
+    raise NotImplementedException()
 
 
-def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
+def send_application_rejection_email(user: User) -> None:
+    raise NotImplementedException()
+
+
+def approve(modeladmin, request, queryset) -> None:
     with transaction.atomic():
         deadline = timezone.now().replace(
             hour=23, minute=59, second=59, microsecond=0
@@ -40,7 +45,7 @@ def approve(modeladmin, request, queryset):  # Needs to be Tested!!!
             instance.save()
 
 
-def reject(self, request, queryset):  # Needs to be Tested!!!
+def reject(modeladmin, request, queryset) -> None:
     with transaction.atomic():
         for instance in queryset:
             instance.approved = False
@@ -77,7 +82,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "question2",
         "question3",
         "notes",
-        "approved"
+        "approved",
     ]
     list_filter = (
         ("gender", custom_titled_filter("gender")),
@@ -86,8 +91,11 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("grad_term", custom_titled_filter("graduation year")),
         ("tamu_student", custom_titled_filter("if TAMU student")),
         ("approved", custom_titled_filter("approved")),
-        ("num_hackathons_attended", custom_titled_filter("number of attended hackathons")),
-        ("datetime_submitted", custom_titled_filter("date submitted"))
+        (
+            "num_hackathons_attended",
+            custom_titled_filter("number of attended hackathons"),
+        ),
+        ("datetime_submitted", custom_titled_filter("date submitted")),
     )
     list_display = (
         "first_name",

@@ -287,15 +287,9 @@ class Application(models.Model):
         max_length=200,
         blank=True,
     )
-    question1 = models.TextField(
-        QUESTION1_TEXT, max_length=500
-    )
-    question2 = models.TextField(
-        QUESTION2_TEXT, max_length=500
-    )
-    question3 = models.TextField(
-        QUESTION3_TEXT, max_length=500
-    )
+    question1 = models.TextField(QUESTION1_TEXT, max_length=500)
+    question2 = models.TextField(QUESTION2_TEXT, max_length=500)
+    question3 = models.TextField(QUESTION3_TEXT, max_length=500)
     approved = models.NullBooleanField(blank=True)
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
     is_adult = models.BooleanField(
