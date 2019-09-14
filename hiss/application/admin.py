@@ -26,11 +26,11 @@ def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
 
 
 def send_application_approval_email(user: User, deadline: timezone.datetime) -> None:
-    raise NotImplementedException()
+    raise NotImplementedError()
 
 
 def send_application_rejection_email(user: User) -> None:
-    raise NotImplementedException()
+    raise NotImplementedError()
 
 
 def approve(modeladmin, request, queryset) -> None:
