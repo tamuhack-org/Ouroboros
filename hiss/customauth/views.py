@@ -56,23 +56,23 @@ class ResendActivationEmailView(generic.FormView):
 
 class ActivateView(views.View):
     def get(self, request, *args, **kwargs):
-        hacker = None
+        user = None
         try:
             uid = force_text(urlsafe_base64_decode(kwargs["uidb64"]))
-            hacker = get_user_model().objects.get(id=int(uid))
+            user = get_user_model().objects.get(id=int(uid))
         except (
-                TypeError,
-                ValueError,
-                OverflowError,
-                get_user_model().DoesNotExist,
+            TypeError,
+            ValueError,
+            OverflowError,
+            get_user_model().DoesNotExist,
         ) as e:
             print(e)
-        if hacker is not None and email_confirmation_generator.check_token(
-                hacker, kwargs["token"]
+        if user is not None and email_confirmation_generator.check_token(
+            user, kwargs["token"]
         ):
-            hacker.is_active = True
-            hacker.save()
-            login(request, hacker)
+            user.is_active = True
+            user.save()
+            login(request, user)
             return redirect(reverse_lazy("status"))
         else:
             return HttpResponse("Activation link is invalid.")

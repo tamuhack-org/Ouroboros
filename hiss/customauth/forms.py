@@ -59,8 +59,8 @@ class ResendActivationEmailForm(forms.Form):
         data = self.cleaned_data["email"]
         if not User.objects.filter(email=data).exists():
             raise ValidationError("No account with this email exists.")
-        hacker: User = User.objects.get(email=data)
-        if hacker.is_active:
+        user: User = User.objects.get(email=data)
+        if user.is_active:
             raise ValidationError("This account has already been activated.")
         return data
 

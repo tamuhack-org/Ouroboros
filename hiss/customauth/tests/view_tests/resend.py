@@ -29,5 +29,6 @@ class ResendActivationEmailView(test_case.SharedTestCase):
         body, _ = mail.outbox[0].alternatives[0]
         url, _, _ = re.findall(URL_REGEX, body)[0]
 
-        hacker = User.objects.get(email=self.email)
-        self.assertTrue(hacker.is_active)
+        self.client.get(url)
+        user = User.objects.get(email=self.email)
+        self.assertTrue(user.is_active)
