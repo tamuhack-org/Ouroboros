@@ -1,7 +1,7 @@
-from .base import *  # pylint: disable=unused-import
-
 # noinspection PyUnresolvedReferences
-from .customization import *  # pylint: disable=unused-import
+from .base import *
+# noinspection PyUnresolvedReferences
+from .customization import *
 
 SECRET_KEY = "development"
 
@@ -11,7 +11,7 @@ SECRET_KEY = "development"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),  # pylint: disable=F405
     }
 }
 
