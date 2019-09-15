@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "application.apps.ApplicationConfig",
     "rsvp.apps.RsvpConfig",
     "phonenumber_field",
+    "customauth.apps.CustomauthConfig",
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ ROOT_URLCONF = "hiss.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
