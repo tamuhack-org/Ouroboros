@@ -11,7 +11,10 @@ class ApplicationModelForm(forms.ModelForm):
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
 
-    def is_valid(self):
+    def is_valid(self) -> bool:
+        """
+        Checks to ensure that a wave is currently active.
+        """
         if not application_models.Wave.objects.active_wave():
             self.add_error(
                 None, "Applications may only be submitted during a registration wave."
@@ -49,5 +52,5 @@ class ApplicationModelForm(forms.ModelForm):
             "is_adult",
             "additional_accommodations",
             "resume",
-            "notes"
+            "notes",
         ]
