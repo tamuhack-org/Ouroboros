@@ -6,7 +6,7 @@ from user.models import User
 
 def check_in(modeladmin, request, queryset) -> None:
     queryset.update(checked_in=True)
-    queryset.update(checked_in_datetime=timezone.datetime.now())
+    queryset.update(checked_in_at=timezone.datetime.now())
 
 
 class UserAdmin(admin.ModelAdmin):
