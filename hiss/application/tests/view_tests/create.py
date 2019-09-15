@@ -2,6 +2,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 
+from application.models import Application
 from shared import test_case
 
 
@@ -74,4 +75,5 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
         )
         self.user.refresh_from_db()
 
-        self.assertEqual(self.user.application.wave, self.wave1)
+        application = Application.objects.get(user=self.user)
+        self.assertEqual(application.wave, self.wave1)

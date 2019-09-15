@@ -51,19 +51,6 @@ class User(auth_models.AbstractUser):
     last_name = None
 
     # Registration system-specific fields
-
-    # Applying
-    application = models.OneToOneField(
-        "application.Application",
-        null=True,
-        on_delete=models.SET_NULL,
-        related_name="user",
-    )
-
-    # RSVPing
-    rsvp = models.OneToOneField(
-        "rsvp.Rsvp", null=True, on_delete=models.SET_NULL, related_name="user"
-    )
     rsvp_deadline = models.DateTimeField(null=True, blank=True)
     declined_acceptance = models.BooleanField(default=False)
 

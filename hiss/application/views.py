@@ -19,14 +19,13 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
     success_url = reverse_lazy("status")
 
     def form_valid(self, form: ApplicationModelForm):
-        if self.request.user.application is not None:
+        if Application.objects.filter(user=self.request.user).exists():
             form.add_error(None, "You can only submit one application to this event.")
             return self.form_invalid(form)
         application: Application = form.save(commit=False)
+        application.user = self.request.user
         application.wave = Wave.objects.active_wave()
         application.save()
-        self.request.user.application = application
-        self.request.user.save()
         return redirect(self.success_url)
 
 
