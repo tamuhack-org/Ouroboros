@@ -1,7 +1,8 @@
+# noinspection PyUnresolvedReferences
 from .base import *
 
 # noinspection PyUnresolvedReferences
-from .customization import *  # pylint: disable=unused-import
+from .customization import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
