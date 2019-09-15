@@ -1,0 +1,2 @@
+MAX_YEARS_ADMISSION = 5
+EVENT_NAME = "HowdyHack"
