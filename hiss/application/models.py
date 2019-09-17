@@ -2,6 +2,7 @@ import uuid
 
 from django.conf import settings
 from django.core import exceptions
+from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse_lazy
@@ -243,22 +244,42 @@ class Wave(models.Model):
                     "Cannot create wave; another wave with an overlapping time range exists."
                 )
 
+
 def uuid_generator(instance, filename: str):
     ext = filename.split(".")[-1]
     filename = "%s.%s" % (uuid.uuid4(), ext)
     return filename
+
+
+def is_alpha(val: str) -> None:
+    """Simple wrapper around the isalpha function, but raises ValidationError if the provided value is
+    non-alphabetic. """
+    if not val.isalpha():
+        raise ValidationError(
+            "%(val) can only contain letters. Not numbers.", params={"val": val}
+        )
+
 
 class Application(models.Model):
     """
     Represents a `Hacker`'s application to this hackathon.
     """
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     datetime_submitted = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(
-        max_length=255, blank=False, null=False, verbose_name="first name"
+        max_length=255,
+        blank=False,
+        null=False,
+        verbose_name="first name",
+        validators=[is_alpha],
     )
     last_name = models.CharField(
-        max_length=255, blank=False, null=False, verbose_name="last name"
+        max_length=255,
+        blank=False,
+        null=False,
+        verbose_name="last name",
+        validators=[is_alpha],
     )
     major = models.CharField("What's your major?", choices=MAJORS, max_length=255)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
@@ -287,15 +308,9 @@ class Application(models.Model):
         max_length=200,
         blank=True,
     )
-    question1 = models.TextField(
-        QUESTION1_TEXT, max_length=500
-    )
-    question2 = models.TextField(
-        QUESTION2_TEXT, max_length=500
-    )
-    question3 = models.TextField(
-        QUESTION3_TEXT, max_length=500
-    )
+    question1 = models.TextField(QUESTION1_TEXT, max_length=500)
+    question2 = models.TextField(QUESTION2_TEXT, max_length=500)
+    question3 = models.TextField(QUESTION3_TEXT, max_length=500)
     approved = models.NullBooleanField(blank=True)
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
     is_adult = models.BooleanField(
@@ -303,7 +318,7 @@ class Application(models.Model):
         choices=AGREE,
         default=None,
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
-                  "A&M.",
+        "A&M.",
     )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
@@ -322,14 +337,18 @@ class Application(models.Model):
     )
 
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
+<<<<<<< HEAD
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+=======
+    user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
+>>>>>>> 0110d621dca5f359e28045a7e6e4dcbcc0eee9e2
 
     def __str__(self):
         return "%s, %s - Application" % (self.last_name, self.first_name)
 
     def get_absolute_url(self):
-        return reverse_lazy("application", args=[self.pk])
+        return reverse_lazy("application:update", args=[self.id])
 
     def clean(self):
         super().clean()
@@ -338,7 +357,10 @@ class Application(models.Model):
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 "us at highschool@tamuhack.com. "
             )
+<<<<<<< HEAD
         if self.first_name.isalpha():
             raise exceptions.ValidationError("First name can't contain any numbers")
         if self.last_name.isalpha():
             raise exceptions.ValidationError("Last name can't contain any numbers")
+=======
+>>>>>>> 0110d621dca5f359e28045a7e6e4dcbcc0eee9e2

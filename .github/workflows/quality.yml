@@ -1,0 +1,21 @@
+name: Code Quality Checks
+
+on: [push]
+
+jobs:
+  black:
+    name: 'Check compliance with Black formatting style'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: lgeiger/black-action@v1.0.1
+        with:
+          args: ". --check --exclude=\".*/migrations\""
+  flake:
+    name: 'Check code health with Flake8'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: cclauss/GitHub-Action-for-Flake8@0.0.1
+        with:
+          args: "flake8 . --exclude=\"env,**/migrations,__init__.py\" --max-line-length=120"
