@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "application.apps.ApplicationConfig",
     "rsvp.apps.RsvpConfig",
     "volunteer.apps.VolunteerConfig",
+    "status.apps.StatusConfig",
     "phonenumber_field",
 ]
 
@@ -57,7 +58,7 @@ ROOT_URLCONF = "hiss.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -115,4 +116,4 @@ AUTH_USER_MODEL = "user.User"
 
 # Customization
 MAX_YEARS_ADMISSION = 5
-EVENT_NAME = "HowdyHack"
+EVENT_NAME = "TAMUhack"

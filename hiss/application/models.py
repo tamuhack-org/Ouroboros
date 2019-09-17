@@ -2,6 +2,7 @@ import uuid
 
 from django.conf import settings
 from django.core import exceptions
+from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse_lazy
@@ -248,17 +249,35 @@ def uuid_generator(instance, filename: str):
     return filename
 
 
+def is_alpha(val: str) -> None:
+    """Simple wrapper around the isalpha function, but raises ValidationError if the provided value is
+    non-alphabetic. """
+    if not val.isalpha():
+        raise ValidationError(
+            "%(val) can only contain letters. Not numbers.", params={"val": val}
+        )
+
+
 class Application(models.Model):
     """
     Represents a `Hacker`'s application to this hackathon.
     """
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     datetime_submitted = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(
-        max_length=255, blank=False, null=False, verbose_name="first name"
+        max_length=255,
+        blank=False,
+        null=False,
+        verbose_name="first name",
+        validators=[is_alpha],
     )
     last_name = models.CharField(
-        max_length=255, blank=False, null=False, verbose_name="last name"
+        max_length=255,
+        blank=False,
+        null=False,
+        verbose_name="last name",
+        validators=[is_alpha],
     )
     major = models.CharField("What's your major?", choices=MAJORS, max_length=255)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
@@ -318,11 +337,12 @@ class Application(models.Model):
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
 
+
     def __str__(self):
         return "%s, %s - Application" % (self.last_name, self.first_name)
 
     def get_absolute_url(self):
-        return reverse_lazy("application", args=[self.pk])
+        return reverse_lazy("application:update", args=[self.id])
 
     def clean(self):
         super().clean()
