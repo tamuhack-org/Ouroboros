@@ -52,11 +52,6 @@ class User(auth_models.AbstractUser):
 
     # Registration system-specific fields
 
-    # Applying
-    application = models.ForeignKey(
-        "application.Application", null=True, on_delete=models.SET_NULL
-    )
-
     # RSVPing
     rsvp = models.ForeignKey(
         "rsvp.Rsvp", null=True, on_delete=models.SET_NULL, related_name="user"

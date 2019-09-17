@@ -35,10 +35,10 @@ def send_application_rejection_email(user: User) -> None:
 
 def approve(modeladmin, request, queryset) -> None:
     with transaction.atomic():
-        deadline = timezone.now().replace(
-            hour=23, minute=59, second=59, microsecond=0
-        ) + timezone.timedelta(settings.DAYS_TO_RSVP)
         for instance in queryset:
+            deadline = timezone.now().replace(
+                hour=23, minute=59, second=59, microsecond=0
+            ) + timezone.timedelta(instance.wave.num_days_to_rsvp)
             instance.approved = True
             create_rsvp_deadline(instance.user, deadline)
             # send_application_approval_email(instance, deadline)

@@ -316,6 +316,7 @@ class Application(models.Model):
     )
 
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
+    user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
 
     def __str__(self):
         return "%s, %s - Application" % (self.last_name, self.first_name)
@@ -330,7 +331,7 @@ class Application(models.Model):
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 "us at highschool@tamuhack.com. "
             )
-        if self.first_name.isalpha():
+        if not self.first_name.isalpha():
             raise exceptions.ValidationError("First name can't contain any numbers")
-        if self.last_name.isalpha():
+        if not self.last_name.isalpha():
             raise exceptions.ValidationError("Last name can't contain any numbers")
