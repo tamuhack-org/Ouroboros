@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "user.apps.UserConfig",
     "application.apps.ApplicationConfig",
     "rsvp.apps.RsvpConfig",
+    "status.apps.StatusConfig",
     "phonenumber_field",
 ]
 
@@ -44,8 +45,8 @@ ROOT_URLCONF = "hiss.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": False,
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
