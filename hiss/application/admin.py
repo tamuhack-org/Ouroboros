@@ -21,19 +21,33 @@ class ApplicationAdminForm(forms.ModelForm):
 
 
 def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
+    """
+    Generates a datetime representing the deadline for a `User` to create an `Rsvp`
+    """
     user.rsvp_deadline = deadline
     user.save()
 
 
 def send_application_approval_email(user: User, deadline: timezone.datetime) -> None:
+    """
+    Sends an email to containing a confirmation message indicating that a `User`'s
+    application has been approved. 
+    """
     raise NotImplementedError()
 
 
 def send_application_rejection_email(user: User) -> None:
+    """
+    Sends an email to containing a confirmation message indicating that a `User`'s
+    application has been rejected. 
+    """
     raise NotImplementedError()
 
 
 def approve(modeladmin, request, queryset) -> None:
+    """
+    Sets the value of the `approved` field for the selected `Application`s to `True`
+    """
     with transaction.atomic():
         for instance in queryset:
             deadline = timezone.now().replace(
@@ -46,6 +60,9 @@ def approve(modeladmin, request, queryset) -> None:
 
 
 def reject(modeladmin, request, queryset) -> None:
+    """
+    Sets the value of the `approved` field for the selected `Application`s to `False`
+    """
     with transaction.atomic():
         for instance in queryset:
             instance.approved = False

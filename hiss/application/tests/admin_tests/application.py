@@ -43,3 +43,5 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         self.app.refresh_from_db()
         self.assertFalse(self.app.approved)
 
+    def test_create_rsvp_deadline_creates_accurate_deadline(self):
+        pass

@@ -5,6 +5,9 @@ from user.models import User
 
 
 def check_in(modeladmin, request, queryset) -> None:
+    """
+    Sets the value of the `checked_in` for the selected `User`s to `True`
+    """
     queryset.update(checked_in=True)
     queryset.update(checked_in_at=timezone.datetime.now())
 
