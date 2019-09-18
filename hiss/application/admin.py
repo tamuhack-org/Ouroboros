@@ -1,5 +1,4 @@
 from django import forms
-from django.conf import settings
 from django.contrib import admin
 from django.db import transaction
 from django.utils import timezone
@@ -31,7 +30,7 @@ def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
 def send_application_approval_email(user: User, deadline: timezone.datetime) -> None:
     """
     Sends an email to containing a confirmation message indicating that a `User`'s
-    application has been approved. 
+    application has been approved.
     """
     raise NotImplementedError()
 
@@ -39,7 +38,7 @@ def send_application_approval_email(user: User, deadline: timezone.datetime) -> 
 def send_application_rejection_email(user: User) -> None:
     """
     Sends an email to containing a confirmation message indicating that a `User`'s
-    application has been rejected. 
+    application has been rejected.
     """
     raise NotImplementedError()
 

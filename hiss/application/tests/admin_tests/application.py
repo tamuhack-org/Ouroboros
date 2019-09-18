@@ -1,6 +1,4 @@
-from django.conf import settings
 from django.contrib import admin
-from django.core import mail
 from django.urls import reverse_lazy
 from django.utils import timezone
 
@@ -46,9 +44,6 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         self.assertFalse(self.app.approved)
 
     def test_create_rsvp_deadline_creates_accurate_deadline(self):
-        deadline = timezone.now().replace(
-            hour=23, minute=59, second=59, microsecond=0
-        )
+        deadline = timezone.now().replace(hour=23, minute=59, second=59, microsecond=0)
         create_rsvp_deadline(self.user, deadline)
         self.assertEquals(self.user.rsvp_deadline, deadline)
-

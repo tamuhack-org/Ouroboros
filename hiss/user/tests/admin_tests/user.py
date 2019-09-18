@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import reverse_lazy
 
-from user.models import User
 from shared import test_case
 
 
@@ -12,7 +11,7 @@ class UserAdminTestCase(test_case.SharedTestCase):
         self.client.post(
             change_url,
             {"action": "check_in", admin.ACTION_CHECKBOX_NAME: [self.user.pk]},
-            follow=True
+            follow=True,
         )
         self.user.refresh_from_db()
         self.assertTrue(self.user.checked_in)
