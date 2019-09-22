@@ -7,7 +7,7 @@ from shared import test_case
 
 
 class CreateApplicationViewTestCase(test_case.SharedTestCase):
-    def test_create_application_requires_login(self) -> None:
+    def test_requires_login(self) -> None:
         response: HttpResponse = self.client.get(reverse_lazy("application:create"))
 
         self.assertRedirects(
@@ -15,14 +15,14 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
             f"{reverse_lazy('login')}?next={reverse_lazy('application:create')}",
         )
 
-    def test_create_application_accessible_after_login(self) -> None:
+    def test_accessible_after_login(self) -> None:
         self.client.force_login(self.user)
 
         response: HttpResponse = self.client.get(reverse_lazy("application:create"))
 
         self.assertEqual(response.status_code, 200)
 
-    def test_create_application_fails_without_active_wave(self) -> None:
+    def test_fails_without_active_wave(self) -> None:
         self.client.force_login(self.user)
 
         response: HttpResponse = self.client.post(
@@ -36,7 +36,7 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
             "Applications may only be submitted during a registration wave.",
         )
 
-    def test_create_application_associates_with_user(self) -> None:
+    def test_associates_with_user(self) -> None:
         self.client.force_login(self.user)
         self.create_active_wave()
 
@@ -46,7 +46,7 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
 
         self.assertRedirects(response, reverse_lazy("status"))
 
-    def test_create_application_with_existing_app_fails(self) -> None:
+    def test_fails_with_existing_app(self) -> None:
         self.client.force_login(self.user)
         self.create_active_wave()
         # POST once to create a brand-new application for the user.
@@ -66,7 +66,7 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
             "You can only submit one application to this event.",
         )
 
-    def test_create_application_associates_with_active_wave(self) -> None:
+    def test_associates_with_active_wave(self) -> None:
         self.client.force_login(self.user)
         self.create_active_wave()
 

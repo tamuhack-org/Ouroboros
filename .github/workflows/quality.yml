@@ -19,3 +19,10 @@ jobs:
       - uses: cclauss/GitHub-Action-for-Flake8@0.0.1
         with:
           args: "flake8 . --exclude=\"env,**/migrations,__init__.py,hiss/hiss/settings/**\" --max-line-length=120"
+  pylint:
+    name: 'Check code quality with pylint'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cclauss/GitHub-Action-for-pylint@0.6.1
+        with:
+          args: "pip install -r hiss/requirements.txt ; pylint --exit-zero --rcfile=hiss/.pylintrc application rsvp shared status user volunteer"

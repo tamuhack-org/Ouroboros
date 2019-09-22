@@ -43,7 +43,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         self.app.refresh_from_db()
         self.assertFalse(self.app.approved)
 
-    def test_create_rsvp_deadline_creates_accurate_deadline(self):
+    def test_creates_accurate_rsvp_deadline(self):
         deadline = timezone.now().replace(hour=23, minute=59, second=59, microsecond=0)
         create_rsvp_deadline(self.user, deadline)
         self.assertEquals(self.user.rsvp_deadline, deadline)

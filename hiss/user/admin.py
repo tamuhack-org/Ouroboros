@@ -4,7 +4,7 @@ from django.utils import timezone
 from user.models import User
 
 
-def check_in(modeladmin, request, queryset) -> None:
+def check_in(_modeladmin, _request, queryset) -> None:
     """
     Sets the value of the `checked_in` for the selected `User`s to `True`
     """
@@ -34,12 +34,6 @@ class UserAdmin(admin.ModelAdmin):
 
     check_in.short_description = "Check-In Selected Hackers"
     actions = [check_in]
-
-    def has_add_permissions(self, request, obj=None):
-        return True
-
-    def has_change_permissions(self, request, obj=None):
-        return True
 
 
 admin.site.register(User, UserAdmin)
