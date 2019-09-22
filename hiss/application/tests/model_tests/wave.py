@@ -27,7 +27,7 @@ class WaveManagerTestCase(test_case.SharedTestCase):
         wave = Wave.objects.next_wave()
         self.assertEqual(wave, next_wave)
 
-    def test_next_wave_returns_none_if_no_more_waves(self):
+    def test_next_wave_returns_none(self):
         wave = Wave.objects.next_wave()
         self.assertIsNone(wave)
 

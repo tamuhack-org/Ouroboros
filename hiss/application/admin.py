@@ -43,7 +43,7 @@ def send_application_rejection_email(user: User) -> None:
     raise NotImplementedError()
 
 
-def approve(modeladmin, request, queryset) -> None:
+def approve(_modeladmin, _request, queryset) -> None:
     """
     Sets the value of the `approved` field for the selected `Application`s to `True`
     """
@@ -58,7 +58,7 @@ def approve(modeladmin, request, queryset) -> None:
             instance.save()
 
 
-def reject(modeladmin, request, queryset) -> None:
+def reject(_modeladmin, _request, queryset) -> None:
     """
     Sets the value of the `approved` field for the selected `Application`s to `False`
     """
@@ -163,7 +163,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     reject.short_description = "Reject Selected Applications"
     actions = [approve, reject]
 
-    def has_add_permission(self, request, obj=None):
+    def has_add_permission(self, request):
         return True
 
     def has_change_permission(self, request, obj=None):
