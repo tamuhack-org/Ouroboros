@@ -37,4 +37,5 @@ jobs:
           python -m pip install -r hiss/requirements.txt
       - name: Lint
         run: |
-          pylint --exit-zero --rcfile=hiss/.pylintrc hiss.application hiss.rsvp hiss.shared hiss.status hiss.user hiss.volunteer
+          cd hiss
+          pylint --exit-zero --rcfile=.pylintrc application rsvp shared status user volunteer
