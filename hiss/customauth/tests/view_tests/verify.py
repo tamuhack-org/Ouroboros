@@ -6,10 +6,22 @@ from django.urls import reverse_lazy
 from shared import test_case
 from user.models import User
 
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from customauth.tokens import email_confirmation_generator
+
 URL_REGEX = r"(?P<url>https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))"
 
 
 class EmailVerificationTestCase(test_case.SharedTestCase):
+    def isValidLink(self, user, url):
+        valid_uid =  urlsafe_base64_encode(force_bytes(user.pk))
+        valid_token =  email_confirmation_generator.make_token(user)
+
+        url_split = url.split('/')
+
+        return url_split[-2] == valid_token and url_split[-3] == valid_uid
+
     def setUp(self):
         self.email = "hacker@tamu.edu"
         self.first_name = "Kennedy"
@@ -33,14 +45,23 @@ class EmailVerificationTestCase(test_case.SharedTestCase):
 
     def test_signup_sends_email(self):
         self.client.post(reverse_lazy("customauth:signup"), self.fields)
-        self.assertEqual(len(mail.outbox), 1)
-
-    def test_signup_sends_valid_confirmation_link(self):
-        self.client.post(reverse_lazy("customauth:signup"), self.fields)
+        User.objects.get(email=self.fields['email'])
         self.assertEqual(len(mail.outbox), 1)
         body, _ = mail.outbox[0].alternatives[0]
         url, _, _ = re.findall(URL_REGEX, body)[0]
 
-        self.client.get(url)
         user = User.objects.get(email=self.email)
-        self.assertTrue(user.is_active)
+        self.assertTrue(self.isValidLink(user, url))
+
+
+    def test_signup_sends_valid_confirmation_link(self):
+        self.client.post(reverse_lazy("customauth:signup"), self.fields)
+        User.objects.get(email=self.fields['email'])
+        self.assertEqual(len(mail.outbox), 1)
+        body, _ = mail.outbox[0].alternatives[0]
+        url, _, _ = re.findall(URL_REGEX, body)[0]
+
+
+        user = User.objects.get(email=self.email)
+        # self.assertTrue(user.is_active)
+        self.assertTrue(self.isValidLink(user, url))
