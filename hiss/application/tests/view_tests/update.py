@@ -7,7 +7,7 @@ from shared import test_case
 
 
 class UpdateApplicationViewTestCase(test_case.SharedTestCase):
-    def test_update_application_requires_login(self) -> None:
+    def test_requires_login(self) -> None:
         self.create_active_wave()
         application = Application(**self.application_fields, wave=self.wave1)
         application.save()
@@ -23,7 +23,7 @@ class UpdateApplicationViewTestCase(test_case.SharedTestCase):
             f"{reverse_lazy('login')}?next={reverse_lazy('application:update', args=(application.id,))}",
         )
 
-    def test_update_application_accessible_after_login(self) -> None:
+    def test_accessible_after_login(self) -> None:
         self.client.force_login(self.user)
         self.create_active_wave()
         application = Application(**self.application_fields, wave=self.wave1)
@@ -37,7 +37,7 @@ class UpdateApplicationViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_update_application_doesnt_change_wave(self) -> None:
+    def test_doesnt_change_wave(self) -> None:
         self.create_active_wave()
         application = Application(**self.application_fields, wave=self.wave1)
         application.save()
@@ -53,7 +53,7 @@ class UpdateApplicationViewTestCase(test_case.SharedTestCase):
         application.refresh_from_db()
         self.assertEqual(application.wave, self.wave1)
 
-    def test_update_application_actually_changes_application(self) -> None:
+    def test_actually_changes_application(self) -> None:
         self.client.force_login(self.user)
         self.create_active_wave()
         application = Application(**self.application_fields, wave=self.wave1)

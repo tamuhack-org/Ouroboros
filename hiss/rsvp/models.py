@@ -28,12 +28,3 @@ class Rsvp(models.Model):
     dietary_restrictions = MultiSelectField(choices=DIETARY_RESTRICTIONS, max_length=2)
     shirt_size = models.CharField(choices=SHIRT_SIZES, max_length=3)
     notes = models.TextField(max_length=500)
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return "%s, %s - Rsvp" % {
-            self.user.application.last_name,
-            self.user.application.first_name,
-        }
-

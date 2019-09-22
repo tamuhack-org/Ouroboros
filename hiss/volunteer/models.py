@@ -31,7 +31,7 @@ class Shift(models.Model):
 class VolunteerApplication(models.Model):
     """ Represents a Volunteer's application to this Hackathon """
 
-    shifts = models.ManyToManyField(Shift, null=True)
+    shifts = models.ManyToManyField(Shift, help_text="volunteer shifts")
 
     datetime_submitted = models.DateTimeField(auto_now_add=True)
 

@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib import admin
 
-# Register your models here.
 from rsvp.models import Rsvp
 
 
@@ -22,15 +21,15 @@ class RsvpAdmin(admin.ModelAdmin):
         ),
     ]
 
-    def has_add_permission(self, request, obj=None):
-        return True
-
-    def has_change_permission(self, request, obj=None):
+    def has_change_permission(self, _request, _obj=None):
         return False
 
-    def has_delete_permission(self, request, obj=None):
+    def has_delete_permission(self, _request, _obj=None):
         return False
 
-    def full_name(self, obj: Rsvp) -> str:
+    def full_name(self, _obj: Rsvp) -> str:
         # TODO(SaltyQuetzals): Add a way to reference user's full name.
         return ""
+
+
+admin.site.register(Rsvp, RsvpAdmin)

@@ -4,20 +4,16 @@ from django.utils import html, timezone
 
 from django.contrib.auth import models as auth_models
 from django.db import models
+from django.template.loader import render_to_string
+from django.utils import html
 
-<<<<<<< HEAD
-# from application.models import Application
-# from rsvp.models import Rsvp
-
-=======
->>>>>>> 0110d621dca5f359e28045a7e6e4dcbcc0eee9e2
 
 class EmailUserManager(auth_models.UserManager):
     """
     An implementation of the UserManager that looks up based on email instead of based on username.
     """
 
-    def _create_user(self, email, password, **extra_fields):
+    def _create_user(self, email, password, **extra_fields):  # pylint: disable=W0221
         if not email:
             raise ValueError("The given email must be set")
         email = self.normalize_email(email)
@@ -26,12 +22,14 @@ class EmailUserManager(auth_models.UserManager):
         user.save()
         return user
 
-    def create_user(self, email=None, password=None, **extra_fields):
+    def create_user(self, email, password, **extra_fields):  # pylint: disable=W0221
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, **extra_fields)
 
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(
+        self, email, password, **extra_fields
+    ):  # pylint: disable=W0221
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
@@ -61,6 +59,7 @@ class User(auth_models.AbstractUser, auth_models.PermissionsMixin):
     last_name = None
 
     # Registration system-specific fields
+
     rsvp_deadline = models.DateTimeField(null=True, blank=True)
     declined_acceptance = models.BooleanField(default=False)
 
@@ -74,29 +73,8 @@ class User(auth_models.AbstractUser, auth_models.PermissionsMixin):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    def __str__(self):
-        return self.email
-
-    def get_full_name(self):
-        return self.email
-
-    def get_short_name(self):
-        return self.email
-
-    def didnt_rsvp_in_time(self):
-        return (
-            not getattr(self, "rsvp", None)
-            and getattr(self, "rsvp_deadline", None) is not None
-            and self.rsvp_deadline < timezone.now()
-    )
-
-    def email_hacker(self, subject, message, from_email=None, **kwargs):
-        """Send an email to this user."""
-        mail.send_mail(subject, message, from_email, [self.email], **kwargs)
-
-    def email_html_hacker(self, template_name, context, subject):
-        """Send an HTML email to the hacker."""
+    def send_html_email(self, template_name, context, subject):
+        """Send an HTML email to the user."""
         html_msg = render_to_string(template_name, context)
         msg = html.strip_tags(html_msg)
-        self.email_hacker(subject, msg, html_message=html_msg)
-
+        self.email_user(subject, msg, None, html_message=html_msg)
