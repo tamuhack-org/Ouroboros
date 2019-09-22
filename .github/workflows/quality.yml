@@ -23,6 +23,7 @@ jobs:
     name: 'Check code quality with pylint'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - uses: cclauss/GitHub-Action-for-pylint@0.6.1
         with:
           args: "pip install -r hiss/requirements.txt ; pylint --exit-zero --rcfile=hiss/.pylintrc application rsvp shared status user volunteer"
