@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body %}
+<section>
+    <div>
+        <h1>{{ event_name | upper }}</h1>
+        <p>Thanks for signing up!</p>
+        <p>Please check your email for a verification link.</p>
+        <a href="{% url 'customauth:login' %}">Back to Login</a>
+    </div>
+</section>
+
+{% endblock %}
