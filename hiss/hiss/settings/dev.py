@@ -5,7 +5,7 @@ from .base import *
 from .customization import *
 
 SECRET_KEY = "development"
-
+DEBUG = True
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
