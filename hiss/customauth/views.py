@@ -18,7 +18,7 @@ from user.models import User
 
 def send_confirmation_email(curr_domain: RequestSite, user: User) -> None:
     subject = "Confirm your email address!"
-    template_name = "registration/emails/activate_email.html"
+    template_name = "registration/emails/activate.html"
     context = {
         "user": user,
         "domain": curr_domain,
@@ -40,18 +40,18 @@ class SignupView(generic.FormView):
         user.save()
         curr_domain = site_shortcuts.get_current_site(self.request)
         send_confirmation_email(curr_domain, user)
-        return render(self.request, "registration/check_email.html")
+        return render(self.request, "registration/check_inbox.html")
 
 
 class ResendActivationEmailView(generic.FormView):
     form_class = customauth_forms.ResendActivationEmailForm
-    template_name = "registration/resend_email.html"
+    template_name = "registration/resend_activation.html"
 
     def form_valid(self, form):
         user: User = get_object_or_404(User, email=form.cleaned_data["email"])
         curr_domain = site_shortcuts.get_current_site(self.request)
         send_confirmation_email(curr_domain, user)
-        return render(self.request, "registration/check_email.html")
+        return render(self.request, "registration/check_inbox.html")
 
 
 class ActivateView(views.View):
@@ -61,14 +61,14 @@ class ActivateView(views.View):
             uid = force_text(urlsafe_base64_decode(kwargs["uidb64"]))
             user = get_user_model().objects.get(id=int(uid))
         except (
-            TypeError,
-            ValueError,
-            OverflowError,
-            get_user_model().DoesNotExist,
+                TypeError,
+                ValueError,
+                OverflowError,
+                get_user_model().DoesNotExist,
         ) as e:
             print(e)
         if user is not None and email_confirmation_generator.check_token(
-            user, kwargs["token"]
+                user, kwargs["token"]
         ):
             user.is_active = True
             user.save()
@@ -82,13 +82,18 @@ class PlaceholderPasswordResetView(auth_views.PasswordResetView):
     """
     Uses PlaceholderPasswordResetForm instead of default PasswordResetForm.
     """
-
     form_class = customauth_forms.PlaceholderPasswordResetForm
+    html_email_template_name = "registration/emails/password_reset.html"
+    email_template_name = "registration/emails/password_reset.html"
+    subject_template_name = "registration/emails/password_reset_subject.txt"
+    success_url = reverse_lazy("customauth:password_reset_done")
+    extra_email_context = {"event_name": settings.EVENT_NAME}
 
 
 class PlaceholderPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
     """
     Uses PlaceholderSetPasswordForm instead of default SetPasswordForm.
     """
-
+    template_name = "registration/password_reset_confirm.html"
     form_class = customauth_forms.PlaceholderSetPasswordForm
+    success_url = reverse_lazy("customauth:login")

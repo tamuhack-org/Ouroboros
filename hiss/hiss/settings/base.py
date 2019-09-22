@@ -59,7 +59,6 @@ TEMPLATES = [
         },
     }
 ]
-print(TEMPLATES[0]["DIRS"])
 
 WSGI_APPLICATION = "hiss.wsgi.application"
 
