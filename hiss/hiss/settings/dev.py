@@ -5,7 +5,7 @@ from .base import *
 from .customization import *
 
 SECRET_KEY = "development"
-
+DEBUG = True
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -27,3 +27,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+MEDIA_ROOT = "resumes"

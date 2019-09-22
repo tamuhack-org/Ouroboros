@@ -35,7 +35,7 @@ class ResendActivationEmailView(test_case.SharedTestCase):
 
     def test_submitting_valid_form_sends_email(self):
         fields = {"email": self.email}
-        self.client.post(reverse_lazy("customauth:resend_email"), fields)
+        self.client.post(reverse_lazy("customauth:resend_activation"), fields)
         self.assertEqual(len(mail.outbox), 1)
         body, _ = mail.outbox[0].alternatives[0]
         url, _, _ = re.findall(URL_REGEX, body)[0]
@@ -45,7 +45,7 @@ class ResendActivationEmailView(test_case.SharedTestCase):
 
     def test_clicking_sent_email_link_is_valid(self):
         fields = {"email": self.email}
-        self.client.post(reverse_lazy("customauth:resend_email"), fields)
+        self.client.post(reverse_lazy("customauth:resend_activation"), fields)
         self.assertEqual(len(mail.outbox), 1)
         body, _ = mail.outbox[0].alternatives[0]
         url, _, _ = re.findall(URL_REGEX, body)[0]

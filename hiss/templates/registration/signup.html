@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<section>
+    <header>
+        <h1>{{event_name}}</h1>
+    </header>
+
+    <form method="POST">
+        {% csrf_token %}    <!-- security -->
+
+        {{form.as_p}}
+        <input type="submit" value="Register">
+    </form>
+
+    <div>
+        Already have an account? <a href="{% url 'customauth:login' %}">Log in</a>
+    </div>
+</section>
+
+
+{% endblock %}
