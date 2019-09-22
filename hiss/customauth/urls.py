@@ -1,6 +1,5 @@
-from django.conf import settings
 from django.contrib.auth import views as auth_views
-from django.urls import path, reverse_lazy
+from django.urls import path
 
 from customauth import forms, views
 
@@ -13,7 +12,9 @@ urlpatterns = [
         name="login",
     ),
     path(
-        "resend_activation/", views.ResendActivationEmailView.as_view(), name="resend_activation"
+        "resend_activation/",
+        views.ResendActivationEmailView.as_view(),
+        name="resend_activation",
     ),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path(
