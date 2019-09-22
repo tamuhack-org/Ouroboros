@@ -22,8 +22,19 @@ jobs:
   pylint:
     name: 'Check code quality with pylint'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6,3.7]
     steps:
       - uses: actions/checkout@v1
-      - uses: cclauss/GitHub-Action-for-pylint@0.6.1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
         with:
-          args: "pip install -r hiss/requirements.txt ; pylint --exit-zero --rcfile=hiss/.pylintrc application rsvp shared status user volunteer"
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r hiss/requirements.txt
+      - name: Lint
+        run: |
+          pylint --exit-zero --rcfile=hiss/.pylintrc application rsvp shared status user volunteer
