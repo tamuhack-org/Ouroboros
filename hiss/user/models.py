@@ -21,7 +21,9 @@ class EmailUserManager(auth_models.UserManager):
         extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, **extra_fields)
 
-    def create_superuser(self, email, password, **extra_fields):  # pylint: disable=W0221
+    def create_superuser(
+        self, email, password, **extra_fields
+    ):  # pylint: disable=W0221
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
@@ -42,7 +44,7 @@ class User(auth_models.AbstractUser):
         "active",
         default=False,
         help_text="Designates whether this user should be treated as active. Unselect "
-                  "this instead of deleting accounts.",
+        "this instead of deleting accounts.",
     )
 
     # Explicitly delete Django's old fields

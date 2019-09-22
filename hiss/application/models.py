@@ -212,7 +212,11 @@ class WaveManager(models.Manager):
         Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
         `next_wave`.
         """
-        qs = self.get_queryset().filter(start__lte=start_dt, end__gt=start_dt).order_by("start")
+        qs = (
+            self.get_queryset()
+            .filter(start__lte=start_dt, end__gt=start_dt)
+            .order_by("start")
+        )
         return qs.first()
 
 
