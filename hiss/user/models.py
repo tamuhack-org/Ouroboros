@@ -1,5 +1,7 @@
 from django.contrib.auth import models as auth_models
 from django.db import models
+from django.template.loader import render_to_string
+from django.utils import html
 
 
 class EmailUserManager(auth_models.UserManager):
@@ -64,3 +66,9 @@ class User(auth_models.AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+    def send_html_email(self, template_name, context, subject):
+        """Send an HTML email to the user."""
+        html_msg = render_to_string(template_name, context)
+        msg = html.strip_tags(html_msg)
+        self.email_user(subject, msg, None, html_message=html_msg)

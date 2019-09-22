@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "volunteer.apps.VolunteerConfig",
     "status.apps.StatusConfig",
     "phonenumber_field",
+    "customauth.apps.CustomauthConfig",
 ]
 
 MIDDLEWARE = [
