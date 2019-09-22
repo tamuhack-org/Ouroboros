@@ -15,7 +15,10 @@ URL_REGEX = r"(?P<url>https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\b([-a-zA-
 
 
 class ResendActivationEmailView(test_case.SharedTestCase):
-    def isValidLink(self, user, url):
+    def is_valid_link(self, user: User, url: str)-> bool:
+        """
+        Generates a UID and Token and verifies if the passed URL matches it. 
+        """
         valid_uid =  urlsafe_base64_encode(force_bytes(user.pk))
         valid_token =  email_confirmation_generator.make_token(user)
 
@@ -33,23 +36,21 @@ class ResendActivationEmailView(test_case.SharedTestCase):
 
     def test_submitting_valid_form_sends_email(self):
         fields = {"email": self.email}
-        User.objects.get(**fields)
         self.client.post(reverse_lazy("customauth:resend_email"), fields)
         self.assertEqual(len(mail.outbox), 1)
         body, _ = mail.outbox[0].alternatives[0]
         url, _, _ = re.findall(URL_REGEX, body)[0]
         user = User.objects.get(email=self.email)
 
-        self.assertTrue(self.isValidLink(user, url))
+        self.assertTrue(self.is_valid_link(user, url))
 
 
     def test_clicking_sent_email_link_is_valid(self):
         fields = {"email": self.email}
-        User.objects.get(**fields)
         self.client.post(reverse_lazy("customauth:resend_email"), fields)
         self.assertEqual(len(mail.outbox), 1)
         body, _ = mail.outbox[0].alternatives[0]
         url, _, _ = re.findall(URL_REGEX, body)[0]
         user = User.objects.get(email=self.email)
 
-        self.assertTrue(self.isValidLink(user, url))
+        self.assertTrue(self.is_valid_link(user, url))
