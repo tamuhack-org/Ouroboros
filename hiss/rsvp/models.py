@@ -26,5 +26,3 @@ class Rsvp(models.Model):
     dietary_restrictions = MultiSelectField(choices=DIETARY_RESTRICTIONS, max_length=2)
     shirt_size = models.CharField(choices=SHIRT_SIZES, max_length=3)
     notes = models.TextField(max_length=500)
-
-    user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)

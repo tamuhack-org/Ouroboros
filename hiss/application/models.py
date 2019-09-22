@@ -350,3 +350,7 @@ class Application(models.Model):
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 "us at highschool@tamuhack.com. "
             )
+        if not self.first_name.isalpha():
+            raise exceptions.ValidationError("First name can't contain any numbers")
+        if not self.last_name.isalpha():
+            raise exceptions.ValidationError("Last name can't contain any numbers")

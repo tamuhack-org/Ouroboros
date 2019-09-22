@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "user.apps.UserConfig",
     "application.apps.ApplicationConfig",
     "rsvp.apps.RsvpConfig",
+    "volunteer.apps.VolunteerConfig",
     "status.apps.StatusConfig",
     "phonenumber_field",
 ]

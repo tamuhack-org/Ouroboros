@@ -51,6 +51,7 @@ class User(auth_models.AbstractUser):
     last_name = None
 
     # Registration system-specific fields
+
     rsvp_deadline = models.DateTimeField(null=True, blank=True)
     declined_acceptance = models.BooleanField(default=False)
 

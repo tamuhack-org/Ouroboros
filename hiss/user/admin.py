@@ -1,10 +1,45 @@
 from django.contrib import admin
+from django.utils import timezone
+
 from user.models import User
 
 
-# Register your models here.
+def check_in(modeladmin, request, queryset) -> None:
+    """
+    Sets the value of the `checked_in` for the selected `User`s to `True`
+    """
+    queryset.update(checked_in=True)
+    queryset.update(checked_in_at=timezone.datetime.now())
+
+
 class UserAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("email", "is_active", "is_staff", "checked_in")
+    readonly_fields = ("email", "password")
+    fieldsets = [
+        ("User Information", {"fields": ["email", "password"]}),
+        ("Checkin Status", {"fields": ["checked_in"]}),
+        ("RSVP Deadline", {"fields": ["rsvp_deadline"]}),
+        (
+            "Advanced",
+            {
+                "fields": ["is_superuser", "is_staff", "is_active"],
+                "classes": ["collapse"],
+            },
+        ),
+        (
+            "Related Objects",
+            {"fields": ["application", "rsvp"], "classes": ["collapse"]},
+        ),
+    ]
+
+    check_in.short_description = "Check-In Selected Hackers"
+    actions = [check_in]
+
+    def has_add_permissions(self, request, obj=None):
+        return True
+
+    def has_change_permissions(self, request, obj=None):
+        return True
 
 
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
