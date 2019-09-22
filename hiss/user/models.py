@@ -26,6 +26,7 @@ class EmailUserManager(auth_models.UserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
         return self._create_user(email, password, **extra_fields)
 
 
@@ -53,15 +54,6 @@ class User(auth_models.AbstractUser):
 
     # Registration system-specific fields
 
-    # Applying
-    application = models.ForeignKey(
-        "application.Application", null=True, on_delete=models.SET_NULL
-    )
-
-    # RSVPing
-    rsvp = models.ForeignKey(
-        "rsvp.Rsvp", null=True, on_delete=models.SET_NULL, related_name="user"
-    )
     rsvp_deadline = models.DateTimeField(null=True, blank=True)
     declined_acceptance = models.BooleanField(default=False)
 
