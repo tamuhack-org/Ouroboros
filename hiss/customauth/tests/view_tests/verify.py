@@ -21,7 +21,7 @@ class EmailVerificationTestCase(test_case.SharedTestCase):
         valid_uid = urlsafe_base64_encode(force_bytes(user.pk))
         valid_token = email_confirmation_generator.make_token(user)
 
-        url_split = url.split('/')
+        url_split = url.split("/")
 
         return url_split[-2] == valid_token and url_split[-3] == valid_uid
 
