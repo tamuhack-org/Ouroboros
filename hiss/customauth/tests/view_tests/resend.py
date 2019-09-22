@@ -6,8 +6,8 @@ from django.urls import reverse_lazy
 from shared import test_case
 from user.models import User
 
-from django.utils.encoding import force_bytes, force_text
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from customauth.tokens import email_confirmation_generator
 
 
@@ -15,12 +15,12 @@ URL_REGEX = r"(?P<url>https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\b([-a-zA-
 
 
 class ResendActivationEmailView(test_case.SharedTestCase):
-    def is_valid_link(self, user: User, url: str)-> bool:
+    def is_valid_link(self, user: User, url: str) -> bool:
         """
-        Generates a UID and Token and verifies if the passed URL matches it. 
+        Generates a UID and Token and verifies if the passed URL matches it.
         """
-        valid_uid =  urlsafe_base64_encode(force_bytes(user.pk))
-        valid_token =  email_confirmation_generator.make_token(user)
+        valid_uid = urlsafe_base64_encode(force_bytes(user.pk))
+        valid_token = email_confirmation_generator.make_token(user)
 
         url_split = url.split('/')
 
@@ -33,7 +33,6 @@ class ResendActivationEmailView(test_case.SharedTestCase):
             email=self.email, password=self.password
         )
 
-
     def test_submitting_valid_form_sends_email(self):
         fields = {"email": self.email}
         self.client.post(reverse_lazy("customauth:resend_email"), fields)
@@ -43,7 +42,6 @@ class ResendActivationEmailView(test_case.SharedTestCase):
         user = User.objects.get(email=self.email)
 
         self.assertTrue(self.is_valid_link(user, url))
-
 
     def test_clicking_sent_email_link_is_valid(self):
         fields = {"email": self.email}
