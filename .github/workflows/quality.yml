@@ -27,7 +27,7 @@ jobs:
         python-version: [3.6,3.7]
     steps:
       - uses: actions/checkout@v1
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: 'Set up Python ${{ matrix.python-version }}'
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
@@ -37,4 +37,4 @@ jobs:
           python -m pip install -r hiss/requirements.txt
       - name: Lint
         run: |
-          pylint --exit-zero --rcfile=hiss/.pylintrc application rsvp shared status user volunteer
+          pylint --exit-zero --rcfile=hiss/.pylintrc hiss.application hiss.rsvp hiss.shared hiss.status hiss.user hiss.volunteer
