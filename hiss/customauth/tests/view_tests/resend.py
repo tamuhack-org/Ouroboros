@@ -53,4 +53,5 @@ class ResendActivationEmailView(test_case.SharedTestCase):
         url, _, _ = re.findall(URL_REGEX, body)[0]
         user = User.objects.get(email=self.email)
 
+        self.assertTrue(user.is_active)
         self.assertTrue(self.is_valid_link(user, url))
