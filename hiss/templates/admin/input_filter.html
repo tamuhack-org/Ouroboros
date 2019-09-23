@@ -1,0 +1,38 @@
+{% load i18n %}
+<h3>{% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %}</h3>
+<ul>
+  <li>
+    <form method="GET" action="" id="my-date-form" onsubmit="dual_input_submit(event)">
+        <input 
+           type="date"
+           placeholder="To"
+           value="{{ spec.before|default_if_none:''}}"
+           id="date-submit-one"
+           />
+        <input style="margin-top: 5px;"
+           placeholder="From"
+           type="date"
+           value="{{ spec.after|default_if_none:''}}"
+           id="date-submit-two"
+        />
+        <input type="text" style="display: none;" id="date-value" name="{{ spec.parameter_name }}">
+
+        <input type="submit">
+    </form>
+  </li>
+</ul>
+<script>
+var dual_input_submit = function(e) {
+    /*
+      Due to InputField limitation only one value can get passed (has to be a string)
+      To Fix this a new string is appended in the form before#after and sent through a blank input
+    */
+    e.preventDefault();
+    if (document.getElementById("date-submit-one").value != '' && document.getElementById("date-submit-two").value != '') {
+        var combined_str = document.getElementById("date-submit-one").value + "#" + document.getElementById("date-submit-two").value
+        document.getElementById("date-value").value = combined_str
+        console.log(combined_str)
+    }
+    document.getElementById("my-date-form").submit();
+}
+</script>
