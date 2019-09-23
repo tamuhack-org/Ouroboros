@@ -72,15 +72,16 @@ def reject(_modeladmin, _request, queryset) -> None:
 def custom_titled_filter(title):
     class Wrapper(admin.FieldListFilter):
         def __new__(cls, *args, **kwargs):
-            print('Running!')
+            print("Running!")
             instance = admin.FieldListFilter.create(*args, **kwargs)
             instance.title = title
             return instance
 
     return Wrapper
 
+
 class InputFilter(admin.SimpleListFilter):
-    template = 'admin/input_filter.html'
+    template = "admin/input_filter.html"
 
     def lookups(self, request, model_admin):
         # Dummy, required to show the filter.
@@ -89,12 +90,13 @@ class InputFilter(admin.SimpleListFilter):
     def choices(self, changelist):
         # Grab only the "all" option.
         all_choice = next(super().choices(changelist))
-        all_choice['query_parts'] = (
+        all_choice["query_parts"] = (
             (k, v)
             for k, v in changelist.get_filters_params().items()
             if k != self.parameter_name
         )
         yield all_choice
+
 
 class date_range_filter(InputFilter):
     """
@@ -102,20 +104,20 @@ class date_range_filter(InputFilter):
     Uses the input fields to perform a date range search
     These input fields get passed in as before and after variables
     """
-    parameter_name = 'date_range'
+
+    parameter_name = "date_range"
     title = "Date Range"
     before = ""
     after = ""
+
     def queryset(self, request, queryset):
         # Only a single string can be sent, so its formatted as before#after
         val = self.value().split("#")
         if len(val) == 2:
             self.before = val[0]
             self.after = val[1]
-            return queryset.filter(
-                datetime_submitted__gte = self.before
-            ).filter(
-                datetime_submitted__lte = self.after
+            return queryset.filter(datetime_submitted__gte=self.before).filter(
+                datetime_submitted__lte=self.after
             )
         return queryset
 
