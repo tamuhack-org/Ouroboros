@@ -72,7 +72,6 @@ def reject(_modeladmin, _request, queryset) -> None:
 def custom_titled_filter(title):
     class Wrapper(admin.FieldListFilter):
         def __new__(cls, *args, **kwargs):
-            print("Running!")
             instance = admin.FieldListFilter.create(*args, **kwargs)
             instance.title = title
             return instance
