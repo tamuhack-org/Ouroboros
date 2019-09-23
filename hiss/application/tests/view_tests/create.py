@@ -12,7 +12,7 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
 
         self.assertRedirects(
             response,
-            f"{reverse_lazy('login')}?next={reverse_lazy('application:create')}",
+            f"{reverse_lazy('customauth:login')}?next={reverse_lazy('application:create')}",
         )
 
     def test_accessible_after_login(self) -> None:
