@@ -35,12 +35,11 @@ def seed_database(num_of_users: int, num_of_active: int, num_of_applications: in
     Function that creates Users and Applications to make testing easier.
     To run use -- python manage.py shell < shared/seed.py
     WARNING - Will delete most of the Users and Applications when run.
-    DO not use in production 
+    DO not use in production
     """
     if not num_of_users >= num_of_active >= num_of_applications:
         return
     print("Starting the seeding process")
-    users = User.objects.all()
     arr = []
     # Clear existing objects
     User.objects.all().filter(is_superuser=False).delete()
