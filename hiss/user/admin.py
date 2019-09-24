@@ -1,5 +1,7 @@
 import csv
 
+from pdb import set_trace as bp
+
 from django.contrib import admin
 from django.db import transaction
 from django.http import HttpResponse
@@ -26,6 +28,8 @@ def export_emails(_modeladmin, _request, queryset):
     writer = csv.writer(response)
     for instance in queryset:
         writer.writerow([instance.email])
+
+    pb()
 
     return response
 

@@ -3,7 +3,7 @@ import csv
 from django import forms
 from django.contrib import admin
 from django.db import transaction
-from django.db import HttpResponse
+from django.http import HttpResponse
 from django.utils import timezone
 
 from application.models import Application, Wave
