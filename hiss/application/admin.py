@@ -8,6 +8,7 @@ from user.models import User
 
 from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 
+
 class ApplicationAdminForm(forms.ModelForm):
     class Meta:
         model = Application
@@ -112,7 +113,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             "num_hackathons_attended",
             custom_titled_filter("number of attended hackathons"),
         ),
-        ('datetime_submitted', DateRangeFilter),
+        ("datetime_submitted", DateRangeFilter),
         ("datetime_submitted", custom_titled_filter("date submitted")),
     )
     list_display = (
@@ -174,6 +175,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     def user_email(self, obj: Application) -> str:
         return obj.user.email
+
 
 class WaveAdmin(admin.ModelAdmin):
     list_display = ("start", "end")
