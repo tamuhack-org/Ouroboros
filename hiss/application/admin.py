@@ -6,6 +6,7 @@ from django.utils import timezone
 from application.models import Application, Wave
 from user.models import User
 
+from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 
 class ApplicationAdminForm(forms.ModelForm):
     class Meta:
@@ -111,6 +112,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             "num_hackathons_attended",
             custom_titled_filter("number of attended hackathons"),
         ),
+        ('datetime_submitted', DateRangeFilter),
         ("datetime_submitted", custom_titled_filter("date submitted")),
     )
     list_display = (
