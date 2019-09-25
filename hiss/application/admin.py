@@ -6,7 +6,7 @@ from django.utils import timezone
 from application.models import Application, Wave
 from user.models import User
 
-from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
+from rangefilter.filter import DateRangeFilter
 
 
 class ApplicationAdminForm(forms.ModelForm):
