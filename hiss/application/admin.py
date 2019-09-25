@@ -116,6 +116,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_display = (
         "first_name",
         "last_name",
+        "user_email",
         "classification",
         "grad_term",
         "approved",
@@ -169,6 +170,8 @@ class ApplicationAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return True
 
+    def user_email(self, obj: Application) -> str:
+        return obj.user.email
 
 class WaveAdmin(admin.ModelAdmin):
     list_display = ("start", "end")
