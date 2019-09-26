@@ -358,4 +358,3 @@ class Application(models.Model):
             raise exceptions.ValidationError("First name can't contain any numbers")
         if not self.last_name.isalpha():
             raise exceptions.ValidationError("Last name can't contain any numbers")
-        

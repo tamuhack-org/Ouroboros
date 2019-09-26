@@ -53,8 +53,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         change_url = reverse_lazy("admin:application_application_changelist")
         response = self.client.post(
             change_url,
-            {"action": "export_emails", admin.ACTION_CHECKBOX_NAME: [self.app
-            .pk]},
+            {"action": "export_emails", admin.ACTION_CHECKBOX_NAME: [self.app.pk]},
             follow=True,
         )
         self.assertEquals(response.status_code, 200)
