@@ -340,7 +340,6 @@ class Application(models.Model):
 
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
-    user_email = models.TextField("Email", max_length=500)
 
     def __str__(self):
         return "%s, %s - Application" % (self.last_name, self.first_name)
