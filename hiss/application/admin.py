@@ -114,12 +114,12 @@ class ApplicationAdmin(admin.ModelAdmin):
             custom_titled_filter("number of attended hackathons"),
         ),
         ("datetime_submitted", DateRangeFilter),
-        ("datetime_submitted", custom_titled_filter("date submitted")),
     )
     list_display = (
         "first_name",
         "last_name",
         "user_email",
+        "datetime_submitted",
         "classification",
         "grad_term",
         "approved",
