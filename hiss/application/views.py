@@ -24,7 +24,6 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
             return self.form_invalid(form)
         application: Application = form.save(commit=False)
         application.user = self.request.user
-        application.user_email = self.request.user.email
         application.wave = Wave.objects.active_wave()
         application.save()
         return redirect(self.success_url)
