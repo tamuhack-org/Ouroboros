@@ -20,7 +20,7 @@ class UpdateApplicationViewTestCase(test_case.SharedTestCase):
 
         self.assertRedirects(
             response,
-            f"{reverse_lazy('login')}?next={reverse_lazy('application:update', args=(application.id,))}",
+            f"{reverse_lazy('customauth:login')}?next={reverse_lazy('application:update', args=(application.id,))}",
         )
 
     def test_accessible_after_login(self) -> None:

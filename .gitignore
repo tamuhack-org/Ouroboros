@@ -1,5 +1,6 @@
-# Test Resume Dir
+# Resume Directories
 **/test_resume_dir
+**/resumes
 
 ### Django ###
 *.log
