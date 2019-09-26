@@ -76,8 +76,8 @@ def export_emails(_modeladmin, _request, queryset):
     """
     Exports the emails related to the selected `Application`s to a CSV file
     """
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="emails.csv"'
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="emails.csv"'
 
     writer = csv.writer(response)
     for instance in queryset:

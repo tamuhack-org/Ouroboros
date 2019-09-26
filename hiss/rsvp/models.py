@@ -1,8 +1,6 @@
 from django.db import models
 from multiselectfield import MultiSelectField
 
-from user.models import User
-
 DIETARY_RESTRICTIONS = (
     ("Vg", "Vegan"),
     ("V", "Vegetarian"),

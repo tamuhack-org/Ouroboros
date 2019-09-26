@@ -9,8 +9,6 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from multiselectfield import MultiSelectField
 
-from user.models import User
-
 AGREE = ((True, "Agree"),)
 
 TRUE_FALSE_CHOICES = ((True, "Yes"), (False, "No"))
@@ -360,4 +358,4 @@ class Application(models.Model):
             raise exceptions.ValidationError("First name can't contain any numbers")
         if not self.last_name.isalpha():
             raise exceptions.ValidationError("Last name can't contain any numbers")
-
+        

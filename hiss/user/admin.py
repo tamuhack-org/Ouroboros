@@ -1,7 +1,6 @@
 import csv
 
 from django.contrib import admin
-from django.db import transaction
 from django.http import HttpResponse
 from django.utils import timezone
 
@@ -20,8 +19,8 @@ def export_emails(_modeladmin, _request, queryset):
     """
     Exports the emails related to the selected `User`s to a CSV file
     """
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="emails.csv"'
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="emails.csv"'
 
     writer = csv.writer(response)
     for instance in queryset:
