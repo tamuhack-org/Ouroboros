@@ -5,19 +5,24 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('application', '0002_auto_20190922_1851'),
-    ]
+    dependencies = [("application", "0002_auto_20190922_1851")]
 
     operations = [
         migrations.AlterField(
-            model_name='application',
-            name='previous_attendant',
-            field=models.BooleanField(choices=[(True, 'Yes'), (False, 'No')], default=False, verbose_name='Have you attended HowdyHack before?'),
+            model_name="application",
+            name="previous_attendant",
+            field=models.BooleanField(
+                choices=[(True, "Yes"), (False, "No")],
+                default=False,
+                verbose_name="Have you attended HowdyHack before?",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='question3',
-            field=models.TextField(max_length=500, verbose_name="What is a cool prize you'd like to win at HowdyHack?"),
+            model_name="application",
+            name="question3",
+            field=models.TextField(
+                max_length=500,
+                verbose_name="What is a cool prize you'd like to win at HowdyHack?",
+            ),
         ),
     ]

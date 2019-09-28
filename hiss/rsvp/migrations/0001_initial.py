@@ -8,18 +8,50 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Rsvp',
+            name="Rsvp",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('datetime_submitted', models.DateTimeField(auto_now_add=True)),
-                ('dietary_restrictions', multiselectfield.db.fields.MultiSelectField(choices=[('Vg', 'Vegan'), ('V', 'Vegetarian'), ('H', 'Halal'), ('K', 'Kosher'), ('FA', 'Food Allergies')], max_length=2)),
-                ('shirt_size', models.CharField(choices=[('XS', 'XS'), ('S', 'S'), ('M', 'M'), ('L', 'L'), ('XL', 'XL'), ('XXL', 'XXL')], max_length=3)),
-                ('notes', models.TextField(max_length=500)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("datetime_submitted", models.DateTimeField(auto_now_add=True)),
+                (
+                    "dietary_restrictions",
+                    multiselectfield.db.fields.MultiSelectField(
+                        choices=[
+                            ("Vg", "Vegan"),
+                            ("V", "Vegetarian"),
+                            ("H", "Halal"),
+                            ("K", "Kosher"),
+                            ("FA", "Food Allergies"),
+                        ],
+                        max_length=2,
+                    ),
+                ),
+                (
+                    "shirt_size",
+                    models.CharField(
+                        choices=[
+                            ("XS", "XS"),
+                            ("S", "S"),
+                            ("M", "M"),
+                            ("L", "L"),
+                            ("XL", "XL"),
+                            ("XXL", "XXL"),
+                        ],
+                        max_length=3,
+                    ),
+                ),
+                ("notes", models.TextField(max_length=500)),
             ],
-        ),
+        )
     ]

@@ -10,7 +10,6 @@ class Command(BaseCommand):
             "pct",
             nargs=1,
             type=float,
-            default=0.6,
             help="Percentage of non-reviewed applications to admit",
         )
 
