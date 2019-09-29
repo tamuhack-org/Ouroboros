@@ -46,7 +46,9 @@ class UpdateRsvpViewTestCase(test_case.SharedTestCase):
         rsvp.save()
         self.client.force_login(self.admin)
 
-        response = self.client.post(reverse_lazy("rsvp:update", args=(rsvp.id,)), self.rsvp_fields)
+        response = self.client.post(
+            reverse_lazy("rsvp:update", args=(rsvp.id,)), self.rsvp_fields
+        )
 
         self.assertEqual(response.status_code, 403)
 
@@ -58,7 +60,9 @@ class UpdateRsvpViewTestCase(test_case.SharedTestCase):
         rsvp.save()
         self.client.force_login(self.user)
 
-        response = self.client.post(reverse_lazy("rsvp:update", args=(rsvp.id,)), self.rsvp_fields)
+        response = self.client.post(
+            reverse_lazy("rsvp:update", args=(rsvp.id,)), self.rsvp_fields
+        )
         rsvp.refresh_from_db()
 
         self.assertRedirects(response, f"{reverse_lazy('status')}")

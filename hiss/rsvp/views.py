@@ -50,6 +50,7 @@ class UpdateRsvpView(mixins.LoginRequiredMixin, generic.UpdateView):
     """
     Updates a linked Rsvp.
     """
+
     success_url = reverse_lazy("status")
 
     def get_object(self, queryset=None) -> Rsvp:
