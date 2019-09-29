@@ -47,3 +47,16 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         deadline = timezone.now().replace(hour=23, minute=59, second=59, microsecond=0)
         create_rsvp_deadline(self.user, deadline)
         self.assertEquals(self.user.rsvp_deadline, deadline)
+
+    def test_export_application_emails(self):
+        self.client.force_login(self.admin)
+        change_url = reverse_lazy("admin:application_application_changelist")
+        response = self.client.post(
+            change_url,
+            {
+                "action": "export_application_emails",
+                admin.ACTION_CHECKBOX_NAME: [self.app.pk],
+            },
+            follow=True,
+        )
+        self.assertEquals(response.status_code, 200)
