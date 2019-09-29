@@ -4,7 +4,7 @@ from django import forms
 from django.contrib import admin
 from django.db import transaction
 from django.db.models.query import QuerySet
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.utils import timezone
 
 from application.models import Application, Wave
@@ -183,8 +183,8 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"
-    export_emails.short_description = "Export Emails for Selected Applications"
-    actions = [approve, reject, export_emails]
+    export_application_emails.short_description = "Export Emails for Selected Applications"
+    actions = [approve, reject, export_application_emails]
 
     def has_add_permission(self, request):
         return True

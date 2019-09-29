@@ -2,7 +2,7 @@ import csv
 
 from django.contrib import admin
 from django.db.models.query import QuerySet
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.utils import timezone
 
 from user.models import User
@@ -47,8 +47,8 @@ class UserAdmin(admin.ModelAdmin):
     ]
 
     check_in.short_description = "Check-In Selected Users"
-    export_emails.short_description = "Export Emails of Selected Users"
-    actions = [check_in, export_emails]
+    export_user_emails.short_description = "Export Emails of Selected Users"
+    actions = [check_in, export_user_emails]
 
 
 admin.site.register(User, UserAdmin)
