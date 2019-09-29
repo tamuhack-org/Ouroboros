@@ -3,6 +3,7 @@ import csv
 from django import forms
 from django.contrib import admin
 from django.db import transaction
+from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.utils import timezone
 
@@ -74,7 +75,7 @@ def reject(_modeladmin, _request, queryset) -> None:
             instance.save()
 
 
-def export_emails(_modeladmin, _request, queryset):
+def export_application_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
     """
     Exports the emails related to the selected `Application`s to a CSV file
     """

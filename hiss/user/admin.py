@@ -1,6 +1,7 @@
 import csv
 
 from django.contrib import admin
+from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.utils import timezone
 
@@ -15,7 +16,7 @@ def check_in(_modeladmin, _request, queryset) -> None:
     queryset.update(checked_in_at=timezone.datetime.now())
 
 
-def export_emails(_modeladmin, _request, queryset):
+def export_user_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
     """
     Exports the emails related to the selected `User`s to a CSV file
     """
