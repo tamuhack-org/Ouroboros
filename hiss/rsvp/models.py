@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.urls import reverse_lazy
 from multiselectfield import MultiSelectField
 
 DIETARY_RESTRICTIONS = (
@@ -32,3 +33,6 @@ class Rsvp(models.Model):
     shirt_size = models.CharField(choices=SHIRT_SIZES, max_length=3)
     notes = models.TextField(max_length=500, null=True, blank=True)
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
+
+    def get_absolute_url(self):
+        return reverse_lazy("rsvp:update", args=[self.id])
