@@ -183,7 +183,9 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"
-    export_application_emails.short_description = "Export Emails for Selected Applications"
+    export_application_emails.short_description = (
+        "Export Emails for Selected Applications"
+    )
     actions = [approve, reject, export_application_emails]
 
     def has_add_permission(self, request):
