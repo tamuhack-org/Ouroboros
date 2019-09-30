@@ -112,6 +112,5 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
         self.client.force_login(self.user)
 
         response = self.client.post(reverse_lazy("rsvp:create"), self.rsvp_fields)
-
         self.assertTrue(Rsvp.objects.filter(user=self.user).exists())
         self.assertRedirects(response, reverse_lazy("status"))
