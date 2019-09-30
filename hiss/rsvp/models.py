@@ -42,7 +42,7 @@ class Rsvp(models.Model):
         choices=DIETARY_RESTRICTIONS, null=True, blank=True
     )
     shirt_size = models.CharField(choices=SHIRT_SIZES, max_length=3)
-    notes = models.TextField(max_length=500)
+    notes = models.TextField(max_length=500, null=True, blank=True)
     transport_type = models.CharField(choices=OFFERED_TRANSPORTATION, max_length=10)
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
 
