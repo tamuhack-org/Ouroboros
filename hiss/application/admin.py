@@ -1,6 +1,10 @@
+import csv
+
 from django import forms
 from django.contrib import admin
 from django.db import transaction
+from django.db.models.query import QuerySet
+from django.http import HttpRequest, HttpResponse
 from django.utils import timezone
 
 from application.models import Application, Wave
@@ -69,6 +73,20 @@ def reject(_modeladmin, _request, queryset) -> None:
             instance.approved = False
             # send_application_rejection_email(instance)
             instance.save()
+
+
+def export_application_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
+    """
+    Exports the emails related to the selected `Application`s to a CSV file
+    """
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="emails.csv"'
+
+    writer = csv.writer(response)
+    for instance in queryset:
+        writer.writerow([instance.user.email])
+
+    return response
 
 
 def custom_titled_filter(title):
@@ -165,7 +183,10 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"
-    actions = [approve, reject]
+    export_application_emails.short_description = (
+        "Export Emails for Selected Applications"
+    )
+    actions = [approve, reject, export_application_emails]
 
     def has_add_permission(self, request):
         return True
