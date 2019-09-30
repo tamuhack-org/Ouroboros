@@ -193,6 +193,14 @@ GRAD_YEARS = GRAD_YEARS[1:-1]
 GRAD_YEARS.insert(0, (None, "-- Select Option --"))
 GRAD_YEARS.append(("Other", "Other"))
 
+TRANSPORT_MODES = (
+    ("drive", "Driving"),
+    ("th-bus", "TAMUhack Bus"),
+    ("fly", "Flying"),
+    ("public", "Public Transportation"),
+    ("walk-cycle", "Walking/Biking"),
+)
+
 QUESTION1_TEXT = "Tell us your best programming joke"
 QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
 QUESTION3_TEXT = f"What is a cool prize you'd like to win at {settings.EVENT_NAME}?"
@@ -322,6 +330,7 @@ class Application(models.Model):
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
         "A&M.",
     )
+    transport_needed = models.CharField(choices=TRANSPORT_MODES, max_length=11)
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
         max_length=500,

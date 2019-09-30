@@ -37,6 +37,7 @@ class SharedTestCase(test.TestCase):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "major": "Computer Science",
+            "transport_needed": "drive",
             "gender": "M",
             "classification": "Fr",
             "grad_term": "Other",
