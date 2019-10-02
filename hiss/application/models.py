@@ -229,6 +229,7 @@ class Wave(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     num_days_to_rsvp = models.IntegerField()
+    is_walk_in_wave = models.BooleanField(default=False, verbose_name="Is this wave for walk-ins?")
 
     objects = WaveManager()
 
