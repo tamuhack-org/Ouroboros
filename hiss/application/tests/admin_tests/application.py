@@ -3,7 +3,11 @@ from django.core import mail
 from django.urls import reverse_lazy
 from django.utils import timezone
 
-from application.admin import create_rsvp_deadline, build_approval_email, build_rejection_email
+from application.admin import (
+    create_rsvp_deadline,
+    build_approval_email,
+    build_rejection_email,
+)
 from application.models import Application
 from shared import test_case
 

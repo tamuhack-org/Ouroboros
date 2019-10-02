@@ -54,9 +54,7 @@ def build_approval_email(
     return subject, message, None, [application.user.email]
 
 
-def build_rejection_email(
-    application: Application
-) -> Tuple[str, str, None, List[str]]:
+def build_rejection_email(application: Application) -> Tuple[str, str, None, List[str]]:
     """
     Sends an email to containing a confirmation message indicating that a `User`'s
     application has been rejected.
