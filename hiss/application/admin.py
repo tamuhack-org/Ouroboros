@@ -1,7 +1,6 @@
 import csv
 from typing import List, Tuple
 
-from application.models import Application, Wave
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -12,6 +11,8 @@ from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from rangefilter.filter import DateRangeFilter
+
+from application.models import Application, Wave
 from user.models import User
 
 
@@ -35,7 +36,7 @@ def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
     user.save()
 
 
-def build_application_approval_email(
+def build_approval_email(
     application: Application, rsvp_deadline: timezone.datetime
 ) -> Tuple[str, str, None, List[str]]:
     """
@@ -53,7 +54,7 @@ def build_application_approval_email(
     return subject, message, None, [application.user.email]
 
 
-def build_application_rejection_email(
+def build_rejection_email(
     application: Application
 ) -> Tuple[str, str, None, List[str]]:
     """
@@ -63,13 +64,11 @@ def build_application_rejection_email(
     subject = f"Regarding your {settings.EVENT_NAME} application"
 
     context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME}
-    message = render_to_string("application/email/rejected.html", context)
+    message = render_to_string("application/emails/rejected.html", context)
     return subject, message, None, [application.user.email]
 
 
-def approve(
-    _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
-) -> None:
+def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
     """
     Sets the value of the `approved` field for the selected `Application`s to `True`, creates an RSVP deadline for
     each user based on how many days each wave gives to RSVP, and then emails all of the users to inform them that
@@ -83,12 +82,12 @@ def approve(
             ) + timezone.timedelta(application.wave.num_days_to_rsvp)
             application.approved = True
             create_rsvp_deadline(application.user, deadline)
-            email_tuples.append(build_application_approval_email(application, deadline))
+            email_tuples.append(build_approval_email(application, deadline))
             application.save()
     mail.send_mass_mail(email_tuples)
 
 
-def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) -> None:
+def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
     """
     Sets the value of the `approved` field for the selected `Application`s to `False`
     """
@@ -96,7 +95,7 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) 
     with transaction.atomic():
         for application in queryset:
             application.approved = False
-            email_tuples.append(build_application_rejection_email(application))
+            email_tuples.append(build_rejection_email(application))
             application.save()
     mail.send_mass_mail(email_tuples)
 
