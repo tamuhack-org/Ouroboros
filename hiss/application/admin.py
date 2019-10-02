@@ -176,7 +176,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     def user_email(self, obj: Application) -> str:
         return obj.user.email
-    
+
     def is_a_walk_in(self, obj: Application) -> bool:
         return obj.wave.is_walk_in_wave
 
