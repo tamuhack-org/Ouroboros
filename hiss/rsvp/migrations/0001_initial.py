@@ -9,19 +9,68 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Rsvp',
+            name="Rsvp",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('datetime_submitted', models.DateTimeField(auto_now_add=True)),
-                ('dietary_restrictions', multiselectfield.db.fields.MultiSelectField(blank=True, choices=[('Vg', 'Vegan'), ('V', 'Vegetarian'), ('H', 'Halal'), ('K', 'Kosher'), ('FA', 'Food Allergies')], max_length=11, null=True)),
-                ('shirt_size', models.CharField(choices=[('XS', 'XS'), ('S', 'S'), ('M', 'M'), ('L', 'L'), ('XL', 'XL'), ('XXL', 'XXL')], max_length=3)),
-                ('notes', models.TextField(blank=True, max_length=500, null=True)),
-                ('transport_type', models.CharField(choices=[('drive', 'Driving'), ('bus-tu', 'TAMUhack Bus - UT Austin'), ('bus-utd', 'TAMUhack Bus - UTD'), ('bus-uta', 'TAMUhack Bus - UTA'), ('bus-utsa', 'TAMUhack Bus - UTSA'), ('bus-utrgv', 'TAMUhack Bus - UTRGV'), ('other-bus', 'Other Bus (Greyhound, Megabus, etc.)'), ('walk-cycle', 'Walking/Cycling')], max_length=10)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("datetime_submitted", models.DateTimeField(auto_now_add=True)),
+                (
+                    "dietary_restrictions",
+                    multiselectfield.db.fields.MultiSelectField(
+                        blank=True,
+                        choices=[
+                            ("Vg", "Vegan"),
+                            ("V", "Vegetarian"),
+                            ("H", "Halal"),
+                            ("K", "Kosher"),
+                            ("FA", "Food Allergies"),
+                        ],
+                        max_length=11,
+                        null=True,
+                    ),
+                ),
+                (
+                    "shirt_size",
+                    models.CharField(
+                        choices=[
+                            ("XS", "XS"),
+                            ("S", "S"),
+                            ("M", "M"),
+                            ("L", "L"),
+                            ("XL", "XL"),
+                            ("XXL", "XXL"),
+                        ],
+                        max_length=3,
+                    ),
+                ),
+                ("notes", models.TextField(blank=True, max_length=500, null=True)),
+                (
+                    "transport_type",
+                    models.CharField(
+                        choices=[
+                            ("drive", "Driving"),
+                            ("bus-tu", "TAMUhack Bus - UT Austin"),
+                            ("bus-utd", "TAMUhack Bus - UTD"),
+                            ("bus-uta", "TAMUhack Bus - UTA"),
+                            ("bus-utsa", "TAMUhack Bus - UTSA"),
+                            ("bus-utrgv", "TAMUhack Bus - UTRGV"),
+                            ("other-bus", "Other Bus (Greyhound, Megabus, etc.)"),
+                            ("walk-cycle", "Walking/Cycling"),
+                        ],
+                        max_length=10,
+                    ),
+                ),
             ],
-        ),
+        )
     ]
