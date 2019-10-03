@@ -151,7 +151,6 @@ def seed_database(num_of_users: int, num_of_active: int, num_of_applications: in
                 resume="150650bf-3967-42ca-aa21-1ba067af2df5.pdf",
                 wave_id=1,
                 user_id=current_user.id,
-                user_email=current_user.email,
             )
             # FUTURE -> Remove this line to have datetime_submitted be realtime
             current_app.datetime_submitted = fake_date_range
