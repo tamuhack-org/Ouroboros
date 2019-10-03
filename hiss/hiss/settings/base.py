@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "status.apps.StatusConfig",
     "phonenumber_field",
     "customauth.apps.CustomauthConfig",
+    "shared.apps.SharedConfig",
 ]
 
 MIDDLEWARE = [

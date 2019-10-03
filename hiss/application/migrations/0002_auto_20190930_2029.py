@@ -11,18 +11,22 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('application', '0001_initial'),
+        ("application", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='application',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="application",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='application',
-            name='wave',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='application.Wave'),
+            model_name="application",
+            name="wave",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="application.Wave"
+            ),
         ),
     ]
