@@ -1,4 +1,5 @@
 import uuid
+from typing import Optional
 
 from django.conf import settings
 from django.core import exceptions
@@ -207,19 +208,23 @@ QUESTION3_TEXT = f"What is a cool prize you'd like to win at {settings.EVENT_NAM
 
 
 class WaveManager(models.Manager):
-    def next_wave(self, start_dt: timezone.datetime = timezone.now()):
+    def next_wave(self, start_dt: Optional[timezone.datetime] = None):
         """
         Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
         `active_wave`.
         """
+        if not start_dt:
+            start_dt = timezone.now()
         qs = self.get_queryset().filter(start__gt=start_dt).order_by("start")
         return qs.first()
 
-    def active_wave(self, start_dt: timezone.datetime = timezone.now()):
+    def active_wave(self, start_dt: Optional[timezone.datetime] = None):
         """
         Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
         `next_wave`.
         """
+        if not start_dt:
+            start_dt = timezone.now()
         qs = (
             self.get_queryset()
             .filter(start__lte=start_dt, end__gt=start_dt)
