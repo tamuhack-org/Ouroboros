@@ -1,16 +1,19 @@
 import csv
+from typing import List, Tuple
 
 from django import forms
+from django.conf import settings
 from django.contrib import admin
+from django.core import mail
 from django.db import transaction
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
+from django.template.loader import render_to_string
 from django.utils import timezone
+from rangefilter.filter import DateRangeFilter
 
 from application.models import Application, Wave
 from user.models import User
-
-from rangefilter.filter import DateRangeFilter
 
 
 class ApplicationAdminForm(forms.ModelForm):
@@ -33,46 +36,66 @@ def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
     user.save()
 
 
-def send_application_approval_email(user: User, deadline: timezone.datetime) -> None:
+def build_approval_email(
+    application: Application, rsvp_deadline: timezone.datetime
+) -> Tuple[str, str, None, List[str]]:
     """
-    Sends an email to containing a confirmation message indicating that a `User`'s
+    Sends an email to a queryset of users, each with a message indicating that a `User`'s
     application has been approved.
     """
-    raise NotImplementedError()
+    subject = f"Your {settings.EVENT_NAME} application has been approved!"
+
+    context = {
+        "first_name": application.first_name,
+        "event_name": settings.EVENT_NAME,
+        "rsvp_deadline": rsvp_deadline,
+    }
+    message = render_to_string("application/emails/approved.html", context)
+    return subject, message, None, [application.user.email]
 
 
-def send_application_rejection_email(user: User) -> None:
+def build_rejection_email(application: Application) -> Tuple[str, str, None, List[str]]:
     """
     Sends an email to containing a confirmation message indicating that a `User`'s
     application has been rejected.
     """
-    raise NotImplementedError()
+    subject = f"Regarding your {settings.EVENT_NAME} application"
+
+    context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME}
+    message = render_to_string("application/emails/rejected.html", context)
+    return subject, message, None, [application.user.email]
 
 
-def approve(_modeladmin, _request, queryset) -> None:
+def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
     """
-    Sets the value of the `approved` field for the selected `Application`s to `True`
+    Sets the value of the `approved` field for the selected `Application`s to `True`, creates an RSVP deadline for
+    each user based on how many days each wave gives to RSVP, and then emails all of the users to inform them that
+    their applications have been approved.
     """
+    email_tuples = []
     with transaction.atomic():
-        for instance in queryset:
+        for application in queryset:
             deadline = timezone.now().replace(
                 hour=23, minute=59, second=59, microsecond=0
-            ) + timezone.timedelta(instance.wave.num_days_to_rsvp)
-            instance.approved = True
-            create_rsvp_deadline(instance.user, deadline)
-            # send_application_approval_email(instance, deadline)
-            instance.save()
+            ) + timezone.timedelta(application.wave.num_days_to_rsvp)
+            application.approved = True
+            create_rsvp_deadline(application.user, deadline)
+            email_tuples.append(build_approval_email(application, deadline))
+            application.save()
+    mail.send_mass_mail(email_tuples)
 
 
-def reject(_modeladmin, _request, queryset) -> None:
+def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
     """
     Sets the value of the `approved` field for the selected `Application`s to `False`
     """
+    email_tuples = []
     with transaction.atomic():
-        for instance in queryset:
-            instance.approved = False
-            # send_application_rejection_email(instance)
-            instance.save()
+        for application in queryset:
+            application.approved = False
+            email_tuples.append(build_rejection_email(application))
+            application.save()
+    mail.send_mass_mail(email_tuples)
 
 
 def export_application_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
