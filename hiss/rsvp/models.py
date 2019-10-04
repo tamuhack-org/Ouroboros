@@ -1,8 +1,14 @@
 import uuid
+from typing import Type
 
+from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse_lazy
 from multiselectfield import MultiSelectField
+
+from user.models import User
 
 DIETARY_RESTRICTIONS = (
     ("Vg", "Vegan"),
@@ -48,3 +54,14 @@ class Rsvp(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy("rsvp:update", args=[self.id])
+
+
+@receiver(post_save, sender=Rsvp)
+def rsvp_post_save(sender: Type[Rsvp], instance: Rsvp, created: bool, **kwargs):
+    if created:
+        user: User = instance.user
+        user.send_html_email(
+            "rsvp/emails/created.html",
+            {"event_name": settings.EVENT_NAME},
+            f"Regarding your {settings.EVENT_NAME} application",
+        )
