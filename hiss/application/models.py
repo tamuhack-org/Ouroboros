@@ -1,4 +1,5 @@
 import uuid
+from typing import Optional
 
 from django.conf import settings
 from django.core import exceptions
@@ -193,25 +194,41 @@ GRAD_YEARS = GRAD_YEARS[1:-1]
 GRAD_YEARS.insert(0, (None, "-- Select Option --"))
 GRAD_YEARS.append(("Other", "Other"))
 
+TRANSPORT_MODES = (
+    ("drive", "Driving"),
+    ("th-bus", "TAMUhack Bus"),
+    ("fly", "Flying"),
+    ("public", "Public Transportation"),
+    ("walk-cycle", "Walking/Biking"),
+)
+
 QUESTION1_TEXT = "Tell us your best programming joke"
 QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
 QUESTION3_TEXT = f"What is a cool prize you'd like to win at {settings.EVENT_NAME}?"
 
 
 class WaveManager(models.Manager):
-    def next_wave(self, start_dt: timezone.datetime = timezone.now()):
+    def next_wave(
+        self, start_dt: Optional[timezone.datetime] = None
+    ) -> Optional["Wave"]:
         """
         Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
         `active_wave`.
         """
+        if not start_dt:
+            start_dt = timezone.now()
         qs = self.get_queryset().filter(start__gt=start_dt).order_by("start")
         return qs.first()
 
-    def active_wave(self, start_dt: timezone.datetime = timezone.now()):
+    def active_wave(
+        self, start_dt: Optional[timezone.datetime] = None
+    ) -> Optional["Wave"]:
         """
         Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
         `next_wave`.
         """
+        if not start_dt:
+            start_dt = timezone.now()
         qs = (
             self.get_queryset()
             .filter(start__lte=start_dt, end__gt=start_dt)
@@ -325,6 +342,7 @@ class Application(models.Model):
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
         "A&M.",
     )
+    transport_needed = models.CharField(choices=TRANSPORT_MODES, max_length=11)
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
         max_length=500,

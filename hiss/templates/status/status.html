@@ -1,0 +1,139 @@
+{% extends 'dashboard_base.html' %} {% load static %} {% block content %}
+{% load tz %}
+{% get_current_timezone as TIME_ZONE %}
+<div class="pt-4">
+    <div class="status-box">
+
+        <header>
+            {% if COMPLETE or NEEDS_TO_RSVP or CANT_MAKE_IT %}
+            <ol class="timeline-24">
+                {% else %}
+                <ol class="timeline">
+                    {% endif %}
+
+                    <li>
+                        <p class="diplome">Submitted</p>
+                        {% if COMPLETE or REJECTED or PENDING or NEEDS_TO_RSVP or CANT_MAKE_IT %}
+                        <img src="{% static 'tick.svg' %}">
+                        {% else %}
+                        <span class="point"></span>
+                        {% endif %}
+                    </li>
+                    <li>
+                        <p class="diplome">In Review</p>
+                        {% if COMPLETE or REJECTED or NEEDS_TO_RSVP or WAIT_UNTIL_NEXT_WAVE or CANT_MAKE_IT%}
+                        <img src="{% static 'tick.svg' %}">
+                        {% else %}
+                        <span class="point"></span>
+                        {% endif %}
+                    </li>
+                    <li>
+                        <p class="diplome">Decisions Released</p>
+                        {% if COMPLETE or REJECTED or NEEDS_TO_RSVP or CANT_MAKE_IT%}
+                        <img src="{% static 'tick.svg' %}">
+                        {% else %}
+                        <span class="point"></span>
+                        {% endif %}
+                    </li>
+
+                    {% if COMPLETE or NEEDS_TO_RSVP or CANT_MAKE_IT%}
+                    <li>
+                        <p class="diplome">RSVP</p>
+                        {% if COMPLETE or CANT_MAKE_IT %}
+                        <img src="{% static 'tick.svg' %}">
+                        {% else %}
+                        <span class="point"></span>
+                        {% endif %}
+                    </li>
+                    {% endif %}
+                </ol>
+        </header>
+
+        <div class="pt-4 text-center submit-pg">
+            <br>
+            {% if NEEDS_TO_APPLY %}
+            <p> Your application is </p>
+            <div class="app-status">INCOMPLETE</div>
+
+            <p class="status-subtitle pt-2" style="margin-bottom: 0;">
+                Submit your application before {{active_wave_end}} {{TIME_ZONE}} to be considered during this wave.
+                Don't worry,
+                though! You can still apply after the deadline as part of another wave.
+            </p>
+
+            <div class="row login-alt-options pt-4">
+                <div class="col-sm-12 col-lg-12 text-center">
+                    <br>
+                    <a href="{% url 'application:create' %}" class="btn btn-login">Complete Application</a>
+                </div>
+            </div>
+
+            {% elif PENDING %}
+            <p> Your application has been </p>
+            <div class="app-status">SUBMITTED</div>
+
+            <p class="status-subtitle pt-2">
+                Thanks for applying! We'll email you as soon as decisions are released.
+            </p>
+            <div class="row login-alt-options">
+                <div class="col-sm-12 col-lg-12 text-center">
+                    <br>
+                    <a href="{{application.get_absolute_url}}" class="btn btn-login">Edit Application</a>
+                </div>
+            </div>
+
+            {% elif NEEDS_TO_RSVP %}
+            <p> Congrats, you have been </p>
+            <div class="app-status">ACCEPTED</div>
+
+            <p class="status-subtitle pt-2">
+                {% localtime off %}
+                Please RSVP below by {{rsvp_deadline}} {{TIME_ZONE}} or you risk losing your spot.
+                {% endlocaltime %}
+            </p>
+            <div class="row login-alt-options">
+                <div class="col-sm-12 col-lg-12 text-center">
+                    <br>
+                    <a href="{% url 'rsvp:create' %}" class="btn btn-login">RSVP Here!</a>
+                </div>
+            </div>
+
+            {% elif COMPLETE %}
+            <p>Your attendance has been</p>
+            <div class="app-status">CONFIRMED</div>
+
+            <p class="status-subtitle pt-2">
+                Prepare for the event by visiting our FAQ for tips and info. See you soon!
+            </p>
+
+            <p>
+                Have additional questions? Email us at hello@tamuhack.com
+            </p>
+
+            {% elif REJECTED %}
+            <p> Your application has been </p>
+            <div class="app-status">WAITLISTED</div>
+
+            <p class="status-subtitle pt-2">
+                You have not been admitted into the event.
+            </p>
+
+            <div class="row login-alt-options pt-4">
+                <div class="col-sm-12 col-lg-12 text-center">
+                    <br>
+                    <a href="{{application.get_absolute_url}}" class="btn btn-login">View Application</a>
+                </div>
+                {% elif CANT_MAKE_IT %}
+                <p> You have RSVP'd </p>
+                <div class="app-status">Not Attending</div>
+
+                <p class="pt-2">We're sorry to hear you can't make it! Thanks for telling us!</p>
+
+                {% elif NO_MORE_WAVES %}
+                <p>Sorry, we are currently not accepting applications.</p>
+            </div>
+            {%endif%}
+        </div>
+
+    </div>
+    {% endblock %}

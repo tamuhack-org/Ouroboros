@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<section class="dashboard">
+    <div class="container">
+        <div class="row">
+            <div class="justify-content-center col-xl-10 col-lg-10 col-md-12 col-sm-12 pt-5 inner-container">
+                <div>
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
