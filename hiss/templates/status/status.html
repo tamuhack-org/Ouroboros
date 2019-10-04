@@ -5,7 +5,7 @@
     <div class="status-box">
 
         <header>
-            {% if COMPLETE or NEEDS_TO_RSVP or CANT_MAKE_IT %}
+            {% if CONFIRMED or NEEDS_TO_RSVP or CANT_MAKE_IT %}
             <ol class="timeline-24">
                 {% else %}
                 <ol class="timeline">
@@ -13,7 +13,7 @@
 
                     <li>
                         <p class="diplome">Submitted</p>
-                        {% if COMPLETE or REJECTED or PENDING or NEEDS_TO_RSVP or CANT_MAKE_IT %}
+                        {% if CONFIRMED or REJECTED or PENDING or NEEDS_TO_RSVP or CANT_MAKE_IT %}
                         <img src="{% static 'tick.svg' %}">
                         {% else %}
                         <span class="point"></span>
@@ -21,7 +21,7 @@
                     </li>
                     <li>
                         <p class="diplome">In Review</p>
-                        {% if COMPLETE or REJECTED or NEEDS_TO_RSVP or WAIT_UNTIL_NEXT_WAVE or CANT_MAKE_IT%}
+                        {% if CONFIRMED or REJECTED or NEEDS_TO_RSVP or WAIT_UNTIL_NEXT_WAVE or CANT_MAKE_IT%}
                         <img src="{% static 'tick.svg' %}">
                         {% else %}
                         <span class="point"></span>
@@ -29,17 +29,17 @@
                     </li>
                     <li>
                         <p class="diplome">Decisions Released</p>
-                        {% if COMPLETE or REJECTED or NEEDS_TO_RSVP or CANT_MAKE_IT%}
+                        {% if CONFIRMED or REJECTED or NEEDS_TO_RSVP or CANT_MAKE_IT%}
                         <img src="{% static 'tick.svg' %}">
                         {% else %}
                         <span class="point"></span>
                         {% endif %}
                     </li>
 
-                    {% if COMPLETE or NEEDS_TO_RSVP or CANT_MAKE_IT%}
+                    {% if CONFIRMED or NEEDS_TO_RSVP or CANT_MAKE_IT%}
                     <li>
                         <p class="diplome">RSVP</p>
-                        {% if COMPLETE or CANT_MAKE_IT %}
+                        {% if CONFIRMED or CANT_MAKE_IT %}
                         <img src="{% static 'tick.svg' %}">
                         {% else %}
                         <span class="point"></span>
@@ -98,7 +98,7 @@
                 </div>
             </div>
 
-            {% elif COMPLETE %}
+            {% elif CONFIRMED %}
             <p>Your attendance has been</p>
             <div class="app-status">CONFIRMED</div>
 

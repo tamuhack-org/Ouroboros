@@ -1,5 +1,6 @@
 from typing import Union
 
+from django.conf import settings
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
@@ -16,6 +17,12 @@ class CreateRsvpView(mixins.UserPassesTestMixin, generic.CreateView):
     """
     Creates a new Rsvp and links it to a User if one doesn't already exist and the User's been accepted.
     """
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["event_start_datetime"] = settings.EVENT_START_DATETIME
+        context["event_end_datetime"] = settings.EVENT_END_DATETIME
+        return context
 
     def test_func(self) -> bool:
         # Ensure user is logged-in

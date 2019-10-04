@@ -2,20 +2,32 @@
 {% load static %}
 {% block body %}
 
-<section>
-    <header>
-        <h1>{{event_name}}</h1>
-    </header>
+<section class="signin sign_up">
+    <div class="container">
+        <div class="row justify-content-md-center text-center">
+            <div class="col-sm-12 col-md-8 col-lg-6 login-box">
 
-    <form method="POST">
-        {% csrf_token %}    <!-- security -->
+                <header>
+                    <img class="header-logo" src="{% static 'howdyHackLogo.svg' %}">
+                    <h1>{{event_name}} 2019</h1>
+                    <h1>Application</h1>
+                </header>
 
-        {{form.as_p}}
-        <input type="submit" value="Register">
-    </form>
+                <form method="POST">
+                    {% csrf_token %}    <!-- security -->
 
-    <div>
-        Already have an account? <a href="{% url 'customauth:login' %}">Log in</a>
+                    {{form.as_p}}
+                    <input type="submit" value="Register" class="btn btn-lg btn-block btn-login"
+                    >
+                </form>
+
+                <div class="row login-alt-options pt-4">
+                    <div class="col-sm-12 col-lg-12 text-center">
+                        Already have an account? <a href="{% url 'customauth:login' %}">Log in</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 

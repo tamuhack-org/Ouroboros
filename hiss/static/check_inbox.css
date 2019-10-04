@@ -1,0 +1,19 @@
+body {
+    background-color: #d8ecfe !important;
+    font-family: sans-serif;
+}
+
+h1 {
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    font-size: 1.7rem;
+    letter-spacing: 1px;
+}
+
+.content-container {
+    background: #fff;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    padding: 3em 5em;
+    margin: 25vh 25vw;
+}
