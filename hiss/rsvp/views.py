@@ -1,9 +1,13 @@
 from typing import Union
 
+from django import views
 from django.contrib.auth import mixins
+from django.core import exceptions
 from django.core.exceptions import PermissionDenied
+from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import generic
 
 from application.models import Application
@@ -65,3 +69,20 @@ class UpdateRsvpView(mixins.LoginRequiredMixin, generic.UpdateView):
     queryset = Rsvp.objects.all()
     form_class = RsvpModelForm
     template_name = "rsvp/rsvp_form.html"
+
+
+class DeclineRsvpView(mixins.LoginRequiredMixin, views.View):
+    def post(self, request: HttpRequest, *args, **kwargs):
+        if not request.user.application_set.exists():
+            raise exceptions.PermissionDenied(
+                "You can't decline admission without applying first"
+            )
+        if not request.user.application_set.first().approved:
+            raise exceptions.PermissionDenied(
+                "You must have been admitted to decline admission."
+            )
+        if request.user.rsvp_deadline < timezone.now():
+            raise exceptions.PermissionDenied("Your RSVP deadline has passed.")
+        request.user.declined_acceptance = True
+        request.user.save()
+        return redirect(reverse_lazy("status"))
