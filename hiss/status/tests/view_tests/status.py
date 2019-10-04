@@ -61,11 +61,15 @@ class StatusViewTestCase(test_case.SharedTestCase):
     def test_pending_context_provides_edit_link(self):
         self.create_active_wave()
         self.client.force_login(self.user)
-        application = Application.objects.create(**self.application_fields, wave=self.wave1)
+        application = Application.objects.create(
+            **self.application_fields, wave=self.wave1
+        )
 
         response = self.client.get(reverse_lazy("status"))
 
-        self.assertIn(str(application.get_absolute_url()), response.content.decode('utf8'))
+        self.assertIn(
+            str(application.get_absolute_url()), response.content.decode("utf8")
+        )
 
     def test_rsvp_deadline_expired_context(self):
         self.create_active_wave()
