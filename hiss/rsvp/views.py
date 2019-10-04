@@ -60,6 +60,12 @@ class UpdateRsvpView(mixins.LoginRequiredMixin, generic.UpdateView):
 
     success_url = reverse_lazy("status")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["event_start_datetime"] = settings.EVENT_START_DATETIME
+        context["event_end_datetime"] = settings.EVENT_END_DATETIME
+        return context
+
     def get_object(self, queryset=None) -> Rsvp:
         """
         Checks to make sure that the user actually owns the rsvp requested.

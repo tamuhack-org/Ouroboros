@@ -34,6 +34,7 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
     Updates a linked Application. Updating an Application does not change the Wave it was originally submitted
     during.
     """
+
     queryset = Application.objects.all()
     form_class = ApplicationModelForm
     template_name = "application/application_form.html"
@@ -46,4 +47,3 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
         if app.user != self.request.user:
             raise PermissionDenied("You don't have permission to view this application")
         return app
-
