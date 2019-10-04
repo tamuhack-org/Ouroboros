@@ -37,7 +37,9 @@ class DeclineRsvpViewTestCase(test_case.SharedTestCase):
     def test_permission_denied_if_rejected(self):
         self.client.force_login(self.user)
         self.create_active_wave()
-        Application.objects.create(**self.application_fields, wave=self.wave1, approved=False)
+        Application.objects.create(
+            **self.application_fields, wave=self.wave1, approved=False
+        )
 
         response = self.client.post(reverse_lazy("rsvp:decline"))
 
@@ -46,7 +48,9 @@ class DeclineRsvpViewTestCase(test_case.SharedTestCase):
     def test_permission_denied_if_deadline_exceeded(self):
         self.client.force_login(self.user)
         self.create_active_wave()
-        Application.objects.create(**self.application_fields, wave=self.wave1, approved=True)
+        Application.objects.create(
+            **self.application_fields, wave=self.wave1, approved=True
+        )
         self.user.rsvp_deadline = timezone.now() - timedelta(days=100000)
         self.user.save()
 
@@ -57,18 +61,22 @@ class DeclineRsvpViewTestCase(test_case.SharedTestCase):
     def test_redirects_if_successful(self):
         self.client.force_login(self.user)
         self.create_active_wave()
-        Application.objects.create(**self.application_fields, wave=self.wave1, approved=True)
+        Application.objects.create(
+            **self.application_fields, wave=self.wave1, approved=True
+        )
         self.user.rsvp_deadline = timezone.now() + timedelta(days=100000)
         self.user.save()
 
         response = self.client.post(reverse_lazy("rsvp:decline"))
 
-        self.assertRedirects(response, reverse_lazy('status'))
+        self.assertRedirects(response, reverse_lazy("status"))
 
     def test_assert_sets_declined_acceptance_if_successful(self):
         self.client.force_login(self.user)
         self.create_active_wave()
-        Application.objects.create(**self.application_fields, wave=self.wave1, approved=True)
+        Application.objects.create(
+            **self.application_fields, wave=self.wave1, approved=True
+        )
         self.user.rsvp_deadline = timezone.now() + timedelta(days=100000)
         self.user.save()
 
