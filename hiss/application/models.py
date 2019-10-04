@@ -227,8 +227,8 @@ class WaveManager(models.Manager):
             start_dt = timezone.now()
         qs = (
             self.get_queryset()
-                .filter(start__lte=start_dt, end__gt=start_dt)
-                .order_by("start")
+            .filter(start__lte=start_dt, end__gt=start_dt)
+            .order_by("start")
         )
         return qs.first()
 
@@ -333,7 +333,7 @@ class Application(models.Model):
         choices=AGREE,
         default=None,
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
-                  "A&M.",
+        "A&M.",
     )
     transport_needed = models.CharField(choices=TRANSPORT_MODES, max_length=11)
     additional_accommodations = models.TextField(
