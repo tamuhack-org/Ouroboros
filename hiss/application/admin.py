@@ -142,6 +142,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "question3",
         "notes",
         "approved",
+        "is_a_walk_in",
     ]
     list_filter = (
         ("gender", custom_titled_filter("gender")),
@@ -201,7 +202,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 ]
             },
         ),
-        ("Status", {"fields": ["approved"]}),
+        ("Status", {"fields": ["approved", "is_a_walk_in"]}),
     ]
 
     approve.short_description = "Approve Selected Applications"
@@ -220,9 +221,12 @@ class ApplicationAdmin(admin.ModelAdmin):
     def user_email(self, obj: Application) -> str:
         return obj.user.email
 
+    def is_a_walk_in(self, obj: Application) -> bool:
+        return obj.wave.is_walk_in_wave
+
 
 class WaveAdmin(admin.ModelAdmin):
-    list_display = ("start", "end")
+    list_display = ("start", "end", "is_walk_in_wave")
 
 
 admin.site.register(Application, ApplicationAdmin)
