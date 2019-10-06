@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<section class="signin sign_up">
+    <div class="container">
+        <div class="row justify-content-md-center text-center">
+            <div class="col-sm-12 col-md-8 col-lg-6 login-box">
+
+                <header>
+                    <img class="header-logo" src="{% static 'howdyHackLogo.svg' %}">
+                    <h1>{{ event_name }} 2019</h1>
+                    <h1>Application</h1>
+                </header>
+                <p style="text-align: left;">Please activate your account! Enter your email address below, and click
+                    the
+                    activation link in the email you receive.</p>
+                <form method="POST">
+                    {% csrf_token %}    <!-- security -->
+
+                    {{ form.as_p }}
+                    <input type="submit" value="Resend Verification Email" class="btn btn-lg btn-block btn-login">
+                </form>
+                <div class="row login-alt-options pt-4">
+                    <div class="col-sm-12 col-lg-12 text-left">
+                        If you still can't access your account (or something else is wrong),
+                        please email us at <a
+                            href="mailto:hello@tamuhack.com">hello@tamuhack.com</a>.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

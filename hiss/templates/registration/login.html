@@ -1,46 +1,57 @@
-{% extends 'base.html' %}{% block body %}
+{% extends 'base.html' %} {% block additional_CSS %} {% load static %}
+<link rel="stylesheet" href="{% static 'background_color.css' %}"/>
+{% endblock %} {% block body %}
 
-    <section>
-        <div>
+<section class="signin">
+    <div class="container">
+        <div class="row justify-content-md-center text-center">
+            <div class="col-sm-12 col-md-8 col-lg-6 login-box">
 
-            <header>
-                <h1>{{ event_name }}</h1>
-            </header>
+                <header>
+                    <img class="header-logo" src="{% static 'howdyHackLogo.svg' %}">
+                    <h1>{{ event_name }} 2019</h1>
+                    <h1>Application</h1>
+                </header>
 
-            <form method="POST" action="{% url 'customauth:login' %}">
-                {% csrf_token %}
-                <!-- security -->
-                <div>
-                    {% if form.errors %}
+                <form id="login-form" method="POST" action="{% url 'customauth:login' %}">
+                    {% csrf_token %}
+                    <!-- security -->
+                    <div class="form-row">
+                        {% if form.errors %}
                         {% for error in form.non_field_errors %}
-                            <div>
-                                <strong>{{ error|escape }}</strong>
-                            </div>
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
                         {% endfor %}
-                    {% endif %}
-                    {{ csrf_input }}
-                    {% for field in form %}
+                        {% endif %}
+                        {{ csrf_input }}
+                        {% for field in form %}
                         {{ field.errors }}
                         {{ field.label_tag }} {{ field }}
                         {% if field.help_text %}
-                            <p>{{ field.help_text|safe }}</p>
+                        <p class="help">{{ field.help_text|safe }}</p>
                         {% endif %}
 
-                    {% endfor %}
+                        {% endfor %}
 
 
-                    <a href="{% url 'customauth:password_reset' %}">Forgot Password?</a>
-                    <a href="{% url 'customauth:resend_activation' %}">Can't Log In?</a>
+                        <a href="{% url 'customauth:password_reset' %}" class="forgot-pswd">Forgot Password?</a>
+                        <a href="{% url 'customauth:resend_activation' %}" class="forgot-pswd">Can't Log In?</a>
 
 
-                    <input type="submit" value="Log In"/>
+                        <input type="submit" class="btn btn-lg btn-block btn-login" value="Log In"/>
+                    </div>
+                    {% csrf_token %}
+                </form>
+
+                <div class="row login-alt-options pt-4">
+                    <div class="col-sm-12 col-lg-12 text-center">
+                        Don't have an account? <a href="{% url 'customauth:signup' %}">Sign up</a>
+                    </div>
                 </div>
-            </form>
 
-            <div>
-                Don't have an account? <a href="{% url 'customauth:signup' %}">Sign up</a>
             </div>
-
         </div>
-    </section>
+    </div>
+</section>
 {% endblock %}

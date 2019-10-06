@@ -35,6 +35,10 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
     during.
     """
 
+    queryset = Application.objects.all()
+    form_class = ApplicationModelForm
+    template_name = "application/application_form.html"
+
     def get_object(self, queryset=None) -> Application:
         """
         Checks to make sure that the user actually owns the application requested.
@@ -43,7 +47,3 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
         if app.user != self.request.user:
             raise PermissionDenied("You don't have permission to view this application")
         return app
-
-    queryset = Application.objects.all()
-    form_class = ApplicationModelForm
-    template_name = "application/application_form.html"
