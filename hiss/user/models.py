@@ -59,12 +59,16 @@ class User(auth_models.AbstractUser):
     rsvp_deadline = models.DateTimeField(null=True, blank=True)
     declined_acceptance = models.BooleanField(default=False)
 
-    # Volunteering
-    # volunteer_application = models.ForeignKey("VolunteerApplication", null=True, on_delete=models.SET_NULL)
-
     # Day-of
     checked_in = models.BooleanField(default=False)
     checked_in_at = models.DateTimeField(null=True, blank=True)
+    team = models.ForeignKey(
+        "team.Team",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="members",
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

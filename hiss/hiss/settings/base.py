@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "customauth.apps.CustomauthConfig",
     "shared.apps.SharedConfig",
+    "team.apps.TeamConfig",
 ]
 
 MIDDLEWARE = [
