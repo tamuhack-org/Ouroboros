@@ -23,7 +23,7 @@ class CreateTeamViewTestCase(test_case.SharedTestCase):
         self.user.team = old_team
         self.user.save()
 
-        response = self.client.post(reverse_lazy("team:create"), data=self.team_fields)
+        self.client.post(reverse_lazy("team:create"), data=self.team_fields)
 
         self.assertEqual(self.user.team, old_team)
 

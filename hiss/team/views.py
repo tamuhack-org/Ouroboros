@@ -1,10 +1,12 @@
+from typing import Optional
+
 from django.conf import settings
-from django.contrib.auth import mixins
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from shared import mixins as shared_mixins
 from django.views import generic
+
+from shared import mixins as shared_mixins
 
 # Create your views here.
 from team.forms import CreateTeamForm, JoinTeamForm
@@ -47,7 +49,10 @@ class JoinTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.FormView)
         return self.request.user.team.get_absolute_url()
 
     def form_valid(self, form: JoinTeamForm):
-        team: Team = Team.objects.get(id=form.cleaned_data["id"])
+        team: Optional[Team] = Team.objects.filter(id=form.cleaned_data["id"]).first()
+        if not team:
+            form.add_error(None, "No such team exists.")
+            return self.form_invalid(form)
         if team.members.count() == settings.MAX_MEMBERS_PER_TEAM:
             form.add_error(None, "This team is already at capacity.")
             return self.form_invalid(form)
@@ -92,7 +97,7 @@ class LeaveTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.base.Vie
     Removes a User from a Team. If the Team no longer has members, deletes the Team.
     """
 
-    def post(self, request: HttpRequest, *args, **kwargs):
+    def post(self, request: HttpRequest, *_args, **_kwargs):
         team: Team = request.user.team
         request.user.team = None
         request.user.save()

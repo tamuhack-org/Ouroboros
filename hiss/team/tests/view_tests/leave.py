@@ -11,7 +11,7 @@ class LeaveTeamViewTestCase(test_case.SharedTestCase):
         self.team_fields = {"name": "New Team Name"}
 
     def test_redirects_if_not_logged_in(self):
-        team: Team = Team.objects.create(**self.team_fields)
+        Team.objects.create(**self.team_fields)
 
         response = self.client.post(reverse_lazy("team:leave"))
 

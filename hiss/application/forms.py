@@ -52,5 +52,6 @@ class ApplicationModelForm(forms.ModelForm):
             "is_adult",
             "additional_accommodations",
             "resume",
+            "transport_needed",
             "notes",
         ]

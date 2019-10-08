@@ -55,7 +55,7 @@ class ResendActivationEmailView(generic.FormView):
 
 
 class ActivateView(views.View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *_args, **kwargs):
         user = None
         try:
             uid = force_text(urlsafe_base64_decode(kwargs["uidb64"]))

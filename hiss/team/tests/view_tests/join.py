@@ -60,7 +60,7 @@ class JoinTeamViewTestCase(test_case.SharedTestCase):
             user.save()
         Application.objects.create(**self.application_fields, wave=self.wave1)
 
-        response = self.client.post(reverse_lazy("team:join"), data={"id:": team.pk})
+        self.client.post(reverse_lazy("team:join"), data={"id:": team.pk})
         self.user.refresh_from_db()
 
         self.assertNotEqual(self.user.team, team)
@@ -71,7 +71,7 @@ class JoinTeamViewTestCase(test_case.SharedTestCase):
         team: Team = Team.objects.create(**self.team_fields)
         Application.objects.create(**self.application_fields, wave=self.wave1)
 
-        response = self.client.post(reverse_lazy("team:join"), data={"id": team.pk})
+        self.client.post(reverse_lazy("team:join"), data={"id": team.pk})
         self.user.refresh_from_db()
 
         self.assertEqual(self.user.team, team)
