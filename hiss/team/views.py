@@ -92,7 +92,7 @@ class LeaveTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.base.Vie
     Removes a User from a Team. If the Team no longer has members, deletes the Team.
     """
 
-    def patch(self, request: HttpRequest, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, **kwargs):
         team: Team = request.user.team
         request.user.team = None
         request.user.save()

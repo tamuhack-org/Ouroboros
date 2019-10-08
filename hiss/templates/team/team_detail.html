@@ -8,8 +8,12 @@
         <ul>
             {% for application in member_applications %}
                 <li>{{ application.first_name }} {{ application.last_name }}
-                    {% if application.user == user %} <a
-                            href="{% url 'team:leave' %}">LEAVE GROUP</a>
+                    {% if application.user == user %}
+
+                        <form method="POST" action="{% url 'team:leave' %}">
+                            {% csrf_token %}
+                            <input type="submit" value="LEAVE GROUP">
+                        </form>
                     {% endif %}
                 </li>
             {% endfor %}

@@ -13,7 +13,7 @@ class LeaveTeamViewTestCase(test_case.SharedTestCase):
     def test_redirects_if_not_logged_in(self):
         team: Team = Team.objects.create(**self.team_fields)
 
-        response = self.client.patch(reverse_lazy("team:leave"))
+        response = self.client.post(reverse_lazy("team:leave"))
 
         self.assertRedirects(
             response,
@@ -24,7 +24,7 @@ class LeaveTeamViewTestCase(test_case.SharedTestCase):
         self.client.force_login(self.user)
         team: Team = Team.objects.create(**self.team_fields)
 
-        response = self.client.patch(reverse_lazy("team:leave"))
+        response = self.client.post(reverse_lazy("team:leave"))
 
         self.assertEqual(response.status_code, 403)
         self.assertNotEqual(self.user.team, team)
@@ -37,7 +37,7 @@ class LeaveTeamViewTestCase(test_case.SharedTestCase):
         self.user.team = team
         self.user.save()
 
-        response = self.client.patch(reverse_lazy("team:leave"))
+        response = self.client.post(reverse_lazy("team:leave"))
 
         self.assertRedirects(response, reverse_lazy("status"))
 
@@ -49,7 +49,7 @@ class LeaveTeamViewTestCase(test_case.SharedTestCase):
         self.user.team = team
         self.user.save()
 
-        self.client.patch(reverse_lazy("team:leave"))
+        self.client.post(reverse_lazy("team:leave"))
         self.user.refresh_from_db()
 
         self.assertIsNone(self.user.team)
@@ -62,6 +62,6 @@ class LeaveTeamViewTestCase(test_case.SharedTestCase):
         self.user.team = team
         self.user.save()
 
-        self.client.patch(reverse_lazy("team:leave"))
+        self.client.post(reverse_lazy("team:leave"))
 
         self.assertFalse(Team.objects.filter(id=team.pk).exists())
