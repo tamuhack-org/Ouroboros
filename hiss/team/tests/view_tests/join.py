@@ -27,7 +27,7 @@ class JoinTeamViewTestCase(test_case.SharedTestCase):
 
         self.assertNotEqual(self.user.team, team)
 
-    def test_fails_if_user_already_on_team(self):
+    def test_fails_if_user_on_different_team(self):
         self.client.force_login(self.user)
         team: Team = Team.objects.create(**self.team_fields)
         other_team: Team = Team.objects.create(name="Other Team Name")

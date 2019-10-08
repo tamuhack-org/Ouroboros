@@ -13,7 +13,7 @@ def check_in(_modeladmin, _request, queryset) -> None:
     Sets the value of the `checked_in` for the selected `User`s to `True`
     """
     queryset.update(checked_in=True)
-    queryset.update(checked_in_at=timezone.datetime.now())
+    queryset.update(checked_in_at=timezone.now())
 
 
 def export_user_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):

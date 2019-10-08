@@ -1,6 +1,9 @@
 from django.conf import settings
 from django.contrib.auth import mixins
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from shared import mixins as shared_mixins
 from django.views import generic
 
 # Create your views here.
@@ -9,7 +12,7 @@ from team.models import Team
 from user.models import User
 
 
-class CreateTeamView(mixins.UserPassesTestMixin, generic.CreateView):
+class CreateTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.CreateView):
     """
     If the user has applied, creates a Team and adds the User to it.
     """
@@ -17,19 +20,8 @@ class CreateTeamView(mixins.UserPassesTestMixin, generic.CreateView):
     form_class = CreateTeamForm
     template_name = "team/team_form.html"
 
-    def test_func(self) -> bool:
-        # Ensure user is logged-in
-        user: User = self.request.user
-        if not user.is_authenticated:
-            return False
-
-        # Ensure user has applied
-        if not user.application_set.exists():
-            return False
-        return True
-
     def form_valid(self, form: CreateTeamForm):
-        team: Team = form.save(commit=False)
+        team: Team = form.save()
         user: User = self.request.user
         if self.request.user.team is not None:
             form.add_error(
@@ -43,24 +35,13 @@ class CreateTeamView(mixins.UserPassesTestMixin, generic.CreateView):
         return redirect(team.get_absolute_url())
 
 
-class JoinTeamView(mixins.UserPassesTestMixin, generic.FormView):
+class JoinTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.FormView):
     """
     Adds the user to a team (if the team isn't already at capacity).
     """
 
     form_class = JoinTeamForm
     template_name = "team/join_form.html"
-
-    def test_func(self) -> bool:
-        # Ensure user is logged-in
-        user: User = self.request.user
-        if not user.is_authenticated:
-            return False
-
-        # Ensure user has applied
-        if not user.application_set.exists():
-            return False
-        return True
 
     def get_success_url(self):
         return self.request.user.team.get_absolute_url()
@@ -82,9 +63,41 @@ class JoinTeamView(mixins.UserPassesTestMixin, generic.FormView):
         return super().form_valid(form)
 
 
-class DetailTeamView(mixins.LoginRequiredMixin, generic.DetailView):
+class DetailTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.DetailView):
     """
     Renders a Team if the User is a member.
     """
 
-    pass
+    model = Team
+    template_name = "team/team_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        team: Team = self.get_object()
+        member_applications = [
+            member.application_set.first() for member in team.members.all()
+        ]
+        context_data["member_applications"] = member_applications
+        return context_data
+
+    def get(self, request, *args, **kwargs):
+        team: Team = self.get_object()
+        if self.request.user.team != team:
+            return redirect(reverse_lazy("team:join"))
+        return super().get(request, *args, **kwargs)
+
+
+class LeaveTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.base.View):
+    """
+    Removes a User from a Team. If the Team no longer has members, deletes the Team.
+    """
+
+    def patch(self, request: HttpRequest, *args, **kwargs):
+        team: Team = request.user.team
+        request.user.team = None
+        request.user.save()
+
+        team.refresh_from_db()
+        if team.members.count() == 0:
+            team.delete()
+        return redirect(reverse_lazy("status"))
