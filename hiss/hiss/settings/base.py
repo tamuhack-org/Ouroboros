@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     "customauth.apps.CustomauthConfig",
     "shared.apps.SharedConfig",
     "team.apps.TeamConfig",
-    "anymail"
+    "anymail",
 ]
 
 MIDDLEWARE = [
