@@ -1,0 +1,23 @@
+{% extends 'dashboard_base.html' %} {% block content %}{% load static %}
+
+    <div class="application">
+        <header class="text-center">
+            <img class="header-logo" src="{% static 'howdyHackLogo.svg' %}"/>
+            <h5>{{ object.name }}</h5>
+        </header>
+        <ul>
+            {% for application in member_applications %}
+                <li>{{ application.first_name }} {{ application.last_name }}
+                    {% if application.user == user %}
+
+                        <form method="POST" action="{% url 'team:leave' %}">
+                            {% csrf_token %}
+                            <input type="submit" value="LEAVE GROUP">
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

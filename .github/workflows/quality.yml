@@ -1,0 +1,38 @@
+name: Code Quality Checks
+
+on: [push]
+
+jobs:
+  black:
+    name: 'Check compliance with Black formatting style'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: lgeiger/black-action@v1.0.1
+        with:
+          args: ". --check --exclude=\".*/migrations\""
+  flake:
+    name: 'Check code health with Flake8'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: cclauss/GitHub-Action-for-Flake8@0.0.1
+        with:
+          args: "flake8 . --exclude=\"env,**/migrations,__init__.py,hiss/hiss/settings/**\" --max-line-length=120"
+  pylint:
+    name: 'Check code quality with pylint'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: 'Set up Python 3.7'
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r hiss/requirements.txt
+      - name: Lint
+        run: |
+          cd hiss
+          pylint --exit-zero --rcfile=.pylintrc application rsvp shared status user volunteer

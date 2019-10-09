@@ -1,9 +1,0 @@
-import datetime
-
-EVENT_NAME = "HowdyHack"
-EMAIL_CONFIRM_CODE_LENGTH = 6
-MAX_YEARS_ADMISSION = 5
-DAYS_TO_RSVP = 4
-EVENT_START_DATE = datetime.date(2019, 9, 7)
-EVENT_END_DATE = datetime.date(2019, 9, 8)
-MAX_VOLUNTEERS_PER_SHIFT = 4
