@@ -6,7 +6,7 @@ steps:
   entrypoint: /bin/sh
   args:
   - -c
-  - 'pip install -r requirements.txt && cd ouroboros && python manage.py test'
+  - 'pip install -r requirements.txt && cd hiss && python manage.py test'
 
 # This step builds the container image.
 - name: 'gcr.io/cloud-builders/docker'
@@ -14,7 +14,7 @@ steps:
   args:
   - 'build'
   - '-t'
-  - 'gcr.io/$PROJECT_ID/ouroboros:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/hiss:$SHORT_SHA'
   - '.'
 
 # This step pushes the built image to Container Registry
@@ -22,7 +22,7 @@ steps:
   id: Push
   args:
   - 'push'
-  - 'gcr.io/$PROJECT_ID/ouroboros:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/hiss:$SHORT_SHA'
 
 # https://cloud.google.com/cloud-build/docs/access-private-github-repos
 # This step decrypts the machine account's SSH key
@@ -79,8 +79,8 @@ steps:
   args:
   - '-c'
   - |
-     sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" deployment/ouroboros.yaml.tpl | \
-     sed "s/COMMIT_SHA/${SHORT_SHA}/g" > snakeskin/ouroboros.yaml
+     sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" deployment/hiss.yaml.tpl | \
+     sed "s/COMMIT_SHA/${SHORT_SHA}/g" > snakeskin/hiss.yaml
 
 # This step pushes the manifest back to snakeskin
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -91,9 +91,9 @@ steps:
   - |
     set -x && \
     cd snakeskin && \
-    git add ouroboros.yaml && \
-    git commit --allow-empty -m "Deploying image gcr.io/${PROJECT_ID}/ouroboros:${SHORT_SHA}
-    Built from commit ${COMMIT_SHA} of repository ouroboros
+    git add hiss.yaml && \
+    git commit --allow-empty -m "Deploying image gcr.io/${PROJECT_ID}/hiss:${SHORT_SHA}
+    Built from commit ${COMMIT_SHA} of repository hiss
     Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
     git push origin candidate
   volumes:

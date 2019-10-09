@@ -1,20 +1,20 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ouroboros
+  name: hiss
   labels:
-    app: ouroboros
+    app: hiss
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: ouroboros
+        app: hiss
     spec:
       containers:
-      - name: ouroboros-app
+      - name: hiss-app
         # Replace this with your project ID
-        image: gcr.io/GOOGLE_CLOUD_PROJECT/ouroboros:COMMIT_SHA
+        image: gcr.io/GOOGLE_CLOUD_PROJECT/hiss:COMMIT_SHA
         imagePullPolicy: Always
         env:
           - name: DATABASE_USER
@@ -56,7 +56,7 @@ spec:
       - image: gcr.io/cloudsql-docker/gce-proxy:1.05
         name: cloudsql-proxy
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
-                  "-instances=GOOGLE_CLOUD_PROJECT:us-central1:ouroboros=tcp:5432",
+                  "-instances=GOOGLE_CLOUD_PROJECT:us-central1:hiss=tcp:5432",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
         volumeMounts:
           - name: cloudsql-oauth-credentials
@@ -84,10 +84,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ouroboros-nodeport-service
+  name: hiss-nodeport-service
 spec:
   selector:
-    app: ouroboros
+    app: hiss
   ports:
   - protocol: TCP
     port: 9000

@@ -6,5 +6,5 @@ ENV PATH /env/bin:$PATH
 ADD requirements.txt /app/requirements.txt
 RUN /env/bin/pip install --upgrade pip && /env/bin/pip install -r /app/requirements.txt
 
-COPY ouroboros /app
-CMD gunicorn -b :$PORT ouroboros.wsgi:application
+COPY hiss /app
+CMD gunicorn -b :$PORT hiss.wsgi:application
