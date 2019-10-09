@@ -57,12 +57,30 @@ class CreateRsvpView(mixins.UserPassesTestMixin, generic.CreateView):
         return redirect(self.success_url)
 
 
-class UpdateRsvpView(mixins.LoginRequiredMixin, generic.UpdateView):
+class UpdateRsvpView(mixins.UserPassesTestMixin, generic.UpdateView):
     """
     Updates a linked Rsvp.
     """
 
     success_url = reverse_lazy("status")
+    queryset = Rsvp.objects.all()
+    form_class = RsvpModelForm
+    template_name = "rsvp/rsvp_form.html"
+
+    def test_func(self) -> bool:
+        # Ensure user is logged-in
+        user: User = self.request.user
+        if not user.is_authenticated:
+            return False
+        app: Union[Application, None] = user.application_set.first()
+
+        # User hasn't applied
+        if not app:
+            return False
+        # Their application hasn't been approved (or has been rejected)
+        if not app.approved:
+            return False
+        return True
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -79,13 +97,9 @@ class UpdateRsvpView(mixins.LoginRequiredMixin, generic.UpdateView):
             raise PermissionDenied("You don't have permission to view this rsvp")
         return rsvp
 
-    queryset = Rsvp.objects.all()
-    form_class = RsvpModelForm
-    template_name = "rsvp/rsvp_form.html"
-
 
 class DeclineRsvpView(mixins.LoginRequiredMixin, views.View):
-    def post(self, request: HttpRequest, *args, **kwargs):
+    def post(self, request: HttpRequest, *_args, **_kwargs):
         if not request.user.application_set.exists():
             raise exceptions.PermissionDenied(
                 "You can't decline admission without applying first"

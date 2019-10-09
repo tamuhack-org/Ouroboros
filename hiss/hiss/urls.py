@@ -22,4 +22,5 @@ urlpatterns = [
     path("application/", include("application.urls", namespace="application")),
     path("rsvp/", include("rsvp.urls", namespace="rsvp")),
     path("status/", include("status.urls")),
+    path("team/", include("team.urls")),
 ]

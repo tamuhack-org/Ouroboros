@@ -1,0 +1,20 @@
+{% extends 'dashboard_base.html' %} {% block content %}{% load static %}
+
+    <div class="application">
+        <header class="text-center">
+            <img class="header-logo" src="{% static 'howdyHackLogo.svg' %}"/>
+            <h5>Join a team!</h5>
+            <p>Enter the team code.</p>
+        </header>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br/>
+            <button type="submit" class="btn btn-lg btn-block btn-login btn-width">
+                Submit
+            </button>
+        </form>
+    </div>
+
+{% endblock %}
