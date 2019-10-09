@@ -1,8 +1,4 @@
-from django.contrib.auth import views as auth_views
-from django.urls import path
-
 from customauth import forms, views
-from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.urls import path
 
