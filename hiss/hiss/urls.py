@@ -15,12 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
+
+
+def healthcheck(request):
+    return http.HttpResponse('')
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("customauth.urls")),
     path("application/", include("application.urls", namespace="application")),
+    path("healthy/", healthcheck),
+    url(r"^$", RedirectView.as_view(pattern_name="login")),
     path("rsvp/", include("rsvp.urls", namespace="rsvp")),
     path("status/", include("status.urls")),
     path("team/", include("team.urls")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
