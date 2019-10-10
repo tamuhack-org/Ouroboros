@@ -17,10 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django import http
+from django.conf.urls import url
+from django.views.generic.base import RedirectView
 
 
 def healthcheck(request):
-    return http.HttpResponse('')
+    return http.HttpResponse("")
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
