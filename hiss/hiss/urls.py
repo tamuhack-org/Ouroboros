@@ -27,7 +27,7 @@ urlpatterns = [
     path("accounts/", include("customauth.urls")),
     path("application/", include("application.urls", namespace="application")),
     path("healthy/", healthcheck),
-    url(r"^$", RedirectView.as_view(pattern_name="login")),
+    url(r"^$", RedirectView.as_view(pattern_name="customauth:login")),
     path("rsvp/", include("rsvp.urls", namespace="rsvp")),
     path("status/", include("status.urls")),
     path("team/", include("team.urls")),
