@@ -15,6 +15,7 @@ For local development, this application is self-contained (it uses a SQLite tabl
 3. `pip install -r requirements.txt`
 4. `python3 manage.py makemigrations application customauth rsvp user`
 5. `python3 manage.py migrate --run-syncdb`
+6. `python3 manage.py seeddb <NUM_USERS_WHO_CREATED_AN_ACCOUNT> <NUM_USERS_WHO_APPLIED> <NUM_USERS_WE'VE_ALREADY_ACCEPTED>`
 6. `python3 manage.py createsuperuser`
 7. `python3 manage.py runserver`
 
