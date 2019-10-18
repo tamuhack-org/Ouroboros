@@ -16,7 +16,7 @@
                                 <a class="nav-item" href="{{ user.team.get_absolute_url }}">Teams</a>
                             {% endif %}                        
                         <div class="w-100">
-                            <a class="nav-item nav-right" href="#">Log Out</a>
+                            <a class="nav-item nav-right" href="{% url 'customauth:logout' %}">Log Out</a>
                         </div>
                     </nav>
                 </div>

@@ -24,10 +24,15 @@ html, body {
     color: black;
 }
 
-.navbar .nav-item:hover, .navbar .nav-item .active {
+.navbar .nav-item:hover {
     color: #69A2CC;
     text-decoration: none;
-    border-bottom: 2px solid #69A2CC;
+    transition: 0.3s;
+}
+
+.navbar .nav-item .active {
+    color: #69A2CC;
+    border-bottom: 1px solid #69A2CC;
 }
 
 .navbar .nav-right{
@@ -108,7 +113,7 @@ header {
     text-align: left !important;
 }
 
-.signin label, p {
+.signin label {
     width: 100%;
     font-size: 16px;
 }
@@ -153,16 +158,8 @@ input[type="submit"] {
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    font-style: italic;
+    font-weight: 300;
     opacity: 1; /* Firefox */
-}
-
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    font-style: italic;
-}
-
-::-ms-input-placeholder { /* Microsoft Edge */
-    font-style: italic;
 }
 
 .header-logo {
@@ -182,7 +179,7 @@ input[type="submit"] {
     letter-spacing: 1px;
 }
 
-.application, .login-box, .status-box {
+.application, .login-box, .status-box, .team-form {
     background: #fff;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
     border-radius: 3px;
@@ -283,31 +280,6 @@ input[type="submit"] {
     border-radius: 0 !important;
     background: transparent !important;
     background-color: transparent !important;
-}
-
-.list-group-item {
-    border-radius: 0 !important;
-}
-
-.transparent-obj {
-    background: transparent !important;
-}
-
-.navbar-trans {
-    background: white;
-}
-
-.sidebar li:hover {
-    color: blue !important;
-}
-
-.sidebar a:link, a:hover a {
-    text-decoration: none;
-    color: black;
-}
-
-.sidebar a:visited {
-    text-decoration: none;
 }
 
 .btn-back-submit {
@@ -833,4 +805,54 @@ button {
 
 #id_shifts {
     margin-top: 2px;
+}
+
+.team-form {
+    padding: 80px 70px 110px;
+}
+.team-form .col-12 {
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+
+.team-form h3 {
+    font-size: 24px;
+    text-transform: uppercase;
+}
+
+.team-form h4 {
+    margin-top: 2em;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.team-form .divider-line {
+    position: absolute;
+    left: 49%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #ccc;
+}
+.team-form .divider p {
+    color: #777;
+    font-size: 18px;
+    font-weight: 300;
+    text-transform: uppercase;
+    position: absolute;
+    left: 40%;
+    top: 32%;
+    padding: 30px 0px;
+    background: white;
+    z-index: 1;
+}
+
+.team-form label { display: none; }
+
+.team-form form input[type=text] {
+    border: 1px solid #C5C5C5;
+    border-radius: 5px;
+    padding: 10px 15px;
+    width: 100%;
 }
