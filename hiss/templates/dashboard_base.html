@@ -1,5 +1,4 @@
-{% extends 'base.html' %}
-
+{% extends 'base.html' %} {% load static %}
 
 {% block body %}
 <section class="dashboard">
@@ -8,16 +7,14 @@
             <div class="row" style="background-color: white">
                 <div class="justify-content-center col-xl-10 col-md-12 inner-container">
                     <nav class="navbar navbar-expand-lg">
-                        <a class="nav-brand" href="#">th</a>
+                        <img src="{% static 'th_bw.svg' %}"></a>
                         <a class="nav-item" href="{% url 'status' %}">Status</span></a>
                             {% if not user.team %}
                                 <a class="nav-item" href="{% url 'team:create'  %}">Teams</a>
                             {% else %}
                                 <a class="nav-item" href="{{ user.team.get_absolute_url }}">Teams</a>
                             {% endif %}                        
-                        <div class="w-100">
-                            <a class="nav-item nav-right" href="{% url 'customauth:logout' %}">Log Out</a>
-                        </div>
+                        <a class="nav-item nav-right" href="{% url 'customauth:logout' %}">Log Out</a>
                     </nav>
                 </div>
             </div> 

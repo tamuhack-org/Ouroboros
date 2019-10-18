@@ -1,28 +1,37 @@
 {% extends 'dashboard_base.html' %} {% block content %}{% load static %}
 
-    <div class="application">
-        <header class="text-center">
-            <h3>{{ settings.EVENT_NAME }} Team</h3>
-        </header>
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <h5>{{ object.name }}</h5>
+<div class="team-detail">
+    <h3 class="mb-5">{{ settings.EVENT_NAME }} TAMUhack 2020 Team</h3>
 
-            </div>
-            <div class="col-12 col-md-6">
-                <ul>
-                    {% for application in member_applications %}
-                        <li>{{ application.first_name }} {{ application.last_name }} </li>
-                    {% endfor %}
-                </ul>
-            </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <h4>Team Name</h4>
+            <h5>{{ object.name }}</h5>
+
+            <br>
+
+            <h4>Team ID</h4>
+            <h5>{{ user.team.id }}</h5>
+            <p class="note">(Use this code to invite others to join your team)</p>
+            <br>
+
         </div>
-        
-        <form method="POST" action="{% url 'team:leave' %}">
-            {% csrf_token %}
-            <input type="submit" value="LEAVE GROUP" class="btn btn-login">
-        </form>
 
+        <div class="col-12 col-md-6">
+            <h4>Team Members</h4>
+            <ul>
+                {% for application in member_applications %}
+                    <li>{{ application.first_name }} {{ application.last_name }} </li>
+                {% endfor %}        
+            </ul>
+        </div>
     </div>
+    
+    <form method="POST" action="{% url 'team:leave' %}">
+        {% csrf_token %}
+        <input type="submit" value="LEAVE TEAM" class="btn btn-login btn-block btn-width">
+    </form>
+
+</div>
 
 {% endblock %}

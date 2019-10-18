@@ -39,6 +39,11 @@ html, body {
     float: right;
     text-align: right;
     white-space: nowrap;
+    width: 100%;
+}
+
+.navbar img {
+    max-width: 25px;
 }
 
 #logo_bar {
@@ -163,7 +168,7 @@ input[type="submit"] {
 }
 
 .header-logo {
-    max-width: 70px;
+    max-width: 40px;
     margin-bottom: 20px;
 }
 
@@ -179,7 +184,7 @@ input[type="submit"] {
     letter-spacing: 1px;
 }
 
-.application, .login-box, .status-box, .team-form {
+.application, .login-box, .status-box, .team-form, .team-detail {
     background: #fff;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
     border-radius: 3px;
@@ -196,6 +201,7 @@ input[type="submit"] {
 }
 
 .status-box {
+    margin-top: 3rem;
     margin-bottom: 5em;
 }
 
@@ -472,6 +478,7 @@ li .diplome {
     position: absolute;
     text-align: center;
     top: 70%;
+    width: 100%;
 }
 
 li .point {
@@ -707,6 +714,113 @@ button {
     -moz-osx-font-smoothing: grayscale;
 }
 
+.application p > label[for="id_extra_links"]::after,
+.application p > label[for="id_additional_accommodations"]::after,
+.application p > label[for="id_notes"]::after {
+    content: " " !important;
+    clear: both;
+}
+
+.application p > #id_notes {
+    margin-bottom: 30px !important;
+}
+
+.application p > label[for="id_adult"], .application p > label[for="id_mlh_coc"] {
+    margin-left: 20px;
+    display: inline;
+}
+
+.application p > #id_adult, .application p > #id_mlh_coc {
+    margin: 0;
+    float: left;
+    margin-top: -12px;
+}
+
+#id_shifts {
+    margin-top: 2px;
+}
+
+.team-form {
+    padding: 80px 70px 110px;
+}
+.team-detail {
+    padding: 80px 70px;
+    margin-top: 2rem;
+}
+.team-form .col-12 {
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+
+.team-form h3, .team-detail h3{
+    font-size: 24px;
+    text-transform: uppercase;
+}
+
+.team-form h4 {
+    margin-top: 2em;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.team-form .divider-line {
+    position: absolute;
+    left: 49%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #ccc;
+}
+.team-form .divider p {
+    color: #777;
+    font-size: 18px;
+    font-weight: 300;
+    text-transform: uppercase;
+    position: absolute;
+    left: 40%;
+    top: 32%;
+    padding: 30px 0px;
+    background: white;
+    z-index: 1;
+}
+
+.team-form label { display: none; }
+
+.team-form form input[type=text] {
+    border: 1px solid #C5C5C5;
+    border-radius: 5px;
+    padding: 10px 15px;
+    width: 100%;
+}
+
+.team-detail h4 {
+    font-size: 18px;
+    text-transform: capitalize;
+    margin-bottom: 10px;
+}
+.team-detail h5 {
+    font-weight: 300;
+    font-size: 18px;
+}
+.team-detail ul {
+    padding: 0;
+}
+.team-detail ul li {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.team-detail .note {
+    color: #777;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.team-detail input[type=submit] {
+    padding: 12px;
+}
+
 @media only screen and (max-width: 1201px) {
     #id_race li {
         width: 100%;
@@ -714,8 +828,11 @@ button {
 }
 
 @media only screen and (max-width: 992px ) {
-    .navbar-custom a.btn-logout {
-        margin-left: 80px;
+    .navbar {
+        justify-content: flex-start!important;
+    }
+    .navbar .nav-right {
+        width: 50%!important;
     }
 }
 
@@ -770,89 +887,28 @@ button {
         font-size: 14px;
     }
 
-    .navbar-custom a {
+    .navbar img {
+        max-width: 20px;
+    }
+    .navbar .nav-item {
         font-size: 14px;
+        display: inline;
     }
-
-    .navbar-custom a.btn-logout {
-        margin-left: 60px;
+    .navbar .nav-right {
+        width: 30%!important;
     }
-
-}
-
-
-.application p > label[for="id_extra_links"]::after,
-.application p > label[for="id_additional_accommodations"]::after,
-.application p > label[for="id_notes"]::after {
-    content: " " !important;
-    clear: both;
-}
-
-.application p > #id_notes {
-    margin-bottom: 30px !important;
-}
-
-.application p > label[for="id_adult"], .application p > label[for="id_mlh_coc"] {
-    margin-left: 20px;
-    display: inline;
-}
-
-.application p > #id_adult, .application p > #id_mlh_coc {
-    margin: 0;
-    float: left;
-    margin-top: -12px;
-}
-
-#id_shifts {
-    margin-top: 2px;
-}
-
-.team-form {
-    padding: 80px 70px 110px;
-}
-.team-form .col-12 {
-    padding-top: 20px;
-    padding-bottom: 50px;
-}
-
-.team-form h3 {
-    font-size: 24px;
-    text-transform: uppercase;
-}
-
-.team-form h4 {
-    margin-top: 2em;
-    margin-bottom: 30px;
-    font-size: 20px;
-    font-weight: 400;
-}
-
-.team-form .divider-line {
-    position: absolute;
-    left: 49%;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: #ccc;
-}
-.team-form .divider p {
-    color: #777;
-    font-size: 18px;
-    font-weight: 300;
-    text-transform: uppercase;
-    position: absolute;
-    left: 40%;
-    top: 32%;
-    padding: 30px 0px;
-    background: white;
-    z-index: 1;
-}
-
-.team-form label { display: none; }
-
-.team-form form input[type=text] {
-    border: 1px solid #C5C5C5;
-    border-radius: 5px;
-    padding: 10px 15px;
-    width: 100%;
+    .team-detail {
+        padding: 60px 30px 40px;
+        margin-top: 20px;
+        margin-bottom: 60px;
+    }
+    .team-detail h4, .team-detail h5, .team-detail ul li {
+        font-size: 16px;
+    }
+    .team-detail .note {
+        font-size: 12px;
+    }
+    .team-detail input[type=submit] {
+        margin: 0;
+    }
 }
