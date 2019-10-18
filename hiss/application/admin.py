@@ -133,9 +133,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "major",
         "classification",
         "grad_term",
-        "tamu_student",
         "num_hackathons_attended",
-        "previous_attendant",
         "extra_links",
         "question1",
         "question2",
@@ -180,13 +178,12 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "major",
                     "classification",
                     "grad_term",
-                    "tamu_student",
                 ]
             },
         ),
         (
             "Hackathon Information",
-            {"fields": ["num_hackathons_attended", "previous_attendant"]},
+            {"fields": ["num_hackathons_attended"]},
         ),
         (
             "Free Response Questions",

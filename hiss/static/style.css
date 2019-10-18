@@ -7,29 +7,32 @@ html, body {
     transform: translateX(-50%);
 }
 
-.navbar-custom {
-    -webkit-box-shadow: 0 8px 6px -6px #999;
-    -moz-box-shadow: 0 8px 6px -6px #999;
-    box-shadow: 0 8px 6px -6px #999;
+.nav-bg {
+    -webkit-box-shadow: 0 4px 3px -3px #999;
+    -moz-box-shadow: 0 4px 3px -3px #999;
+    box-shadow: 0 4px 3px -3px #999;
     font-family: sans-serif;
     text-transform: uppercase;
     background-color: white;
     padding: 10px 0;
 }
 
-.navbar-custom a {
+.navbar .nav-item {
     display: inline;
+    margin-left: 40px;
     margin-right: 20px;
     color: black;
 }
 
-.navbar-custom a:hover {
-    color: #666666;
+.navbar .nav-item:hover, .navbar .nav-item .active {
+    color: #69A2CC;
+    text-decoration: none;
+    border-bottom: 2px solid #69A2CC;
 }
 
-.navbar-custom a.btn-logout {
-    margin-right: 0px;
-    margin-left: 40px;
+.navbar .nav-right{
+    float: right;
+    text-align: right;
     white-space: nowrap;
 }
 
@@ -105,7 +108,7 @@ header {
     text-align: left !important;
 }
 
-.signin label, p, a {
+.signin label, p {
     width: 100%;
     font-size: 16px;
 }
@@ -263,6 +266,7 @@ input[type="submit"] {
 
 .forgot-pswd {
     text-align: right;
+    width: 100%;
     display: block !important;
 }
 
@@ -637,7 +641,7 @@ label {
     margin-right: 20px;
 }
 
-#id_adult, #id_previous_attendant {
+#id_adult {
     margin-top: -10px;
     margin-bottom: 25px;
 }
@@ -647,7 +651,7 @@ label {
     margin-bottom: 20px;
 }
 
-#id_adult li, #id_previous_attendant li {
+#id_adult li {
     display: inline-block;
     width: 100%;
 }

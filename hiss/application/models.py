@@ -317,14 +317,6 @@ class Application(models.Model):
     num_hackathons_attended = models.CharField(
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
-    previous_attendant = models.BooleanField(
-        f"Have you attended {settings.EVENT_NAME} before?",
-        choices=TRUE_FALSE_CHOICES,
-        default=False,
-    )
-    tamu_student = models.BooleanField(
-        "Are you a Texas A&M student?", choices=TRUE_FALSE_CHOICES, default=True
-    )
     extra_links = models.CharField(
         "Point us to anything you'd like us to look at while considering your application",
         max_length=200,

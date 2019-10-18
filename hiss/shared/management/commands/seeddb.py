@@ -106,8 +106,6 @@ class Command(base.BaseCommand):
                     transport_needed=random.choice(TRANSPORT_MODES[1:])[0],
                     grad_term=random.choice(GRAD_YEARS[1:])[0],
                     num_hackathons_attended=random.choice(HACKATHON_TIMES[1:])[0],
-                    previous_attendant=random.choice([True, False]),
-                    tamu_student=random.choice([True, False]),
                     extra_links="a",
                     question1="b",
                     question2="c",

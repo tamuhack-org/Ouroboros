@@ -81,8 +81,8 @@
                             <br>
                             <a href="{{ application.get_absolute_url }}" class="btn btn-login">Edit Application</a>
                             {% if not user.team %}
-                                <a href="{% url 'team:create' %}" class="btn btn-login">Create a Team</a>
-                                <a href="{% url 'team:join' %}" class="btn btn-login">Join a Team</a>
+                                <a href="{% url 'team:create' %}" class="btn btn-login">Manage Team</a>
+                                <!-- <a href="{% url 'team:join' %}" class="btn btn-login">Join a Team</a> -->
                             {% else %}
                                 <a href="{{ user.team.get_absolute_url }}">View your Team</a>
                             {% endif %}
