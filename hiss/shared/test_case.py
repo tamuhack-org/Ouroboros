@@ -18,6 +18,7 @@ class SharedTestCase(test.TestCase):
         self.password = "password"
         self.first_name = "Kennedy"
         self.last_name = "Doe"
+        self.wave1 = None
 
         self.user = User.objects.create_user(
             email=self.email, password=self.password, is_active=True
@@ -60,5 +61,5 @@ class SharedTestCase(test.TestCase):
         start = timezone.now() - timezone.timedelta(days=1)
         end = start + timezone.timedelta(days=30)
 
-        wave1 = Wave(start=start, end=end, num_days_to_rsvp=30)
-        wave1.save()
+        self.wave1 = Wave(start=start, end=end, num_days_to_rsvp=30)
+        self.wave1.save()
