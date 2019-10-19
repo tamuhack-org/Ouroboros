@@ -7,7 +7,7 @@ from application.models import Application
 from shared import test_case
 
 
-class DeclineRsvpViewTestCase(case.SharedTestCase):
+class DeclineRsvpViewTestCase(test_case.SharedTestCase):
     def redirects_if_not_logged_in(self):
         response = self.client.get(reverse_lazy("rsvp:decline"))
 

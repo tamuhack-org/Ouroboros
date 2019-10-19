@@ -5,7 +5,7 @@ from rsvp.models import Rsvp
 from shared import test_case
 
 
-class UpdateRsvpViewTestCase(case.SharedTestCase):
+class UpdateRsvpViewTestCase(test_case.SharedTestCase):
     def setUp(self) -> None:
         super().setUp()
         self.rsvp_fields = {

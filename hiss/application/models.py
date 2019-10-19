@@ -1,4 +1,4 @@
-#pylint: disable=C0330
+# pylint: disable=C0330
 import uuid
 from typing import Optional
 
