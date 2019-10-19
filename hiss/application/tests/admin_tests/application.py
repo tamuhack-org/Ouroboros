@@ -37,7 +37,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
             subject, _, _, _ = build_rejection_email(self.app)
             self.assertIn(event_name, subject)
 
-    def rejection_email_customizes_user_first_name(self):
+    def rejection_email_customizes_first_name(self):
         _, message, _, _ = build_rejection_email(self.app)
 
         self.assertIn(self.app.first_name, message)

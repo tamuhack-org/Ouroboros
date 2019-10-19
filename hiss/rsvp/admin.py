@@ -28,7 +28,7 @@ class RsvpAdmin(admin.ModelAdmin):
         return False
 
     @staticmethod
-    def full_name(obj: Rsvp) -> str:
+    def full_name() -> str:
         # TODO(SaltyQuetzals): Add a way to reference user's full name.
         return ""
 

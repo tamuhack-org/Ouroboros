@@ -1,3 +1,4 @@
+#pylint: disable=C0330
 import csv
 from typing import List, Tuple
 
