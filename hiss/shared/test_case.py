@@ -60,5 +60,5 @@ class SharedTestCase(test.TestCase):
         start = timezone.now() - timezone.timedelta(days=1)
         end = start + timezone.timedelta(days=30)
 
-        self.wave1 = Wave(start=start, end=end, num_days_to_rsvp=30)
-        self.wave1.save()
+        wave1 = Wave(start=start, end=end, num_days_to_rsvp=30)
+        wave1.save()

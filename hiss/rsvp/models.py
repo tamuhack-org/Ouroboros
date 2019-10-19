@@ -56,8 +56,8 @@ class Rsvp(models.Model):
         return reverse_lazy("rsvp:update", args=[self.id])
 
 
-@receiver(post_save, sender=Rsvp)
-def rsvp_post_save(sender: Type[Rsvp], instance: Rsvp, created: bool, **_kwargs):
+@receiver(post_save)
+def rsvp_post_save(instance: Rsvp, created: bool, **_kwargs):
     if created:
         user: User = instance.user
         user.send_html_email(

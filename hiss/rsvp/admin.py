@@ -21,13 +21,14 @@ class RsvpAdmin(admin.ModelAdmin):
         ),
     ]
 
-    def has_change_permission(self, _request, _obj=None):
+    def has_change_permission(self, request, obj=None):
         return False
 
-    def has_delete_permission(self, _request, _obj=None):
+    def has_delete_permission(self, request, obj=None):
         return False
 
-    def full_name(self, _obj: Rsvp) -> str:
+    @staticmethod
+    def full_name(obj: Rsvp) -> str:
         # TODO(SaltyQuetzals): Add a way to reference user's full name.
         return ""
 
