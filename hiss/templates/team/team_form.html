@@ -14,21 +14,6 @@
                     </button>
                 </form>
             </div>
-            <div class="col-12 col-md-2 divider">
-                <div class="divider-line"></div>
-                <p>or</p>
-            </div>
-            <div class="col-12 col-md-5">   
-                <h4>Join an existing team</h4>
-        
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-block btn-login secondary btn-width">
-                        Join
-                    </button>
-                </form>
-            </div>
         </div>
     </div>
 

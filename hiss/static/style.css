@@ -22,6 +22,7 @@ html, body {
     margin-left: 40px;
     margin-right: 20px;
     color: black;
+    white-space: nowrap;
 }
 
 .navbar .nav-item:hover {
@@ -105,8 +106,6 @@ html, body {
     background-color: #D8ECFE;
     height: 100vh !important;
     margin-bottom: 0;
-    padding-top: 3.5em !important;
-    padding-bottom: 1em !important;
 }
 
 header {
@@ -159,7 +158,6 @@ input[type="submit"] {
 
 #id_extra_links {
     width: 100% !important;
-    text-indent: 10px;
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -192,7 +190,7 @@ input[type="submit"] {
 }
 
 .application {
-    padding: 2em 5em;
+    padding: 3em 5em;
     margin-bottom: 3.5em;
 }
 
@@ -361,7 +359,6 @@ input[type="submit"] {
 }
 
 .application p > select {
-    text-indent: 10px;
     color: #333333 !important;
     background: #fff url('https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_keyboard_arrow_down_48px-128.png') no-repeat;
     background-size: 20px;
@@ -479,6 +476,7 @@ li .diplome {
     text-align: center;
     top: 70%;
     width: 100%;
+    font-size: 16px;
 }
 
 li .point {
@@ -620,11 +618,6 @@ label {
     margin-right: 20px;
 }
 
-#id_adult {
-    margin-top: -10px;
-    margin-bottom: 25px;
-}
-
 #id_race, #id_dietary_restrictions {
     margin-top: -10px;
     margin-bottom: 20px;
@@ -647,9 +640,25 @@ label {
     font-size: 14px;
 }
 
-#id_mlh_coc {
-    margin-top: -10px;
+label[for=id_agree_to_coc],
+label[for=id_is_adult] {
+    margin-left: 45px;
 }
+
+label[for=id_is_adult] {
+    margin-top: -20px;
+}
+
+#id_agree_to_coc,
+#id_is_adult {
+    top: -35px;
+}
+
+#id_is_adult ~ .helptext {
+    margin-top: -35px;
+    margin-left: 45px;
+}
+
 
 .rsvp-here {
     position: relative;
@@ -658,12 +667,12 @@ label {
 }
 
 button {
-    padding: .5rem 3rem !important;
+    padding: .5rem 3rem;
     width: auto !important;
 }
 
 .application textarea {
-    height: 100px;
+    height: 70px;
 }
 
 .application textarea[name="notes"] {
@@ -832,12 +841,25 @@ button {
         justify-content: flex-start!important;
     }
     .navbar .nav-right {
-        width: 50%!important;
+        width: auto;
+    }
+    .navbar button.navbar-toggler {
+        padding: 5px;;
+        color: #777;
+        border: 0;
     }
 }
 
 @media only screen and (max-width: 768px) {
-
+    .signin {
+        padding-top: 3.5em!important;
+    }
+    .signin img {
+        max-width: 25px;
+    }
+    .signin h1 {
+        font-size: 1.2rem;
+    }
     .application p > input[type=text], .application p > input[type=tel] {
         width: 100% !important;
     }
@@ -853,7 +875,7 @@ button {
     }
 
     .application {
-        padding: 5em 1em;
+        padding: 2em 1.2em;
     }
 
     .application select {
@@ -890,12 +912,16 @@ button {
     .navbar img {
         max-width: 20px;
     }
-    .navbar .nav-item {
+    .navbar .nav-item, 
+    .navbar .nav-right {
         font-size: 14px;
-        display: inline;
+        display: block;
+        margin: 15px 0 10px;
     }
     .navbar .nav-right {
-        width: 30%!important;
+        text-align: left;
+        float: left;
+        margin-top: 5px;
     }
     .team-detail {
         padding: 60px 30px 40px;

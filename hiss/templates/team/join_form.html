@@ -1,0 +1,21 @@
+{% extends 'dashboard_base.html' %} {% block content %}{% load static %}
+
+    <div class="team-form mt-5">
+        <h3>{{ settings.EVENT_NAME }} TAMUhack 2020 Team</h3>
+        
+        <div class="row pt-4">
+            <div class="col-12 col-md-5">   
+                <h4>Join an existing team</h4>
+        
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-block btn-login secondary btn-width">
+                        Join
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
