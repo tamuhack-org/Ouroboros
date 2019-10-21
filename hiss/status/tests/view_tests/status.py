@@ -122,3 +122,19 @@ class StatusViewTestCase(test_case.SharedTestCase):
         response = self.client.get(reverse_lazy("status"))
 
         self.assertTrue("REJECTED" in response.context)
+
+    def test_rejected_RSVP_context(self):
+        self.create_active_wave()
+        self.client.force_login(self.user)
+        Application.objects.create(
+            **self.application_fields, approved=False, wave=self.wave1
+        )
+
+        self.user.declined_acceptance = True
+        self.user.save()
+
+        response = self.client.get(reverse_lazy("status"))
+
+        self.assertTrue(
+            "CANT_MAKE_IT" in response.context and response.context["CANT_MAKE_IT"]
+        )
