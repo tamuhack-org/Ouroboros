@@ -195,6 +195,7 @@ GRAD_YEARS.insert(0, (None, "-- Select Option --"))
 GRAD_YEARS.append(("Other", "Other"))
 
 TRANSPORT_MODES = (
+    (None, "-- Select Option --"),
     ("drive", "Driving"),
     ("th-bus", "TAMUhack Bus"),
     ("fly", "Flying"),
@@ -317,14 +318,6 @@ class Application(models.Model):
     num_hackathons_attended = models.CharField(
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
-    previous_attendant = models.BooleanField(
-        f"Have you attended {settings.EVENT_NAME} before?",
-        choices=TRUE_FALSE_CHOICES,
-        default=False,
-    )
-    tamu_student = models.BooleanField(
-        "Are you a Texas A&M student?", choices=TRUE_FALSE_CHOICES, default=True
-    )
     extra_links = models.CharField(
         "Point us to anything you'd like us to look at while considering your application",
         max_length=200,
@@ -342,7 +335,9 @@ class Application(models.Model):
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
         "A&M.",
     )
-    transport_needed = models.CharField(choices=TRANSPORT_MODES, max_length=11)
+    transport_needed = models.CharField(
+        "How will you be getting to the event?", choices=TRANSPORT_MODES, max_length=11
+    )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
         max_length=500,

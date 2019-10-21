@@ -43,13 +43,7 @@ class JoinTeamViewTestCase(test_case.SharedTestCase):
         self.create_active_wave()
         self.client.force_login(self.user)
         team: Team = Team.objects.create(**self.team_fields)
-        emails = [
-            "a@gmail.com",
-            "b@gmail.com",
-            "c@gmail.com",
-            "d@gmail.com",
-            "e@gmail.com",
-        ]
+        emails = ["a@gmail.com", "b@gmail.com", "c@gmail.com", "d@gmail.com"]
         password = "A"
         for email in emails:
             user = User.objects.create_user(email, password, is_active=True)

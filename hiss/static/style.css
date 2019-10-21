@@ -7,30 +7,44 @@ html, body {
     transform: translateX(-50%);
 }
 
-.navbar-custom {
-    -webkit-box-shadow: 0 8px 6px -6px #999;
-    -moz-box-shadow: 0 8px 6px -6px #999;
-    box-shadow: 0 8px 6px -6px #999;
+.nav-bg {
+    -webkit-box-shadow: 0 4px 3px -3px #999;
+    -moz-box-shadow: 0 4px 3px -3px #999;
+    box-shadow: 0 4px 3px -3px #999;
     font-family: sans-serif;
     text-transform: uppercase;
     background-color: white;
     padding: 10px 0;
 }
 
-.navbar-custom a {
+.navbar .nav-item {
     display: inline;
+    margin-left: 40px;
     margin-right: 20px;
     color: black;
-}
-
-.navbar-custom a:hover {
-    color: #666666;
-}
-
-.navbar-custom a.btn-logout {
-    margin-right: 0px;
-    margin-left: 40px;
     white-space: nowrap;
+}
+
+.navbar .nav-item:hover {
+    color: #69A2CC;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.navbar .nav-item .active {
+    color: #69A2CC;
+    border-bottom: 1px solid #69A2CC;
+}
+
+.navbar .nav-right{
+    float: right;
+    text-align: right;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.navbar img {
+    max-width: 25px;
 }
 
 #logo_bar {
@@ -92,8 +106,6 @@ html, body {
     background-color: #D8ECFE;
     height: 100vh !important;
     margin-bottom: 0;
-    padding-top: 3.5em !important;
-    padding-bottom: 1em !important;
 }
 
 header {
@@ -105,7 +117,7 @@ header {
     text-align: left !important;
 }
 
-.signin label, p, a {
+.signin label {
     width: 100%;
     font-size: 16px;
 }
@@ -146,24 +158,15 @@ input[type="submit"] {
 
 #id_extra_links {
     width: 100% !important;
-    text-indent: 10px;
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    font-style: italic;
+    font-weight: 300;
     opacity: 1; /* Firefox */
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    font-style: italic;
-}
-
-::-ms-input-placeholder { /* Microsoft Edge */
-    font-style: italic;
-}
-
 .header-logo {
-    max-width: 70px;
+    max-width: 40px;
     margin-bottom: 20px;
 }
 
@@ -179,7 +182,7 @@ input[type="submit"] {
     letter-spacing: 1px;
 }
 
-.application, .login-box, .status-box {
+.application, .login-box, .status-box, .team-form, .team-detail {
     background: #fff;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
     border-radius: 3px;
@@ -187,7 +190,7 @@ input[type="submit"] {
 }
 
 .application {
-    padding: 2em 5em;
+    padding: 3em 5em;
     margin-bottom: 3.5em;
 }
 
@@ -196,6 +199,7 @@ input[type="submit"] {
 }
 
 .status-box {
+    margin-top: 3rem;
     margin-bottom: 5em;
 }
 
@@ -263,6 +267,7 @@ input[type="submit"] {
 
 .forgot-pswd {
     text-align: right;
+    width: 100%;
     display: block !important;
 }
 
@@ -279,31 +284,6 @@ input[type="submit"] {
     border-radius: 0 !important;
     background: transparent !important;
     background-color: transparent !important;
-}
-
-.list-group-item {
-    border-radius: 0 !important;
-}
-
-.transparent-obj {
-    background: transparent !important;
-}
-
-.navbar-trans {
-    background: white;
-}
-
-.sidebar li:hover {
-    color: blue !important;
-}
-
-.sidebar a:link, a:hover a {
-    text-decoration: none;
-    color: black;
-}
-
-.sidebar a:visited {
-    text-decoration: none;
 }
 
 .btn-back-submit {
@@ -379,7 +359,6 @@ input[type="submit"] {
 }
 
 .application p > select {
-    text-indent: 10px;
     color: #333333 !important;
     background: #fff url('https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_keyboard_arrow_down_48px-128.png') no-repeat;
     background-size: 20px;
@@ -391,6 +370,10 @@ input[type="submit"] {
 .application p > label::after {
     content: " *";
     color: red;
+}
+
+.application.rsvp p > label::after {
+    content: " ";
 }
 
 .helptext {
@@ -496,6 +479,8 @@ li .diplome {
     position: absolute;
     text-align: center;
     top: 70%;
+    width: 100%;
+    font-size: 16px;
 }
 
 li .point {
@@ -637,17 +622,12 @@ label {
     margin-right: 20px;
 }
 
-#id_adult, #id_previous_attendant {
-    margin-top: -10px;
-    margin-bottom: 25px;
-}
-
 #id_race, #id_dietary_restrictions {
     margin-top: -10px;
     margin-bottom: 20px;
 }
 
-#id_adult li, #id_previous_attendant li {
+#id_adult li {
     display: inline-block;
     width: 100%;
 }
@@ -664,9 +644,25 @@ label {
     font-size: 14px;
 }
 
-#id_mlh_coc {
-    margin-top: -10px;
+label[for=id_agree_to_coc],
+label[for=id_is_adult] {
+    margin-left: 45px;
 }
+
+label[for=id_is_adult] {
+    margin-top: -20px;
+}
+
+#id_agree_to_coc,
+#id_is_adult {
+    top: -35px;
+}
+
+#id_is_adult ~ .helptext {
+    margin-top: -35px;
+    margin-left: 45px;
+}
+
 
 .rsvp-here {
     position: relative;
@@ -675,12 +671,12 @@ label {
 }
 
 button {
-    padding: .5rem 3rem !important;
+    padding: .5rem 3rem;
     width: auto !important;
 }
 
 .application textarea {
-    height: 100px;
+    height: 70px;
 }
 
 .application textarea[name="notes"] {
@@ -697,6 +693,7 @@ button {
 
 .secondary:hover {
     background: #325270;
+    color: white;
 }
 
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
@@ -731,6 +728,91 @@ button {
     -moz-osx-font-smoothing: grayscale;
 }
 
+.application p > label[for="id_extra_links"]::after,
+.application p > label[for="id_additional_accommodations"]::after,
+.application p > label[for="id_notes"]::after {
+    content: " " !important;
+    clear: both;
+}
+
+.application p > #id_notes {
+    margin-bottom: 30px !important;
+}
+
+.application p > label[for="id_adult"], .application p > label[for="id_mlh_coc"] {
+    margin-left: 20px;
+    display: inline;
+}
+
+.application p > #id_adult, .application p > #id_mlh_coc {
+    margin: 0;
+    float: left;
+    margin-top: -12px;
+}
+
+#id_shifts {
+    margin-top: 2px;
+}
+
+.team-form {
+    padding: 80px 100px;
+    max-width: 550px;
+    display: block;
+    margin: auto;
+}
+.team-detail {
+    padding: 80px 70px;
+    margin-top: 2rem;
+}
+
+.team-form h3, .team-detail h3{
+    font-size: 24px;
+    text-transform: uppercase;
+}
+
+.team-form h4 {
+    margin-top: 2em;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.team-form .create label { display: none; }
+
+.team-form form input[type=text] {
+    border: 1px solid #C5C5C5;
+    border-radius: 5px;
+    padding: 10px 15px;
+    width: 100%;
+}
+
+.team-detail h4 {
+    font-size: 18px;
+    text-transform: capitalize;
+    margin-bottom: 10px;
+}
+.team-detail h5 {
+    font-weight: 300;
+    font-size: 18px;
+}
+.team-detail ul {
+    padding: 0;
+}
+.team-detail ul li {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.team-detail .note {
+    color: #777;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.team-detail input[type=submit] {
+    padding: 12px;
+}
+
 @media only screen and (max-width: 1201px) {
     #id_race li {
         width: 100%;
@@ -738,13 +820,29 @@ button {
 }
 
 @media only screen and (max-width: 992px ) {
-    .navbar-custom a.btn-logout {
-        margin-left: 80px;
+    .navbar {
+        justify-content: flex-start!important;
+    }
+    .navbar .nav-right {
+        width: auto;
+    }
+    .navbar button.navbar-toggler {
+        padding: 5px;;
+        color: #777;
+        border: 0;
     }
 }
 
 @media only screen and (max-width: 768px) {
-
+    .signin {
+        padding-top: 3.5em!important;
+    }
+    .signin img {
+        max-width: 25px;
+    }
+    .signin h1 {
+        font-size: 1.2rem;
+    }
     .application p > input[type=text], .application p > input[type=tel] {
         width: 100% !important;
     }
@@ -760,7 +858,7 @@ button {
     }
 
     .application {
-        padding: 5em 1em;
+        padding: 2em 1.2em;
     }
 
     .application select {
@@ -793,40 +891,32 @@ button {
     .status-box p {
         font-size: 14px;
     }
-
-    .navbar-custom a {
+    .navbar .nav-item, 
+    .navbar .nav-right {
         font-size: 14px;
+        display: block;
+        margin: 15px 0 10px;
     }
-
-    .navbar-custom a.btn-logout {
-        margin-left: 60px;
+    .navbar .nav-right {
+        text-align: left;
+        float: left;
+        margin-top: 5px;
     }
-
-}
-
-
-.application p > label[for="id_extra_links"]::after,
-.application p > label[for="id_additional_accommodations"]::after,
-.application p > label[for="id_notes"]::after {
-    content: " " !important;
-    clear: both;
-}
-
-.application p > #id_notes {
-    margin-bottom: 30px !important;
-}
-
-.application p > label[for="id_adult"], .application p > label[for="id_mlh_coc"] {
-    margin-left: 20px;
-    display: inline;
-}
-
-.application p > #id_adult, .application p > #id_mlh_coc {
-    margin: 0;
-    float: left;
-    margin-top: -12px;
-}
-
-#id_shifts {
-    margin-top: 2px;
+    .team-form {
+        padding: 60px 50px;
+    }
+    .team-detail {
+        padding: 60px 30px 40px;
+        margin-top: 20px;
+        margin-bottom: 60px;
+    }
+    .team-detail h4, .team-detail h5, .team-detail ul li {
+        font-size: 16px;
+    }
+    .team-detail .note {
+        font-size: 12px;
+    }
+    .team-detail input[type=submit] {
+        margin: 0;
+    }
 }

@@ -11,8 +11,8 @@ class UpdateRsvpViewTestCase(test_case.SharedTestCase):
         self.rsvp_fields = {
             "shirt_size": "XS",
             "dietary_restrictions": ["Vg", "V", "H", "FA", "K"],
-            "notes": "",
             "transport_type": "bus-tu",
+            "notes": "",
         }
 
     def test_get_redirects_when_not_authenticated(self):

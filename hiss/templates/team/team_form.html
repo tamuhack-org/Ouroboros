@@ -1,19 +1,23 @@
 {% extends 'dashboard_base.html' %} {% block content %}{% load static %}
 
-    <div class="application">
-        <header class="text-center">
-            <img class="header-logo" src="{% static 'howdyHackLogo.svg' %}"/>
-            <h5>Create a team!</h5>
-        </header>
-
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <br/>
-            <button type="submit" class="btn btn-lg btn-block btn-login btn-width">
-                Submit
-            </button>
-        </form>
+    <div class="team-form  mt-4">
+        <h3 class="text-center">Create a new team</h3>
+        
+        <div class="row pt-5">
+            <div class="col-12 create">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                   
+                    <button type="submit" class="btn btn-block btn-lg btn-login w-100">
+                        Create
+                    </button>    
+                </form>
+            </div>
+            <div class="col-12 text-center mt-5">
+                Already have a team ID? <a href="{% url 'team:join'  %}">Join Team</a>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

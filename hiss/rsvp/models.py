@@ -19,6 +19,7 @@ DIETARY_RESTRICTIONS = (
 )
 
 SHIRT_SIZES = (
+    (None, "-- Select Option --"),
     ("XS", "XS"),
     ("S", "S"),
     ("M", "M"),
@@ -28,6 +29,7 @@ SHIRT_SIZES = (
 )
 
 OFFERED_TRANSPORTATION = (
+    (None, "-- Select Option --"),
     ("drive", "Driving"),
     ("bus-tu", "TAMUhack Bus - UT Austin"),
     ("bus-utd", "TAMUhack Bus - UTD"),

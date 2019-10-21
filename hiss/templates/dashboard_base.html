@@ -1,11 +1,35 @@
-{% extends 'base.html' %}
-
+{% extends 'base.html' %} {% load static %}
 
 {% block body %}
 <section class="dashboard">
+    <div class="nav-bg">
+        <div class="container">
+            <div class="row" style="background-color: white">
+                <div class="justify-content-center col-xl-10 col-md-12 inner-container">
+                    <nav class="navbar navbar-expand-lg navbar-light" role="navigation">
+                        <img src="{% static 'th_bw.svg' %}"></a>
+                        <button class="navbar-toggler ml-auto hidden-sm-up float-xs-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <a class="nav-item" href="{% url 'status' %}">Status</span></a>
+                            {% if not user.team %}
+                                <a class="nav-item" href="{% url 'team:create'  %}">Create Team</a>
+                                <a class="nav-item" href="{% url 'team:join'  %}">Join Team</a>
+                            {% else %}
+                                <a class="nav-item" href="{{ user.team.get_absolute_url }}">My Team</a>
+                            {% endif %}                                                 
+                            <a class="nav-item nav-right" href="{% url 'customauth:logout' %}">Log Out</a>
+                        </div>
+                    </nav>
+                </div>
+            </div> 
+        </div>
+    </div>
+    
     <div class="container">
         <div class="row">
-            <div class="justify-content-center col-xl-10 col-lg-10 col-md-12 col-sm-12 pt-5 inner-container">
+            <div class="justify-content-center col-xl-10 col-md-12 pt-4 inner-container">
                 <div>
                     {% block content %}
                     {% endblock %}

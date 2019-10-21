@@ -133,9 +133,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "major",
         "classification",
         "grad_term",
-        "tamu_student",
         "num_hackathons_attended",
-        "previous_attendant",
         "extra_links",
         "question1",
         "question2",
@@ -149,7 +147,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("race", custom_titled_filter("race")),
         ("classification", custom_titled_filter("classification")),
         ("grad_term", custom_titled_filter("graduation year")),
-        ("tamu_student", custom_titled_filter("if TAMU student")),
         ("approved", custom_titled_filter("approved")),
         (
             "num_hackathons_attended",
@@ -180,14 +177,10 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "major",
                     "classification",
                     "grad_term",
-                    "tamu_student",
                 ]
             },
         ),
-        (
-            "Hackathon Information",
-            {"fields": ["num_hackathons_attended", "previous_attendant"]},
-        ),
+        ("Hackathon Information", {"fields": ["num_hackathons_attended"]}),
         (
             "Free Response Questions",
             {
