@@ -10,13 +10,7 @@ class CreateTeamForm(forms.ModelForm):
 
     class Meta:
         model = Team
-        widgets = {
-            "name": forms.TextInput(
-                attrs={
-                    "placeholder": "Team Name"
-                }
-            )
-        }
+        widgets = {"name": forms.TextInput(attrs={"placeholder": "Team Name"})}
         fields = ["name"]
 
 

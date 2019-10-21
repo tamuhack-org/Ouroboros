@@ -13,7 +13,7 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
             "dietary_restrictions": ["Vg", "V", "H", "FA", "K"],
             "transport_type": "bus-tu",
             "notes": "",
-       }
+        }
 
     def test_get_redirects_when_not_authenticated(self):
         response = self.client.get(reverse_lazy("rsvp:create"))

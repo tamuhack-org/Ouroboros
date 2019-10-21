@@ -180,10 +180,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 ]
             },
         ),
-        (
-            "Hackathon Information",
-            {"fields": ["num_hackathons_attended"]},
-        ),
+        ("Hackathon Information", {"fields": ["num_hackathons_attended"]}),
         (
             "Free Response Questions",
             {
