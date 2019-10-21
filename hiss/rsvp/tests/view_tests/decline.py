@@ -8,7 +8,7 @@ from shared import test_case
 
 
 class DeclineRsvpViewTestCase(test_case.SharedTestCase):
-    def redirects_if_not_logged_in(self):
+    def test_redirects_if_not_logged_in(self):
         response = self.client.get(reverse_lazy("rsvp:decline"))
 
         self.assertRedirects(
@@ -16,7 +16,7 @@ class DeclineRsvpViewTestCase(test_case.SharedTestCase):
             f"{reverse_lazy('customauth:login')}?next={reverse_lazy('rsvp:decline')}",
         )
 
-    def permission_denied_if_not_applied(self):
+    def test_permission_denied_if_not_applied(self):
         self.client.force_login(self.user)
         self.create_active_wave()
         # Application.objects.create(**self.application_fields, wave=self.wave1)
@@ -25,7 +25,7 @@ class DeclineRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def permission_denied_if_not_accepted(self):
+    def test_permission_denied_if_not_accepted(self):
         self.client.force_login(self.user)
         self.create_active_wave()
         Application.objects.create(**self.application_fields, wave=self.wave1)
@@ -34,7 +34,7 @@ class DeclineRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def denied_if_rejected(self):
+    def test_denied_if_rejected(self):
         self.client.force_login(self.user)
         self.create_active_wave()
         Application.objects.create(
@@ -45,7 +45,7 @@ class DeclineRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def permission_denied_if_deadline_exceeded(self):
+    def test_permission_denied_if_deadline_exceeded(self):
         self.client.force_login(self.user)
         self.create_active_wave()
         Application.objects.create(
@@ -58,7 +58,7 @@ class DeclineRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def redirects_if_successful(self):
+    def test_redirects_if_successful(self):
         self.client.force_login(self.user)
         self.create_active_wave()
         Application.objects.create(
@@ -71,7 +71,7 @@ class DeclineRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertRedirects(response, reverse_lazy("status"))
 
-    def assert_sets_declined_acceptance(self):
+    def test_assert_sets_declined_acceptance(self):
         self.client.force_login(self.user)
         self.create_active_wave()
         Application.objects.create(

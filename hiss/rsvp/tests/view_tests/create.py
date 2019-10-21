@@ -15,7 +15,7 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
             "transport_type": "bus-tu",
         }
 
-    def get_redirects_when_not_authenticated(self):
+    def test_get_redirects_when_not_authenticated(self):
         response = self.client.get(reverse_lazy("rsvp:create"))
 
         self.assertRedirects(
@@ -23,14 +23,14 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
             f"{reverse_lazy('customauth:login')}?next={reverse_lazy('rsvp:create')}",
         )
 
-    def get_fails_when_not_applied(self):
+    def test_get_fails_when_not_applied(self):
         self.client.force_login(self.user)
 
         response = self.client.get(reverse_lazy("rsvp:create"))
 
         self.assertEqual(response.status_code, 403)
 
-    def get_fails_when_app_not_approved(self):
+    def test_get_fails_when_app_not_approved(self):
         self.create_active_wave()
         app = Application(**self.application_fields, wave=self.wave1)
         app.full_clean()
@@ -41,7 +41,7 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def get_fails_when_app_rejected(self):
+    def test_get_fails_when_app_rejected(self):
         self.create_active_wave()
         app = Application(**self.application_fields, wave=self.wave1)
         app.approved = False
@@ -53,7 +53,7 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def get_succeeds_when_app_approved(self):
+    def test_get_succeeds_when_app_approved(self):
         self.create_active_wave()
         app = Application(**self.application_fields, wave=self.wave1)
         app.approved = True
@@ -65,7 +65,7 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def post_redirects_when_not_authenticated(self):
+    def test_post_redirects_when_not_authenticated(self):
         response = self.client.post(reverse_lazy("rsvp:create"), self.rsvp_fields)
 
         self.assertRedirects(
@@ -73,7 +73,7 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
             f"{reverse_lazy('customauth:login')}?next={reverse_lazy('rsvp:create')}",
         )
 
-    def post_fails_when_not_applied(self):
+    def test_post_fails_when_not_applied(self):
         self.create_active_wave()
         self.client.force_login(self.user)
 
@@ -81,7 +81,7 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def post_fails_when_app_not_approved(self):
+    def test_post_fails_when_app_not_approved(self):
         self.create_active_wave()
         app = Application(**self.application_fields, wave=self.wave1)
         app.full_clean()
@@ -92,7 +92,7 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def post_fails_when_app_rejected(self):
+    def test_post_fails_when_app_rejected(self):
         self.create_active_wave()
         app = Application(**self.application_fields, wave=self.wave1)
         app.approved = False
@@ -104,7 +104,7 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def post_succeeds_when_app_approved(self):
+    def test_post_succeeds_when_app_approved(self):
         self.create_active_wave()
         app = Application(**self.application_fields, wave=self.wave1)
         app.approved = True

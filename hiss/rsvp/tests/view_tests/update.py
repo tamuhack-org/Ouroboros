@@ -15,7 +15,7 @@ class UpdateRsvpViewTestCase(test_case.SharedTestCase):
             "transport_type": "bus-tu",
         }
 
-    def get_redirects_when_not_authenticated(self):
+    def test_get_redirects_when_not_authenticated(self):
         rsvp = Rsvp(**self.rsvp_fields, user=self.user)
         rsvp.save()
         response = self.client.get(reverse_lazy("rsvp:update", args=(rsvp.pk,)))
@@ -25,7 +25,7 @@ class UpdateRsvpViewTestCase(test_case.SharedTestCase):
             f"{reverse_lazy('customauth:login')}?next={reverse_lazy('rsvp:update', args=(rsvp.pk,))}",
         )
 
-    def get_fails_when_not_owner(self):
+    def test_get_fails_when_not_owner(self):
         rsvp = Rsvp(**self.rsvp_fields, user=self.user)
         rsvp.save()
         self.client.force_login(self.admin)
@@ -34,7 +34,7 @@ class UpdateRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def get_succeeds_when_accessing_owned_rsvp(self):
+    def test_get_succeeds_when_accessing_owned_rsvp(self):
         self.create_active_wave()
         Application.objects.create(
             **self.application_fields, wave=self.wave1, approved=True
@@ -47,7 +47,7 @@ class UpdateRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def post_fails_when_not_owner(self):
+    def test_post_fails_when_not_owner(self):
         self.create_active_wave()
         Application.objects.create(
             **self.application_fields, wave=self.wave1, approved=True
@@ -62,7 +62,7 @@ class UpdateRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def post_succeeds(self):
+    def test_post_succeeds(self):
         self.create_active_wave()
         Application.objects.create(
             **self.application_fields, wave=self.wave1, approved=True
