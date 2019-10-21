@@ -34,7 +34,7 @@ class DeclineRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def test_permission_denied_if_rejected(self):
+    def test_denied_if_rejected(self):
         self.client.force_login(self.user)
         self.create_active_wave()
         Application.objects.create(
@@ -71,7 +71,7 @@ class DeclineRsvpViewTestCase(test_case.SharedTestCase):
 
         self.assertRedirects(response, reverse_lazy("status"))
 
-    def test_assert_sets_declined_acceptance_if_successful(self):
+    def test_assert_sets_declined_acceptance(self):
         self.client.force_login(self.user)
         self.create_active_wave()
         Application.objects.create(

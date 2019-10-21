@@ -27,4 +27,4 @@ class UserAdminTestCase(test_case.SharedTestCase):
             },
             follow=True,
         )
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
