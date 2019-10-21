@@ -1,18 +1,21 @@
 {% extends 'dashboard_base.html' %} {% block content %}{% load static %}
 
-    <div class="team-form mt-5">
-        <h3>{{ settings.EVENT_NAME }} TAMUhack 2020 Team</h3>
+    <div class="team-form  mt-4">
+        <h3 class="text-center">Create a new team</h3>
         
-        <div class="row pt-4">
-            <div class="col-12 col-md-5">
-                <h4>Create a new team</h4>
+        <div class="row pt-5">
+            <div class="col-12 create">
                 <form method="POST">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-block btn-login btn-width">
+                   
+                    <button type="submit" class="btn btn-block btn-lg btn-login w-100">
                         Create
-                    </button>
+                    </button>    
                 </form>
+            </div>
+            <div class="col-12 text-center mt-5">
+                Already have a team ID? <a href="{% url 'team:join'  %}">Join Team</a>
             </div>
         </div>
     </div>

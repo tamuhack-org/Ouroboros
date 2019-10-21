@@ -372,6 +372,10 @@ input[type="submit"] {
     color: red;
 }
 
+.application.rsvp p > label::after {
+    content: " ";
+}
+
 .helptext {
     text-align: left;
     font-size: 14px;
@@ -689,6 +693,7 @@ button {
 
 .secondary:hover {
     background: #325270;
+    color: white;
 }
 
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
@@ -750,15 +755,14 @@ button {
 }
 
 .team-form {
-    padding: 80px 70px 110px;
+    padding: 80px 100px;
+    max-width: 550px;
+    display: block;
+    margin: auto;
 }
 .team-detail {
     padding: 80px 70px;
     margin-top: 2rem;
-}
-.team-form .col-12 {
-    padding-top: 20px;
-    padding-bottom: 50px;
 }
 
 .team-form h3, .team-detail h3{
@@ -773,28 +777,7 @@ button {
     font-weight: 400;
 }
 
-.team-form .divider-line {
-    position: absolute;
-    left: 49%;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: #ccc;
-}
-.team-form .divider p {
-    color: #777;
-    font-size: 18px;
-    font-weight: 300;
-    text-transform: uppercase;
-    position: absolute;
-    left: 40%;
-    top: 32%;
-    padding: 30px 0px;
-    background: white;
-    z-index: 1;
-}
-
-.team-form label { display: none; }
+.team-form .create label { display: none; }
 
 .team-form form input[type=text] {
     border: 1px solid #C5C5C5;
@@ -908,10 +891,6 @@ button {
     .status-box p {
         font-size: 14px;
     }
-
-    .navbar img {
-        max-width: 20px;
-    }
     .navbar .nav-item, 
     .navbar .nav-right {
         font-size: 14px;
@@ -922,6 +901,9 @@ button {
         text-align: left;
         float: left;
         margin-top: 5px;
+    }
+    .team-form {
+        padding: 60px 50px;
     }
     .team-detail {
         padding: 60px 30px 40px;

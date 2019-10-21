@@ -1,30 +1,43 @@
-{% extends 'dashboard_base.html' %} {% block content %}
-<div class="application">
-    <h1>RSVP</h1>
-    <p>Congrats! We can't wait to see what you build at {{ event_name }}!</p>
+{% extends 'dashboard_base.html' %} {% block content %} 
+<div class="application rsvp">
+    <header class="text-center">
+        <h3>{{EVENT_NAME}} 2020 RSVP</h3>
+    </header>    
+    <p>Congrats on getting accepted! Please fill out the following form if you wish to attend {{ event_name }}.</p>
     <hr/>
     <p>
         Will you be able to attend {{ event_name }} on
-        {{ event_start_datetime }} for {{ event_start_datetime | timesince:event_end_datetime }}?
+        {{ event_start_datetime }}?
     </p>
-    <button type="button" class="btn btn-lg btn-login rsvp-button" id="rsvp-yes">Yes</button>
-    <form
-            method="POST"
-            id="rsvp-form"
-            style="display:none;"
-    >
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <button type="button" class="btn btn-lg btn-login rsvp-button w-100 ml-0 mb-3" onclick="displayForm()">Yes</button>
+        </div>
+        <div class="col-12 col-md-4">
+            <a href="{% url 'rsvp:decline'  %}" class="btn btn-lg btn-login rsvp-button w-100 secondary ml-0" id="rsvp-no">No</a>
+        </div>
+    </div>
+
+    <form method="POST" id="rsvp-form" style="display:none;">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-lg btn-block btn-login">
-            Submit
-        </button>
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <button type="submit" class="btn btn-lg btn-block btn-login w-100">
+                    Submit
+                </button>
+            </div>
+        </div>
     </form>
 </div>
+
 <script>
-    document.getElementById("rsvp-yes").addEventListener("click", e => {
-        e.preventDefault();
+    function displayForm() {
         document.getElementById("rsvp-form").style.display = "inherit";
-    });
+        document.getElementById("rsvp-no").style.backgroundColor = "#DDD";
+        document.getElementById("rsvp-no").style.color = "#777";
+        document.getElementById("rsvp-no").style.pointerEvents = "none";
+    }
 </script>
 
 {% endblock %}

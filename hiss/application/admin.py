@@ -147,7 +147,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("race", custom_titled_filter("race")),
         ("classification", custom_titled_filter("classification")),
         ("grad_term", custom_titled_filter("graduation year")),
-        ("tamu_student", custom_titled_filter("if TAMU student")),
         ("approved", custom_titled_filter("approved")),
         (
             "num_hackathons_attended",

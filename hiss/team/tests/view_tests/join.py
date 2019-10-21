@@ -48,7 +48,6 @@ class JoinTeamViewTestCase(test_case.SharedTestCase):
             "b@gmail.com",
             "c@gmail.com",
             "d@gmail.com",
-            "e@gmail.com",
         ]
         password = "A"
         for email in emails:
