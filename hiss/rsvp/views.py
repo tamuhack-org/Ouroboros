@@ -99,7 +99,7 @@ class UpdateRsvpView(mixins.UserPassesTestMixin, generic.UpdateView):
 
 
 class DeclineRsvpView(mixins.LoginRequiredMixin, views.View):
-    def get(self, request: HttpRequest, *_args, **_kwargs):
+    def post(self, request: HttpRequest, *_args, **_kwargs):
         if not request.user.application_set.exists():
             raise exceptions.PermissionDenied(
                 "You can't decline admission without applying first"
