@@ -7,4 +7,4 @@ COPY hiss /app
 
 RUN /env/bin/pip install --upgrade pip && /env/bin/pip install -r /app/requirements.txt
 
-CMD gunicorn -b :$PORT hiss.wsgi:application
+CMD gunicorn -b :$PORT hiss.wsgi:application --capture-output
