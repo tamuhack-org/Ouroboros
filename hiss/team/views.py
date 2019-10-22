@@ -14,7 +14,7 @@ from team.models import Team
 from user.models import User
 
 
-class CreateTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.CreateView):
+class CreateTeamView(shared_mixins.TeamDoesNotExistMixin, generic.CreateView):
     """
     If the user has applied, creates a Team and adds the User to it.
     """
@@ -37,7 +37,7 @@ class CreateTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.CreateV
         return redirect(team.get_absolute_url())
 
 
-class JoinTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.FormView):
+class JoinTeamView(shared_mixins.TeamDoesNotExistMixin, generic.FormView):
     """
     Adds the user to a team (if the team isn't already at capacity).
     """
