@@ -13,7 +13,7 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <a class="nav-item" href="{% url 'status' %}">Status</span></a>
-                            {% if not NEEDS_TO_APPLY %}
+                            {% if user.application_set.exists %}
                                 {% if not user.team %}
                                     <a class="nav-item" href="{% url 'team:create'  %}">Create Team</a>
                                     <a class="nav-item" href="{% url 'team:join'  %}">Join Team</a>
