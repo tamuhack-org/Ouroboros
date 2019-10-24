@@ -81,7 +81,7 @@ USE_TZ = True
 
 MEDIA_ROOT = "resumes/"
 MEDIA_URL = "/resumes/"
-
+LOGOUT_REDIRECT_URL = "/"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 

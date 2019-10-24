@@ -15,7 +15,7 @@ urlpatterns = [
         views.ResendActivationEmailView.as_view(),
         name="resend_activation",
     ),
-    path("logout/", views.LogoutView.as_view(), name="logout"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path(
         "password_reset/",
         views.PlaceholderPasswordResetView.as_view(),

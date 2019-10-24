@@ -1,7 +1,6 @@
 from django import views
 from django.conf import settings
 from django.contrib.auth import get_user_model, login
-from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
 from django.contrib.sites import shortcuts as site_shortcuts
 from django.contrib.sites.requests import RequestSite
@@ -53,15 +52,6 @@ class ResendActivationEmailView(generic.FormView):
         curr_domain = site_shortcuts.get_current_site(self.request)
         send_confirmation_email(curr_domain, user)
         return render(self.request, "registration/check_inbox.html")
-
-
-class LogoutView(views.View):
-    def get(self, request, *_args, **kwargs):
-        """
-        Logout the user and redirect them to root.
-        """
-        logout(request)
-        return redirect("/")
 
 
 class ActivateView(views.View):
