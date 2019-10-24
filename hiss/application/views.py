@@ -3,6 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
+from django.http import HttpRequest
 
 from application.forms import ApplicationModelForm
 from application.models import Application, Wave
@@ -47,3 +48,6 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
         if app.user != self.request.user:
             raise PermissionDenied("You don't have permission to view this application")
         return app
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("status")
