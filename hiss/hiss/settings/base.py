@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -81,7 +82,8 @@ USE_TZ = True
 
 MEDIA_ROOT = "resumes/"
 MEDIA_URL = "/resumes/"
-LOGOUT_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
