@@ -3,7 +3,6 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.http import HttpRequest
 
 from application.forms import ApplicationModelForm
 from application.models import Application, Wave
