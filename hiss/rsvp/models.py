@@ -1,5 +1,4 @@
 import uuid
-from typing import Type
 
 from django.conf import settings
 from django.db import models
@@ -59,7 +58,7 @@ class Rsvp(models.Model):
 
 
 @receiver(post_save, sender=Rsvp)
-def rsvp_post_save(sender: Type[Rsvp], instance: Rsvp, created: bool, **_kwargs):
+def rsvp_post_save(instance: Rsvp, created: bool, **_kwargs):
     if created:
         user: User = instance.user
         user.send_html_email(

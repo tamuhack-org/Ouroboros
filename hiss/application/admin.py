@@ -1,3 +1,4 @@
+# pylint: disable=C0330
 import csv
 from typing import List, Tuple
 
@@ -211,10 +212,12 @@ class ApplicationAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return True
 
-    def user_email(self, obj: Application) -> str:
+    @staticmethod
+    def user_email(obj: Application) -> str:
         return obj.user.email
 
-    def is_a_walk_in(self, obj: Application) -> bool:
+    @staticmethod
+    def is_a_walk_in(obj: Application) -> bool:
         return obj.wave.is_walk_in_wave
 
 

@@ -14,7 +14,7 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
         user: User = self.request.user
 
         active_wave = Wave.objects.active_wave(start_dt=timezone.now())
-        # TODO: Add hacker can't make it context
+        context["CANT_MAKE_IT"] = user.declined_acceptance
         if not active_wave and not user.application_set.exists():
             next_wave = Wave.objects.next_wave(start_dt=timezone.now())
             if not next_wave:

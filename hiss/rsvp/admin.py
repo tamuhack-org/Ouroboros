@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.http import HttpRequest
 
 from rsvp.models import Rsvp
 
@@ -21,13 +22,14 @@ class RsvpAdmin(admin.ModelAdmin):
         ),
     ]
 
-    def has_change_permission(self, _request, _obj=None):
+    def has_change_permission(self, request: HttpRequest, obj=None) -> bool:
         return False
 
-    def has_delete_permission(self, _request, _obj=None):
+    def has_delete_permission(self, request: HttpRequest, obj=None) -> bool:
         return False
 
-    def full_name(self, _obj: Rsvp) -> str:
+    @staticmethod
+    def full_name() -> str:
         # TODO(SaltyQuetzals): Add a way to reference user's full name.
         return ""
 

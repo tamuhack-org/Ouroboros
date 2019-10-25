@@ -14,7 +14,10 @@
             <button type="button" class="btn btn-lg btn-login rsvp-button w-100 ml-0 mb-3" onclick="displayForm()">Yes</button>
         </div>
         <div class="col-12 col-md-4">
-            <a href="{% url 'rsvp:decline'  %}" class="btn btn-lg btn-login rsvp-button w-100 secondary ml-0" id="rsvp-no">No</a>
+            <form action="{% url 'rsvp:decline' %}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-lg btn-login rsvp-button w-100 secondary ml-0" type="submit" id="rsvp-no">No</button>
+            </form>
         </div>
     </div>
 

@@ -8,12 +8,12 @@ from .customization import *
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ["*"]
-SESSION_COOKIE_SECURE = True
-SECURE_BROWSER_XSS_FILTER = True
-CSRF_COOKIE_SECURE = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
+SESSION_COOKIE_SECURE = False
+SECURE_BROWSER_XSS_FILTER = False
+CSRF_COOKIE_SECURE = False
+SECURE_CONTENT_TYPE_NOSNIFF = False
 X_FRAME_OPTIONS = "DENY"
 
 # Password validation
@@ -34,7 +34,7 @@ AUTH_PASSWORD_VALIDATORS = [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "NAME": os.path.join("/db", "db.sqlite3"),
     }
 }
 

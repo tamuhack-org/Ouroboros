@@ -38,6 +38,7 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
     queryset = Application.objects.all()
     form_class = ApplicationModelForm
     template_name = "application/application_form.html"
+    success_url = reverse_lazy("status")
 
     def get_object(self, queryset=None) -> Application:
         """

@@ -18,6 +18,7 @@ class SharedTestCase(test.TestCase):
         self.password = "password"
         self.first_name = "Kennedy"
         self.last_name = "Doe"
+        self.wave1 = None
 
         self.user = User.objects.create_user(
             email=self.email, password=self.password, is_active=True

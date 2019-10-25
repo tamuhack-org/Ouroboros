@@ -46,3 +46,14 @@ class EmailVerificationTestCase(test_case.SharedTestCase):
 
         user = User.objects.get(email=self.email)
         self.assertTrue(user.is_active)
+
+    def test_signout_removes_user(self):
+        """
+        Verify if user is removed during logout.
+        """
+        request = self.client.post(reverse_lazy("customauth:signup"), self.fields)
+        user = User.objects.get(email=self.email)
+        request.user = user
+
+        request = self.client.get(reverse_lazy("customauth:logout"))
+        self.assertTrue(not hasattr(request, "user"))

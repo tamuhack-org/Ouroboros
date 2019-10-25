@@ -1,3 +1,4 @@
+# pylint: disable=C0330
 from django.contrib.auth import models as auth_models
 from django.db import models
 from django.template.loader import render_to_string
