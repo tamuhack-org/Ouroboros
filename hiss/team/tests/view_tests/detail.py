@@ -25,7 +25,7 @@ class DetailTeamViewTestCase(test_case.SharedTestCase):
 
         response = self.client.get(reverse_lazy("team:detail", args=[team.pk]))
 
-        self.assertEqual(response.status_code, 403)
+        self.assertRedirects(response, "/status/")
 
     def test_redirects_if_user_not_member(self):
         team: Team = Team.objects.create(**self.team_fields)

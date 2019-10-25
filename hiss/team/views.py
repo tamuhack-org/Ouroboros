@@ -12,15 +12,23 @@ from shared import mixins as shared_mixins
 from team.forms import CreateTeamForm, JoinTeamForm
 from team.models import Team
 from user.models import User
+from application.models import Application
+
+import pdb
 
 
-class CreateTeamView(shared_mixins.TeamDoesNotExistMixin, generic.CreateView):
+class CreateTeamView(shared_mixins.UserHasNoTeamMixin, generic.CreateView):
     """
     If the user has applied, creates a Team and adds the User to it.
     """
 
     form_class = CreateTeamForm
     template_name = "team/team_form.html"
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
+            return redirect("/accounts/login/?next=/team/")
+        return redirect("/status/")
 
     def form_valid(self, form: CreateTeamForm):
         team: Team = form.save()
@@ -37,13 +45,18 @@ class CreateTeamView(shared_mixins.TeamDoesNotExistMixin, generic.CreateView):
         return redirect(team.get_absolute_url())
 
 
-class JoinTeamView(shared_mixins.TeamDoesNotExistMixin, generic.FormView):
+class JoinTeamView(shared_mixins.UserHasNoTeamMixin, generic.FormView):
     """
     Adds the user to a team (if the team isn't already at capacity).
     """
 
     form_class = JoinTeamForm
-    template_name = "team/join_form.html"
+    template_name = "team/join_form.html"        
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
+            return redirect("/accounts/login/?next=/team/join")
+        return redirect("/status/")
 
     def get_success_url(self):
         return self.request.user.team.get_absolute_url()
@@ -68,13 +81,24 @@ class JoinTeamView(shared_mixins.TeamDoesNotExistMixin, generic.FormView):
         return super().form_valid(form)
 
 
-class DetailTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.DetailView):
+class DetailTeamView(shared_mixins.UserHasTeamMixin, generic.DetailView):
     """
     Renders a Team if the User is a member.
     """
 
     model = Team
     template_name = "team/team_detail.html"
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
+            desired_url = self.request.path_info
+            redirect_url = "/accounts/login/?next=" + desired_url
+            return redirect(redirect_url)
+        if not Application.objects.filter(user=self.request.user.pk):
+            return redirect("/status/")
+        if self.request.user.team is None:
+            return redirect(reverse_lazy("team:join"))
+        return redirect(reverse_lazy("team:join"))
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
