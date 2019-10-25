@@ -6,6 +6,7 @@ from django.utils import timezone
 from application.models import Wave, Application
 from rsvp.models import Rsvp
 from shared import test_case
+from team.models import Team
 
 
 class StatusViewTestCase(test_case.SharedTestCase):
@@ -138,3 +139,39 @@ class StatusViewTestCase(test_case.SharedTestCase):
         self.assertTrue(
             "CANT_MAKE_IT" in response.context and response.context["CANT_MAKE_IT"]
         )
+
+    def test_not_applied_no_team_buttons(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse_lazy("status"))
+
+        self.assertNotContains(response, reverse_lazy("team:join"))
+        self.assertNotContains(response, reverse_lazy("team:create"))
+        self.assertNotContains(response, "My Team")
+
+    def test_applied_but_not_joined_displays_create_join_team_buttons(self):
+        self.create_active_wave()
+        self.client.force_login(self.user)
+        Application.objects.create(
+            **self.application_fields, approved=False, wave=self.wave1
+        )
+
+        response = self.client.get(reverse_lazy("status"))
+
+        self.assertContains(response, reverse_lazy("team:create"))
+        self.assertContains(response, reverse_lazy("team:join"))
+        self.assertNotContains(response, "My Team")
+
+    def test_applied_and_joined_team_displays_my_team_button(self):
+        self.create_active_wave()
+        self.client.force_login(self.user)
+        Application.objects.create(
+            **self.application_fields, approved=False, wave=self.wave1
+        )
+        team = Team.objects.create(name="team_name")
+        self.user.team = team
+        self.user.save()
+
+        response = self.client.get(reverse_lazy("status"))
+
+        self.assertContains(response, reverse_lazy("team:detail", args=[team.pk]))

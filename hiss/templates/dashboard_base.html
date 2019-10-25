@@ -13,12 +13,14 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <a class="nav-item" href="{% url 'status' %}">Status</span></a>
-                            {% if not user.team %}
-                                <a class="nav-item" href="{% url 'team:create'  %}">Create Team</a>
-                                <a class="nav-item" href="{% url 'team:join'  %}">Join Team</a>
-                            {% else %}
-                                <a class="nav-item" href="{{ user.team.get_absolute_url }}">My Team</a>
-                            {% endif %}                                                 
+                            {% if user.application_set.exists %}
+                                {% if not user.team %}
+                                    <a class="nav-item" href="{% url 'team:create'  %}">Create Team</a>
+                                    <a class="nav-item" href="{% url 'team:join'  %}">Join Team</a>
+                                {% else %}
+                                    <a class="nav-item" href="{{ user.team.get_absolute_url }}">My Team</a>
+                                {% endif %}
+                            {% endif %}
                             <a class="nav-item nav-right" href="{% url 'customauth:logout' %}">Log Out</a>
                         </div>
                     </nav>
