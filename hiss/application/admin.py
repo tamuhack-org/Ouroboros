@@ -4,14 +4,13 @@ from typing import List, Tuple
 
 from django import forms
 from django.conf import settings
-from django.utils.html import strip_tags
 from django.contrib import admin
-from django.core.mail import get_connection, EmailMultiAlternatives
 from django.db import transaction
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.html import strip_tags
 from rangefilter.filter import DateRangeFilter
 
 from application.models import Application, Wave
