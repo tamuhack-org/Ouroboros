@@ -13,18 +13,19 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
         context = super().get_context_data(**kwargs)
         user: User = self.request.user
 
-        active_wave = Wave.objects.active_wave(start_dt=timezone.now())
+        active_wave = Wave.objects.active_wave()
         context["CANT_MAKE_IT"] = user.declined_acceptance
         if not active_wave and not user.application_set.exists():
-            next_wave = Wave.objects.next_wave(start_dt=timezone.now())
+            next_wave = Wave.objects.next_wave()
             if not next_wave:
                 context["NO_MORE_WAVES"] = True
             else:
                 context["WAIT_UNTIL_NEXT_WAVE"] = True
                 context["next_wave_start"] = next_wave.start
         else:
-            if not user.application_set.exists():
+            if active_wave:
                 context["active_wave_end"] = active_wave.end
+            if not user.application_set.exists():
                 context["NEEDS_TO_APPLY"] = True
             elif user.application_set.first().approved is None:
                 context["application"] = user.application_set.first()
