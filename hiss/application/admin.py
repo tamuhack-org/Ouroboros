@@ -5,15 +5,16 @@ from typing import List, Tuple
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from django.core import mail
 from django.db import transaction
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.html import strip_tags
 from rangefilter.filter import DateRangeFilter
 
 from application.models import Application, Wave
+from shared.admin_functions import send_mass_html_mail
 from user.models import User
 
 
@@ -39,9 +40,9 @@ def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
 
 def build_approval_email(
     application: Application, rsvp_deadline: timezone.datetime
-) -> Tuple[str, str, None, List[str]]:
+) -> Tuple[str, str, str, None, List[str]]:
     """
-    Sends an email to a queryset of users, each with a message indicating that a `User`'s
+    Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
     application has been approved.
     """
     subject = f"Your {settings.EVENT_NAME} application has been approved!"
@@ -51,20 +52,22 @@ def build_approval_email(
         "event_name": settings.EVENT_NAME,
         "rsvp_deadline": rsvp_deadline,
     }
-    message = render_to_string("application/emails/approved.html", context)
-    return subject, message, None, [application.user.email]
+    html_message = render_to_string("application/emails/approved.html", context)
+    message = strip_tags(html_message)
+    return subject, message, html_message, None, [application.user.email]
 
 
 def build_rejection_email(application: Application) -> Tuple[str, str, None, List[str]]:
     """
-    Sends an email to containing a confirmation message indicating that a `User`'s
+    Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
     application has been rejected.
     """
     subject = f"Regarding your {settings.EVENT_NAME} application"
 
     context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME}
-    message = render_to_string("application/emails/rejected.html", context)
-    return subject, message, None, [application.user.email]
+    html_message = render_to_string("application/emails/rejected.html", context)
+    message = strip_tags(html_message)
+    return subject, message, html_message, None, [application.user.email]
 
 
 def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
@@ -83,7 +86,7 @@ def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
             create_rsvp_deadline(application.user, deadline)
             email_tuples.append(build_approval_email(application, deadline))
             application.save()
-    mail.send_mass_mail(email_tuples)
+    send_mass_html_mail(email_tuples)
 
 
 def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
@@ -96,7 +99,7 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
             application.approved = False
             email_tuples.append(build_rejection_email(application))
             application.save()
-    mail.send_mass_mail(email_tuples)
+    send_mass_html_mail(email_tuples)
 
 
 def export_application_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
