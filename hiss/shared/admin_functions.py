@@ -1,8 +1,9 @@
 from django.core.mail import get_connection, EmailMultiAlternatives
 
 
-def send_mass_html_mail(datatuple, fail_silently=False, user=None, password=None,
-                        connection=None):
+def send_mass_html_mail(
+    datatuple, fail_silently=False, user=None, password=None, connection=None
+):
     """
     Given a datatuple of (subject, text_content, html_content, from_email,
     recipient_list), sends each message to each recipient list. Returns the
@@ -16,10 +17,11 @@ def send_mass_html_mail(datatuple, fail_silently=False, user=None, password=None
     (from <a href="https://stackoverflow.com/a/10215091">this StackOverflow answer</a>
     """
     connection = connection or get_connection(
-        username=user, password=password, fail_silently=fail_silently)
+        username=user, password=password, fail_silently=fail_silently
+    )
     messages = []
     for subject, text, html, from_email, recipient in datatuple:
         message = EmailMultiAlternatives(subject, text, from_email, recipient)
-        message.attach_alternative(html, 'text/html')
+        message.attach_alternative(html, "text/html")
         messages.append(message)
     return connection.send_messages(messages)

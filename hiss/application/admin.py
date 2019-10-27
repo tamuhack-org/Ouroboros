@@ -40,7 +40,7 @@ def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
 
 
 def build_approval_email(
-        application: Application, rsvp_deadline: timezone.datetime
+    application: Application, rsvp_deadline: timezone.datetime
 ) -> Tuple[str, str, str, None, List[str]]:
     """
     Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
