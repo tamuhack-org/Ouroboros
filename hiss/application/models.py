@@ -189,7 +189,7 @@ HACKATHON_TIMES = [
 
 GRAD_YEARS = []
 for i in range(timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION):
-    for j in ["Spring", "Fall"]:
+    for j in ["Spring", "Summer", "Fall"]:
         GRAD_YEARS.append(("%s %i" % (j, i), "%s %i" % (j, i)))
 GRAD_YEARS = GRAD_YEARS[1:-1]
 GRAD_YEARS.insert(0, (None, "-- Select Option --"))
