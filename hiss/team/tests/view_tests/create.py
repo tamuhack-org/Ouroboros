@@ -37,4 +37,6 @@ class CreateTeamViewTestCase(test_case.SharedTestCase):
         self.user.refresh_from_db()
 
         self.assertIsNotNone(self.user.team)
-        self.assertRedirects(response, reverse_lazy("team:detail", args=[self.user.team.pk]))
+        self.assertRedirects(
+            response, reverse_lazy("team:detail", args=[self.user.team.pk])
+        )
