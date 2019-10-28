@@ -59,6 +59,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "shared.context_processors.customization",
             ]
         },
     }
@@ -71,14 +72,13 @@ WSGI_APPLICATION = "hiss.wsgi.application"
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "US/Central"
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
 
 MEDIA_ROOT = "resumes/"
 MEDIA_URL = "/resumes/"

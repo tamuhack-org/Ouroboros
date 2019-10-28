@@ -189,7 +189,7 @@ HACKATHON_TIMES = [
 
 GRAD_YEARS = []
 for i in range(timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION):
-    for j in ["Spring", "Fall"]:
+    for j in ["Spring", "Summer", "Fall"]:
         GRAD_YEARS.append(("%s %i" % (j, i), "%s %i" % (j, i)))
 GRAD_YEARS = GRAD_YEARS[1:-1]
 GRAD_YEARS.insert(0, (None, "-- Select Option --"))
@@ -292,18 +292,10 @@ class Application(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     datetime_submitted = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(
-        max_length=255,
-        blank=False,
-        null=False,
-        verbose_name="first name",
-        validators=[is_alpha],
+        max_length=255, blank=False, null=False, verbose_name="first name"
     )
     last_name = models.CharField(
-        max_length=255,
-        blank=False,
-        null=False,
-        verbose_name="last name",
-        validators=[is_alpha],
+        max_length=255, blank=False, null=False, verbose_name="last name"
     )
     major = models.CharField("What's your major?", choices=MAJORS, max_length=255)
     gender = models.CharField("What's your gender?", choices=GENDERS, max_length=2)
@@ -372,6 +364,6 @@ class Application(models.Model):
                 "us at highschool@tamuhack.com. "
             )
         if not self.first_name.isalpha():
-            raise exceptions.ValidationError("First name can't contain any numbers")
+            raise exceptions.ValidationError("First name can only contain letters.")
         if not self.last_name.isalpha():
-            raise exceptions.ValidationError("Last name can't contain any numbers")
+            raise exceptions.ValidationError("Last name can only contain letters.")

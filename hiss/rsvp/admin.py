@@ -29,9 +29,9 @@ class RsvpAdmin(admin.ModelAdmin):
         return False
 
     @staticmethod
-    def full_name() -> str:
-        # TODO(SaltyQuetzals): Add a way to reference user's full name.
-        return ""
+    def full_name(obj: Rsvp) -> str:
+        app = obj.user.application_set.first()
+        return " ".join([app.first_name, app.last_name])
 
 
 admin.site.register(Rsvp, RsvpAdmin)

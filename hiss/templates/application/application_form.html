@@ -1,10 +1,10 @@
 {% extends 'dashboard_base.html' %} {% block content %}{% load static %}
 
-    <div class="application">
-        <header class="text-center">
-            <img class="header-logo" src="{% static 'th_bw.svg' %}"/>
-            <h5>{{ EVENT_NAME }} 2020 Application</h5>
-        </header>
+<div class="application">
+    <header class="text-center">
+        <img class="header-logo" src="{% static 'th_bw.svg' %}"/>
+        <h5>{{event_name}} 2020 Application</h5>
+    </header>
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
