@@ -77,7 +77,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
             num_days_to_rsvp=100,
         )
         self.client.force_login(self.user)
-        application = Application.objects.create(**self.application_fields, wave=wave)
+        Application.objects.create(**self.application_fields, wave=wave)
 
         response = self.client.get(reverse_lazy("status"))
 
