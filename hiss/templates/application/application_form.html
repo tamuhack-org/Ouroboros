@@ -6,19 +6,21 @@
         <h5>{{event_name}} 2020 Application</h5>
     </header>
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
 
-        <div class="row">
-            <div class="col-12 col-lg-4 col-md-6">
-                <button type="submit" class="btn btn-lg btn-block btn-login w-100">
-                    Submit
-                </button>
-            </div>
-        </div>
-        <br>
-    </form>
-</div>
+            {% if active_wave %}
+                <div class="row">
+                    <div class="col-12 col-lg-4 col-md-6">
+                        <button type="submit" class="btn btn-lg btn-block btn-login w-100">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            {% endif %}
+            <br>
+        </form>
+    </div>
 
 {% endblock %}

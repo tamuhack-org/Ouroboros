@@ -77,14 +77,16 @@
                 </p>
                 <div class="row login-alt-options">
                     <div class="col-sm-12 col-lg-12 text-center">
+
                         <br>
-                        <a href="{{ application.get_absolute_url }}" class="btn btn-login">Edit Application</a>
-                        <!-- {% if not user.team %}
-                            <a href="{% url 'team:create' %}" class="btn btn-login secondary">Manage Team</a>
-                            <a href="{% url 'team:join' %}" class="btn btn-login">Join a Team</a>
-                        {% else %}
-                            <a href="{{ user.team.get_absolute_url }}" class="btn btn-login secondary">View your Team</a>
-                        {% endif %} -->
+                        <a href="{{ application.get_absolute_url }}" class="btn btn-login">
+                            {% if active_wave_end %}
+                                Edit Application
+                            {% else %}
+                                View Application
+                            {% endif %}
+                        </a>
+
                     </div>
                 </div>
 

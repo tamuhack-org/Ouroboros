@@ -11,13 +11,19 @@ class ApplicationModelForm(forms.ModelForm):
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
 
+        # HACK: Disable the form if there's not an active wave
+        if not application_models.Wave.objects.active_wave():
+            for field_name in self.fields.keys():
+                self.fields[field_name].widget.attrs["disabled"] = "disabled"
+
     def is_valid(self) -> bool:
         """
         Checks to ensure that a wave is currently active.
         """
         if not application_models.Wave.objects.active_wave():
             self.add_error(
-                None, "Applications may only be submitted during a registration wave."
+                None,
+                "Applications may only be submitted during an active registration wave.",
             )
         return super().is_valid()
 
