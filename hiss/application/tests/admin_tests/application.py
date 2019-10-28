@@ -23,22 +23,22 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
     def test_approval_email_customizes_event_name(self):
         event_name = "BIGGEST HACKATHON EVER"
         with self.settings(EVENT_NAME=event_name):
-            subject, _, _, _ = build_approval_email(self.app, timezone.now())
+            subject, *_ = build_approval_email(self.app, timezone.now())
             self.assertIn(event_name, subject)
 
     def test_approval_email_customizes_user_first_name(self):
-        _, message, _, _ = build_approval_email(self.app, timezone.now())
+        _, message, *_ = build_approval_email(self.app, timezone.now())
 
         self.assertIn(self.app.first_name, message)
 
     def test_rejection_email_customizes_event_name(self):
         event_name = "BIGGEST HACKATHON EVER"
         with self.settings(EVENT_NAME=event_name):
-            subject, _, _, _ = build_rejection_email(self.app)
+            subject, *_ = build_rejection_email(self.app)
             self.assertIn(event_name, subject)
 
     def test_rejection_email_customizes_first_name(self):
-        _, message, _, _ = build_rejection_email(self.app)
+        _, message, *_ = build_rejection_email(self.app)
 
         self.assertIn(self.app.first_name, message)
 
