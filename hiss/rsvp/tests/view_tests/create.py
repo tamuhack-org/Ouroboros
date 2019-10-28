@@ -1,4 +1,7 @@
+from datetime import timedelta
+
 from django.urls import reverse_lazy
+from django.utils import timezone
 
 from application.models import Application
 from rsvp.models import Rsvp
@@ -55,15 +58,30 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
 
     def test_get_succeeds_when_app_approved(self):
         self.create_active_wave()
-        app = Application(**self.application_fields, wave=self.wave1)
-        app.approved = True
-        app.full_clean()
-        app.save()
+        Application.objects.create(
+            **self.application_fields, wave=self.wave1, approved=True
+        )
+        self.user.rsvp_deadline = timezone.now() + timedelta(days=10000)
+        self.user.save()
         self.client.force_login(self.user)
 
         response = self.client.get(reverse_lazy("rsvp:create"))
 
         self.assertEqual(response.status_code, 200)
+
+    def test_get_redirects_if_declined(self):
+        self.create_active_wave()
+        Application.objects.create(
+            **self.application_fields, wave=self.wave1, approved=True
+        )
+        self.user.rsvp_deadline = timezone.now() + timedelta(days=10000)
+        self.user.save()
+        self.client.force_login(self.user)
+        self.client.post(reverse_lazy("rsvp:decline"))
+
+        response = self.client.get(reverse_lazy("rsvp:create"), self.rsvp_fields)
+
+        self.assertRedirects(response, reverse_lazy("status"))
 
     def test_post_redirects_when_not_authenticated(self):
         response = self.client.post(reverse_lazy("rsvp:create"), self.rsvp_fields)
@@ -106,10 +124,11 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
 
     def test_post_succeeds_when_app_approved(self):
         self.create_active_wave()
-        app = Application(**self.application_fields, wave=self.wave1)
-        app.approved = True
-        app.full_clean()
-        app.save()
+        Application.objects.create(
+            **self.application_fields, wave=self.wave1, approved=True
+        )
+        self.user.rsvp_deadline = timezone.now() + timedelta(days=10000)
+        self.user.save()
         self.client.force_login(self.user)
 
         response = self.client.post(reverse_lazy("rsvp:create"), self.rsvp_fields)

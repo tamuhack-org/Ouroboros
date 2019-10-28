@@ -1,4 +1,7 @@
+from datetime import timedelta
+
 from django.urls import reverse_lazy
+from django.utils import timezone
 
 from application.models import Application
 from rsvp.models import Rsvp
@@ -39,6 +42,8 @@ class UpdateRsvpViewTestCase(test_case.SharedTestCase):
         Application.objects.create(
             **self.application_fields, wave=self.wave1, approved=True
         )
+        self.user.rsvp_deadline = timezone.now() + timedelta(days=10000)
+        self.user.save()
         rsvp = Rsvp(**self.rsvp_fields, user=self.user)
         rsvp.save()
         self.client.force_login(self.user)
@@ -67,6 +72,8 @@ class UpdateRsvpViewTestCase(test_case.SharedTestCase):
         Application.objects.create(
             **self.application_fields, wave=self.wave1, approved=True
         )
+        self.user.rsvp_deadline = timezone.now() + timedelta(days=10000)
+        self.user.save()
         rsvp_fields = self.rsvp_fields
         new_value = "XL"
         rsvp_fields["shirt_size"] = new_value

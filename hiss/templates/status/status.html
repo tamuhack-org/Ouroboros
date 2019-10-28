@@ -103,6 +103,8 @@
                     <div class="col-sm-12 col-lg-12 text-center">
                         <br>
                         <a href="{% url 'rsvp:create' %}" class="btn btn-login">RSVP Here!</a>
+                        <a href="{% url 'rsvp:decline' %}" class="btn btn-login secondary ">I
+                            Can't Make It</a>
                     </div>
                 </div>
 
@@ -132,7 +134,6 @@
                         <a href="{{ application.get_absolute_url }}" class="btn btn-login">View Application</a>
                     </div>
                     {% elif CANT_MAKE_IT %}
-                    <p> You have RSVP'd </p>
                     <div class="app-status">Not Attending</div>
 
                     <p class="pt-2">We're sorry to hear you can't make it! Thanks for telling us!</p>
