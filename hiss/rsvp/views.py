@@ -21,6 +21,9 @@ class CreateRsvpView(mixins.UserPassesTestMixin, generic.CreateView):
     """
     Creates a new Rsvp and links it to a User if one doesn't already exist and the User's been accepted.
     """
+    form_class = RsvpModelForm
+    template_name = "rsvp/rsvp_form.html"
+    success_url = reverse_lazy("status")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -41,11 +44,15 @@ class CreateRsvpView(mixins.UserPassesTestMixin, generic.CreateView):
         # Their application hasn't been approved (or has been rejected)
         if not app.approved:
             return False
+        # They don't have (or missed) an RSVP deadline
+        if not user.rsvp_deadline or user.rsvp_deadline < timezone.now():
+            return False
         return True
 
-    form_class = RsvpModelForm
-    template_name = "rsvp/rsvp_form.html"
-    success_url = reverse_lazy("status")
+    def get(self, request: HttpRequest, *args, **kwargs):
+        if request.user.declined_acceptance:
+            return redirect(reverse_lazy("status"))
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form: RsvpModelForm):
         if Rsvp.objects.filter(user=self.request.user).exists():
@@ -80,6 +87,9 @@ class UpdateRsvpView(mixins.UserPassesTestMixin, generic.UpdateView):
         # Their application hasn't been approved (or has been rejected)
         if not app.approved:
             return False
+        # They don't have (or missed) an RSVP deadline
+        if not user.rsvp_deadline or user.rsvp_deadline < timezone.now():
+            return False
         return True
 
     def get_context_data(self, **kwargs):
@@ -98,7 +108,9 @@ class UpdateRsvpView(mixins.UserPassesTestMixin, generic.UpdateView):
         return rsvp
 
 
-class DeclineRsvpView(mixins.LoginRequiredMixin, views.View):
+class DeclineRsvpView(mixins.LoginRequiredMixin, generic.TemplateView):
+    template_name = "rsvp/rsvp_decline.html"
+
     def post(self, request: HttpRequest, *_args, **_kwargs):
         if not request.user.application_set.exists():
             raise exceptions.PermissionDenied(
@@ -108,7 +120,7 @@ class DeclineRsvpView(mixins.LoginRequiredMixin, views.View):
             raise exceptions.PermissionDenied(
                 "You must have been admitted to decline admission."
             )
-        if request.user.rsvp_deadline < timezone.now():
+        if request.user.rsvp_deadline and request.user.rsvp_deadline < timezone.now():
             raise exceptions.PermissionDenied("Your RSVP deadline has passed.")
         request.user.declined_acceptance = True
         request.user.save()

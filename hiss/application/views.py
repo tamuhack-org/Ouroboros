@@ -18,6 +18,11 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
     template_name = "application/application_form.html"
     success_url = reverse_lazy("status")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["active_wave"] = Wave.objects.active_wave()
+        return context
+
     def form_valid(self, form: ApplicationModelForm):
         if Application.objects.filter(user=self.request.user).exists():
             form.add_error(None, "You can only submit one application to this event.")
