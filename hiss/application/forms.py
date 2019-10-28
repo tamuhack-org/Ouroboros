@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.safestring import mark_safe
 
-from application import models as application_models
+from application import models as application_models, models
 
 
 class ApplicationModelForm(forms.ModelForm):
@@ -15,6 +15,24 @@ class ApplicationModelForm(forms.ModelForm):
         if not application_models.Wave.objects.active_wave():
             for field_name in self.fields.keys():
                 self.fields[field_name].widget.attrs["disabled"] = "disabled"
+
+    def clean_gender_other(self):
+        gender_other = self.cleaned_data["gender_other"]
+        gender = self.cleaned_data["gender"]
+        if gender == models.GENDER_OTHER and not gender_other:
+            raise forms.ValidationError(
+                'Please fill out this field or choose "Prefer not to answer".'
+            )
+        return gender_other
+
+    def clean_race_other(self):
+        race_other = self.cleaned_data["race_other"]
+        races = self.cleaned_data["race"]
+        if models.RACE_OTHER in races and not race_other:
+            raise forms.ValidationError(
+                "Please fill out this field with the appropriate information."
+            )
+        return race_other
 
     def is_valid(self) -> bool:
         """
@@ -45,7 +63,9 @@ class ApplicationModelForm(forms.ModelForm):
             "classification",
             "grad_term",
             "gender",
+            "gender_other",
             "race",
+            "race_other",
             "num_hackathons_attended",
             "transport_needed",
             "resume",
