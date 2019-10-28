@@ -1,7 +1,6 @@
 from typing import Union
 
 from django.conf import settings
-from django import views
 from django.contrib.auth import mixins
 from django.core import exceptions
 from django.core.exceptions import PermissionDenied
@@ -21,6 +20,7 @@ class CreateRsvpView(mixins.UserPassesTestMixin, generic.CreateView):
     """
     Creates a new Rsvp and links it to a User if one doesn't already exist and the User's been accepted.
     """
+
     form_class = RsvpModelForm
     template_name = "rsvp/rsvp_form.html"
     success_url = reverse_lazy("status")

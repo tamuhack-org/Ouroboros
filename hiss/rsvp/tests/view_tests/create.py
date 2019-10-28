@@ -58,7 +58,9 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
 
     def test_get_succeeds_when_app_approved(self):
         self.create_active_wave()
-        Application.objects.create(**self.application_fields, wave=self.wave1, approved=True)
+        Application.objects.create(
+            **self.application_fields, wave=self.wave1, approved=True
+        )
         self.user.rsvp_deadline = timezone.now() + timedelta(days=10000)
         self.user.save()
         self.client.force_login(self.user)
@@ -69,7 +71,9 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
 
     def test_get_redirects_if_declined(self):
         self.create_active_wave()
-        Application.objects.create(**self.application_fields, wave=self.wave1, approved=True)
+        Application.objects.create(
+            **self.application_fields, wave=self.wave1, approved=True
+        )
         self.user.rsvp_deadline = timezone.now() + timedelta(days=10000)
         self.user.save()
         self.client.force_login(self.user)
@@ -120,7 +124,9 @@ class CreateRsvpViewTestCase(test_case.SharedTestCase):
 
     def test_post_succeeds_when_app_approved(self):
         self.create_active_wave()
-        Application.objects.create(**self.application_fields, wave=self.wave1, approved=True)
+        Application.objects.create(
+            **self.application_fields, wave=self.wave1, approved=True
+        )
         self.user.rsvp_deadline = timezone.now() + timedelta(days=10000)
         self.user.save()
         self.client.force_login(self.user)
