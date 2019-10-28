@@ -40,6 +40,11 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
     template_name = "application/application_form.html"
     success_url = reverse_lazy("status")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["active_wave"] = Wave.objects.active_wave()
+        return context
+
     def get_object(self, queryset=None) -> Application:
         """
         Checks to make sure that the user actually owns the application requested.

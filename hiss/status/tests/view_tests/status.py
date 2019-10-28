@@ -59,7 +59,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
 
         self.assertTrue("PENDING" in response.context)
 
-    def test_pending_context_provides_edit_link(self):
+    def test_pending_context_provides_edit_link_inside_wave(self):
         self.create_active_wave()
         self.client.force_login(self.user)
         application = Application.objects.create(
@@ -70,7 +70,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
 
         self.assertContains(response, application.get_absolute_url())
 
-    def test_pending_context_hides_edit_link_outside_wave(self):
+    def test_pending_context_shows_view_link_outside_wave(self):
         wave = Wave.objects.create(
             start=timezone.now() - timezone.timedelta(days=100),
             end=timezone.now() - timezone.timedelta(days=30),
@@ -81,9 +81,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
 
         response = self.client.get(reverse_lazy("status"))
 
-        self.assertNotContains(
-            response, reverse_lazy("application:update", args=[application.pk])
-        )
+        self.assertContains(response, "View Application")
 
     def test_rsvp_deadline_expired_context(self):
         self.create_active_wave()

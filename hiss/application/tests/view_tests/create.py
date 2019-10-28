@@ -33,7 +33,7 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
             response,
             "form",
             "__all__",
-            "Applications may only be submitted during a registration wave.",
+            "Applications may only be submitted during an active registration wave.",
         )
 
     def test_associates_with_user(self) -> None:

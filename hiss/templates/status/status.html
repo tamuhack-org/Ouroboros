@@ -77,10 +77,16 @@
                 </p>
                 <div class="row login-alt-options">
                     <div class="col-sm-12 col-lg-12 text-center">
-                        {% if active_wave_end %}
-                            <br>
-                            <a href="{{ application.get_absolute_url }}" class="btn btn-login">Edit Application</a>
-                        {% endif %}
+
+                        <br>
+                        <a href="{{ application.get_absolute_url }}" class="btn btn-login">
+                            {% if active_wave_end %}
+                                Edit Application
+                            {% else %}
+                                View Application
+                            {% endif %}
+                        </a>
+
                     </div>
                 </div>
 
