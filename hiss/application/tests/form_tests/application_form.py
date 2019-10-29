@@ -25,3 +25,12 @@ class ApplicationModelFormTestCase(test_case.SharedTestCase):
             form["race_other"].errors,
             ["Please fill out this field with the appropriate information."],
         )
+
+    def test_race_other_doesnt_error_if_no_races_selected(self):
+        self.application_fields["race"] = []
+
+        form = ApplicationModelForm(self.application_fields)
+
+        self.assertFalse(form.is_valid())
+        self.assertListEqual(form["race_other"].errors, [])
+        self.assertEqual(len(form["race"].errors), 1)
