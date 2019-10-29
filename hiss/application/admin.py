@@ -13,9 +13,8 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from rangefilter.filter import DateRangeFilter
 
-from application.models import Application, Wave
+from application.models import Application, Wave, STATUS_ADMITTED, STATUS_REJECTED
 from shared.admin_functions import send_mass_html_mail
-from user.models import User
 
 
 class ApplicationAdminForm(forms.ModelForm):
@@ -25,21 +24,13 @@ class ApplicationAdminForm(forms.ModelForm):
         widgets = {
             "gender": forms.RadioSelect,
             "classification": forms.RadioSelect,
-            "grad_term": forms.RadioSelect,
+            "grad_year": forms.RadioSelect,
             "status": forms.RadioSelect,
         }
 
 
-def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
-    """
-    Generates a datetime representing the deadline for a `User` to create an `Rsvp`
-    """
-    user.rsvp_deadline = deadline
-    user.save()
-
-
 def build_approval_email(
-    application: Application, rsvp_deadline: timezone.datetime
+    application: Application, confirmation_deadline: timezone.datetime
 ) -> Tuple[str, str, str, None, List[str]]:
     """
     Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
@@ -50,7 +41,7 @@ def build_approval_email(
     context = {
         "first_name": application.first_name,
         "event_name": settings.EVENT_NAME,
-        "rsvp_deadline": rsvp_deadline,
+        "confirmation_deadline": confirmation_deadline,
     }
     html_message = render_to_string("application/emails/approved.html", context)
     message = strip_tags(html_message)
@@ -82,8 +73,8 @@ def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
             deadline = timezone.now().replace(
                 hour=23, minute=59, second=59, microsecond=0
             ) + timezone.timedelta(application.wave.num_days_to_rsvp)
-            application.approved = True
-            create_rsvp_deadline(application.user, deadline)
+            application.status = STATUS_ADMITTED
+            application.confirmation_deadline = deadline
             email_tuples.append(build_approval_email(application, deadline))
             application.save()
     send_mass_html_mail(email_tuples)
@@ -96,7 +87,7 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
     email_tuples = []
     with transaction.atomic():
         for application in queryset:
-            application.approved = False
+            application.status = STATUS_REJECTED
             email_tuples.append(build_rejection_email(application))
             application.save()
     send_mass_html_mail(email_tuples)
@@ -136,22 +127,22 @@ class ApplicationAdmin(admin.ModelAdmin):
         "race",
         "major",
         "classification",
-        "grad_term",
+        "grad_year",
         "num_hackathons_attended",
         "extra_links",
         "question1",
         "question2",
         "question3",
         "notes",
-        "approved",
+        "status",
         "is_a_walk_in",
     ]
     list_filter = (
         ("gender", custom_titled_filter("gender")),
         ("race", custom_titled_filter("race")),
         ("classification", custom_titled_filter("classification")),
-        ("grad_term", custom_titled_filter("graduation year")),
-        ("approved", custom_titled_filter("approved")),
+        ("grad_year", custom_titled_filter("graduation year")),
+        ("status", custom_titled_filter("status")),
         (
             "num_hackathons_attended",
             custom_titled_filter("number of attended hackathons"),
@@ -164,8 +155,8 @@ class ApplicationAdmin(admin.ModelAdmin):
         "user_email",
         "datetime_submitted",
         "classification",
-        "grad_term",
-        "approved",
+        "grad_year",
+        "status",
     )
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),
@@ -180,7 +171,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "race",
                     "major",
                     "classification",
-                    "grad_term",
+                    "grad_year",
                 ]
             },
         ),
@@ -199,7 +190,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 ]
             },
         ),
-        ("Status", {"fields": ["approved", "is_a_walk_in"]}),
+        ("Status", {"fields": ["status", "is_a_walk_in"]}),
     ]
 
     approve.short_description = "Approve Selected Applications"

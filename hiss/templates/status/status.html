@@ -4,7 +4,7 @@
     <div class="status-box">
 
         <header>
-            {% if CONFIRMED or NEEDS_TO_RSVP or CANT_MAKE_IT %}
+            {% if CONFIRMED or NEEDS_TO_CONFIRM or DECLINED %}
                 <ol class="timeline-24">
             {% else %}
                 <ol class="timeline">
@@ -12,7 +12,7 @@
 
             <li>
                 <p class="diplome">Submitted</p>
-                {% if CONFIRMED or REJECTED or PENDING or NEEDS_TO_RSVP or CANT_MAKE_IT %}
+                {% if CONFIRMED or REJECTED or PENDING or NEEDS_TO_CONFIRM or DECLINED %}
                     <img src="{% static 'tick.svg' %}">
                 {% else %}
                     <span class="point"></span>
@@ -20,7 +20,7 @@
             </li>
             <li>
                 <p class="diplome">In Review</p>
-                {% if CONFIRMED or REJECTED or NEEDS_TO_RSVP or WAIT_UNTIL_NEXT_WAVE or CANT_MAKE_IT %}
+                {% if CONFIRMED or REJECTED or NEEDS_TO_CONFIRM or WAIT_UNTIL_NEXT_WAVE or DECLINED %}
                     <img src="{% static 'tick.svg' %}">
                 {% else %}
                     <span class="point"></span>
@@ -28,17 +28,17 @@
             </li>
             <li>
                 <p class="diplome">Decisions Released</p>
-                {% if CONFIRMED or REJECTED or NEEDS_TO_RSVP or CANT_MAKE_IT %}
+                {% if CONFIRMED or REJECTED or NEEDS_TO_CONFIRM or DECLINED %}
                     <img src="{% static 'tick.svg' %}">
                 {% else %}
                     <span class="point"></span>
                 {% endif %}
             </li>
 
-            {% if CONFIRMED or NEEDS_TO_RSVP or CANT_MAKE_IT %}
+            {% if CONFIRMED or NEEDS_TO_CONFIRM or DECLINED %}
                 <li>
                     <p class="diplome">RSVP</p>
-                    {% if CONFIRMED or CANT_MAKE_IT %}
+                    {% if CONFIRMED or DECLINED %}
                         <img src="{% static 'tick.svg' %}">
                     {% else %}
                         <span class="point"></span>
@@ -50,7 +50,7 @@
 
         <div class="pt-4 text-center submit-pg">
             <br>
-            {% if NEEDS_TO_APPLY %}
+            {% if NOT_APPLIED %}
                 <p> Your application is </p>
                 <div class="app-status">INCOMPLETE</div>
 
@@ -90,21 +90,28 @@
                     </div>
                 </div>
 
-            {% elif NEEDS_TO_RSVP and not CANT_MAKE_IT %}
+            {% elif NEEDS_TO_CONFIRM and not DECLINED %}
                 <p> Congrats, you have been </p>
                 <div class="app-status">ACCEPTED</div>
 
                 <p class="status-subtitle pt-2">
                     {% localtime off %}
-                        Please RSVP below by {{ rsvp_deadline }} {{ TIME_ZONE }} or you risk losing your spot.
+                        Please RSVP below by {{ confirmation_deadline }} {{ TIME_ZONE }} or you risk losing your spot.
                     {% endlocaltime %}
                 </p>
                 <div class="row login-alt-options">
                     <div class="col-sm-12 col-lg-12 text-center">
                         <br>
-                        <a href="{% url 'rsvp:create' %}" class="btn btn-login">RSVP Here!</a>
-                        <a href="{% url 'rsvp:decline' %}" class="btn btn-login secondary ">I
-                            Can't Make It</a>
+                        <form method="POST" action="{% url 'application:confirm' pk=application.pk %}">
+                            {% csrf_token %}
+
+                            <input class="btn btn-login" type="submit" value="I'll be there!">
+                        </form>
+                        <form method="POST" action="{% url 'application:decline' pk=application.pk %}">
+                            {% csrf_token %}
+
+                            <input class="btn btn-login secondary" type="submit" value="I can't make it">
+                        </form>
                     </div>
                 </div>
 
@@ -133,7 +140,7 @@
                         <br>
                         <a href="{{ application.get_absolute_url }}" class="btn btn-login">View Application</a>
                     </div>
-                    {% elif CANT_MAKE_IT %}
+                    {% elif DECLINED %}
                     <div class="app-status">Not Attending</div>
 
                     <p class="pt-2">We're sorry to hear you can't make it! Thanks for telling us!</p>
@@ -141,6 +148,13 @@
                     {% elif NO_MORE_WAVES %}
                     <p>Sorry, we are currently not accepting applications.</p>
                 </div>
+            {% elif EXPIRED %}
+                <p>Your confirmation deadline has</p>
+                <div class="app-status">EXPIRED</div>
+                <p class="status-subtitle pt-2">
+                    You did not confirm your attendance by the deadline provided, so we have given your spot to other
+                    applicants.
+                </p>
             {% endif %}
         </div>
     </div>

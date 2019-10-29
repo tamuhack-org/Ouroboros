@@ -6,7 +6,6 @@ from django.utils import timezone
 
 from application.models import (
     Application,
-    MAJORS,
     RACES,
     CLASSIFICATIONS,
     HACKATHON_TIMES,
@@ -14,6 +13,8 @@ from application.models import (
     Wave,
     GENDERS,
     TRANSPORT_MODES,
+    STATUS_PENDING,
+    STATUS_ADMITTED,
 )
 from user.models import User
 
@@ -99,18 +100,18 @@ class Command(base.BaseCommand):
                     first_name=random_name,
                     last_name=LAST_NAME,
                     notes="",
-                    major=random.choice(MAJORS[1:])[0],
+                    major="Major",
                     race=[random.choice(RACES[1:])[0]],
                     classification=random.choice(CLASSIFICATIONS[1:])[0],
                     gender=random.choice(GENDERS[1:])[0],
                     transport_needed=random.choice(TRANSPORT_MODES[1:])[0],
-                    grad_term=random.choice(GRAD_YEARS[1:])[0],
+                    grad_year=random.choice(GRAD_YEARS[1:])[0],
                     num_hackathons_attended=random.choice(HACKATHON_TIMES[1:])[0],
                     extra_links="a",
                     question1="b",
                     question2="c",
                     question3="d",
-                    approved=random.choice([None, True, False]),
+                    status=random.choice([STATUS_PENDING, STATUS_ADMITTED]),
                     agree_to_coc=True,
                     is_adult=True,
                     additional_accommodations="",

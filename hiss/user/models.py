@@ -55,14 +55,7 @@ class User(auth_models.AbstractUser):
     first_name = None
     last_name = None
 
-    # Registration system-specific fields
-
-    rsvp_deadline = models.DateTimeField(null=True, blank=True)
-    declined_acceptance = models.BooleanField(default=False)
-
     # Day-of
-    checked_in = models.BooleanField(default=False)
-    checked_in_at = models.DateTimeField(null=True, blank=True)
     team = models.ForeignKey(
         "team.Team",
         null=True,

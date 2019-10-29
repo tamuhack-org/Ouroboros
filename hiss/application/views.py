@@ -1,11 +1,19 @@
+from django import views
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
+from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
 from application.forms import ApplicationModelForm
-from application.models import Application, Wave
+from application.models import (
+    Application,
+    Wave,
+    STATUS_CONFIRMED,
+    STATUS_DECLINED,
+    STATUS_ADMITTED,
+)
 
 
 class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
@@ -58,3 +66,45 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
         if app.user != self.request.user:
             raise PermissionDenied("You don't have permission to view this application")
         return app
+
+
+class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
+    """
+    Changes an application's status from STATUS_ADMITTED to STATUS_CONFIRMED
+    """
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        pk = self.kwargs["pk"]
+        app: Application = Application.objects.get(pk=pk)
+        if app.user != request.user:
+            raise PermissionDenied(
+                "You don't have permission to view this application."
+            )
+        if app.status != STATUS_ADMITTED:
+            raise PermissionDenied(
+                "You can't confirm your application if it hasn't been approved."
+            )
+        app.status = STATUS_CONFIRMED
+        app.save()
+        return reverse_lazy("status")
+
+
+class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
+    """
+    Changes an application's status from STATUS_ADMITTED to STATUS_DECLINED
+    """
+
+    def post(self, request, *args, **kwargs):
+        pk = self.kwargs["pk"]
+        app: Application = Application.objects.get(pk=pk)
+        if app.user != request.user:
+            raise PermissionDenied(
+                "You don't have permission to view this application."
+            )
+        if app.status != STATUS_ADMITTED:
+            raise PermissionDenied(
+                "You can't decline your spot if it hasn't been approved."
+            )
+        app.status = STATUS_DECLINED
+        app.save()
+        return redirect(reverse_lazy("status"))

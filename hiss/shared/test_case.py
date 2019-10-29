@@ -1,10 +1,11 @@
 from django import test
-from django.test import override_settings
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import override_settings
 from django.utils import timezone
 
-from user.models import User
+from application import models as application_models
 from application.models import Wave
+from user.models import User
 
 TEST_RESUME_DIR = "test_resume_dir"
 
@@ -37,14 +38,16 @@ class SharedTestCase(test.TestCase):
         self.application_fields = {
             "first_name": self.first_name,
             "last_name": self.last_name,
+            "shirt_size": application_models.WOMENS_XXS,
             "major": "Computer Science",
-            "transport_needed": "drive",
-            "gender": "M",
-            "classification": "Fr",
-            "grad_term": "Other",
-            "num_hackathons_attended": 0,
+            "school": "Of hard knocks",
+            "transport_needed": application_models.MANUAL_POWER,
+            "gender": application_models.FEMALE,
+            "classification": application_models.FRESHMAN,
+            "grad_year": timezone.now().year + 1,
+            "num_hackathons_attended": application_models.HACKATHONS_0,
             "user": self.user,
-            "race": ["NA"],
+            "race": [application_models.NO_ANSWER],
             "extra_links": "A",
             "question1": "B",
             "question2": "C",

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,7 +27,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "user.apps.UserConfig",
     "application.apps.ApplicationConfig",
-    "rsvp.apps.RsvpConfig",
     "volunteer.apps.VolunteerConfig",
     "status.apps.StatusConfig",
     "phonenumber_field",
