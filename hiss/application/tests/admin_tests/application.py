@@ -3,12 +3,8 @@ from django.core import mail
 from django.urls import reverse_lazy
 from django.utils import timezone
 
-from application.admin import (
-    create_rsvp_deadline,
-    build_approval_email,
-    build_rejection_email,
-)
-from application.models import Application
+from application.admin import build_approval_email, build_rejection_email
+from application.models import Application, STATUS_REJECTED, STATUS_ADMITTED
 from shared import test_case
 
 
@@ -53,7 +49,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         )
 
         self.app.refresh_from_db()
-        self.assertTrue(self.app.approved)
+        self.assertEqual(self.app.status, STATUS_ADMITTED)
 
     def test_approval_action_sends_approval_email(self):
         self.client.force_login(self.admin)
@@ -86,12 +82,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
             follow=True,
         )
         self.app.refresh_from_db()
-        self.assertFalse(self.app.approved)
-
-    def test_creates_accurate_rsvp_deadline(self):
-        deadline = timezone.now().replace(hour=23, minute=59, second=59, microsecond=0)
-        create_rsvp_deadline(self.user, deadline)
-        self.assertEqual(self.user.rsvp_deadline, deadline)
+        self.assertEqual(self.app.status, STATUS_REJECTED)
 
     def test_export_application_emails(self):
         self.client.force_login(self.admin)

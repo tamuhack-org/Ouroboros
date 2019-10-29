@@ -11,6 +11,67 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from multiselectfield import MultiSelectField
 
+
+class WaveManager(models.Manager):
+    def next_wave(
+        self, start_dt: Optional[timezone.datetime] = None
+    ) -> Optional["Wave"]:
+        """
+        Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
+        `active_wave`.
+        """
+        if not start_dt:
+            start_dt = timezone.now()
+        qs = self.get_queryset().filter(start__gt=start_dt).order_by("start")
+        return qs.first()
+
+    def active_wave(
+        self, start_dt: Optional[timezone.datetime] = None
+    ) -> Optional["Wave"]:
+        """
+        Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
+        `next_wave`.
+        """
+        if not start_dt:
+            start_dt = timezone.now()
+        qs = (
+            self.get_queryset()
+            .filter(start__lte=start_dt, end__gt=start_dt)
+            .order_by("start")
+        )
+        return qs.first()
+
+
+class Wave(models.Model):
+    """
+    Representation of a registration period. `Application`s must be created during
+    a `Wave`, and are automatically associated with a wave through the `Application`'s `pre_save` handler.
+    """
+
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    num_days_to_rsvp = models.IntegerField()
+    is_walk_in_wave = models.BooleanField(
+        default=False, verbose_name="Is this wave for walk-ins?"
+    )
+
+    objects = WaveManager()
+
+    def clean(self):
+        super().clean()
+        if self.start >= self.end:
+            raise exceptions.ValidationError(
+                {"start": "Start date can't be after end date."}
+            )
+        for wave in Wave.objects.exclude(pk=self.pk).all():
+            has_start_overlap = wave.start < self.start < wave.end
+            has_end_overlap = wave.start < self.end < wave.end
+            if has_start_overlap or has_end_overlap:
+                raise exceptions.ValidationError(
+                    "Cannot create wave; another wave with an overlapping time range exists."
+                )
+
+
 AGREE = ((True, "Agree"),)
 
 TRUE_FALSE_CHOICES = ((True, "Yes"), (False, "No"))
@@ -110,6 +171,12 @@ GRAD_YEARS: List[Tuple[int, int]] = [
 
 DRIVING = "D"
 EVENT_PROVIDED_BUS = "B"
+EVENT_PROVIDED_BUS_UT = "BUT"
+EVENT_PROVIDED_BUS_UTD = "BUTD"
+EVENT_PROVIDED_BUS_UTA = "BUTA"
+EVENT_PROVIDED_BUS_UTSA = "BUTSA"
+EVENT_PROVIDED_BUS_UTRGV = "BUTRGV"
+OTHER_BUS = "OB"
 FLYING = "F"
 PUBLIC_TRANSPORTATION = "P"
 MANUAL_POWER = "M"
@@ -117,6 +184,12 @@ MANUAL_POWER = "M"
 TRANSPORT_MODES: List[Tuple[str, str]] = [
     (DRIVING, "Driving"),
     (EVENT_PROVIDED_BUS, f"{settings.EVENT_NAME} Bus"),
+    (EVENT_PROVIDED_BUS_UT, f"{settings.EVENT_NAME} Bus - UT Austin"),
+    (EVENT_PROVIDED_BUS_UTD, f"{settings.EVENT_NAME} Bus - UT Dallas"),
+    (EVENT_PROVIDED_BUS_UTA, f"{settings.EVENT_NAME} Bus - UT Arlington"),
+    (EVENT_PROVIDED_BUS_UTSA, f"{settings.EVENT_NAME} Bus - UTSA"),
+    (EVENT_PROVIDED_BUS_UTRGV, f"{settings.EVENT_NAME} Bus - UTRGV"),
+    (OTHER_BUS, "Other Bus (Greyhound, Megabus, etc.)"),
     (FLYING, "Flying"),
     (PUBLIC_TRANSPORTATION, "Public Transportation"),
     (MANUAL_POWER, "Walking/Biking"),
@@ -158,65 +231,23 @@ SHIRT_SIZES = [
     (UNISEX_XXL, "Unisex XXL"),
 ]
 
+STATUS_PENDING = "P"
+STATUS_REJECTED = "R"
+STATUS_ADMITTED = "A"
+STATUS_CONFIRMED = "C"
+STATUS_DECLINED = "X"
+STATUS_CHECKED_IN = "I"
+STATUS_EXPIRED = "E"
 
-class WaveManager(models.Manager):
-    def next_wave(
-        self, start_dt: Optional[timezone.datetime] = None
-    ) -> Optional["Wave"]:
-        """
-        Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
-        `active_wave`.
-        """
-        if not start_dt:
-            start_dt = timezone.now()
-        qs = self.get_queryset().filter(start__gt=start_dt).order_by("start")
-        return qs.first()
-
-    def active_wave(
-        self, start_dt: Optional[timezone.datetime] = None
-    ) -> Optional["Wave"]:
-        """
-        Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
-        `next_wave`.
-        """
-        if not start_dt:
-            start_dt = timezone.now()
-        qs = (
-            self.get_queryset()
-            .filter(start__lte=start_dt, end__gt=start_dt)
-            .order_by("start")
-        )
-        return qs.first()
-
-
-class Wave(models.Model):
-    """
-    Representation of a registration period. `Application`s must be created during
-    a `Wave`, and are automatically associated with a wave through the `Application`'s `pre_save` handler.
-    """
-
-    start = models.DateTimeField()
-    end = models.DateTimeField()
-    num_days_to_rsvp = models.IntegerField()
-    is_walk_in_wave = models.BooleanField(
-        default=False, verbose_name="Is this wave for walk-ins?"
-    )
-
-    objects = WaveManager()
-
-    def clean(self):
-        super().clean()
-        if self.start >= self.end:
-            raise exceptions.ValidationError(
-                {"start": "Start date can't be after end date."}
-            )
-        for wave in Wave.objects.exclude(pk=self.pk).all():
-            has_start_overlap = wave.start < self.start < wave.end
-            has_end_overlap = wave.start < self.end < wave.end
-            if has_start_overlap or has_end_overlap:
-                raise exceptions.ValidationError(
-                    "Cannot create wave; another wave with an overlapping time range exists."
-                )
+STATUS_OPTIONS = [
+    (STATUS_PENDING, "Under Review"),
+    (STATUS_REJECTED, "Waitlisted"),
+    (STATUS_ADMITTED, "Admitted"),
+    (STATUS_CONFIRMED, "Confirmed"),
+    (STATUS_DECLINED, "Declined"),
+    (STATUS_CHECKED_IN, "Checked in"),
+    (STATUS_EXPIRED, "Expired"),
+]
 
 
 def uuid_generator(_instance, filename: str):
@@ -244,6 +275,9 @@ class Application(models.Model):
     datetime_submitted = models.DateTimeField(auto_now_add=True)
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
+    status = models.CharField(
+        choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
+    )
 
     # ABOUT YOU
     first_name = models.CharField(
@@ -285,7 +319,7 @@ class Application(models.Model):
     classification = models.CharField(
         "What classification are you?", choices=CLASSIFICATIONS, max_length=2
     )
-    grad_term = models.IntegerField(
+    grad_year = models.IntegerField(
         "What is your anticipated graduation year?", choices=GRAD_YEARS
     )
     num_hackathons_attended = models.CharField(
@@ -293,9 +327,6 @@ class Application(models.Model):
     )
 
     # LEGAL INFO
-    shirt_size = models.CharField(
-        "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
-    )
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
     is_adult = models.BooleanField(
         "Please confirm you are 18 or older",
@@ -306,6 +337,9 @@ class Application(models.Model):
     )
 
     # LOGISTICAL INFO
+    shirt_size = models.CharField(
+        "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
+    )
     transport_needed = models.CharField(
         "How will you be getting to the event?", choices=TRANSPORT_MODES, max_length=11
     )
@@ -321,8 +355,8 @@ class Application(models.Model):
         default=NONE,
     )
 
-    # APPLICATION STATUS
-    approved = models.NullBooleanField(blank=True)
+    # CONFIRMATION DEADLINE
+    confirmation_deadline = models.DateTimeField(null=True, blank=True)
 
     # MISCELLANEOUS
     notes = models.TextField(

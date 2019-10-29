@@ -5,6 +5,15 @@ from application import models as application_models, models
 
 
 class ApplicationModelForm(forms.ModelForm):
+    gender_other = forms.CharField(
+        label='If you chose "Prefer to self-describe", please elaborate.',
+        required=False,
+    )
+    race_other = forms.CharField(
+        label='If you chose "Prefer to self-describe", please elaborate.',
+        required=False,
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["agree_to_coc"].label = mark_safe(
@@ -61,7 +70,7 @@ class ApplicationModelForm(forms.ModelForm):
             "last_name",
             "major",
             "classification",
-            "grad_term",
+            "grad_year",
             "gender",
             "gender_other",
             "race",

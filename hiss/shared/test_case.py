@@ -44,7 +44,7 @@ class SharedTestCase(test.TestCase):
             "transport_needed": application_models.MANUAL_POWER,
             "gender": application_models.FEMALE,
             "classification": application_models.FRESHMAN,
-            "grad_term": timezone.now().year + 1,
+            "grad_year": timezone.now().year + 1,
             "num_hackathons_attended": application_models.HACKATHONS_0,
             "user": self.user,
             "race": [application_models.NO_ANSWER],

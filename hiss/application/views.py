@@ -1,11 +1,13 @@
+from django import views
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
+from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
 from application.forms import ApplicationModelForm
-from application.models import Application, Wave
+from application.models import Application, Wave, STATUS_CONFIRMED, STATUS_DECLINED
 
 
 class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
@@ -58,3 +60,17 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
         if app.user != self.request.user:
             raise PermissionDenied("You don't have permission to view this application")
         return app
+
+
+class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
+    def post(self, request: HttpRequest, *args, **kwargs):
+        pk = self.kwargs["pk"]
+        Application.objects.filter(pk=pk).update(status=STATUS_CONFIRMED)
+        return reverse_lazy("status")
+
+
+class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
+    def post(self, request, *args, **kwargs):
+        pk = self.kwargs["pk"]
+        Application.objects.filter(pk=pk).update(status=STATUS_DECLINED)
+        return redirect(reverse_lazy("status"))

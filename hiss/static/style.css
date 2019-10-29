@@ -367,11 +367,6 @@ input[type="submit"] {
     -moz-appearance: none;
 }
 
-.application p > label::after {
-    content: " *";
-    color: red;
-}
-
 .application.rsvp p > label::after {
     content: " ";
 }
