@@ -64,9 +64,7 @@ class ConfirmApplicationViewTestCase(test_case.SharedTestCase):
         )
         self.force_login(self.user)
 
-        response = self.client.get(
-            reverse_lazy("application:confirm", args=[application.pk])
-        )
+        self.client.get(reverse_lazy("application:confirm", args=[application.pk]))
         application.refresh_from_db()
 
         self.assertEqual(application.status, STATUS_CONFIRMED)

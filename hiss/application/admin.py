@@ -15,7 +15,6 @@ from rangefilter.filter import DateRangeFilter
 
 from application.models import Application, Wave, STATUS_ADMITTED, STATUS_REJECTED
 from shared.admin_functions import send_mass_html_mail
-from user.models import User
 
 
 class ApplicationAdminForm(forms.ModelForm):
