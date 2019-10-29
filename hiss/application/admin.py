@@ -164,6 +164,15 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("dietary_restrictions", custom_titled_filter("dietary_restrictions")),
         ("datetime_submitted", DateRangeFilter),
     )
+    list_display = (
+        "first_name",
+        "last_name",
+        "user_email",
+        "datetime_submitted",
+        "classification",
+        "grad_year",
+        "status",
+    )
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),
         (
