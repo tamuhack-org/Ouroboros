@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandParser
 
 from application.admin import approve
-from application.models import Application
+from application.models import Application, STATUS_PENDING
 
 
 class Command(BaseCommand):
@@ -11,7 +11,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        unreviewed = Application.objects.filter(approved=None).order_by("?")
+        unreviewed = Application.objects.filter(status=STATUS_PENDING).order_by("?")
         num_unreviewed = unreviewed.count()
         num_to_approve = round(options["pct"] * num_unreviewed)
         self.stdout.write(
