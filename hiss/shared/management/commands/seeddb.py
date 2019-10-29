@@ -13,6 +13,8 @@ from application.models import (
     Wave,
     GENDERS,
     TRANSPORT_MODES,
+    STATUS_PENDING,
+    STATUS_ADMITTED,
 )
 from user.models import User
 
@@ -109,7 +111,7 @@ class Command(base.BaseCommand):
                     question1="b",
                     question2="c",
                     question3="d",
-                    approved=random.choice([None, True, False]),
+                    status=random.choice([STATUS_PENDING, STATUS_ADMITTED]),
                     agree_to_coc=True,
                     is_adult=True,
                     additional_accommodations="",

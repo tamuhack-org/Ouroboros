@@ -148,6 +148,13 @@
                     {% elif NO_MORE_WAVES %}
                     <p>Sorry, we are currently not accepting applications.</p>
                 </div>
+            {% elif EXPIRED %}
+                <p>Your confirmation deadline has</p>
+                <div class="app-status">EXPIRED</div>
+                <p class="status-subtitle pt-2">
+                    You did not confirm your attendance by the deadline provided, so we have given your spot to other
+                    applicants.
+                </p>
             {% endif %}
         </div>
     </div>
