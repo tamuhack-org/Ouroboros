@@ -93,7 +93,7 @@ class DetailTeamView(shared_mixins.UserHasTeamMixin, generic.DetailView):
 
     def handle_no_permission(self):
         if not self.request.user.is_authenticated:
-            team_pk = uuid.UUID(self.request.path_info[6:])
+            team_pk = self.kwargs["pk"]
             return redirect(
                 f"{reverse_lazy('customauth:login')}?next={reverse_lazy('team:detail', args=[team_pk])}"
             )
