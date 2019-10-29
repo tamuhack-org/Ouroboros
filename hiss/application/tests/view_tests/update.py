@@ -1,8 +1,12 @@
+from datetime import timedelta
+
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
 from django.urls import reverse_lazy
+from django.utils import timezone
 
-from application.models import Application
+from application.forms import ApplicationModelForm
+from application.models import Application, Wave
 from shared import test_case
 
 
@@ -36,6 +40,19 @@ class UpdateApplicationViewTestCase(test_case.SharedTestCase):
         )
 
         self.assertEqual(response.status_code, 200)
+
+    def test_displays_submit_button_during_wave(self) -> None:
+        self.client.force_login(self.user)
+        self.create_active_wave()
+        application = Application.objects.create(
+            **self.application_fields, wave=self.wave1
+        )
+
+        response: HttpResponse = self.client.get(
+            reverse_lazy("application:update", args=(application.id,))
+        )
+
+        self.assertContains(response, "Submit")
 
     def test_doesnt_change_wave(self) -> None:
         self.create_active_wave()
@@ -90,3 +107,37 @@ class UpdateApplicationViewTestCase(test_case.SharedTestCase):
         self.assertEqual(response.status_code, 403)
         application.refresh_from_db()
         self.assertNotEqual(application.first_name, new_first_name)
+
+    def test_renders_disabled_outside_of_wave(self) -> None:
+        self.client.force_login(self.user)
+        wave = Wave.objects.create(
+            start=timezone.now() - timedelta(days=300),
+            end=timezone.now() - timedelta(days=200),
+            num_days_to_rsvp=100,
+        )
+        application = Application.objects.create(**self.application_fields, wave=wave)
+
+        response = self.client.get(
+            reverse_lazy("application:update", args=(application.id,))
+        )
+
+        form: ApplicationModelForm = response.context["form"]
+        for field_name in form.fields.keys():
+            self.assertEquals(
+                form.fields[field_name].widget.attrs["disabled"], "disabled"
+            )
+
+    def test_hides_submit_button_outside_of_wave(self) -> None:
+        self.client.force_login(self.user)
+        wave = Wave.objects.create(
+            start=timezone.now() - timedelta(days=300),
+            end=timezone.now() - timedelta(days=200),
+            num_days_to_rsvp=100,
+        )
+        application = Application.objects.create(**self.application_fields, wave=wave)
+
+        response = self.client.get(
+            reverse_lazy("application:update", args=(application.id,))
+        )
+
+        self.assertNotContains(response, "Submit")

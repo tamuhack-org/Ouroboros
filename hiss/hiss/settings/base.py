@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+from django.urls import reverse_lazy
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,7 +27,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "user.apps.UserConfig",
     "application.apps.ApplicationConfig",
-    "rsvp.apps.RsvpConfig",
     "volunteer.apps.VolunteerConfig",
     "status.apps.StatusConfig",
     "phonenumber_field",
@@ -58,6 +59,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "shared.context_processors.customization",
             ]
         },
     }
@@ -70,7 +72,7 @@ WSGI_APPLICATION = "hiss.wsgi.application"
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "US/Central"
 
 USE_I18N = True
 
@@ -78,9 +80,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 MEDIA_ROOT = "resumes/"
 MEDIA_URL = "/resumes/"
+LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

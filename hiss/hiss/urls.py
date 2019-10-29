@@ -13,12 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django import http
+from django.conf import settings
+from django.conf.urls import url
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls.static import static
-from django.conf import settings
-from django import http
-from django.conf.urls import url
 from django.views.generic.base import RedirectView
 
 
@@ -32,7 +32,6 @@ urlpatterns = [
     path("application/", include("application.urls", namespace="application")),
     path("healthy/", healthcheck),
     url(r"^$", RedirectView.as_view(pattern_name="customauth:login")),
-    path("rsvp/", include("rsvp.urls", namespace="rsvp")),
     path("status/", include("status.urls")),
     path("team/", include("team.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

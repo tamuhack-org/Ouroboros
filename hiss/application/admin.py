@@ -1,19 +1,20 @@
+# pylint: disable=C0330
 import csv
 from typing import List, Tuple
 
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from django.core import mail
 from django.db import transaction
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.html import strip_tags
 from rangefilter.filter import DateRangeFilter
 
-from application.models import Application, Wave
-from user.models import User
+from application.models import Application, Wave, STATUS_ADMITTED, STATUS_REJECTED
+from shared.admin_functions import send_mass_html_mail
 
 
 class ApplicationAdminForm(forms.ModelForm):
@@ -23,24 +24,16 @@ class ApplicationAdminForm(forms.ModelForm):
         widgets = {
             "gender": forms.RadioSelect,
             "classification": forms.RadioSelect,
-            "grad_term": forms.RadioSelect,
+            "grad_year": forms.RadioSelect,
             "status": forms.RadioSelect,
         }
 
 
-def create_rsvp_deadline(user: User, deadline: timezone.datetime) -> None:
-    """
-    Generates a datetime representing the deadline for a `User` to create an `Rsvp`
-    """
-    user.rsvp_deadline = deadline
-    user.save()
-
-
 def build_approval_email(
-    application: Application, rsvp_deadline: timezone.datetime
-) -> Tuple[str, str, None, List[str]]:
+    application: Application, confirmation_deadline: timezone.datetime
+) -> Tuple[str, str, str, None, List[str]]:
     """
-    Sends an email to a queryset of users, each with a message indicating that a `User`'s
+    Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
     application has been approved.
     """
     subject = f"Your {settings.EVENT_NAME} application has been approved!"
@@ -48,22 +41,24 @@ def build_approval_email(
     context = {
         "first_name": application.first_name,
         "event_name": settings.EVENT_NAME,
-        "rsvp_deadline": rsvp_deadline,
+        "confirmation_deadline": confirmation_deadline,
     }
-    message = render_to_string("application/emails/approved.html", context)
-    return subject, message, None, [application.user.email]
+    html_message = render_to_string("application/emails/approved.html", context)
+    message = strip_tags(html_message)
+    return subject, message, html_message, None, [application.user.email]
 
 
 def build_rejection_email(application: Application) -> Tuple[str, str, None, List[str]]:
     """
-    Sends an email to containing a confirmation message indicating that a `User`'s
+    Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
     application has been rejected.
     """
     subject = f"Regarding your {settings.EVENT_NAME} application"
 
     context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME}
-    message = render_to_string("application/emails/rejected.html", context)
-    return subject, message, None, [application.user.email]
+    html_message = render_to_string("application/emails/rejected.html", context)
+    message = strip_tags(html_message)
+    return subject, message, html_message, None, [application.user.email]
 
 
 def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
@@ -78,11 +73,11 @@ def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
             deadline = timezone.now().replace(
                 hour=23, minute=59, second=59, microsecond=0
             ) + timezone.timedelta(application.wave.num_days_to_rsvp)
-            application.approved = True
-            create_rsvp_deadline(application.user, deadline)
+            application.status = STATUS_ADMITTED
+            application.confirmation_deadline = deadline
             email_tuples.append(build_approval_email(application, deadline))
             application.save()
-    mail.send_mass_mail(email_tuples)
+    send_mass_html_mail(email_tuples)
 
 
 def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
@@ -92,10 +87,10 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
     email_tuples = []
     with transaction.atomic():
         for application in queryset:
-            application.approved = False
+            application.status = STATUS_REJECTED
             email_tuples.append(build_rejection_email(application))
             application.save()
-    mail.send_mass_mail(email_tuples)
+    send_mass_html_mail(email_tuples)
 
 
 def export_application_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
@@ -132,36 +127,42 @@ class ApplicationAdmin(admin.ModelAdmin):
         "race",
         "major",
         "classification",
-        "grad_term",
+        "grad_year",
         "num_hackathons_attended",
         "extra_links",
         "question1",
         "question2",
         "question3",
         "notes",
-        "approved",
         "is_a_walk_in",
     ]
+    list_display = (
+        "first_name",
+        "last_name",
+        "datetime_submitted",
+        "school",
+        "major",
+        "classification",
+        "grad_year",
+        "travel_reimbursement",
+        "transport_needed",
+        "status",
+    )
     list_filter = (
+        ("status", custom_titled_filter("status")),
+        ("classification", custom_titled_filter("classification")),
         ("gender", custom_titled_filter("gender")),
         ("race", custom_titled_filter("race")),
-        ("classification", custom_titled_filter("classification")),
-        ("grad_term", custom_titled_filter("graduation year")),
-        ("approved", custom_titled_filter("approved")),
+        ("grad_year", custom_titled_filter("graduation year")),
         (
             "num_hackathons_attended",
             custom_titled_filter("number of attended hackathons"),
         ),
+        ("shirt_size", custom_titled_filter("shirt_size")),
+        ("transport_needed", custom_titled_filter("transport_needed")),
+        ("travel_reimbursement", custom_titled_filter("travel_reimbursement")),
+        ("dietary_restrictions", custom_titled_filter("dietary_restrictions")),
         ("datetime_submitted", DateRangeFilter),
-    )
-    list_display = (
-        "first_name",
-        "last_name",
-        "user_email",
-        "datetime_submitted",
-        "classification",
-        "grad_term",
-        "approved",
     )
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),
@@ -171,31 +172,44 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "first_name",
                     "last_name",
-                    "is_adult",
-                    "gender",
-                    "race",
-                    "major",
-                    "classification",
-                    "grad_term",
-                ]
-            },
-        ),
-        ("Hackathon Information", {"fields": ["num_hackathons_attended"]}),
-        (
-            "Free Response Questions",
-            {
-                "fields": [
                     "extra_links",
                     "question1",
                     "question2",
                     "question3",
-                    "notes",
-                    "additional_accommodations",
                     "resume",
                 ]
             },
         ),
-        ("Status", {"fields": ["approved", "is_a_walk_in"]}),
+        (
+            "Demographic Information",
+            {
+                "fields": [
+                    "school",
+                    "major",
+                    "classification",
+                    "gender",
+                    "gender_other",
+                    "race",
+                    "race_other",
+                    "grad_year",
+                    "num_hackathons_attended",
+                ]
+            },
+        ),
+        (
+            "Logistical Information",
+            {
+                "fields": [
+                    "shirt_size",
+                    "transport_needed",
+                    "travel_reimbursement",
+                    "additional_accommodations",
+                    "dietary_restrictions",
+                ]
+            },
+        ),
+        ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
+        ("Miscellaneous", {"fields": ["notes"]}),
     ]
 
     approve.short_description = "Approve Selected Applications"
@@ -211,10 +225,12 @@ class ApplicationAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return True
 
-    def user_email(self, obj: Application) -> str:
+    @staticmethod
+    def user_email(obj: Application) -> str:
         return obj.user.email
 
-    def is_a_walk_in(self, obj: Application) -> bool:
+    @staticmethod
+    def is_a_walk_in(obj: Application) -> bool:
         return obj.wave.is_walk_in_wave
 
 

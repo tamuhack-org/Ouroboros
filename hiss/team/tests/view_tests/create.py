@@ -1,5 +1,6 @@
 from django.urls import reverse_lazy
 
+from application.models import Application
 from shared import test_case
 from team.models import Team
 
@@ -27,11 +28,15 @@ class CreateTeamViewTestCase(test_case.SharedTestCase):
 
         self.assertEqual(self.user.team, old_team)
 
-    # def test_successful_team_creation(self):
-    #     self.client.force_login(self.user)
-    #
-    #     response = self.client.post(reverse_lazy("team:create"), data=self.team_fields)
-    #     self.user.refresh_from_db()
-    #
-    #     self.assertIsNotNone(self.user.team)
-    #     self.assertRedirects(response, reverse_lazy("team:detail", args=[self.user.team.pk]))
+    def test_successful_team_creation(self):
+        self.create_active_wave()
+        Application.objects.create(**self.application_fields, wave=self.wave1)
+        self.client.force_login(self.user)
+
+        response = self.client.post(reverse_lazy("team:create"), data=self.team_fields)
+        self.user.refresh_from_db()
+
+        self.assertIsNotNone(self.user.team)
+        self.assertRedirects(
+            response, reverse_lazy("team:detail", args=[self.user.team.pk])
+        )

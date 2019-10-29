@@ -3,12 +3,8 @@ from django.core import mail
 from django.urls import reverse_lazy
 from django.utils import timezone
 
-from application.admin import (
-    create_rsvp_deadline,
-    build_approval_email,
-    build_rejection_email,
-)
-from application.models import Application
+from application.admin import build_approval_email, build_rejection_email
+from application.models import Application, STATUS_REJECTED, STATUS_ADMITTED
 from shared import test_case
 
 
@@ -20,25 +16,25 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         self.app.full_clean()
         self.app.save()
 
-    def test_build_approval_email_customizes_event_name(self):
+    def test_approval_email_customizes_event_name(self):
         event_name = "BIGGEST HACKATHON EVER"
         with self.settings(EVENT_NAME=event_name):
-            subject, _, _, _ = build_approval_email(self.app, timezone.now())
+            subject, *_ = build_approval_email(self.app, timezone.now())
             self.assertIn(event_name, subject)
 
-    def test_build_approval_email_customizes_user_first_name(self):
-        _, message, _, _ = build_approval_email(self.app, timezone.now())
+    def test_approval_email_customizes_user_first_name(self):
+        _, message, *_ = build_approval_email(self.app, timezone.now())
 
         self.assertIn(self.app.first_name, message)
 
-    def test_build_rejection_email_customizes_event_name(self):
+    def test_rejection_email_customizes_event_name(self):
         event_name = "BIGGEST HACKATHON EVER"
         with self.settings(EVENT_NAME=event_name):
-            subject, _, _, _ = build_rejection_email(self.app)
+            subject, *_ = build_rejection_email(self.app)
             self.assertIn(event_name, subject)
 
-    def test_build_rejection_email_customizes_user_first_name(self):
-        _, message, _, _ = build_rejection_email(self.app)
+    def test_rejection_email_customizes_first_name(self):
+        _, message, *_ = build_rejection_email(self.app)
 
         self.assertIn(self.app.first_name, message)
 
@@ -53,7 +49,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         )
 
         self.app.refresh_from_db()
-        self.assertTrue(self.app.approved)
+        self.assertEqual(self.app.status, STATUS_ADMITTED)
 
     def test_approval_action_sends_approval_email(self):
         self.client.force_login(self.admin)
@@ -86,12 +82,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
             follow=True,
         )
         self.app.refresh_from_db()
-        self.assertFalse(self.app.approved)
-
-    def test_creates_accurate_rsvp_deadline(self):
-        deadline = timezone.now().replace(hour=23, minute=59, second=59, microsecond=0)
-        create_rsvp_deadline(self.user, deadline)
-        self.assertEquals(self.user.rsvp_deadline, deadline)
+        self.assertEqual(self.app.status, STATUS_REJECTED)
 
     def test_export_application_emails(self):
         self.client.force_login(self.admin)
@@ -104,4 +95,4 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
             },
             follow=True,
         )
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)

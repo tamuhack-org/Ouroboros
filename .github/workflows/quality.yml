@@ -4,13 +4,22 @@ on: [push]
 
 jobs:
   black:
-    name: 'Check compliance with Black formatting style'
+    name: 'Check code quality with black'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: lgeiger/black-action@v1.0.1
+      - name: 'Set up Python 3.7'
+        uses: actions/setup-python@v1
         with:
-          args: ". --check --exclude=\".*/migrations\""
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install black
+      - name: Check formatting
+        run: |
+          cd hiss
+          black . --check --exclude=".*/migrations"
   flake:
     name: 'Check code health with Flake8'
     runs-on: ubuntu-latest
