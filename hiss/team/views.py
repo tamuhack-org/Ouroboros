@@ -1,3 +1,4 @@
+import uuid
 from typing import Optional
 
 from django.conf import settings
@@ -25,8 +26,10 @@ class CreateTeamView(shared_mixins.UserHasNoTeamMixin, generic.CreateView):
 
     def handle_no_permission(self):
         if not self.request.user.is_authenticated:
-            return redirect("/accounts/login/?next=/team/")
-        return redirect("/status/")
+            return redirect(
+                f"{reverse_lazy('customauth:login')}?next={reverse_lazy('team:create')}"
+            )
+        return redirect(reverse_lazy("status"))
 
     def form_valid(self, form: CreateTeamForm):
         team: Team = form.save()
@@ -53,8 +56,10 @@ class JoinTeamView(shared_mixins.UserHasNoTeamMixin, generic.FormView):
 
     def handle_no_permission(self):
         if not self.request.user.is_authenticated:
-            return redirect("/accounts/login/?next=/team/join")
-        return redirect("/status/")
+            return redirect(
+                f"{reverse_lazy('customauth:login')}?next={reverse_lazy('team:join')}"
+            )
+        return redirect(reverse_lazy("status"))
 
     def get_success_url(self):
         return self.request.user.team.get_absolute_url()
@@ -89,14 +94,14 @@ class DetailTeamView(shared_mixins.UserHasTeamMixin, generic.DetailView):
 
     def handle_no_permission(self):
         if not self.request.user.is_authenticated:
-            desired_url = self.request.path_info
-            redirect_url = "/accounts/login/?next=" + desired_url
-            return redirect(redirect_url)
+            return redirect(
+                f"{reverse_lazy('customauth:login')}?next={reverse_lazy('team:detail', args=[uuid.UUID(self.request.path_info[6:])])}"
+            )
         if not Application.objects.filter(user=self.request.user.pk):
-            return redirect("/status/")
+            return redirect(reverse_lazy("status"))
         if self.request.user.team is None:
             return redirect(reverse_lazy("team:join"))
-        return redirect("/status/")
+        return redirect(reverse_lazy("status"))
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)

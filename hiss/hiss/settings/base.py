@@ -82,6 +82,7 @@ USE_TZ = True
 
 MEDIA_ROOT = "resumes/"
 MEDIA_URL = "/resumes/"
+LOGIN_REDIRECT_URL = reverse_lazy("status")
 LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 
 # Static files (CSS, JavaScript, Images)
