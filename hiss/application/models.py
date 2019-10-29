@@ -302,8 +302,11 @@ class Application(models.Model):
     )
 
     # DEMOGRAPHIC INFORMATION
-    major = models.CharField("What's your major?", max_length=255)
     school = models.CharField("What school do you go to?", max_length=255)
+    major = models.CharField("What's your major?", max_length=255)
+    classification = models.CharField(
+        "What classification are you?", choices=CLASSIFICATIONS, max_length=2
+    )
     gender = models.CharField(
         "What's your gender?", choices=GENDERS, max_length=2, default=NO_ANSWER
     )
@@ -316,9 +319,7 @@ class Application(models.Model):
     race_other = models.CharField(
         "Self-describe", max_length=255, null=True, blank=True
     )
-    classification = models.CharField(
-        "What classification are you?", choices=CLASSIFICATIONS, max_length=2
-    )
+
     grad_year = models.IntegerField(
         "What is your anticipated graduation year?", choices=GRAD_YEARS
     )
@@ -342,6 +343,11 @@ class Application(models.Model):
     )
     transport_needed = models.CharField(
         "How will you be getting to the event?", choices=TRANSPORT_MODES, max_length=11
+    )
+    travel_reimbursement = models.BooleanField(
+        "I'd like to apply for travel reimbursement",
+        default=False,
+        help_text="Travel reimbursement is only provided if you stay the whole time and submit a project.",
     )
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",

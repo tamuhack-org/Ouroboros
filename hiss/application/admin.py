@@ -134,29 +134,35 @@ class ApplicationAdmin(admin.ModelAdmin):
         "question2",
         "question3",
         "notes",
-        "status",
         "is_a_walk_in",
     ]
+    list_display = (
+        "first_name",
+        "last_name",
+        "datetime_submitted",
+        "school",
+        "major",
+        "classification",
+        "grad_year",
+        "travel_reimbursement",
+        "transport_needed",
+        "status",
+    )
     list_filter = (
+        ("status", custom_titled_filter("status")),
+        ("classification", custom_titled_filter("classification")),
         ("gender", custom_titled_filter("gender")),
         ("race", custom_titled_filter("race")),
-        ("classification", custom_titled_filter("classification")),
         ("grad_year", custom_titled_filter("graduation year")),
-        ("status", custom_titled_filter("status")),
         (
             "num_hackathons_attended",
             custom_titled_filter("number of attended hackathons"),
         ),
+        ("shirt_size", custom_titled_filter("shirt_size")),
+        ("transport_needed", custom_titled_filter("transport_needed")),
+        ("travel_reimbursement", custom_titled_filter("travel_reimbursement")),
+        ("dietary_restrictions", custom_titled_filter("dietary_restrictions")),
         ("datetime_submitted", DateRangeFilter),
-    )
-    list_display = (
-        "first_name",
-        "last_name",
-        "user_email",
-        "datetime_submitted",
-        "classification",
-        "grad_year",
-        "status",
     )
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),
@@ -166,31 +172,44 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "first_name",
                     "last_name",
-                    "is_adult",
-                    "gender",
-                    "race",
-                    "major",
-                    "classification",
-                    "grad_year",
-                ]
-            },
-        ),
-        ("Hackathon Information", {"fields": ["num_hackathons_attended"]}),
-        (
-            "Free Response Questions",
-            {
-                "fields": [
                     "extra_links",
                     "question1",
                     "question2",
                     "question3",
-                    "notes",
-                    "additional_accommodations",
                     "resume",
                 ]
             },
         ),
-        ("Status", {"fields": ["status", "is_a_walk_in"]}),
+        (
+            "Demographic Information",
+            {
+                "fields": [
+                    "school",
+                    "major",
+                    "classification",
+                    "gender",
+                    "gender_other",
+                    "race",
+                    "race_other",
+                    "grad_year",
+                    "num_hackathons_attended",
+                ]
+            },
+        ),
+        (
+            "Logistical Information",
+            {
+                "fields": [
+                    "shirt_size",
+                    "transport_needed",
+                    "travel_reimbursement",
+                    "additional_accommodations",
+                    "dietary_restrictions",
+                ]
+            },
+        ),
+        ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
+        ("Miscellaneous", {"fields": ["notes"]}),
     ]
 
     approve.short_description = "Approve Selected Applications"
