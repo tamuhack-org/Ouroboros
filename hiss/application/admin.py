@@ -153,7 +153,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("classification", custom_titled_filter("classification")),
         ("gender", custom_titled_filter("gender")),
         ("race", custom_titled_filter("race")),
-
         ("grad_year", custom_titled_filter("graduation year")),
         (
             "num_hackathons_attended",

@@ -9,7 +9,6 @@ from django.views import generic
 
 from shared import mixins as shared_mixins
 
-# Create your views here.
 from team.forms import CreateTeamForm, JoinTeamForm
 from team.models import Team
 from user.models import User
@@ -94,8 +93,9 @@ class DetailTeamView(shared_mixins.UserHasTeamMixin, generic.DetailView):
 
     def handle_no_permission(self):
         if not self.request.user.is_authenticated:
+            team_pk = uuid.UUID(self.request.path_info[6:])
             return redirect(
-                f"{reverse_lazy('customauth:login')}?next={reverse_lazy('team:detail', args=[uuid.UUID(self.request.path_info[6:])])}"
+                f"{reverse_lazy('customauth:login')}?next={reverse_lazy('team:detail', args=[team_pk])}"
             )
         if not Application.objects.filter(user=self.request.user.pk):
             return redirect(reverse_lazy("status"))
