@@ -374,6 +374,11 @@ input[type="submit"] {
     content: " ";
 }
 
+.rsvp-response-btn{
+    display: inline-block;
+    margin: 0 10px;
+}
+
 .helptext {
     text-align: left;
     font-size: 14px;
