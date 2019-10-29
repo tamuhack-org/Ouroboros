@@ -153,6 +153,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("classification", custom_titled_filter("classification")),
         ("gender", custom_titled_filter("gender")),
         ("race", custom_titled_filter("race")),
+
         ("grad_year", custom_titled_filter("graduation year")),
         (
             "num_hackathons_attended",
@@ -163,6 +164,15 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("travel_reimbursement", custom_titled_filter("travel_reimbursement")),
         ("dietary_restrictions", custom_titled_filter("dietary_restrictions")),
         ("datetime_submitted", DateRangeFilter),
+    )
+    list_display = (
+        "first_name",
+        "last_name",
+        "user_email",
+        "datetime_submitted",
+        "classification",
+        "grad_year",
+        "status",
     )
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),
