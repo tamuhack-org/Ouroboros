@@ -383,7 +383,7 @@ input[type="submit"] {
     text-align: left;
     font-size: 14px;
     font-style: italic;
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', sans-serif;
     display: block;
     margin-top: 10px;
     margin-bottom: 30px;
@@ -647,8 +647,10 @@ label {
     font-size: 14px;
 }
 
-label[for=id_agree_to_coc],
-label[for=id_is_adult] {
+label[for="id_agree_to_coc"],
+label[for="id_is_adult"],
+label[for="id_travel_reimbursement"], 
+#id_travel_reimbursement ~ .helptext  {
     margin-left: 45px;
 }
 
@@ -657,12 +659,14 @@ label[for=id_is_adult] {
 }
 
 #id_agree_to_coc,
-#id_is_adult {
-    top: -35px;
+#id_is_adult,
+#id_travel_reimbursement {
+    top: -30px;
 }
 
-#id_is_adult ~ .helptext {
-    margin-top: -35px;
+#id_is_adult ~ .helptext,
+#id_travel_reimbursement ~ .helptext  {
+    margin-top: -30px;
     margin-left: 45px;
 }
 
@@ -743,12 +747,14 @@ button {
     margin-bottom: 30px !important;
 }
 
-.application p > label[for="id_adult"], .application p > label[for="id_mlh_coc"] {
+.application p > label[for="id_adult"], 
+.application p > label[for="id_mlh_coc"] {
     margin-left: 20px;
     display: inline;
 }
 
-.application p > #id_adult, .application p > #id_mlh_coc {
+.application p > #id_adult, 
+.application p > #id_mlh_coc {
     margin: 0;
     float: left;
     margin-top: -12px;
@@ -847,7 +853,8 @@ button {
     .signin h1 {
         font-size: 1.2rem;
     }
-    .application p > input[type=text], .application p > input[type=tel] {
+    .application p > input[type=text], 
+    .application p > input[type=tel] {
         width: 100% !important;
     }
 
@@ -922,5 +929,23 @@ button {
     }
     .team-detail input[type=submit] {
         margin: 0;
+    }
+}
+
+@media only screen and (max-width: 422px ) {
+    #id_travel_reimbursement {
+        top: -53px;
+    }
+}
+
+@media only screen and (max-width: 390px ) {
+    #id_agree_to_coc {
+        top: -53px;
+    }
+}
+
+@media only screen and (max-width: 376px ) {
+    #id_is_adult {
+        top: -53px;
     }
 }
