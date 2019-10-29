@@ -98,7 +98,7 @@ class DetailTeamView(shared_mixins.UserHasTeamMixin, generic.DetailView):
             return redirect("/status/")
         if self.request.user.team is None:
             return redirect(reverse_lazy("team:join"))
-        return redirect(reverse_lazy("team:join"))
+        return redirect("/status/")
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -112,7 +112,7 @@ class DetailTeamView(shared_mixins.UserHasTeamMixin, generic.DetailView):
     def get(self, request, *args, **kwargs):
         team: Team = self.get_object()
         if self.request.user.team != team:
-            return redirect(reverse_lazy("team:join"))
+            return redirect(reverse_lazy("team:detail", args=[self.request.user.team.pk]))
         return super().get(request, *args, **kwargs)
 
 
