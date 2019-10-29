@@ -40,7 +40,7 @@ html, body {
     float: right;
     text-align: right;
     white-space: nowrap;
-    width: 100%;
+    margin-left: auto;
 }
 
 .navbar img {
@@ -372,6 +372,11 @@ input[type="submit"] {
 
 .application.rsvp p > label::after {
     content: " ";
+}
+
+.rsvp-response-btn{
+    display: inline-block;
+    margin: 0 10px;
 }
 
 .helptext {
