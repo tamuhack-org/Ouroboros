@@ -14,8 +14,6 @@ from team.models import Team
 from user.models import User
 from application.models import Application
 
-import pdb
-
 
 class CreateTeamView(shared_mixins.UserHasNoTeamMixin, generic.CreateView):
     """
@@ -51,7 +49,7 @@ class JoinTeamView(shared_mixins.UserHasNoTeamMixin, generic.FormView):
     """
 
     form_class = JoinTeamForm
-    template_name = "team/join_form.html"        
+    template_name = "team/join_form.html"
 
     def handle_no_permission(self):
         if not self.request.user.is_authenticated:
@@ -112,7 +110,9 @@ class DetailTeamView(shared_mixins.UserHasTeamMixin, generic.DetailView):
     def get(self, request, *args, **kwargs):
         team: Team = self.get_object()
         if self.request.user.team != team:
-            return redirect(reverse_lazy("team:detail", args=[self.request.user.team.pk]))
+            return redirect(
+                reverse_lazy("team:detail", args=[self.request.user.team.pk])
+            )
         return super().get(request, *args, **kwargs)
 
 

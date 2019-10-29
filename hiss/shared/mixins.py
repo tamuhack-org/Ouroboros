@@ -1,6 +1,4 @@
 from django.contrib.auth import mixins
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
 
 
 class LoginRequiredAndAppliedMixin(mixins.UserPassesTestMixin):
@@ -18,6 +16,7 @@ class LoginRequiredAndAppliedMixin(mixins.UserPassesTestMixin):
         if not user.application_set.exists():
             return False
         return True
+
 
 class UserHasNoTeamMixin(mixins.UserPassesTestMixin):
     """
@@ -39,6 +38,7 @@ class UserHasNoTeamMixin(mixins.UserPassesTestMixin):
             return False
         return True
 
+
 class UserHasTeamMixin(mixins.UserPassesTestMixin):
     """
     fewbufew
@@ -57,8 +57,4 @@ class UserHasTeamMixin(mixins.UserPassesTestMixin):
         # Ensure the user is already on a team
         if user.team is None:
             return False
-
-        # Ensure the user is NOT on different team
-        # if ....
-        #   return False
         return True
