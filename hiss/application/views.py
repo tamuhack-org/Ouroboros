@@ -1,6 +1,7 @@
 from django import views
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
+from django.db.models import QuerySet
 from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -58,7 +59,7 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
         context["active_wave"] = Wave.objects.active_wave()
         return context
 
-    def get_object(self, queryset=None) -> Application:
+    def get_object(self, queryset: QuerySet = None) -> Application:
         """
         Checks to make sure that the user actually owns the application requested.
         """
@@ -97,7 +98,7 @@ class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
     Changes an application's status from STATUS_ADMITTED to STATUS_DECLINED
     """
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, **kwargs):
         pk = self.kwargs["pk"]
         app: Application = Application.objects.get(pk=pk)
         if app.status == STATUS_DECLINED:
