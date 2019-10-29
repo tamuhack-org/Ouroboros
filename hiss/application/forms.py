@@ -1,5 +1,3 @@
-from typing import List
-
 from django import forms
 from django.utils.safestring import mark_safe
 
@@ -38,19 +36,22 @@ class ApplicationModelForm(forms.ModelForm):
             )
         return super().is_valid()
 
-
     def clean(self):
         gender = self.cleaned_data.get("gender")
         if gender == models.GENDER_OTHER:
             gender_other = self.cleaned_data.get("gender_other")
             if not gender_other:
-                msg = forms.ValidationError('Please fill out this field or choose "Prefer not to answer".')
+                msg = forms.ValidationError(
+                    'Please fill out this field or choose "Prefer not to answer".'
+                )
                 self.add_error("gender_other", msg)
         races = self.cleaned_data.get("race")
         if races:
             race_other = self.cleaned_data.get("race_other")
             if models.RACE_OTHER in races and not race_other:
-                msg = forms.ValidationError("Please fill out this field with the appropriate information.")
+                msg = forms.ValidationError(
+                    "Please fill out this field with the appropriate information."
+                )
                 self.add_error("race_other", msg)
         return self.cleaned_data
 
