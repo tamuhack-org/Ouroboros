@@ -59,15 +59,18 @@ class ApplicationModelForm(forms.ModelForm):
         widgets = {
             "is_adult": forms.CheckboxInput,
             "agree_to_coc": forms.CheckboxInput,
+            "travel_reimbursement": forms.CheckboxInput,
             "extra_links": forms.TextInput(
                 attrs={
                     "placeholder": "ex. GitHub, Devpost, personal website, LinkedIn, etc."
                 }
             ),
         }
+
         fields = [
             "first_name",
             "last_name",
+            "school",
             "major",
             "classification",
             "grad_year",
@@ -76,14 +79,17 @@ class ApplicationModelForm(forms.ModelForm):
             "race",
             "race_other",
             "num_hackathons_attended",
+            "shirt_size",
+            "dietary_restrictions",
             "transport_needed",
+            "travel_reimbursement",
             "resume",
             "extra_links",
             "question1",
             "question2",
             "question3",
-            "agree_to_coc",
-            "is_adult",
             "additional_accommodations",
             "notes",
+            "agree_to_coc",
+            "is_adult",
         ]
