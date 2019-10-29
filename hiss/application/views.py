@@ -76,6 +76,9 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
     def post(self, request: HttpRequest, *args, **kwargs):
         pk = self.kwargs["pk"]
         app: Application = Application.objects.get(pk=pk)
+        if app.status == STATUS_CONFIRMED:
+            # Do nothing, they already confirmed.
+            return redirect(reverse_lazy("status"))
         if app.user != request.user:
             raise PermissionDenied(
                 "You don't have permission to view this application."
@@ -86,7 +89,7 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
             )
         app.status = STATUS_CONFIRMED
         app.save()
-        return reverse_lazy("status")
+        return redirect(reverse_lazy("status"))
 
 
 class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
@@ -97,11 +100,14 @@ class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
     def post(self, request, *args, **kwargs):
         pk = self.kwargs["pk"]
         app: Application = Application.objects.get(pk=pk)
+        if app.status == STATUS_DECLINED:
+            # Do nothing, they already declined
+            return redirect(reverse_lazy("status"))
         if app.user != request.user:
             raise PermissionDenied(
                 "You don't have permission to view this application."
             )
-        if app.status != STATUS_ADMITTED:
+        if not (app.status == STATUS_ADMITTED or app.status == STATUS_CONFIRMED):
             raise PermissionDenied(
                 "You can't decline your spot if it hasn't been approved."
             )
