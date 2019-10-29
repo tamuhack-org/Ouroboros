@@ -102,12 +102,12 @@
                 <div class="row login-alt-options">
                     <div class="col-sm-12 col-lg-12 text-center">
                         <br>
-                        <form method="POST" action="{% url 'application:confirm' pk=application.pk %}">
+                        <form method="POST" action="{% url 'application:confirm' pk=application.pk %}" class="rsvp-response-btn">
                             {% csrf_token %}
 
                             <input class="btn btn-login" type="submit" value="I'll be there!">
                         </form>
-                        <form method="POST" action="{% url 'application:decline' pk=application.pk %}">
+                        <form method="POST" action="{% url 'application:decline' pk=application.pk %}" class="rsvp-response-btn">
                             {% csrf_token %}
 
                             <input class="btn btn-login secondary" type="submit" value="I can't make it">

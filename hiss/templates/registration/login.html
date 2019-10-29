@@ -33,9 +33,12 @@
 
                         {% endfor %}
 
-
-                        <a href="{% url 'customauth:password_reset' %}" class="forgot-pswd">Forgot Password?</a>
-                        <a href="{% url 'customauth:resend_activation' %}" class="forgot-pswd">Can't Log In?</a>
+                        <div class="forgot-pswd-wrapper">
+                            <a href="{% url 'customauth:password_reset' %}" class="forgot-pswd">Forgot Password?</a>
+                        </div>
+                        <div class="forgot-pswd-wrapper">
+                            <a href="{% url 'customauth:resend_activation' %}" class="forgot-pswd">Can't Log In?</a>
+                        </div>
 
 
                         <input type="submit" class="btn btn-lg btn-block btn-login" value="Log In"/>

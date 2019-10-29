@@ -43,6 +43,7 @@ class SharedTestCase(test.TestCase):
             "school": "Of hard knocks",
             "transport_needed": application_models.MANUAL_POWER,
             "gender": application_models.FEMALE,
+            "dietary_restrictions": application_models.NONE,
             "classification": application_models.FRESHMAN,
             "grad_year": timezone.now().year + 1,
             "num_hackathons_attended": application_models.HACKATHONS_0,

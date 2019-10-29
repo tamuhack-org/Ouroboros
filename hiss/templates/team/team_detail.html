@@ -19,11 +19,9 @@
 
         <div class="col-12 col-md-6">
             <h4>Team Members</h4>
-            <ul>
-                {% for application in member_applications %}
-                    <li>{{ application.first_name }} {{ application.last_name }} </li>
-                {% endfor %}        
-            </ul>
+            {% for application in member_applications %}
+                <h5>{{ application.first_name }} {{ application.last_name }}</h5>
+            {% endfor %}
         </div>
     </div>
     
