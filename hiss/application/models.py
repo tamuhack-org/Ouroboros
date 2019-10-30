@@ -295,7 +295,7 @@ class Application(models.Model):
     question2 = models.TextField(QUESTION2_TEXT, max_length=500)
     question3 = models.TextField(QUESTION3_TEXT, max_length=500)
     resume = models.FileField(
-        "Upload your resume",
+        "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         upload_to=uuid_generator,
@@ -330,7 +330,7 @@ class Application(models.Model):
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
     is_adult = models.BooleanField(
-        "Please confirm you are 18 or older",
+        "Please confirm you are 18 or older.",
         choices=AGREE,
         default=None,
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
