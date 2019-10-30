@@ -888,6 +888,7 @@ button {
 
     .status-box {
         padding: 30px 20px;
+        margin: 0 -20px;
     }
 
     .status-box .app-status {
