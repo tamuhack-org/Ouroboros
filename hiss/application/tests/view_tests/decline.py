@@ -6,7 +6,8 @@ from application.models import (
     STATUS_ADMITTED,
     STATUS_PENDING,
     STATUS_CONFIRMED,
-    STATUS_DECLINED)
+    STATUS_DECLINED,
+)
 from shared import test_case
 
 

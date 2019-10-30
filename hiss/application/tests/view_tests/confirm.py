@@ -86,9 +86,11 @@ class ConfirmApplicationViewTestCase(test_case.SharedTestCase):
 
     def test_successful_confirmation_sends_email(self) -> None:
         self.create_active_wave()
-        application = Application.objects.create(**self.application_fields, status=STATUS_ADMITTED, wave=self.wave1)
+        application = Application.objects.create(
+            **self.application_fields, status=STATUS_ADMITTED, wave=self.wave1
+        )
         self.client.force_login(self.user)
 
-        self.client.get(reverse_lazy("application:confirm", args=[application.pk]))
+        self.client.post(reverse_lazy("application:confirm", args=[application.pk]))
 
         self.assertEqual(len(mail.outbox), 1)

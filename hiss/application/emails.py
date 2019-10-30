@@ -19,10 +19,7 @@ def send_confirmation_email(app: Application) -> None:
     """
     subject = f"{settings.EVENT_NAME} Confirmation!"
     email_template = "application/emails/confirmed.html"
-    context = {
-        "first_name": app.first_name,
-        "event_name": settings.EVENT_NAME
-    }
+    context = {"first_name": app.first_name, "event_name": settings.EVENT_NAME}
     html_msg = render_to_string(email_template, context)
     msg = html.strip_tags(html_msg)
     email = mail.EmailMultiAlternatives(
@@ -35,7 +32,7 @@ def send_confirmation_email(app: Application) -> None:
             "first_name": app.first_name,
             "last_name": app.last_name,
             "email": app.user.email,
-            "university": app.school
+            "university": app.school,
         }
     )
     qr_code = pyqrcode.create(qr_content)

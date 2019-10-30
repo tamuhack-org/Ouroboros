@@ -11,7 +11,9 @@ class ConfirmationEmailTestCase(test_case.SharedTestCase):
     def setUp(self):
         super().setUp()
         self.create_active_wave()
-        self.app = Application.objects.create(**self.application_fields, wave=self.wave1)
+        self.app = Application.objects.create(
+            **self.application_fields, wave=self.wave1
+        )
 
     def test_send_confirmation_email_sends_email(self):
         send_confirmation_email(self.app)
