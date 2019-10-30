@@ -13,7 +13,13 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from rangefilter.filter import DateRangeFilter
 
-from application.models import Application, Wave, STATUS_ADMITTED, STATUS_REJECTED, RACES
+from application.models import (
+    Application,
+    Wave,
+    STATUS_ADMITTED,
+    STATUS_REJECTED,
+    RACES,
+)
 from shared.admin_functions import send_mass_html_mail
 
 
@@ -30,7 +36,7 @@ class ApplicationAdminForm(forms.ModelForm):
 
 
 def build_approval_email(
-        application: Application, confirmation_deadline: timezone.datetime
+    application: Application, confirmation_deadline: timezone.datetime
 ) -> Tuple[str, str, str, None, List[str]]:
     """
     Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
@@ -175,7 +181,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("travel_reimbursement", custom_titled_filter("travel_reimbursement")),
         ("dietary_restrictions", custom_titled_filter("dietary_restrictions")),
         ("datetime_submitted", DateRangeFilter),
-        RaceFilter
+        RaceFilter,
     )
     list_display = (
         "first_name",
