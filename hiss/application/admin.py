@@ -13,7 +13,13 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from rangefilter.filter import DateRangeFilter
 
-from application.models import Application, Wave, STATUS_ADMITTED, STATUS_REJECTED
+from application.models import (
+    Application,
+    Wave,
+    STATUS_ADMITTED,
+    STATUS_REJECTED,
+    RACES,
+)
 from shared.admin_functions import send_mass_html_mail
 
 
@@ -117,6 +123,19 @@ def custom_titled_filter(title):
     return Wrapper
 
 
+class RaceFilter(admin.SimpleListFilter):
+    title = "Race"
+    parameter_name = "race"
+
+    def lookups(self, request: HttpRequest, model_admin) -> List[Tuple[str, str]]:
+        return RACES
+
+    def queryset(self, request: HttpRequest, queryset: QuerySet):
+        if self.value():
+            return queryset.filter(race__contains=self.value())
+        return queryset
+
+
 class ApplicationAdmin(admin.ModelAdmin):
     form = ApplicationAdminForm
     readonly_fields = [
@@ -152,7 +171,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("status", custom_titled_filter("status")),
         ("classification", custom_titled_filter("classification")),
         ("gender", custom_titled_filter("gender")),
-        ("race", custom_titled_filter("race")),
         ("grad_year", custom_titled_filter("graduation year")),
         (
             "num_hackathons_attended",
@@ -163,6 +181,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("travel_reimbursement", custom_titled_filter("travel_reimbursement")),
         ("dietary_restrictions", custom_titled_filter("dietary_restrictions")),
         ("datetime_submitted", DateRangeFilter),
+        RaceFilter,
     )
     list_display = (
         "first_name",
