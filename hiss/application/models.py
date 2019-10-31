@@ -232,12 +232,25 @@ SHIRT_SIZES = [
 ]
 
 STATUS_PENDING = "P"
+"""Status given to a submitted (but unreviewed) application.."""
+
 STATUS_REJECTED = "R"
+"""Status given to a rejected application."""
+
 STATUS_ADMITTED = "A"
+"""Status given to an approved application."""
+
 STATUS_CONFIRMED = "C"
+"""Status given to an admitted application where the user has confirmed their attendance."""
+
 STATUS_DECLINED = "X"
+"""Status given to an admitted application where the user has declined their admission."""
+
 STATUS_CHECKED_IN = "I"
+"""Status given to an application where the user has checked in to the event."""
+
 STATUS_EXPIRED = "E"
+"""The user missed the application's confirmation_deadline."""
 
 STATUS_OPTIONS = [
     (STATUS_PENDING, "Under Review"),
