@@ -25,7 +25,6 @@ from django.views.generic.base import RedirectView
 def healthcheck(request):
     return http.HttpResponse("")
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("customauth.urls")),
