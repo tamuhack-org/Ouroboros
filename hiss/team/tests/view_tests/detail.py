@@ -25,7 +25,7 @@ class DetailTeamViewTestCase(test_case.SharedTestCase):
 
         response = self.client.get(reverse_lazy("team:detail", args=[team.pk]))
 
-        self.assertEqual(response.status_code, 403)
+        self.assertRedirects(response, reverse_lazy("status"))
 
     def test_redirects_if_user_not_member(self):
         team: Team = Team.objects.create(**self.team_fields)
@@ -37,7 +37,7 @@ class DetailTeamViewTestCase(test_case.SharedTestCase):
 
         self.assertRedirects(response, reverse_lazy("team:join"))
 
-    def test_redirects_if_user_member_of_different_team(self):
+    def test_redirects_if_user_on_different_team(self):
         team: Team = Team.objects.create(**self.team_fields)
         other_team: Team = Team.objects.create(**self.team_fields)
         self.client.force_login(self.user)
@@ -48,7 +48,9 @@ class DetailTeamViewTestCase(test_case.SharedTestCase):
 
         response = self.client.get(reverse_lazy("team:detail", args=[team.pk]))
 
-        self.assertRedirects(response, reverse_lazy("team:join"))
+        self.assertRedirects(
+            response, reverse_lazy("team:detail", args=[other_team.pk])
+        )
 
     def test_succeeds_if_user_member_of_team(self):
         team: Team = Team.objects.create(**self.team_fields)
