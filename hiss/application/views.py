@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
+from application.emails import send_confirmation_email
 from application.forms import ApplicationModelForm
 from application.models import (
     Application,
@@ -86,7 +87,8 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
             )
         app.status = STATUS_CONFIRMED
         app.save()
-        return reverse_lazy("status")
+        send_confirmation_email(app)
+        return redirect(reverse_lazy("status"))
 
 
 class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):

@@ -9,7 +9,7 @@
 					max-width: 500px;
 					display: block;
 					margin: 20px auto;">
-        <h2 style="margin-bottom: 20px; font-size: 16px; color: #777777">Hi!</h2>
+        <h2 style="margin-bottom: 20px; font-size: 16px; color: #777777">Hi {{ first_name }}!</h2>
 
         <p style="line-height: 20px;
 				font-weight: normal;
@@ -41,7 +41,7 @@
                 Event Details:
             </h5>
             <p style="line-height: 20px; text-align: center; margin-top: 0; margin-bottom: 0px;">
-                September 7th &#8211; 8th, 2019
+                January 25th &#8211; 26th, 2020
             </p>
             <p style="line-height: 20px; text-align: center; margin-top: 0; margin-bottom: 0px;">
                 Memorial Student Center 2400
@@ -56,7 +56,7 @@
             the QR code attached to this email and your Student ID to check-in. Please make sure you have both.</p>
 
         <p style="line-height: 20px; margin-top: 0; margin-bottom: 10px; color: #777777">
-            Once inside the Memorial Student Center (MSC), follow TAMUhack signs to Room 2400 on the 2nd floor.
+            Once inside the Memorial Student Center (MSC), follow {{ event_name }} signs to Room 2400 on the 2nd floor.
         </p>
         <p style="line-height: 20px; color: #777777; margin-bottom: 15px;">
             Here's a sneak peek of our itinerary for the event (full schedule on website):
@@ -87,7 +87,7 @@
                 10:30 PM: Hacking Ends
             </li>
             <li>
-                12:30 PM: HowdyHack Ends
+                12:30 PM: {{ event_name }} Ends
             </li>
         </ul>
 
@@ -136,11 +136,13 @@
 
         <p style="line-height: 20px; margin-top: 0; margin-bottom: 20px; color: #777777">Please join the <a
                 href="https://join.slack.com/t/howdyhack2019/shared_invite/enQtNzEwNjM5MzQyODM4LWRmNGI3N2YzNjA5ZmU1OTE3YjgxYzJmMzcyMmNlMWY2MmVkODYxNjY1YjY1NDk5YzFkYjYyZmRiYzhkMjYxMmE"
-                target="_blank" style="color:#00ADD8">HowdyHack 2019 Slack Workspace</a> where you can find important
+                target="_blank" style="color:#00ADD8">{{ event_name }} 2020 Slack Workspace</a> where you can find
+            important
             announcements during the event and interact with participants, mentors, and organizers.</p>
         <p style="line-height: 20px; margin-top: 0; margin-bottom: 30px; color: #777777">Also join the <a
-                href="https://www.facebook.com/groups/2606547856036002" target="_blank" style="color:#00ADD8">HowdyHack
-            2019 Facebook Group</a> where you can find teammates, brainstorm ideas, and meet members from different
+                href="https://www.facebook.com/groups/2606547856036002" target="_blank"
+                style="color:#00ADD8">{{ event_name }}
+            2020 Facebook Group</a> where you can find teammates, brainstorm ideas, and meet members from different
             student orgs!</p>
 
         <p style="line-height: 20px; margin-top: 0; margin-bottom: 30px; color: #777777; font-weight: 700">Lastly, the
@@ -152,7 +154,8 @@
         </ul>
 
         <p style="line-height: 20px; margin-top: 0; color: #777777; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #DEDEDE">
-            We're super excited for HowdyHack 2019 and are working hard to make sure it's a perfect weekend for you! In
+            We're super excited for {{ event_name }} and are working hard to make sure it's a perfect weekend for you!
+            In
             the meantime, please don't hesitate to reach out to us at <a href="mailto:hello@tamuhack.com"
                                                                          style="color:#00ADD8">hello@tamuhack.com</a> if
             you have any questions.
@@ -169,14 +172,15 @@
         <strong style=" color: #ED768B;
 						font-size: 16px;
 						margin-bottom: 30px;">
-            The TAMUhack Team
+            The {{ event_name }} Team
         </strong>
 
         <p style="line-height: 20px;
 				font-weight: normal;
 				color: #777777;
 				margin-bottom: 20px;">
-            P.S. Don't be scared if this is your first hackathon! HowdyHack is very beginner friendly (prizes for first
+            P.S. Don't be scared if this is your first hackathon! {{ event_name }} is very beginner friendly (prizes for
+            first
             timers, special workshops) while also being challenging enough for experts!</p>
 
     </div>

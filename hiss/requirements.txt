@@ -3,6 +3,7 @@ Babel==2.7.0
 cachetools==3.1.1
 certifi==2019.9.11
 chardet==3.0.4
+colorama==0.4.1
 Django==2.2.4
 django-admin-rangefilter==0.5.0
 django-anymail==7.0.0
@@ -10,6 +11,8 @@ django-multiselectfield==0.1.8
 django-phonenumber-field==3.0.1
 django-storages==1.7.2
 djangorestframework==3.10.2
+entrypoints==0.3
+flake8==3.7.8
 google-api-core==1.14.3
 google-auth==1.6.3
 google-cloud-core==1.0.3
@@ -26,14 +29,19 @@ protobuf==3.10.0
 psycopg2-binary==2.8.3
 pyasn1==0.4.7
 pyasn1-modules==0.2.7
+pycodestyle==2.5.0
+pyflakes==2.1.1
 pylint==2.3.1
 pylint-django==2.0.11
 pylint-plugin-utils==0.5
+pypng==0.0.20
+PyQRCode==1.2.1
 pytz==2019.2
 requests==2.22.0
 rsa==4.0
 six==1.12.0
 sqlparse==0.3.0
+tblib==1.5.0
 typed-ast==1.4.0
 urllib3==1.25.6
 wrapt==1.11.2
