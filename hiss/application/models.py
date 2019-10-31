@@ -318,7 +318,7 @@ class Application(models.Model):
     school = models.CharField("What school do you go to?", max_length=255)
     major = models.CharField("What's your major?", max_length=255)
     classification = models.CharField(
-        "What classification are you?", choices=CLASSIFICATIONS, max_length=2
+        "What classification are you?", choices=CLASSIFICATIONS, max_length=3
     )
     gender = models.CharField(
         "What's your gender?", choices=GENDERS, max_length=2, default=NO_ANSWER
