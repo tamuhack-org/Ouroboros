@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from application.emails import send_confirmation_email
+from application.emails import send_confirmation_email, send_creation_email
 from application.forms import ApplicationModelForm
 from application.models import (
     Application,
@@ -41,6 +41,7 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
         application.user = self.request.user
         application.wave = Wave.objects.active_wave()
         application.save()
+        send_creation_email(application)
         return redirect(self.success_url)
 
 

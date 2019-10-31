@@ -1,3 +1,4 @@
+from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
 from django.urls import reverse_lazy
@@ -77,3 +78,13 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
 
         application = Application.objects.get(user=self.user)
         self.assertEqual(application.wave, self.wave1)
+
+    def test_sends_email(self) -> None:
+        self.client.force_login(self.user)
+        self.create_active_wave()
+
+        self.client.post(
+            reverse_lazy("application:create"), data=self.application_fields
+        )
+
+        self.assertEqual(len(mail.outbox), 1)

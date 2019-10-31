@@ -7,7 +7,7 @@ from application.models import Application
 from shared import test_case
 
 
-class ConfirmationEmailTestCase(test_case.SharedTestCase):
+class ApplicationConfirmationEmailTestCase(test_case.SharedTestCase):
     def setUp(self):
         super().setUp()
         self.create_active_wave()
@@ -26,7 +26,7 @@ class ConfirmationEmailTestCase(test_case.SharedTestCase):
         email: EmailMultiAlternatives = mail.outbox[0]
         self.assertEqual(len(email.attachments), 1)
 
-    def test_send_confirmation_email_customizes_email(self):
+    def test_send_confirmation_email_customizes_body(self):
         send_confirmation_email(self.app)
 
         email: EmailMultiAlternatives = mail.outbox[0]
