@@ -1,3 +1,15 @@
-{% extends 'base.html' %} {% block content %} {% load static %}
+{% extends 'base.html' %} {% load static %}
+{% block body %}
+    {% block content %}
+    {% endblock %}
+    <div class="error-container">
+        <h1>500</h1>
+        <h2>Internal Server Error</h2>
+        <h4>Whoops! There's an issue on our end. We're working to fix it!</h4>
+        <p>If you think this is a mistake, email us at <a href="mailto: help@tamuhack.com">help@tamuhack.com</a></p>
+        <a class="btn btn-lg btn-block btn-login" href="/">
+            Back to Home Page
+        </a>
+    </div>
 
 {% endblock %}
