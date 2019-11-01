@@ -839,6 +839,7 @@ button {
 .error-container h4{
     font-family: 'Helvetica';
     font-weight: 700;
+    margin-bottom: 20px;
 }
 
 .error-container p, .error-container h2{
