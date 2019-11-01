@@ -823,6 +823,39 @@ button {
     padding: 12px;
 }
 
+.error-container{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.error-container h2{
+    text-transform: uppercase;
+    font-size: 1.1rem;
+}
+
+.error-container h4{
+    font-family: 'Helvetica';
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.error-container p, .error-container h2{
+    margin-bottom: 100px;
+}
+
+.error-container .btn-lg{
+    width: auto !important;
+    margin: 0 auto;
+    text-decoration: none;
+}
+
+.error-container .btn-lg:hover{
+    color: white;
+}
+
 @media only screen and (max-width: 1201px) {
     #id_race li {
         width: 100%;
