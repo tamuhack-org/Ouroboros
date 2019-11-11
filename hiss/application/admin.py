@@ -12,6 +12,10 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import strip_tags
 from rangefilter.filter import DateRangeFilter
+from django_admin_listfilter_dropdown.filters import (
+    DropdownFilter,
+    ChoiceDropdownFilter,
+)
 
 from application.models import (
     Application,
@@ -168,19 +172,16 @@ class ApplicationAdmin(admin.ModelAdmin):
         "status",
     )
     list_filter = (
-        ("status", custom_titled_filter("status")),
-        ("classification", custom_titled_filter("classification")),
-        ("gender", custom_titled_filter("gender")),
-        ("grad_year", custom_titled_filter("graduation year")),
-        (
-            "num_hackathons_attended",
-            custom_titled_filter("number of attended hackathons"),
-        ),
-        ("shirt_size", custom_titled_filter("shirt_size")),
-        ("transport_needed", custom_titled_filter("transport_needed")),
-        ("travel_reimbursement", custom_titled_filter("travel_reimbursement")),
-        ("dietary_restrictions", custom_titled_filter("dietary_restrictions")),
+        ("status", ChoiceDropdownFilter),
+        ("classification", ChoiceDropdownFilter),
+        ("gender", ChoiceDropdownFilter),
+        ("grad_year", ChoiceDropdownFilter),
+        ("num_hackathons_attended", ChoiceDropdownFilter),
+        ("shirt_size", ChoiceDropdownFilter),
+        ("transport_needed", ChoiceDropdownFilter),
+        ("dietary_restrictions", ChoiceDropdownFilter),
         ("datetime_submitted", DateRangeFilter),
+        ("travel_reimbursement", DropdownFilter),
         RaceFilter,
     )
     list_display = (
