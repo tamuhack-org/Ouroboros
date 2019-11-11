@@ -9,19 +9,28 @@
 				max-width: 500px;
 				display: block;
 				margin: 20px auto;">
-        <h2 style="margin-bottom: 20px; font-size: 14px; color: #777777">Hi {{ user.first_name }}, </h2>
+        <h2 style="margin-bottom: 20px; font-size: 14px; color: #777777">Hi {{ first_name }}!</h2>
 
         <p style="line-height: 20px; -webkit-font-smoothing: antialiased;
 				  font-weight: normal;
 				  color: #777777;
-			  	  margin-bottom: 20px;">
-            The purpose of this email is to confirm that we've received your updates to your
-            {{ event_name }} RSVP!
+				  margin-bottom: 20px;">
+            We just wanted to let you know we received your application for
+            {{ event_name }}! We'll be carefully reviewing your application
+            and will get back to you soon!
         </p>
+
+        <h3 style=" margin-bottom: 5px;
+				    font-size: 14px;
+				    line-height: 30px;
+				    -webkit-font-smoothing: antialiased;
+				    font-weight: normal;">
+            Thanks!
+        </h3>
 
         <strong style=" color: #ED768B;
 						font-size: 14px;">
-            The TAMUhack Team
+            The {{ event_name }} Team
         </strong>
 
     </div>

@@ -232,12 +232,25 @@ SHIRT_SIZES = [
 ]
 
 STATUS_PENDING = "P"
+"""Status given to a submitted (but unreviewed) application.."""
+
 STATUS_REJECTED = "R"
+"""Status given to a rejected application."""
+
 STATUS_ADMITTED = "A"
+"""Status given to an approved application."""
+
 STATUS_CONFIRMED = "C"
+"""Status given to an admitted application where the user has confirmed their attendance."""
+
 STATUS_DECLINED = "X"
+"""Status given to an admitted application where the user has declined their admission."""
+
 STATUS_CHECKED_IN = "I"
+"""Status given to an application where the user has checked in to the event."""
+
 STATUS_EXPIRED = "E"
+"""The user missed the application's confirmation_deadline."""
 
 STATUS_OPTIONS = [
     (STATUS_PENDING, "Under Review"),
@@ -295,7 +308,7 @@ class Application(models.Model):
     question2 = models.TextField(QUESTION2_TEXT, max_length=500)
     question3 = models.TextField(QUESTION3_TEXT, max_length=500)
     resume = models.FileField(
-        "Upload your resume",
+        "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         upload_to=uuid_generator,
@@ -305,7 +318,7 @@ class Application(models.Model):
     school = models.CharField("What school do you go to?", max_length=255)
     major = models.CharField("What's your major?", max_length=255)
     classification = models.CharField(
-        "What classification are you?", choices=CLASSIFICATIONS, max_length=2
+        "What classification are you?", choices=CLASSIFICATIONS, max_length=3
     )
     gender = models.CharField(
         "What's your gender?", choices=GENDERS, max_length=2, default=NO_ANSWER
@@ -330,7 +343,7 @@ class Application(models.Model):
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
     is_adult = models.BooleanField(
-        "Please confirm you are 18 or older",
+        "Please confirm you are 18 or older.",
         choices=AGREE,
         default=None,
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "

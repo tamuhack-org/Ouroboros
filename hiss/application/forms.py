@@ -25,24 +25,6 @@ class ApplicationModelForm(forms.ModelForm):
             for field_name in self.fields.keys():
                 self.fields[field_name].widget.attrs["disabled"] = "disabled"
 
-    def clean_gender_other(self):
-        gender_other = self.cleaned_data["gender_other"]
-        gender = self.cleaned_data["gender"]
-        if gender == models.GENDER_OTHER and not gender_other:
-            raise forms.ValidationError(
-                'Please fill out this field or choose "Prefer not to answer".'
-            )
-        return gender_other
-
-    def clean_race_other(self):
-        race_other = self.cleaned_data["race_other"]
-        races = self.cleaned_data["race"]
-        if models.RACE_OTHER in races and not race_other:
-            raise forms.ValidationError(
-                "Please fill out this field with the appropriate information."
-            )
-        return race_other
-
     def is_valid(self) -> bool:
         """
         Checks to ensure that a wave is currently active.
@@ -53,6 +35,25 @@ class ApplicationModelForm(forms.ModelForm):
                 "Applications may only be submitted during an active registration wave.",
             )
         return super().is_valid()
+
+    def clean(self):
+        gender = self.cleaned_data.get("gender")
+        if gender == models.GENDER_OTHER:
+            gender_other = self.cleaned_data.get("gender_other")
+            if not gender_other:
+                msg = forms.ValidationError(
+                    'Please fill out this field or choose "Prefer not to answer".'
+                )
+                self.add_error("gender_other", msg)
+        races = self.cleaned_data.get("race")
+        if races:
+            race_other = self.cleaned_data.get("race_other")
+            if models.RACE_OTHER in races and not race_other:
+                msg = forms.ValidationError(
+                    "Please fill out this field with the appropriate information."
+                )
+                self.add_error("race_other", msg)
+        return self.cleaned_data
 
     class Meta:
         model = application_models.Application
