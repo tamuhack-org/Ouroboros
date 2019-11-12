@@ -32,7 +32,7 @@ class UserSummaryViewTestCase(TokenAuthTestCase):
 
     def test_get_succeeds_for_volunteer(self):
         self.create_active_wave()
-        Application.objects.create(**self.application_fields, wave=self.wave1)
+        app = Application.objects.create(**self.application_fields, wave=self.wave1)
         volunteer_token = self.get_volunteer_token()
 
         response = self.client.get(
@@ -50,14 +50,15 @@ class UserSummaryViewTestCase(TokenAuthTestCase):
                 "num_midnight_snack": 0,
                 "num_breakfast_2": 0,
                 "num_lunch_2": 0,
-                "workshop_events": 0,
+                "num_workshops": 0,
                 "checked_in": False,
+                "restrictions": app.dietary_restrictions,
             },
         )
 
     def test_get_succeeds_for_admin(self):
         self.create_active_wave()
-        Application.objects.create(**self.application_fields, wave=self.wave1)
+        app = Application.objects.create(**self.application_fields, wave=self.wave1)
         admin_token = self.get_volunteer_token()
 
         response = self.client.get(
@@ -75,7 +76,8 @@ class UserSummaryViewTestCase(TokenAuthTestCase):
                 "num_midnight_snack": 0,
                 "num_breakfast_2": 0,
                 "num_lunch_2": 0,
-                "workshop_events": 0,
+                "num_workshops": 0,
                 "checked_in": False,
+                "restrictions": app.dietary_restrictions,
             },
         )
