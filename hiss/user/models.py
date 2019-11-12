@@ -1,8 +1,12 @@
 # pylint: disable=C0330
+from django.conf import settings
 from django.contrib.auth import models as auth_models
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils import html
+from rest_framework.authtoken.models import Token
 
 
 class EmailUserManager(auth_models.UserManager):
@@ -72,3 +76,22 @@ class User(auth_models.AbstractUser):
         html_msg = render_to_string(template_name, context)
         msg = html.strip_tags(html_msg)
         self.email_user(subject, msg, None, html_message=html_msg)
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(
+    sender, instance: User = None, created: bool = False, **kwargs
+) -> None:
+    """
+    Using Django's model signals (https://docs.djangoproject.com/en/2.2/topics/signals/), creates a new Django Rest
+    Framework Token for a newly-created user, for later use with Django Rest Framework's TokenAuthentication.
+    See https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication for more details.
+    :param sender: The class that triggered this receiver (in this case, our User class)
+    :param instance: The specific User that triggered this signal.
+    :param created: Whether the user was created (or merely updated)
+    :param kwargs: Other keyword arguments. See https://docs.djangoproject.com/en/2.2/topics/signals/ for more details.
+    :return: None
+    """
+    if created:
+        # This user was just created, they need a new Token!
+        Token.objects.create(user=instance)
