@@ -1,9 +1,11 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from rest_framework import status, response
+from rest_framework import status, response, permissions, authentication
 from rest_framework.authtoken import views
 from rest_framework.request import Request
 
 from application.models import Application, STATUS_CHECKED_IN
+from volunteer.permissions import IsVolunteer
 from volunteer.serializers import EmailAuthTokenSerializer
 
 
@@ -20,6 +22,11 @@ class EmailObtainAuthToken(views.ObtainAuthToken):
 
 
 class CheckinHackerView(views.APIView):
+    permission_classes = [
+        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
+    ]
+    authentication_classes = [authentication.TokenAuthentication]
+
     def post(self, request: Request, format: str = None):
         """
         Sets a specific user's Application status as STATUS_CHECKED_IN (indicating that a user has successfully
@@ -37,3 +44,16 @@ class CheckinHackerView(views.APIView):
         application.status = STATUS_CHECKED_IN
         application.save()
         return response.Response(status=status.HTTP_200_OK)
+
+    def get(self, request: Request, format: str = None):
+        user_email = request.GET.get("email")
+        if not user_email:
+            # The hacker's email was not provided as a query parameter, we can't do anything.
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        # Return 404 if no application exists for the provided user.
+        application: Application = get_object_or_404(
+            Application, user__email=user_email
+        )
+        return JsonResponse(
+            {"checked_in": True if application.status == STATUS_CHECKED_IN else False}
+        )
