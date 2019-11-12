@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "shared.apps.SharedConfig",
     "team.apps.TeamConfig",
     "anymail",
+    "rest_framework",
+    "rest_framework.authtoken",
 ]
 
 MIDDLEWARE = [
