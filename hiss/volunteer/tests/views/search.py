@@ -3,11 +3,10 @@ import json
 from django.urls import reverse
 
 from application.models import Application
-from user.models import User
 from volunteer.tests.test_case import TokenAuthTestCase
 
 
-class HackerSearchTestCase(TokenAuthTestCase):
+class UserSearchViewTestCase(TokenAuthTestCase):
     def setUp(self):
         super().setUp()
         self.query = "Doe"

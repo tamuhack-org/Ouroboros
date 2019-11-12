@@ -14,7 +14,7 @@ MEAL_CHOICES = [
     (LUNCH, "Lunch"),
     (DINNER, "Dinner"),
     (MIDNIGHT_SNACK, "Midnight Snack"),
-    (BREAKFAST_2, "Breakfast (Day 2)")
+    (BREAKFAST_2, "Breakfast (Day 2)"),
     (LUNCH_2, "Lunch (Day 2)"),
 ]
 

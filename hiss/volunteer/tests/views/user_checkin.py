@@ -1,5 +1,4 @@
 from django.urls import reverse_lazy
-from django.utils.http import urlencode
 
 from application.models import Application, STATUS_CHECKED_IN
 from volunteer.tests.test_case import TokenAuthTestCase

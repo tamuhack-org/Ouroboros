@@ -9,4 +9,5 @@ urlpatterns = [
     path("food", views.CreateFoodEventView.as_view(), name="food"),
     path("workshops", views.CreateWorkshopEventView.as_view(), name="workshops"),
     path("search", views.SearchView.as_view(), name="search"),
+    path("summary", views.UserSummaryView.as_view(), name="summary"),
 ]
