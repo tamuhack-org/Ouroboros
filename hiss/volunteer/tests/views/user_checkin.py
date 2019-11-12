@@ -29,7 +29,7 @@ class CheckinUserViewTestCase(TokenAuthTestCase):
 
         response = self.client.get(
             f'{reverse_lazy("volunteer:user-checkin")}?{urlencode(self.data_dict)}',
-            HTTP_AUTHORIZATION=volunteer_token
+            HTTP_AUTHORIZATION=volunteer_token,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -41,7 +41,7 @@ class CheckinUserViewTestCase(TokenAuthTestCase):
 
         response = self.client.get(
             f'{reverse_lazy("volunteer:user-checkin")}?{urlencode(self.data_dict)}',
-            HTTP_AUTHORIZATION=admin_token
+            HTTP_AUTHORIZATION=admin_token,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -53,19 +53,21 @@ class CheckinUserViewTestCase(TokenAuthTestCase):
 
         response = self.client.get(
             f'{reverse_lazy("volunteer:user-checkin")}?{urlencode(self.data_dict)}',
-            HTTP_AUTHORIZATION=admin_token
+            HTTP_AUTHORIZATION=admin_token,
         )
 
         self.assertJSONEqual(response.content, {"checked_in": False})
 
     def test_gets_accurate_status_when_checked_in(self):
         self.create_active_wave()
-        Application.objects.create(**self.application_fields, wave=self.wave1, status=STATUS_CHECKED_IN)
+        Application.objects.create(
+            **self.application_fields, wave=self.wave1, status=STATUS_CHECKED_IN
+        )
         admin_token = self.get_token(self.admin_email, self.admin_password)
 
         response = self.client.get(
             f'{reverse_lazy("volunteer:user-checkin")}?{urlencode(self.data_dict)}',
-            HTTP_AUTHORIZATION=admin_token
+            HTTP_AUTHORIZATION=admin_token,
         )
 
         self.assertJSONEqual(response.content, {"checked_in": True})

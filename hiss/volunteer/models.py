@@ -3,7 +3,16 @@ from django.db import models
 
 from application.models import DIETARY_RESTRICTIONS
 
-MEAL_CHOICES = [(x, x) for x in ("Breakfast", "Lunch", "Dinner", "Midnight Snack")]
+BREAKFAST = "B"
+LUNCH = "L"
+DINNER = "D"
+MIDNIGHT_SNACK = "MS"
+MEAL_CHOICES = [
+    (BREAKFAST, "Breakfast"),
+    (LUNCH, "Lunch"),
+    (DINNER, "Dinner"),
+    (MIDNIGHT_SNACK, "Midnight Snack"),
+]
 
 
 class Event(models.Model):
@@ -11,7 +20,10 @@ class Event(models.Model):
     An abstract model (see Django docs: https://docs.djangoproject.com/en/2.2/topics/db/models/#abstract-base-classes)
     for recording activity during the event.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True
+    )
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:

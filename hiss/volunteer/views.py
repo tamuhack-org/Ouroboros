@@ -5,6 +5,7 @@ from rest_framework.authtoken import views
 from rest_framework.request import Request
 
 from application.models import Application, STATUS_CHECKED_IN
+from volunteer.models import FoodEvent
 from volunteer.permissions import IsVolunteer
 from volunteer.serializers import EmailAuthTokenSerializer
 
@@ -57,3 +58,35 @@ class CheckinHackerView(views.APIView):
         return JsonResponse(
             {"checked_in": True if application.status == STATUS_CHECKED_IN else False}
         )
+
+
+class CreateFoodEventView(views.APIView):
+    permission_classes = [
+        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
+    ]
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def post(self, request: Request, format: str = None):
+        """
+        Creates a new FoodEvent (indicating that a user has taken food for this meal). If the request is malformed (
+        i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status code. if
+        successful, returns a response with status 200.
+        """
+        email = request.data.get("email", None)
+        meal = request.data.get("meal", None)
+        restrictions = request.data.get("restrictions", None)
+
+        # Ensure that all required parameters are present
+        if not (email and meal and restrictions):
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
+        application: Application = get_object_or_404(Application, user__email=email)
+
+        # Ensure that user has checked in
+        if not application.status == STATUS_CHECKED_IN:
+            return response.Response(status=status.HTTP_412_PRECONDITION_FAILED)
+
+        FoodEvent.objects.create(
+            user=application.user, meal=meal, restrictions=restrictions
+        )
+        return response.Response(status=status.HTTP_200_OK)
