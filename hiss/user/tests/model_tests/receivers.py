@@ -8,7 +8,7 @@ class UserModelReceiverTestCase(test_case.SharedTestCase):
     def test_token_created_when_user_created(self):
         new_user = User.objects.create_user("beep@bop.com", "beepbop")
 
-        self.assertIsTrue(Token.objects.filter(user=new_user).exists())
+        self.assertTrue(Token.objects.filter(user=new_user).exists())
 
     def test_token_created_only_when_user_created(self):
         new_user = User.objects.create_user("beep@bop.com", "beepbop")
