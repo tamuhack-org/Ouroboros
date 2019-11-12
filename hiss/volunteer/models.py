@@ -4,7 +4,9 @@ from django.db import models
 from application.models import DIETARY_RESTRICTIONS
 
 BREAKFAST = "B"
+BREAKFAST_2 = "B2"
 LUNCH = "L"
+LUNCH_2 = "L2"
 DINNER = "D"
 MIDNIGHT_SNACK = "MS"
 MEAL_CHOICES = [
@@ -12,6 +14,8 @@ MEAL_CHOICES = [
     (LUNCH, "Lunch"),
     (DINNER, "Dinner"),
     (MIDNIGHT_SNACK, "Midnight Snack"),
+    (BREAKFAST_2, "Breakfast (Day 2)")
+    (LUNCH_2, "Lunch (Day 2)"),
 ]
 
 
