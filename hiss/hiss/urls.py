@@ -34,4 +34,5 @@ urlpatterns = [
     url(r"^$", RedirectView.as_view(pattern_name="customauth:login")),
     path("status/", include("status.urls")),
     path("team/", include("team.urls")),
+    path("api/volunteer/", include("volunteer.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

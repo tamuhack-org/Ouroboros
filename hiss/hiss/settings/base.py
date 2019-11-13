@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     "team.apps.TeamConfig",
     "anymail",
     "django_admin_listfilter_dropdown",
+    "rest_framework",
+    "rest_framework.authtoken",
 ]
 
 MIDDLEWARE = [
