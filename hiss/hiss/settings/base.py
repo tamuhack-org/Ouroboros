@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "shared.apps.SharedConfig",
     "team.apps.TeamConfig",
     "anymail",
+    "django_admin_listfilter_dropdown",
     "rest_framework",
     "rest_framework.authtoken",
 ]
