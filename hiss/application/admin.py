@@ -240,6 +240,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
         ("Miscellaneous", {"fields": ["notes"]}),
     ]
+    list_per_page = 2000
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"
