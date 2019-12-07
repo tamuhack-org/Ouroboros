@@ -32,7 +32,7 @@ class HasAppliedFilter(admin.SimpleListFilter):
         value = self.value()
         if value == "Yes":
             return queryset.filter(application__isnull=False)
-        else:
+        elif value == "No":
             return queryset.filter(application__isnull=True)
         return queryset
 
