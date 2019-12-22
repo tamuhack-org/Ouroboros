@@ -1,9 +1,11 @@
 import csv
 
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 
+from user.forms import GroupAdminForm
 from user.models import User
 
 
@@ -65,4 +67,18 @@ class UserAdmin(admin.ModelAdmin):
         return obj.application_set.exists()
 
 
+# Create a new Group admin.
+class GroupAdmin(admin.ModelAdmin):
+    # Use our custom form.
+    form = GroupAdminForm
+    # Filter permissions horizontal as well.
+    filter_horizontal = ["permissions"]
+
+
 admin.site.register(User, UserAdmin)
+
+# The following code is taken from https://stackoverflow.com/a/39648244
+# Unregister the original Group admin.
+admin.site.unregister(Group)
+# Register the new Group ModelAdmin.
+admin.site.register(Group, GroupAdmin)
