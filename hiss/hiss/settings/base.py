@@ -37,11 +37,13 @@ INSTALLED_APPS = [
     "django_admin_listfilter_dropdown",
     "rest_framework",
     "rest_framework.authtoken",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -97,3 +99,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
 STATIC_ROOT = "public/"
 APPEND_SLASH = True
 AUTH_USER_MODEL = "user.User"
+
+# TODO(SaltyQuetzals): Remove http://localhost:3000 for day-of
+CORS_ORIGIN_WHITELIST = ["https://volunteer.tamuhack.com", "http://localhost:3000"]
+
+CORS_URLS_REGEX = r"^/api/.*$"
