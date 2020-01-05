@@ -101,6 +101,10 @@ APPEND_SLASH = True
 AUTH_USER_MODEL = "user.User"
 
 # TODO(SaltyQuetzals): Remove http://localhost:3000 for day-of
-CORS_ORIGIN_WHITELIST = ["https://volunteer.tamuhack.com", "http://localhost:3000"]
+CORS_ORIGIN_WHITELIST = [
+    "https://volunteer.tamuhack.com",
+    "https://tamuhack-org.github.io",
+    "http://localhost:3000",
+]
 
 CORS_URLS_REGEX = r"^/api/.*$"
