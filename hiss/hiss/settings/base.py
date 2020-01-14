@@ -88,6 +88,7 @@ USE_TZ = True
 MEDIA_ROOT = "resumes/"
 MEDIA_URL = "/resumes/"
 MAX_UPLOAD_SIZE = "10485760"
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 LOGIN_REDIRECT_URL = reverse_lazy("status")
 LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 
@@ -106,5 +107,6 @@ CORS_ORIGIN_WHITELIST = [
     "https://tamuhack-org.github.io",
     "http://localhost:3000",
 ]
+
 
 CORS_URLS_REGEX = r"^/api/.*$"
