@@ -189,6 +189,7 @@ class UserSummaryView(views.APIView):
                 "num_lunch_2": food_events.filter(meal=LUNCH_2).count(),
                 "num_workshops": workshop_events.count(),
                 "checked_in": checked_in,
+                "status": application.status,
                 "restrictions": application.dietary_restrictions,
             }
         )

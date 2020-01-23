@@ -52,6 +52,7 @@ class UserSummaryViewTestCase(TokenAuthTestCase):
                 "num_lunch_2": 0,
                 "num_workshops": 0,
                 "checked_in": False,
+                "status": app.status,
                 "restrictions": app.dietary_restrictions,
             },
         )
@@ -78,6 +79,7 @@ class UserSummaryViewTestCase(TokenAuthTestCase):
                 "num_lunch_2": 0,
                 "num_workshops": 0,
                 "checked_in": False,
+                "status": app.status,
                 "restrictions": app.dietary_restrictions,
             },
         )
