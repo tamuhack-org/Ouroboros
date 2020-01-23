@@ -40,7 +40,7 @@ class ApplicationAdminForm(forms.ModelForm):
 
 
 def build_approval_email(
-        application: Application, confirmation_deadline: timezone.datetime
+    application: Application, confirmation_deadline: timezone.datetime
 ) -> Tuple[str, str, str, None, List[str]]:
     """
     Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
@@ -111,14 +111,9 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
     response["Content-Disposition"] = 'attachment; filename="emails.csv"'
 
     writer = csv.writer(response)
-    writer.writerow([
-        "first_name",
-        "last_name",
-        "email",
-        "school",
-        "classification",
-        "grad_year",
-    ])
+    writer.writerow(
+        ["first_name", "last_name", "email", "school", "classification", "grad_year",]
+    )
     for instance in queryset:
         instance: Application = instance
         writer.writerow(
@@ -128,7 +123,7 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
                 instance.user.email,
                 instance.school,
                 instance.classification,
-                instance.grad_year
+                instance.grad_year,
             ]
         )
 
