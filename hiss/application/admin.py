@@ -11,11 +11,11 @@ from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import strip_tags
-from rangefilter.filter import DateRangeFilter
 from django_admin_listfilter_dropdown.filters import (
     DropdownFilter,
     ChoiceDropdownFilter,
 )
+from rangefilter.filter import DateRangeFilter
 
 from application.models import (
     Application,
@@ -111,6 +111,9 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
     response["Content-Disposition"] = 'attachment; filename="emails.csv"'
 
     writer = csv.writer(response)
+    writer.writerow(
+        ["first_name", "last_name", "email", "school", "classification", "grad_year"]
+    )
     for instance in queryset:
         instance: Application = instance
         writer.writerow(
@@ -119,6 +122,8 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
                 instance.last_name,
                 instance.user.email,
                 instance.school,
+                instance.classification,
+                instance.grad_year,
             ]
         )
 
@@ -203,6 +208,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     )
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),
+        ("Status", {"fields": ["status"]}),
         (
             "Personal Information",
             {
