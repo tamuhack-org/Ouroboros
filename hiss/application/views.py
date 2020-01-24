@@ -66,6 +66,8 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
         Checks to make sure that the user actually owns the application requested.
         """
         app: Application = super().get_object()
+        if self.request.user.is_superuser:
+            return app
         if app.user != self.request.user:
             raise PermissionDenied("You don't have permission to view this application")
         return app

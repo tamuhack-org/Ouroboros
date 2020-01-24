@@ -4,7 +4,6 @@ from typing import Optional, List, Union, Tuple
 
 from django.conf import settings
 from django.core import exceptions
-from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse_lazy
@@ -267,15 +266,6 @@ def uuid_generator(_instance, filename: str):
     ext = filename.split(".")[-1]
     filename = "%s.%s" % (uuid.uuid4(), ext)
     return filename
-
-
-def is_alpha(val: str) -> None:
-    """Simple wrapper around the isalpha function, but raises ValidationError if the provided value is
-    non-alphabetic. """
-    if not val.isalpha():
-        raise ValidationError(
-            "%(val) can only contain letters. Not numbers.", params={"val": val}
-        )
 
 
 class Application(models.Model):
