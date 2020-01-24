@@ -269,15 +269,6 @@ def uuid_generator(_instance, filename: str):
     return filename
 
 
-def is_alpha(val: str) -> None:
-    """Simple wrapper around the isalpha function, but raises ValidationError if the provided value is
-    non-alphabetic. """
-    if not val.isalpha():
-        raise ValidationError(
-            "%(val) can only contain letters. Not numbers.", params={"val": val}
-        )
-
-
 class Application(models.Model):
     """
     Represents a `Hacker`'s application to this hackathon.

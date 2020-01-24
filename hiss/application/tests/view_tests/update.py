@@ -90,7 +90,7 @@ class UpdateApplicationViewTestCase(test_case.SharedTestCase):
         self.assertEqual(application.first_name, new_first_name)
 
     def test_only_owner_can_view_application(self) -> None:
-        self.client.force_login(self.admin)
+        self.client.force_login(self.user2)
         self.create_active_wave()
         application = Application(**self.application_fields, wave=self.wave1)
         application.save()
@@ -107,6 +107,19 @@ class UpdateApplicationViewTestCase(test_case.SharedTestCase):
         self.assertEqual(response.status_code, 403)
         application.refresh_from_db()
         self.assertNotEqual(application.first_name, new_first_name)
+
+    def test_admins_can_view_user_apps_in_context(self):
+        self.client.force_login(self.admin)
+        self.create_active_wave()
+        application = Application(**self.application_fields, wave=self.wave1)
+        application.save()
+        self.user.application = application
+        self.user.save()
+
+        response: HttpResponse = self.client.get(
+            reverse_lazy("application:update", args=(application.id,)),
+        )
+        self.assertEqual(response.status_code, 200)
 
     def test_renders_disabled_outside_of_wave(self) -> None:
         self.client.force_login(self.user)
