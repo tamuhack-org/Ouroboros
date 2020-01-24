@@ -4,7 +4,6 @@ from typing import Optional, List, Union, Tuple
 
 from django.conf import settings
 from django.core import exceptions
-from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse_lazy
