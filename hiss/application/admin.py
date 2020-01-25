@@ -11,11 +11,11 @@ from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import strip_tags
-from rangefilter.filter import DateRangeFilter
 from django_admin_listfilter_dropdown.filters import (
     DropdownFilter,
     ChoiceDropdownFilter,
 )
+from rangefilter.filter import DateRangeFilter
 
 from application.emails import send_confirmation_email
 from application.models import (
@@ -139,6 +139,9 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
                 instance.last_name,
                 instance.user.email,
                 instance.school,
+                instance.classification,
+                instance.grad_year,
+                instance.major,
             ]
         )
 
@@ -223,6 +226,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     )
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),
+        ("Status", {"fields": ["status"]}),
         (
             "Personal Information",
             {

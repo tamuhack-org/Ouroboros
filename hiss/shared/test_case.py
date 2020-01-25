@@ -25,6 +25,13 @@ class SharedTestCase(test.TestCase):
             email=self.email, password=self.password, is_active=True
         )
 
+        self.email2 = "dummy@email.com"
+        self.first_name2 = "Kris"
+        self.last_name2 = "Doh"
+        self.user2 = User.objects.create_user(
+            email=self.email2, password=self.password, is_active=True
+        )
+
         self.admin_email = "admin@official.com"
         self.admin_password = "admin_password"
         self.admin = User.objects.create_superuser(
