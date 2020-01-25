@@ -124,7 +124,7 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
                 instance.school,
                 instance.classification,
                 instance.grad_year,
-		instance.major
+                instance.major,
             ]
         )
 
