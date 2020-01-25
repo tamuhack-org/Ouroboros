@@ -17,6 +17,7 @@ from django_admin_listfilter_dropdown.filters import (
 )
 from rangefilter.filter import DateRangeFilter
 
+from application.emails import send_confirmation_email
 from application.models import (
     Application,
     Wave,
@@ -103,6 +104,14 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
     send_mass_html_mail(email_tuples)
 
 
+def resend_confirmation(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
+    """
+    Resends the confirmation email to the selected applications.
+    """
+    for application in queryset:
+        send_confirmation_email(application)
+
+
 def export_application_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
     """
     Exports the emails related to the selected `Application`s to a CSV file
@@ -112,7 +121,15 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
 
     writer = csv.writer(response)
     writer.writerow(
-        ["first_name", "last_name", "email", "school", "classification", "grad_year"]
+        [
+            "first_name",
+            "last_name",
+            "email",
+            "school",
+            "classification",
+            "grad_year",
+            "major",
+        ]
     )
     for instance in queryset:
         instance: Application = instance
@@ -262,7 +279,11 @@ class ApplicationAdmin(admin.ModelAdmin):
     export_application_emails.short_description = (
         "Export Emails for Selected Applications"
     )
-    actions = [approve, reject, export_application_emails]
+    resend_confirmation.short_description = (
+        "Resend Confirmation to Selected Applications"
+    )
+
+    actions = [approve, reject, export_application_emails, resend_confirmation]
 
     def has_add_permission(self, request):
         return True

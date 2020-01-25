@@ -96,3 +96,18 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
             follow=True,
         )
         self.assertEqual(response.status_code, 200)
+
+    def test_resend_confirmation_email(self):
+        self.client.force_login(self.admin)
+        change_url = reverse_lazy("admin:application_application_changelist")
+        response = self.client.post(
+            change_url,
+            {
+                "action": "resend_confirmation",
+                admin.ACTION_CHECKBOX_NAME: [self.app.pk],
+            },
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(len(mail.outbox), 1)
