@@ -1,16 +1,16 @@
 from django.contrib import admin
-from django_admin_listfilter_dropdown.filters import (
-    ChoiceDropdownFilter,
-)
+from django_admin_listfilter_dropdown.filters import ChoiceDropdownFilter
 from rangefilter.filter import DateTimeRangeFilter
 
 from volunteer.models import FoodEvent, WorkshopEvent
 
 
 class FoodEventAdmin(admin.ModelAdmin):
-    list_filter = (("timestamp", DateTimeRangeFilter),
-                   ("meal", ChoiceDropdownFilter),
-                   ("restrictions", ChoiceDropdownFilter))
+    list_filter = (
+        ("timestamp", DateTimeRangeFilter),
+        ("meal", ChoiceDropdownFilter),
+        ("restrictions", ChoiceDropdownFilter),
+    )
     list_display = ("timestamp", "meal", "restrictions", "user")
 
 
