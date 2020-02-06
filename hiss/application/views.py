@@ -42,6 +42,24 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
         application.wave = Wave.objects.active_wave()
         application.save()
         send_creation_email(application)
+        
+        # Insert Firebase POST code here:
+        #
+        # import requests (pip install requests)
+        #
+        # API_ENDPOINT = "http://pastebin.com/api/api_post.php"
+        # data = {'fName':form., 
+        #   'api_option':'paste', 
+        #   'api_paste_code':source_code, 
+        #   'api_paste_format':'python'} 
+
+        #
+        #
+        #
+        #
+        #
+        #
+        
         return redirect(self.success_url)
 
 
