@@ -6,6 +6,7 @@ from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
+from requests import requests
 
 from application.emails import send_confirmation_email, send_creation_email
 from application.forms import ApplicationModelForm
@@ -46,17 +47,15 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
         # Insert Firebase POST code here:
         #
         # import requests (pip install requests)
-        #
-        # API_ENDPOINT = "http://pastebin.com/api/api_post.php"
-        # data = {'fName':form., 
-        #   'api_option':'paste', 
-        #   'api_paste_code':source_code, 
-        #   'api_paste_format':'python'} 
-
-        #
-        #
-        #
-        #
+        
+        API_ENDPOINT = "https://us-central1-kleinhacks-2020.cloudfunctions.net/api/add"
+        data = {'fName':application.first_name, 
+           'lName':application.last_name, 
+           'id':application.student_id, 
+           'perms':'hacker'} 
+        
+        requests.post(url = API_ENDPOINT, data = data)
+        
         #
         #
         
