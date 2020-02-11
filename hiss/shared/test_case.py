@@ -4,7 +4,7 @@ from django.test import override_settings
 from django.utils import timezone
 
 from application import models as application_models
-from application.models import Wave
+from application.models import Wave, School
 from user.models import User
 
 TEST_RESUME_DIR = "test_resume_dir"
@@ -42,12 +42,15 @@ class SharedTestCase(test.TestCase):
         self.resume = SimpleUploadedFile(self.resume_file_name, b"dummy")
         self.resume_file_data = {"resume": self.resume}
 
+        self.first_school = School.objects.create(name="first school")
+        self.second_school = School.objects.create(name="second school")
+
         self.application_fields = {
             "first_name": self.first_name,
             "last_name": self.last_name,
             "shirt_size": application_models.WOMENS_XXS,
             "major": "Computer Science",
-            "school": "Of hard knocks",
+            "school": self.first_school,
             "transport_needed": application_models.MANUAL_POWER,
             "gender": application_models.FEMALE,
             "dietary_restrictions": application_models.NONE,

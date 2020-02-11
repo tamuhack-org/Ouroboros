@@ -41,6 +41,8 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
         self.client.force_login(self.user)
         self.create_active_wave()
 
+        self.application_fields["school"] = self.first_school.pk
+
         response: HttpResponse = self.client.post(
             reverse_lazy("application:create"), data=self.application_fields
         )
@@ -51,15 +53,16 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
         self.client.force_login(self.user)
         self.create_active_wave()
         # POST once to create a brand-new application for the user.
+        self.application_fields["school"] = self.first_school.pk
         self.client.post(
             reverse_lazy("application:create"), data=self.application_fields
         )
         self.application_fields["resume"] = SimpleUploadedFile("resume2.pdf", b"dummy")
+        self.application_fields["school"] = self.first_school.pk
 
         response: HttpResponse = self.client.post(
             reverse_lazy("application:create"), data=self.application_fields
         )
-
         self.assertFormError(
             response,
             "form",
@@ -71,6 +74,7 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
         self.client.force_login(self.user)
         self.create_active_wave()
 
+        self.application_fields["school"] = self.first_school.pk
         self.client.post(
             reverse_lazy("application:create"), data=self.application_fields
         )
@@ -82,6 +86,8 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
     def test_sends_email(self) -> None:
         self.client.force_login(self.user)
         self.create_active_wave()
+
+        self.application_fields["school"] = self.first_school.pk
 
         self.client.post(
             reverse_lazy("application:create"), data=self.application_fields
