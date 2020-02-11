@@ -1,9 +1,0 @@
-# https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build
-steps:
-# This step runs the Django unit tests
-- name: 'python:3.7-slim'
-  id: Test
-  entrypoint: /bin/sh
-  args:
-  - -c
-  - 'pip install -r hiss/requirements.txt && python hiss/manage.py test --parallel'
