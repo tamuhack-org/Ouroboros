@@ -316,7 +316,12 @@ class Application(models.Model):
     )
 
     # DEMOGRAPHIC INFORMATION
-    school = models.ForeignKey(School, "What school do you go to?")
+    school = models.ForeignKey(
+        School,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="What school do you go to?",
+    )
     major = models.CharField("What's your major?", max_length=255)
     classification = models.CharField(
         "What classification are you?", choices=CLASSIFICATIONS, max_length=3

@@ -2,6 +2,7 @@ from django import forms
 from django.utils.safestring import mark_safe
 
 from application import models as application_models, models
+from application.models import School
 
 
 class ApplicationModelForm(forms.ModelForm):
@@ -12,6 +13,10 @@ class ApplicationModelForm(forms.ModelForm):
     race_other = forms.CharField(
         label='If you chose "Prefer to self-describe", please elaborate.',
         required=False,
+    )
+    school = forms.ModelChoiceField(
+        School.objects.all(),
+        label="What school do you go to?",
     )
 
     def __init__(self, *args, **kwargs):
