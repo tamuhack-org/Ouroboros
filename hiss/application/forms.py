@@ -19,7 +19,7 @@ class ApplicationModelForm(forms.ModelForm):
     )
     school_other = forms.CharField(
         label='If you chose "Other", please enter your school\'s name here.',
-        required=False
+        required=False,
     )
 
     def __init__(self, *args, **kwargs):
