@@ -15,8 +15,7 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
     school = forms.ModelChoiceField(
-        School.objects.all(),
-        label="What school do you go to?",
+        School.objects.all(), label="What school do you go to?",
     )
 
     def __init__(self, *args, **kwargs):
