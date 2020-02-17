@@ -17,6 +17,10 @@ class ApplicationModelForm(forms.ModelForm):
     school = forms.ModelChoiceField(
         School.objects.all(), label="What school do you go to?",
     )
+    school_other = forms.CharField(
+        label='If you chose "Other", please enter your school\'s name here.',
+        required=False
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -76,6 +80,7 @@ class ApplicationModelForm(forms.ModelForm):
             "first_name",
             "last_name",
             "school",
+            "school_other",
             "major",
             "classification",
             "grad_year",

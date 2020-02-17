@@ -13,7 +13,7 @@ from multiselectfield import MultiSelectField
 
 class WaveManager(models.Manager):
     def next_wave(
-        self, start_dt: Optional[timezone.datetime] = None
+            self, start_dt: Optional[timezone.datetime] = None
     ) -> Optional["Wave"]:
         """
         Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
@@ -25,7 +25,7 @@ class WaveManager(models.Manager):
         return qs.first()
 
     def active_wave(
-        self, start_dt: Optional[timezone.datetime] = None
+            self, start_dt: Optional[timezone.datetime] = None
     ) -> Optional["Wave"]:
         """
         Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
@@ -35,8 +35,8 @@ class WaveManager(models.Manager):
             start_dt = timezone.now()
         qs = (
             self.get_queryset()
-            .filter(start__lte=start_dt, end__gt=start_dt)
-            .order_by("start")
+                .filter(start__lte=start_dt, end__gt=start_dt)
+                .order_by("start")
         )
         return qs.first()
 
@@ -322,6 +322,7 @@ class Application(models.Model):
         on_delete=models.SET_NULL,
         verbose_name="What school do you go to?",
     )
+    school_other = models.CharField(null=True, blank=True, max_length=255)
     major = models.CharField("What's your major?", max_length=255)
     classification = models.CharField(
         "What classification are you?", choices=CLASSIFICATIONS, max_length=3
@@ -353,7 +354,7 @@ class Application(models.Model):
         choices=AGREE,
         default=None,
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
-        "A&M.",
+                  "A&M.",
     )
 
     # LOGISTICAL INFO

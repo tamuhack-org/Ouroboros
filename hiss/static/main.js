@@ -23,4 +23,17 @@ $(function() {
              $('#id_gender_other').parent().hide();
          }
     });
+
+    if ($('#id_school option:selected').text() !== "Other"){
+        $('#id_school_other').parent().hide();
+    }
+    $('#id_school').on('change', function(){
+         let selection = $('#id_school option:selected').text();
+         if (selection === "Other"){
+            $('#id_school_other').parent().show();
+         }
+         else{
+             $('#id_school_other').parent().hide();
+         }
+    });
 })
