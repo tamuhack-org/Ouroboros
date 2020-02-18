@@ -4,7 +4,7 @@ An open-source, hackathon registration system.
 
 ## Questions
 
-If you have questions, we might've answered them already on the wiki! Check it out.
+If you have questions, we might've answered them already on the [wiki](https://github.com/tamuhack-org/Ouroboros/wiki)! Check it out.
 
 ## Running Locally
 
