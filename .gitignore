@@ -213,6 +213,9 @@ modules.xml
 .idea/misc.xml
 *.ipr
 
+### Vscode ###
+.vscode
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 
