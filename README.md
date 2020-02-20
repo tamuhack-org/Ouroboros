@@ -1,12 +1,13 @@
-# Hiss
+![TAMUhack](https://raw.githubusercontent.com/samarthdave/Ouroboros/master/resources/img/TAMUhack.png)
+# :snake: Hiss
 
-An open-source, hackathon registration system.
+An open-source, hackathon registration system. :school:
 
-## Questions
+## :question: Questions
 
-If you have questions, we might've answered them already on the wiki! Check it out.
+If you have questions, we might've answered them already on the [wiki](https://github.com/tamuhack-org/Ouroboros/wiki)! Check it out.
 
-## Running Locally
+## :computer: Running Locally
 
 For local development, this application is self-contained (it uses a SQLite table). Just follow the steps below!
 
@@ -20,4 +21,3 @@ For local development, this application is self-contained (it uses a SQLite tabl
 8. `python3 manage.py seeddb <NUM_USERS_WHO_CREATED_AN_ACCOUNT> <NUM_USERS_WHO_APPLIED> <NUM_USERS_WE'VE_ALREADY_ACCEPTED>`
 9. `python3 manage.py createsuperuser`
 10. `python3 manage.py runserver`
-
