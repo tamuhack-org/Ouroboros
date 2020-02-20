@@ -9,7 +9,7 @@ on:
 # Environment variables available to all jobs and steps in this workflow
 env:
   GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
-  IMAGE: moo
+  IMAGE: hiss
 
 jobs:
   setup-build-publish:
