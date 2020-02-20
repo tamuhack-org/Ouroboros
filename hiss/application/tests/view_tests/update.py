@@ -80,6 +80,7 @@ class UpdateApplicationViewTestCase(test_case.SharedTestCase):
         new_first_name = "Mack"
         self.application_fields["first_name"] = new_first_name
         self.application_fields["resume"] = SimpleUploadedFile("resume2.pdf", b"dummy")
+        self.application_fields["school"] = self.first_school.pk
 
         self.client.post(
             reverse_lazy("application:update", args=(application.id,)),

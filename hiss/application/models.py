@@ -71,6 +71,17 @@ class Wave(models.Model):
                 )
 
 
+class School(models.Model):
+    """
+    A simple model for representing colleges/universities.
+    """
+
+    name = models.CharField("name", max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
 AGREE = ((True, "Agree"),)
 
 TRUE_FALSE_CHOICES = ((True, "Yes"), (False, "No"))
@@ -305,7 +316,13 @@ class Application(models.Model):
     )
 
     # DEMOGRAPHIC INFORMATION
-    school = models.CharField("What school do you go to?", max_length=255)
+    school = models.ForeignKey(
+        School,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="What school do you go to?",
+    )
+    school_other = models.CharField(null=True, blank=True, max_length=255)
     major = models.CharField("What's your major?", max_length=255)
     classification = models.CharField(
         "What classification are you?", choices=CLASSIFICATIONS, max_length=3

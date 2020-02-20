@@ -17,6 +17,7 @@ For local development, this application is self-contained (it uses a SQLite tabl
 4. `pip install -r requirements.txt`
 5. `python3 manage.py makemigrations application customauth user`
 6. `python3 manage.py migrate --run-syncdb`
-7. `python3 manage.py seeddb <NUM_USERS_WHO_CREATED_AN_ACCOUNT> <NUM_USERS_WHO_APPLIED> <NUM_USERS_WE'VE_ALREADY_ACCEPTED>`
-8. `python3 manage.py createsuperuser`
-9. `python3 manage.py runserver`
+7. `python3 manage.py loaddata application/fixtures/*.json`
+8. `python3 manage.py seeddb <NUM_USERS_WHO_CREATED_AN_ACCOUNT> <NUM_USERS_WHO_APPLIED> <NUM_USERS_WE'VE_ALREADY_ACCEPTED>`
+9. `python3 manage.py createsuperuser`
+10. `python3 manage.py runserver`
