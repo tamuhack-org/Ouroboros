@@ -1,4 +1,4 @@
-![TAMUhack](https://raw.githubusercontent.com/samarthdave/Ouroboros/master/resources/img/TAMUhack.png)
+![TAMUhack](/resources/img/TAMUhack.png)
 # :snake: Hiss
 
 An open-source, hackathon registration system. :school:
