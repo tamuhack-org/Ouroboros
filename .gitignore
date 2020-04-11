@@ -1,3 +1,9 @@
+# Dev Environments
+.idea
+.DS_Store
+.vscode
+*.iml
+
 # Resume Directories
 **/test_resume_dir
 **/resumes

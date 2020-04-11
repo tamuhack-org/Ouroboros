@@ -6,4 +6,4 @@ COPY hiss /app
 
 RUN python3 -m pip install -r requirements.txt
 
-CMD gunicorn -b :$PORT hiss.wsgi:application --capture-output
+CMD python3 manage.py runserver 0.0.0.0:$PORT
