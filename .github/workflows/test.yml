@@ -10,3 +10,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build the stack
         run: docker-compose run web python3 manage.py test
+  coverage:
+    name: 'Check test coverage for the Django application'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the stack
+        run: docker-compose build
+      - name: Create coverage
+        run: docker-compose run web /bin/bash -c "coverage run --source='.' manage.py test && coverage report"
