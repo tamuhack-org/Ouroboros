@@ -1,17 +1,17 @@
-name: Run Unit Tests
+name: Test Application
 
 on: [push]
 
 jobs:
   django-tests:
-    name: 'Check that tests are passing for supported Python versions'
+    name: 'Run unit tests'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build the stack
         run: docker-compose run web python3 manage.py test
   coverage:
-    name: 'Check test coverage for the Django application'
+    name: 'Check test coverage'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
