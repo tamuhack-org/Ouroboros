@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 from django.urls import reverse_lazy
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -104,11 +105,13 @@ STATIC_ROOT = "public/"
 APPEND_SLASH = True
 AUTH_USER_MODEL = "user.User"
 
-# TODO(SaltyQuetzals): Remove http://localhost:3000 for day-of
+# Database
+# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
+
 CORS_ORIGIN_WHITELIST = [
     "https://volunteer.tamuhack.com",
     "https://tamuhack-org.github.io",
-    "http://localhost:3000",
 ]
 
 
