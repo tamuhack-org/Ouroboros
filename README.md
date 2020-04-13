@@ -1,3 +1,6 @@
+[![codecov](https://codecov.io/gh/tamuhack-org/Ouroboros/branch/master/graph/badge.svg)](https://codecov.io/gh/tamuhack-org/Ouroboros)
+
+
 ![TAMUhack](/resources/img/TAMUhack.png)
 # :snake: Hiss
 
