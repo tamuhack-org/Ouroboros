@@ -3,12 +3,11 @@ name: Push Container to Heroku
 
 on:
   push:
-#    branches:
-#      - master
+    branches:
+      - master
 
 env:
-  EVENT_NAME: tamuhack
-  HEROKU_APP_NAME: ${EVENT_NAME}-registration
+  HEROKU_APP_NAME: tamuhack-registration
 
 jobs:
   deploy:
