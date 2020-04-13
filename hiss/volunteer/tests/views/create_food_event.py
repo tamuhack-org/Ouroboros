@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 
-from application.models import STATUS_CHECKED_IN, Application, HALAL
+from application.models import STATUS_CHECKED_IN, Application, DietaryRestriction
 from volunteer.models import FoodEvent, BREAKFAST
 from volunteer.tests.test_case import TokenAuthTestCase
 from volunteer.views import USER_NOT_CHECKED_IN_MSG
@@ -8,8 +8,13 @@ from volunteer.views import USER_NOT_CHECKED_IN_MSG
 
 class CreateFoodEventViewTestCase(TokenAuthTestCase):
     def setUp(self):
+        self.dietary_restriction = DietaryRestriction.objects.create(name="dummy")
         super().setUp()
-        self.data_dict = {"email": self.email, "restrictions": HALAL, "meal": BREAKFAST}
+        self.data_dict = {
+            "email": self.email,
+            "restrictions": [DietaryRestriction.objects.first().pk],
+            "meal": BREAKFAST,
+        }
 
     def test_post_fails_for_regular_user(self):
         self.create_active_wave()

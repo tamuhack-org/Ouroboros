@@ -1,6 +1,6 @@
 # pylint: disable=C0330
 import uuid
-from typing import Optional, List, Union, Tuple
+from typing import Optional, List, Tuple
 
 from django.conf import settings
 from django.core import exceptions
@@ -138,25 +138,10 @@ CLASSIFICATIONS: List[Tuple[str, str]] = [
     (CLASSIFICATION_OTHER, "Other"),
 ]
 
-NONE = "None"
-VEGETARIAN = "Vegetarian"
-VEGAN = "Vegan"
-HALAL = "Halal"
-KOSHER = "Kosher"
-GLUTEN_FREE = "Gluten-free"
-FOOD_ALLERGY = "Food allergy"
-DIETARY_RESTRICTION_OTHER = "Other"
 
-DIETARY_RESTRICTIONS: List[Union[Tuple[str, None], Tuple[str, str]]] = [
-    (NONE, None),
-    (VEGAN, "Vegan"),
-    (VEGETARIAN, "Vegetarian"),
-    (HALAL, "Halal"),
-    (KOSHER, "Kosher"),
-    (GLUTEN_FREE, "Gluten-free"),
-    (FOOD_ALLERGY, "Food allergy"),
-    (DIETARY_RESTRICTION_OTHER, "Other"),
-]
+class DietaryRestriction(models.Model):
+    name = models.CharField(max_length=255)
+
 
 HACKATHONS_0 = "0"
 HACKATHONS_1_TO_3 = "1-3"
@@ -374,11 +359,9 @@ class Application(models.Model):
         max_length=500,
         blank=True,
     )
-    dietary_restrictions = models.CharField(
-        "Do you have any dietary restrictions?",
-        choices=DIETARY_RESTRICTIONS,
-        max_length=50,
-        default=NONE,
+    dietary_restrictions = models.ManyToManyField(DietaryRestriction, blank=True)
+    dietary_restrictions_other = models.CharField(
+        "Self-describe", max_length=255, null=True, blank=True
     )
 
     # CONFIRMATION DEADLINE
