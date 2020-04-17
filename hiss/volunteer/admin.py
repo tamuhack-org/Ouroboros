@@ -9,9 +9,12 @@ class FoodEventAdmin(admin.ModelAdmin):
     list_filter = (
         ("timestamp", DateTimeRangeFilter),
         ("meal", ChoiceDropdownFilter),
-        ("restrictions", ChoiceDropdownFilter),
+        ("restrictions", admin.filters.RelatedOnlyFieldListFilter),
     )
-    list_display = ("timestamp", "meal", "restrictions", "user")
+    list_display = ("timestamp", "meal", "get_restrictions", "user")
+
+    def get_restrictions(self, obj: FoodEvent):
+        return ", ".join([r.name for r in obj.restrictions.all()])
 
 
 class WorkshopEventAdmin(admin.ModelAdmin):
