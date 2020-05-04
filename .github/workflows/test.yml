@@ -1,25 +1,27 @@
-name: Run Unit Tests
+name: Test Application
 
 on: [push]
 
 jobs:
-  pylint:
-    name: 'Check that tests are passing for supported Python versions'
+  django-tests:
+    name: 'Run unit tests'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.6,3.7]
     steps:
-      - uses: actions/checkout@v1
-      - name: 'Set up Python'
-        uses: actions/setup-python@v1
+      - uses: actions/checkout@v2
+      - name: Build the stack
+        run: docker-compose run web python3 manage.py test
+  coverage:
+    name: 'Check test coverage'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the stack
+        run: docker-compose build
+      - name: Create coverage XML report
+        run: docker-compose run web /bin/bash -c "coverage run --source='.' manage.py test && coverage xml"
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r hiss/requirements.txt
-      - name: Run tests
-        run: |
-          cd hiss
-          python manage.py test
+          file: hiss/coverage.xml
+          name: codecov-umbrella
+          fail_ci_if_error: true

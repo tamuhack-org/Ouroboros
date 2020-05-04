@@ -76,7 +76,8 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
 
         self.application_fields["school"] = self.first_school.pk
         self.client.post(
-            reverse_lazy("application:create"), data=self.application_fields
+            reverse_lazy("application:create"),
+            data={**self.application_fields, "dietary_restrictions": []},
         )
         self.user.refresh_from_db()
 

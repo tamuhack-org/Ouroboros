@@ -1,0 +1,17 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      PORT: 8000
+      DATABASE_URL: postgres://postgres:dev_password@db:5432/hiss
+      MAILGUN_API_KEY: "YOUR_MAILGUN_API_KEY"
+      SECRET_KEY: "SOME_SECRET_STRING"
+    expose:
+      - 8000

@@ -1,0 +1,7 @@
+[run]
+source = .
+omit = *tests*,*apps.py,*manage.py,*__init__.py,*settings*,*migrations*,*asgi*,*wsgi*,*urls.py
+
+[report]
+omit = *tests*,*apps.py,*manage.py,*__init__.py,*settings*,*migrations*,*asgi*,*wsgi*,*urls.py
+skip_covered = True
