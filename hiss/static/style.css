@@ -680,7 +680,7 @@ label[for=id_is_adult] {
 button {
     padding: .5rem 3rem;
     width: auto !important;
-}
+} 
 
 .application textarea {
     height: 70px;

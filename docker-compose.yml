@@ -9,8 +9,9 @@ services:
     ports:
      - "5432:5432"
   web:
-    image: python:3.6-slim
-    working_dir: /app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     volumes:
       - ./hiss:/app
     ports:
@@ -22,6 +23,4 @@ services:
       DATABASE_URL: postgres://postgres:dev_password@db:5432/hiss
     expose:
       - 8000
-    command: bash -c "
-      python3 -m pip install -r requirements.txt &&
-      python3 manage.py runserver 0.0.0.0:8000"
+      
