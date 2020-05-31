@@ -2,40 +2,44 @@
 
 :root {
     /* ---- GENERIC ---- */
-    --main-bkg-color: #F9ECEE;
+    --main-bkg-color: #f5f5f5;
     --black: #000;
     --simple-white: #fff;
     --simple-black: #333;
     --simple-dark-blue: #3E678C;
     --simple-darker-blue: #325270;
     --simple-maroon: #721c24; /* gig em colors */
+    --simple-dark-purple: #4740af;
+    --simple-darker-purple: #3c3693;
+    --simple-darkest-purple: #38328a;
     /* SHADES of grey */
     --dark-grey: #777;
     --grey: #999;
     --light-grey: #c5c5c5;
     --lighter-grey: #bbb;
     /* SHADES of pink */
-    --simple-light-pink: #f8d7da;
-    --simple-pink: #f5c6cb;
-    --simple-dark-pink: #FF90A4;
+    --simple-light-blue: #89b2f5;
+    --simple-blue: #5695fa;
+    --simple-dark-blue: #2373f3;
 
     /* ---- BUTTONS ---- */
     --blue-register-btn: #2ebfc7;
-    --login-btn: var(--simple-dark-pink);
-    --login-btn-hover: #E86E84;
+    --login-btn: var(--simple-dark-purple);
+    --login-btn-hover: var(--simple-darker-purple);
 
     /* ---- NAVBAR ---- */
-    --navitem-hover-active: #69A2CC;
     --navitem-color: #000;
+    --navitem-hover-active: #000;
 
     /* ---- SIGN UP ---- */
-    --sign-up-bkg: #D8ECFE;
-    --sign-up-submit: var(--simple-dark-blue);
-    --sign-up-submit-hover: #24405A;
+    --sign-up-bkg: var(--main-bkg-color);
+    --sign-up-submit: var(--simple-dark-purple);
+    --sign-up-submit-hover: var(--simple-darker-purple);
 
-    /* ---- miscellaneous  */
-    --reset-container-bkg: #F9ECEE;
-    --application-status: #ED768B;
+    /* ---- miscellaneous ----  */
+    --reset-container-bkg: var(--main-bkg-color);
+    /* the circles that show status */
+    --application-status: var(--simple-dark-purple);
 }
 
 html, body {
@@ -45,6 +49,17 @@ html, body {
 .inner-container {
     left: 50%;
     transform: translateX(-50%);
+}
+
+/* target anchor colors */
+a {
+    color: var(--simple-dark-purple);
+}
+
+a:hover {
+    /* color: #302c77; */
+    color: var(--simple-darker-purple);
+    text-decoration: underline;
 }
 
 .nav-bg {
@@ -102,7 +117,6 @@ html, body {
     color: var(--blue-register-btn) !important;
 }
 
-
 ._content h1 {
     font-family: 'Courier New', Courier, monospace;
     font-size: 550%;
@@ -112,7 +126,6 @@ html, body {
     font-family: 'Helvetica';
     line-height: 2em;
 }
-
 
 .signin {
     background-color: var(--main-bkg-color);
@@ -565,7 +578,7 @@ input[type="radio"] {
     position: relative;
     border: var(--light-grey) solid 1px;
     border-radius: 100px;
-    color: var(--simple-dark-pink);
+    color: var(--simple-dark-blue);
     top: 10px;
     height: 30px;
     width: 30px;
@@ -579,7 +592,7 @@ input[type="radio"]:checked::after {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background: var(--simple-dark-pink);
+    background: var(--simple-dark-blue);
     border-radius: 100px;
     content: ' ';
     height: 20px;
@@ -625,7 +638,7 @@ input[type="checkbox"]:checked::before {
 }
 
 input[type="checkbox"]:checked {
-    background-color: var(--simple-dark-pink);
+    background-color: var(--simple-dark-blue);
 }
 
 input[type="file"] {
@@ -753,8 +766,8 @@ button {
 }
 
 .errorlist {
-    background-color: var(--simple-light-pink);
-    border: 1px solid var(--simple-pink);
+    background-color: var(--simple-light-blue);
+    border: 1px solid var(--simple-blue);
     border-radius: 4px;
     margin-top: 10px !important;
     padding: 0;
