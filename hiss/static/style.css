@@ -164,7 +164,7 @@ a:hover {
 }
 
 header {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .signin label {
@@ -221,7 +221,7 @@ input[type="submit"] {
 }
 
 .header-logo {
-    max-width: 100px;
+    max-width: 72px;
     margin-bottom: 20px;
 }
 
@@ -230,11 +230,16 @@ input[type="submit"] {
     margin-left: 10px;
 }
 
+/* main header for sign up/sign in */
 .signin h1, .reset-container h3 {
-    text-transform: uppercase;
     margin-bottom: 5px !important;
     font-size: 1.7rem;
     letter-spacing: 1px;
+    /* fonts adapted from gatekeeper */
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    /* bootstrap utility class "font-weight-normal" class */
+    font-weight: 400 !important;
+    
 }
 
 .application, .login-box, .status-box, .team-form, .team-detail {
