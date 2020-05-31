@@ -27,12 +27,12 @@ def healthcheck(request):
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("accounts/", include("customauth.urls")),
-    path("application/", include("application.urls", namespace="application")),
-    path("healthy/", healthcheck),
-    url(r"^$", RedirectView.as_view(pattern_name="customauth:login")),
-    path("status/", include("status.urls")),
-    path("team/", include("team.urls")),
-    path("api/volunteer/", include("volunteer.urls")),
+    path(settings.BASE_PATHNAME + "admin/", admin.site.urls),
+    path(settings.BASE_PATHNAME + "accounts/", include("customauth.urls")),
+    path(settings.BASE_PATHNAME + "application/", include("application.urls", namespace="application")),
+    path(settings.BASE_PATHNAME + "healthy/", healthcheck),
+    url(settings.BASE_PATHNAME_REGEX, RedirectView.as_view(pattern_name="customauth:login")),
+    path(settings.BASE_PATHNAME + "status/", include("status.urls")),
+    path(settings.BASE_PATHNAME + "team/", include("team.urls")),
+    path(settings.BASE_PATHNAME + "api/volunteer/", include("volunteer.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

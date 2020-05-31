@@ -19,7 +19,8 @@ import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Base Pathname for Obos (in galaxy)
-FORCE_SCRIPT_NAME = '/apply'
+BASE_PATHNAME = 'apply/'
+BASE_PATHNAME_REGEX = r"apply/$"
 
 # Application definition
 INSTALLED_APPS = [
@@ -102,8 +103,7 @@ LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-# Changed to include path prefix (for galaxy)
-STATIC_URL = FORCE_SCRIPT_NAME + "/static/"
+STATIC_URL = "/" + BASE_PATHNAME + "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
 STATIC_ROOT = "public/"
 APPEND_SLASH = True
