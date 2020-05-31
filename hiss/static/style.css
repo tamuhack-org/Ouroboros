@@ -26,6 +26,8 @@
     --blue-register-btn: #2ebfc7;
     --login-btn: var(--simple-dark-purple);
     --login-btn-hover: var(--simple-darker-purple);
+    --upload-btn: var(--simple-dark-purple);
+    --upload-btn-hover: var(--simple-darker-purple);
 
     /* ---- NAVBAR ---- */
     --navitem-color: #000;
@@ -639,6 +641,16 @@ input[type="checkbox"]:checked::before {
 
 input[type="checkbox"]:checked {
     background-color: var(--simple-dark-blue);
+}
+
+/* upload resume btn */
+input#id_resume::before {
+    background-color: var(--upload-btn);
+}
+
+input#id_resume::before:hover,
+input#id_resume::before:active {
+    background-color: var(--upload-btn-hover);
 }
 
 input[type="file"] {
