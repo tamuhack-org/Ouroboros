@@ -101,7 +101,7 @@ a:hover {
 }
 
 .navbar img {
-    max-width: 25px;
+    max-width: 40px;
 }
 
 #logo_bar {
@@ -131,7 +131,7 @@ a:hover {
 
 .signin {
     background-color: var(--main-bkg-color);
-    padding-top: 4em !important;
+    padding-top: 0 !important;
     padding-bottom: 3em !important;
     height: 100vh;
     width: 100vw;
@@ -221,7 +221,7 @@ input[type="submit"] {
 }
 
 .header-logo {
-    max-width: 40px;
+    max-width: 100px;
     margin-bottom: 20px;
 }
 
@@ -238,8 +238,7 @@ input[type="submit"] {
 }
 
 .application, .login-box, .status-box, .team-form, .team-detail {
-    background: var(--simple-white);
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+    background: none;
     border-radius: 3px;
     padding: 5em 8em;
 }
@@ -250,11 +249,13 @@ input[type="submit"] {
 }
 
 .login-box {
-    padding: 6em !important;
+    /* match gatekeeper styles */
+    margin-top: 40px;
+    padding: 0 6em !important;
 }
 
 .status-box {
-    margin-top: 3rem;
+    margin-top: 0;
     margin-bottom: 5em;
 }
 
@@ -943,7 +944,7 @@ button {
 
 @media only screen and (max-width: 768px) {
     .signin {
-        padding-top: 3.5em!important;
+        padding-top: 0 !important;
     }
     .signin img {
         max-width: 25px;
