@@ -38,6 +38,10 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend"
 ]
 
+# Base Pathname for Obos (in galaxy)
+BASE_PATHNAME = 'apply/'
+BASE_PATHNAME_REGEX = r"apply/$"
+
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -120,7 +124,7 @@ LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL = "/" + BASE_PATHNAME + "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
 STATIC_ROOT = "public/"
 APPEND_SLASH = True

@@ -8,6 +8,16 @@ services:
       POSTGRES_PASSWORD: dev_password
     ports:
      - "5432:5432"
+  proxy:
+    image: nginx
+    depends_on:
+      - web
+    volumes:
+      - ./routes.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:8080"
+    expose:
+      - 8080
   web:
     build:
       context: .
