@@ -17,10 +17,13 @@ import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Base Pathname for Obos (in galaxy)
-BASE_PATHNAME = 'apply/'
+ 
+# Base Pathname for Obos (when not being hosted at root)
+BASE_PATHNAME = os.environ.get("BASE_PATHNAME") if os.environ.get("BASE_PATHNAME") else ""
 BASE_PATHNAME_REGEX = r"apply/$"
+
+if len(BASE_PATHNAME) > 0:
+    BASE_PATHNAME += '/'
 
 # Application definition
 INSTALLED_APPS = [
