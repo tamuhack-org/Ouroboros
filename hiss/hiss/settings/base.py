@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
  
 # Base Pathname for Obos (when not being hosted at root)
 BASE_PATHNAME = os.environ.get("BASE_PATHNAME") if os.environ.get("BASE_PATHNAME") else ""
-BASE_PATHNAME_REGEX = r"apply/$"
+BASE_PATHNAME_REGEX = BASE_PATHNAME + r"/$"
 
 if len(BASE_PATHNAME) > 0:
     BASE_PATHNAME += '/'
