@@ -16,7 +16,7 @@ urlpatterns = [
         name="login",
     ),
     path(
-        "logout/", 
+        "logout/",
         RedirectView.as_view(url=f"http://localhost:4000/auth/logout", permanent=False), 
         name="logout"
     ),

@@ -21,6 +21,7 @@ services:
     environment:
       PORT: 8000
       DATABASE_URL: postgres://postgres:dev_password@db:5432/hiss
+      AUTH_JWT_SECRET: some_long_randomly_generated_string
     expose:
       - 8000
       
