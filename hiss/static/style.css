@@ -243,12 +243,13 @@ input[type="submit"] {
 }
 
 .application, .login-box, .status-box, .team-form, .team-detail {
-    background: none;
     border-radius: 3px;
     padding: 5em 8em;
 }
 
 .application {
+    background: var(--simple-white);
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
     padding: 3em 5em;
     margin-bottom: 3.5em;
 }
@@ -262,6 +263,8 @@ input[type="submit"] {
 .status-box {
     margin-top: 0;
     margin-bottom: 5em;
+    background: var(--simple-white);
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
 }
 
 .submit-pg .status-box {
