@@ -13,7 +13,17 @@ services:
     depends_on:
       - web
     volumes:
-      - ./routes.conf:/etc/nginx/conf.d/default.conf
+      - ./routes.conf:/etc/nginx/conf.d/default.template
+    environment:
+      GATEKEEPER_BASE_PATHNAME: auth
+      GATEKEEPER_HOSTNAME: host.docker.internal:3000  # keep in mind host.docker.internal doesn't work on docker for linux
+
+      OBOS_BASE_PATHNAME: apply
+      OBOS_HOSTNAME: web:8000
+
+      PORT: 8080
+    command: /bin/bash -c "envsubst '$$GATEKEEPER_BASE_PATHNAME $$GATEKEEPER_HOSTNAME $$OBOS_BASE_PATHNAME $$OBOS_HOSTNAME $$PORT' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'" 
+    tty: true
     ports:
       - "8080:8080"
     expose:
@@ -32,6 +42,7 @@ services:
       PORT: 8000
       DATABASE_URL: postgres://postgres:dev_password@db:5432/hiss
       AUTH_JWT_SECRET: some_long_randomly_generated_string
+      BASE_PATHNAME: apply
     expose:
       - 8000
       
