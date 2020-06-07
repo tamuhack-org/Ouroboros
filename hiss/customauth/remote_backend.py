@@ -2,8 +2,7 @@ from django.contrib.auth.backends import RemoteUserBackend
 from user.models import User
 from django.conf import settings
 from http.cookies import SimpleCookie
-import logging
-import jwt
+import logging, jwt, requests
 
 logger = logging.getLogger(__name__)
 
@@ -28,12 +27,20 @@ class CustomRemoteBackend(RemoteUserBackend):
             email = user_payload["email"]
 
             # TODO: Make request to gatekeeper to check validity of user
+            auth_check_req = requests.get(
+                settings.AUTH_CHECK_URL, headers={"Cookie": remote_user}
+            )
+            if (auth_check_req.status_code) != 200:
+                raise Exception("Unauthorized")
 
-            user = User.objects.get(email=email)
-            return user
+            return User.objects.get(email=email)
 
         except User.DoesNotExist:
-            return User.objects.create_user(email=email, password="")
+            new_user = User.objects.create_user(
+                email=email, password="", auth_id=auth_check_req.json()["authId"]
+            )
+            new_user.save()
+            return new_user
 
         except Exception as e:
             logger.error(e)
