@@ -16,17 +16,10 @@ from django.urls import reverse_lazy
 import dj_database_url
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
-    },
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler",},},
+    "root": {"handlers": ["console"], "level": "DEBUG",},
 }
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -35,15 +28,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Custom Backends
 AUTHENTICATION_BACKENDS = [
     "customauth.remote_backend.CustomRemoteBackend",
-    "django.contrib.auth.backends.ModelBackend"
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 # Base Pathname for Obos (when not being hosted at root)
-BASE_PATHNAME = os.environ.get("BASE_PATHNAME") if os.environ.get("BASE_PATHNAME") else ""
+BASE_PATHNAME = (
+    os.environ.get("BASE_PATHNAME") if os.environ.get("BASE_PATHNAME") else ""
+)
 BASE_PATHNAME_REGEX = BASE_PATHNAME + r"/$"
 
 if len(BASE_PATHNAME) > 0:
-    BASE_PATHNAME += '/'
+    BASE_PATHNAME += "/"
 
 # Application definition
 INSTALLED_APPS = [
@@ -75,7 +70,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    'customauth.remote_header_middleware.CustomRemoteAuthMiddleware',
+    "customauth.remote_header_middleware.CustomRemoteAuthMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]

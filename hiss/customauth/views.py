@@ -35,7 +35,7 @@ class AuthRedirectView(generic.base.RedirectView):
         redirect_param = settings.LOGIN_REDIRECT_URL
         if request.GET.get("next"):
             redirect_param = request.GET.get("next")
-        return redirect(self.url+f"?r={redirect_param}")
+        return redirect(self.url + f"?r={redirect_param}")
 
 
 class SignupView(generic.FormView):

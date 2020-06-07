@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 class CustomRemoteBackend(RemoteUserBackend):
     """Set to true in order to create a non-existent user on a successful authentication"""
+
     create_unknown_user = True
 
     """Parses cookies and uses the accessToken cookie set by Gatekeeper to
@@ -44,4 +45,6 @@ class CustomRemoteBackend(RemoteUserBackend):
         if "accessToken" not in cookies:
             raise Exception("Unauthorized")
 
-        return jwt.decode(cookies["accessToken"].value, key=settings.AUTH_JWT_SECRET, verify=True)
+        return jwt.decode(
+            cookies["accessToken"].value, key=settings.AUTH_JWT_SECRET, verify=True
+        )

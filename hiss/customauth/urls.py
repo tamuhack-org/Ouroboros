@@ -7,7 +7,7 @@ urlpatterns = [
     path(
         "signup/",
         views.AuthRedirectView.as_view(url="/auth/signup", permanent=False),
-        name="signup"
+        name="signup",
     ),
     path(
         "login/",
@@ -17,6 +17,6 @@ urlpatterns = [
     path(
         "logout/",
         RedirectView.as_view(url="/auth/logout", permanent=False),
-        name="logout"
+        name="logout",
     ),
 ]

@@ -29,9 +29,15 @@ def healthcheck(request):
 urlpatterns = [
     path(settings.BASE_PATHNAME + "admin/", admin.site.urls),
     path(settings.BASE_PATHNAME + "accounts/", include("customauth.urls")),
-    path(settings.BASE_PATHNAME + "application/", include("application.urls", namespace="application")),
+    path(
+        settings.BASE_PATHNAME + "application/",
+        include("application.urls", namespace="application"),
+    ),
     path(settings.BASE_PATHNAME + "healthy/", healthcheck),
-    url(settings.BASE_PATHNAME_REGEX, RedirectView.as_view(pattern_name="customauth:login")),
+    url(
+        settings.BASE_PATHNAME_REGEX,
+        RedirectView.as_view(pattern_name="customauth:login"),
+    ),
     path(settings.BASE_PATHNAME + "status/", include("status.urls")),
     path(settings.BASE_PATHNAME + "team/", include("team.urls")),
     path(settings.BASE_PATHNAME + "api/volunteer/", include("volunteer.urls")),
