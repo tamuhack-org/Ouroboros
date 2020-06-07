@@ -43,5 +43,5 @@ class CustomRemoteBackend(RemoteUserBackend):
         cookies.load(raw_cookies)
         if "accessToken" not in cookies:
             raise Exception("Unauthorized")
-        
+
         return jwt.decode(cookies["accessToken"].value, key=settings.AUTH_JWT_SECRET, verify=True)

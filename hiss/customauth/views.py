@@ -1,6 +1,6 @@
 from django import views
 from django.conf import settings
-from django.contrib.auth import get_user_model, login, authenticate
+from django.contrib.auth import get_user_model, login
 from django.contrib.auth import views as auth_views
 from django.contrib.sites import shortcuts as site_shortcuts
 from django.contrib.sites.requests import RequestSite
@@ -36,6 +36,7 @@ class AuthRedirectView(generic.base.RedirectView):
         if request.GET.get("next"):
             redirect_param = request.GET.get("next")
         return redirect(self.url+f"?r={redirect_param}")
+
 
 class SignupView(generic.FormView):
     form_class = customauth_forms.SignupForm

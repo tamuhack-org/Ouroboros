@@ -1,12 +1,11 @@
-from customauth import forms, views
+from customauth import views
 from django.urls import path
 from django.views.generic.base import RedirectView
-from django.conf import settings
 
 app_name = "customauth"
 urlpatterns = [
     path(
-        "signup/", 
+        "signup/",
         views.AuthRedirectView.as_view(url="/auth/signup", permanent=False),
         name="signup"
     ),
@@ -17,7 +16,7 @@ urlpatterns = [
     ),
     path(
         "logout/",
-        RedirectView.as_view(url="/auth/logout", permanent=False), 
+        RedirectView.as_view(url="/auth/logout", permanent=False),
         name="logout"
     ),
 ]
