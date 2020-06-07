@@ -22,16 +22,13 @@ class CustomRemoteBackend(RemoteUserBackend):
   """
 
     def authenticate(self, request, remote_user):
-        logger.debug("AUTHENTICATE CALLED")
         try:
             user_payload = self.clean_username(remote_user)
-            logger.debug(user_payload)
             email = user_payload["email"]
 
             # TODO: Make request to gatekeeper to check validity of user
 
             user = User.objects.get(email=email)
-            logger.debug(f"User: {user}")
             return user
 
         except User.DoesNotExist:

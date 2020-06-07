@@ -31,10 +31,6 @@ LOGGING = {
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
- 
-# Base Pathname for Obos (when not being hosted at root)
-BASE_PATHNAME = os.environ.get("BASE_PATHNAME") if os.environ.get("BASE_PATHNAME") else ""
-BASE_PATHNAME_REGEX = BASE_PATHNAME + r"/$"
 
 # Custom Backends
 AUTHENTICATION_BACKENDS = [
@@ -125,8 +121,9 @@ MAX_UPLOAD_SIZE = "10485760"
 # See https://docs.djangoproject.com/en/1.11/ref/settings/#data-upload-max-number-fields. Important for exporting
 # emails.
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
-LOGIN_REDIRECT_URL = "/status"
+LOGIN_REDIRECT_URL = BASE_PATHNAME + "status/"
 LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
+LOGIN_URL = reverse_lazy("customauth:login")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

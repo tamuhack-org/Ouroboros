@@ -7,17 +7,17 @@ app_name = "customauth"
 urlpatterns = [
     path(
         "signup/", 
-        RedirectView.as_view(url=f"http://localhost:4000/auth/signup?r={settings.LOGIN_REDIRECT_URL}", permanent=False),
+        views.AuthRedirectView.as_view(url="/auth/signup", permanent=False),
         name="signup"
     ),
     path(
         "login/",
-        RedirectView.as_view(url=f"http://localhost:4000/auth/login?r={settings.LOGIN_REDIRECT_URL}", permanent=False),
+        views.AuthRedirectView.as_view(url="/auth/login", permanent=False),
         name="login",
     ),
     path(
         "logout/",
-        RedirectView.as_view(url=f"http://localhost:4000/auth/logout", permanent=False), 
+        RedirectView.as_view(url="/auth/logout", permanent=False), 
         name="logout"
     ),
 ]

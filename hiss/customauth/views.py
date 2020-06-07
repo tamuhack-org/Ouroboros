@@ -30,6 +30,13 @@ def send_confirmation_email(curr_domain: RequestSite, user: User) -> None:
 
 
 # Create your views here.
+class AuthRedirectView(generic.base.RedirectView):
+    def get(self, request, *_args, **kwargs):
+        redirect_param = settings.LOGIN_REDIRECT_URL
+        if request.GET.get("next"):
+            redirect_param = request.GET.get("next")
+        return redirect(self.url+f"?r={redirect_param}")
+
 class SignupView(generic.FormView):
     form_class = customauth_forms.SignupForm
     template_name = "registration/signup.html"
