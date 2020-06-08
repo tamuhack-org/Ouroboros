@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Custom Backends
 AUTHENTICATION_BACKENDS = [
-    "customauth.remote_backend.CustomRemoteBackend",
+    "customauth.remote_backend.GatekeeperRemoteUserBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 

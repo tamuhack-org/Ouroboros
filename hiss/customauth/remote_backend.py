@@ -7,7 +7,7 @@ import logging, jwt, requests
 logger = logging.getLogger(__name__)
 
 
-class CustomRemoteBackend(RemoteUserBackend):
+class GatekeeperRemoteUserBackend(RemoteUserBackend):
     """Set to true in order to create a non-existent user on a successful authentication"""
 
     create_unknown_user = True
@@ -23,21 +23,24 @@ class CustomRemoteBackend(RemoteUserBackend):
 
     def authenticate(self, request, remote_user):
         try:
-            user_payload = self.clean_username(remote_user)
-            email = user_payload["email"]
-
-            # TODO: Make request to gatekeeper to check validity of user
             auth_check_req = requests.get(
-                settings.AUTH_CHECK_URL, headers={"Cookie": remote_user}
+                settings.AUTH_CHECK_URL,
+                headers={
+                    "Cookie": remote_user,
+                    "Accept": "application/json"
+                }
             )
             if (auth_check_req.status_code) != 200:
                 raise Exception("Unauthorized")
+            user_creds = auth_check_req.json()
 
-            return User.objects.get(email=email)
+            return User.objects.get(auth_id=user_creds["authId"])
 
         except User.DoesNotExist:
             new_user = User.objects.create_user(
-                email=email, password="", auth_id=auth_check_req.json()["authId"]
+                email=user_creds["email"],
+                password="",
+                auth_id=user_creds["authId"]
             )
             new_user.save()
             return new_user
@@ -45,13 +48,3 @@ class CustomRemoteBackend(RemoteUserBackend):
         except Exception as e:
             logger.error(e)
             return None
-
-    def clean_username(self, raw_cookies):
-        cookies = SimpleCookie()
-        cookies.load(raw_cookies)
-        if "accessToken" not in cookies:
-            raise Exception("Unauthorized")
-
-        return jwt.decode(
-            cookies["accessToken"].value, key=settings.AUTH_JWT_SECRET, verify=True
-        )

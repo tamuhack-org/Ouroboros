@@ -1,6 +1,6 @@
 from django import views
 from django.conf import settings
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth import views as auth_views
 from django.contrib.sites import shortcuts as site_shortcuts
 from django.contrib.sites.requests import RequestSite
@@ -27,15 +27,24 @@ def send_confirmation_email(curr_domain: RequestSite, user: User) -> None:
         "event_name": settings.EVENT_NAME,
     }
     user.send_html_email(template_name, context, subject)
-
-
-# Create your views here.
+   
+   
 class AuthRedirectView(generic.base.RedirectView):
     def get(self, request, *_args, **kwargs):
         redirect_param = settings.LOGIN_REDIRECT_URL
         if request.GET.get("next"):
             redirect_param = request.GET.get("next")
         return redirect(self.url + f"?r={redirect_param}")
+
+
+# Create your views here.
+class RemoteLogoutView(AuthRedirectView):
+    def get(self, request, *_args, **kwargs):
+        # Need to manually logout if Django superuser.
+        if request.user.is_superuser:
+            logout(request)
+
+        return super().get(request, *_args, **kwargs)
 
 
 class SignupView(generic.FormView):

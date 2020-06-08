@@ -16,7 +16,7 @@ urlpatterns = [
     ),
     path(
         "logout/",
-        RedirectView.as_view(url="/auth/logout", permanent=False),
+        views.RemoteLogoutView.as_view(url="/auth/logout", permanent=False),
         name="logout",
     ),
 ]
