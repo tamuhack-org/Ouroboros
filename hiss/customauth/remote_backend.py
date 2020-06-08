@@ -2,7 +2,7 @@ from django.contrib.auth.backends import RemoteUserBackend
 from user.models import User
 from django.conf import settings
 from http.cookies import SimpleCookie
-import logging, jwt, requests
+import logging, requests
 
 logger = logging.getLogger(__name__)
 
