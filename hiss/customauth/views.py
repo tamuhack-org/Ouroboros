@@ -27,8 +27,8 @@ def send_confirmation_email(curr_domain: RequestSite, user: User) -> None:
         "event_name": settings.EVENT_NAME,
     }
     user.send_html_email(template_name, context, subject)
-   
-   
+
+
 class AuthRedirectView(generic.base.RedirectView):
     def get(self, request, *_args, **kwargs):
         redirect_param = settings.LOGIN_REDIRECT_URL

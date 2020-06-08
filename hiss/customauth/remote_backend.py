@@ -25,10 +25,7 @@ class GatekeeperRemoteUserBackend(RemoteUserBackend):
         try:
             auth_check_req = requests.get(
                 settings.AUTH_CHECK_URL,
-                headers={
-                    "Cookie": remote_user,
-                    "Accept": "application/json"
-                }
+                headers={"Cookie": remote_user, "Accept": "application/json"},
             )
             if (auth_check_req.status_code) != 200:
                 raise Exception("Unauthorized")
@@ -38,9 +35,7 @@ class GatekeeperRemoteUserBackend(RemoteUserBackend):
 
         except User.DoesNotExist:
             new_user = User.objects.create_user(
-                email=user_creds["email"],
-                password="",
-                auth_id=user_creds["authId"]
+                email=user_creds["email"], password="", auth_id=user_creds["authId"]
             )
             new_user.save()
             return new_user
