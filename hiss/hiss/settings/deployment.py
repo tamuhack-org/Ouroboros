@@ -42,4 +42,4 @@ STATIC_URL = "https://register.tamuhack.com/public/"
 MEDIA_ROOT = "/resumes"
 MEDIA_URL = "https://register.tamuhack.com/resumes/"
 
-AUTH_CHECK_URL = "https://tamudatathon.com/auth/user"
+AUTH_CHECK_URL = "https://galaxy.tamudatathon.now.sh/auth/user"
