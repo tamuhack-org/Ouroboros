@@ -53,6 +53,13 @@ class User(auth_models.AbstractUser):
         help_text="Designates whether this user should be treated as active. Unselect "
         "this instead of deleting accounts.",
     )
+    auth_id = models.CharField(
+        max_length=24,
+        unique=True,
+        null=False,
+        blank=False,
+        help_text="Gatekeeper User Auth ID",
+    )
 
     # Explicitly delete Django's old fields
     username = None

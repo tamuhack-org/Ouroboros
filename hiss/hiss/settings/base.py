@@ -15,15 +15,30 @@ import os
 from django.urls import reverse_lazy
 import dj_database_url
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler",},},
+    "root": {"handlers": ["console"], "level": "DEBUG",},
+}
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
- 
+
+# Custom Backends
+AUTHENTICATION_BACKENDS = [
+    "customauth.remote_backend.GatekeeperRemoteUserBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 # Base Pathname for Obos (when not being hosted at root)
-BASE_PATHNAME = os.environ.get("BASE_PATHNAME") if os.environ.get("BASE_PATHNAME") else ""
+BASE_PATHNAME = (
+    os.environ.get("BASE_PATHNAME") if os.environ.get("BASE_PATHNAME") else ""
+)
 BASE_PATHNAME_REGEX = BASE_PATHNAME + r"/$"
 
 if len(BASE_PATHNAME) > 0:
-    BASE_PATHNAME += '/'
+    BASE_PATHNAME += "/"
 
 # Application definition
 INSTALLED_APPS = [
@@ -55,6 +70,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "customauth.remote_header_middleware.CustomRemoteAuthMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -100,8 +116,9 @@ MAX_UPLOAD_SIZE = "10485760"
 # See https://docs.djangoproject.com/en/1.11/ref/settings/#data-upload-max-number-fields. Important for exporting
 # emails.
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
-LOGIN_REDIRECT_URL = reverse_lazy("status")
+LOGIN_REDIRECT_URL = BASE_PATHNAME + "status/"
 LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
+LOGIN_URL = reverse_lazy("customauth:login")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -123,3 +140,5 @@ CORS_ORIGIN_WHITELIST = [
 
 
 CORS_URLS_REGEX = r"^/api/.*$"
+
+AUTH_JWT_SECRET = os.getenv("AUTH_JWT_SECRET")

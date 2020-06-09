@@ -1,40 +1,22 @@
-from customauth import forms, views
-from django.contrib.auth import views as auth_views
+from customauth import views
 from django.urls import path
+from django.views.generic.base import RedirectView
 
 app_name = "customauth"
 urlpatterns = [
-    path("signup/", views.SignupView.as_view(), name="signup"),
+    path(
+        "signup/",
+        views.AuthRedirectView.as_view(url="/auth/signup", permanent=False),
+        name="signup",
+    ),
     path(
         "login/",
-        auth_views.LoginView.as_view(authentication_form=forms.LoginForm),
+        views.AuthRedirectView.as_view(url="/auth/login", permanent=False),
         name="login",
     ),
     path(
-        "resend_activation/",
-        views.ResendActivationEmailView.as_view(),
-        name="resend_activation",
+        "logout/",
+        views.RemoteLogoutView.as_view(url="/auth/logout", permanent=False),
+        name="logout",
     ),
-    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path(
-        "password_reset/",
-        views.PlaceholderPasswordResetView.as_view(),
-        name="password_reset",
-    ),
-    path(
-        "password_reset/done/",
-        auth_views.PasswordResetDoneView.as_view(),
-        name="password_reset_done",
-    ),
-    path(
-        "reset/<uidb64>/<token>/",
-        views.PlaceholderPasswordResetConfirmView.as_view(),
-        name="password_reset_confirm",
-    ),
-    path(
-        "reset/done/",
-        auth_views.PasswordResetCompleteView.as_view(),
-        name="password_reset_complete",
-    ),
-    path("activate/<uidb64>/<token>/", views.ActivateView.as_view(), name="activate"),
 ]
