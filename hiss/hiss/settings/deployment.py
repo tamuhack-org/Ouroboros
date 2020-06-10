@@ -34,7 +34,7 @@ ANYMAIL = {
     "MAILGUN_SENDER_DOMAIN": "mg.tamuhack.com",
 }
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <hello@tamuhack.com>"
+DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <connect@tamudatathon.com>"
 
 # Static Files URL
 STATIC_URL = "https://register.tamuhack.com/public/"
