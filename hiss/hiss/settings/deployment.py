@@ -34,9 +34,9 @@ ANYMAIL = {
     "MAILGUN_SENDER_DOMAIN": "mg.tamuhack.com",
 }
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <hello@tamuhack.com>"
+DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <connect@tamudatathon.com>"
 
 MEDIA_ROOT = "/resumes"
 MEDIA_URL = "https://register.tamuhack.com/resumes/"
 
-AUTH_CHECK_URL = "https://tamudatathon.com/auth/user"
+AUTH_CHECK_URL = "https://galaxy.tamudatathon.now.sh/auth/user"

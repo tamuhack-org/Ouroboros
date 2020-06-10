@@ -400,7 +400,7 @@ class Application(models.Model):
         if not self.is_adult:
             raise exceptions.ValidationError(
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
-                "us at highschool@tamuhack.com. "
+                "us at connect@tamudatathon.com. "
             )
         if not self.first_name.isalpha():
             raise exceptions.ValidationError("First name can only contain letters.")

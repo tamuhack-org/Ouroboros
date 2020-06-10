@@ -7,7 +7,7 @@ on:
       - master
 
 env:
-  HEROKU_APP_NAME: tamuhack-registration
+  HEROKU_APP_NAME: tamudatathon-registration
 
 jobs:
   deploy:
