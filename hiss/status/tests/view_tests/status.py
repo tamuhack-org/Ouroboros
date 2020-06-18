@@ -14,8 +14,6 @@ class StatusViewTestCase(test_case.SharedTestCase):
         super().setUp()
         self.rsvp_fields = {
             "shirt_size": "XS",
-            "dietary_restrictions": ["Vg", "V", "H", "FA", "K"],
-            "notes": "",
         }
 
     def test_redirects_when_not_logged_in(self):

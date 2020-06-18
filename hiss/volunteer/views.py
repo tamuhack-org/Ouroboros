@@ -77,10 +77,9 @@ class CreateFoodEventView(views.APIView):
         """
         user_email = request.data.get("email", None)
         meal = request.data.get("meal", None)
-        restrictions = request.data.get("restrictions", None)
 
         # Ensure that all required parameters are present
-        if not (user_email and meal and restrictions):
+        if not (user_email and meal):
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
         application: Application = get_object_or_404(
@@ -95,7 +94,7 @@ class CreateFoodEventView(views.APIView):
             )
 
         FoodEvent.objects.create(
-            user=application.user, meal=meal, restrictions=restrictions
+            user=application.user, meal=meal
         )
         return response.Response(status=status.HTTP_200_OK)
 
@@ -190,6 +189,5 @@ class UserSummaryView(views.APIView):
                 "num_workshops": workshop_events.count(),
                 "checked_in": checked_in,
                 "status": application.status,
-                "restrictions": application.dietary_restrictions,
             }
         )

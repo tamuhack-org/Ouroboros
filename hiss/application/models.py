@@ -4,7 +4,7 @@ from typing import Optional, List, Union, Tuple
 
 from django.conf import settings
 from django.core import exceptions
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -94,6 +94,7 @@ NON_BINARY = "NB"
 GENDER_OTHER = "X"
 
 GENDERS: List[Tuple[str, str]] = [
+    ("", "---------"),
     (NO_ANSWER, "Prefer not to answer"),
     (MALE, "Male"),
     (FEMALE, "Female"),
@@ -139,24 +140,6 @@ CLASSIFICATIONS: List[Tuple[str, str]] = [
 ]
 
 NONE = "None"
-VEGETARIAN = "Vegetarian"
-VEGAN = "Vegan"
-HALAL = "Halal"
-KOSHER = "Kosher"
-GLUTEN_FREE = "Gluten-free"
-FOOD_ALLERGY = "Food allergy"
-DIETARY_RESTRICTION_OTHER = "Other"
-
-DIETARY_RESTRICTIONS: List[Union[Tuple[str, None], Tuple[str, str]]] = [
-    (NONE, None),
-    (VEGAN, "Vegan"),
-    (VEGETARIAN, "Vegetarian"),
-    (HALAL, "Halal"),
-    (KOSHER, "Kosher"),
-    (GLUTEN_FREE, "Gluten-free"),
-    (FOOD_ALLERGY, "Food allergy"),
-    (DIETARY_RESTRICTION_OTHER, "Other"),
-]
 
 HACKATHONS_0 = "0"
 HACKATHONS_1_TO_3 = "1-3"
@@ -179,35 +162,23 @@ GRAD_YEARS: List[Tuple[int, int]] = [
     )
 ]
 
-DRIVING = "D"
-EVENT_PROVIDED_BUS = "B"
-EVENT_PROVIDED_BUS_UT = "BUT"
-EVENT_PROVIDED_BUS_UTD = "BUTD"
-EVENT_PROVIDED_BUS_UTA = "BUTA"
-EVENT_PROVIDED_BUS_UTSA = "BUTSA"
-EVENT_PROVIDED_BUS_UTRGV = "BUTRGV"
-OTHER_BUS = "OB"
-FLYING = "F"
-PUBLIC_TRANSPORTATION = "P"
-MANUAL_POWER = "M"
-
-TRANSPORT_MODES: List[Tuple[str, str]] = [
-    (DRIVING, "Driving"),
-    (EVENT_PROVIDED_BUS, f"{settings.EVENT_NAME} Bus"),
-    (EVENT_PROVIDED_BUS_UT, f"{settings.EVENT_NAME} Bus - UT Austin"),
-    (EVENT_PROVIDED_BUS_UTD, f"{settings.EVENT_NAME} Bus - UT Dallas"),
-    (EVENT_PROVIDED_BUS_UTA, f"{settings.EVENT_NAME} Bus - UT Arlington"),
-    (EVENT_PROVIDED_BUS_UTSA, f"{settings.EVENT_NAME} Bus - UTSA"),
-    (EVENT_PROVIDED_BUS_UTRGV, f"{settings.EVENT_NAME} Bus - UTRGV"),
-    (OTHER_BUS, "Other Bus (Greyhound, Megabus, etc.)"),
-    (FLYING, "Flying"),
-    (PUBLIC_TRANSPORTATION, "Public Transportation"),
-    (MANUAL_POWER, "Walking/Biking"),
+REFERRAL_LOCATIONS: List[Tuple[str, str]] = [
+    ("email", "University Email"),
+    ("social", "Facebook / Instagram"),
+    ("friend", "Friend"),
+    ("MLH", "MLH Website / Newsletter"),
+    ("MSC", "MSC Open House"),
+    ("campus", "Campus Marketing (ex. Flyers, Posters, Whiteboards, etc)"),
+    ("website", "TAMU Datathon Website"),
+    ("other", "Other"),
 ]
 
-QUESTION1_TEXT = "Tell us your best programming joke"
-QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
-QUESTION3_TEXT = f"What is a cool prize you'd like to win at {settings.EVENT_NAME}?"
+QUESTION1_TEXT = "What prize do you want to see at TD?"
+QUESTION2_TEXT = "What workshops do you want to see at TD?"
+QUESTION3_TEXT = "Have you taken any data science or CS related classes?"
+QUESTION4_TEXT = "Are you involved in any data science or CS related clubs on campus?"
+QUESTION5_TEXT = "Have you had any data science or CS related jobs/internships?"
+QUESTION6_TEXT = "What industry interests you the most?"
 
 WOMENS_XXS = "WXXS"
 WOMENS_XS = "WXS"
@@ -295,24 +266,43 @@ class Application(models.Model):
 
     # ABOUT YOU
     first_name = models.CharField(
-        max_length=255, blank=False, null=False, verbose_name="first name"
+        max_length=100, blank=False, null=False, verbose_name="first name"
     )
     last_name = models.CharField(
-        max_length=255, blank=False, null=False, verbose_name="last name"
+        max_length=100, blank=False, null=False, verbose_name="last name"
     )
     extra_links = models.CharField(
-        "Point us to anything you'd like us to look at while considering your application",
-        max_length=200,
+        "Is there anything else you'd like us to look at while considering your application?",
+        max_length=300,
         blank=True,
     )
-    question1 = models.TextField(QUESTION1_TEXT, max_length=500)
-    question2 = models.TextField(QUESTION2_TEXT, max_length=500)
-    question3 = models.TextField(QUESTION3_TEXT, max_length=500)
+    question1 = models.TextField(QUESTION1_TEXT, max_length=500, blank=True)
+    question2 = models.TextField(QUESTION2_TEXT, max_length=500, blank=True)
+    question3 = models.TextField(QUESTION3_TEXT, max_length=500, blank=True)
+    question4 = models.TextField(QUESTION4_TEXT, max_length=500, blank=True)
+    question5 = models.TextField(QUESTION5_TEXT, max_length=500, blank=True)
+    question6 = models.TextField(QUESTION6_TEXT, max_length=500, blank=True)
+    
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         upload_to=uuid_generator,
+    )
+    github_link = models.URLField(
+        "Your GitHub", max_length=255, blank=True, null=True
+    )
+    linkedin_link = models.URLField(
+        "Your Linkedin", max_length=255, blank=True, null=True
+    )
+    personal_website_link = models.URLField(
+        "Your Personal Website", max_length=255, blank=True, null=True
+    )
+    instagram_link = models.URLField(
+        "Your Instagram", max_length=255, blank=True, null=True
+    )
+    devpost_link = models.URLField(
+        "Your Devpost", max_length=255, blank=True, null=True
     )
 
     # DEMOGRAPHIC INFORMATION
@@ -323,7 +313,8 @@ class Application(models.Model):
         verbose_name="What school do you go to?",
     )
     school_other = models.CharField(null=True, blank=True, max_length=255)
-    major = models.CharField("What's your major?", max_length=255)
+    majors = models.TextField(max_length=500, default=None)
+    minors = models.TextField(max_length=500, default=None)
     classification = models.CharField(
         "What classification are you?", choices=CLASSIFICATIONS, max_length=3
     )
@@ -333,11 +324,47 @@ class Application(models.Model):
     gender_other = models.CharField(
         "Self-describe", max_length=255, null=True, blank=True
     )
+    age = models.IntegerField(
+        "What's your age?",
+        validators=[
+            MinValueValidator(10),
+            MaxValueValidator(100)
+        ],
+        default=None
+    )
     race = MultiSelectField(
         "What race(s) do you identify with?", choices=RACES, max_length=41
     )
     race_other = models.CharField(
         "Self-describe", max_length=255, null=True, blank=True
+    )
+    referral = models.CharField(
+        "How did you hear about TAMU Datathon?",
+        choices=REFERRAL_LOCATIONS,
+        max_length=10
+    )
+    learner = models.BooleanField(
+        "Would you like to apply to the learner track?",
+        choices=TRUE_FALSE_CHOICES,
+        default=False,
+        help_text="Learners will recieve priority access to learner classes, be assigned a dedicated mentor, and have access to learner specific challenges / prizes.",
+    )
+    volunteer = models.BooleanField(
+        "Would you be interested in volunteering / mentoring for part of the event?",
+        choices=TRUE_FALSE_CHOICES,
+        default=False,
+    )
+    first_generation = models.BooleanField(
+        "I am a first generation college student.",
+        default=False,
+    )
+    datascience_experience = models.CharField(
+        max_length=2,
+        default=None
+    )
+    technology_experience = models.CharField(
+        max_length=150,
+        default=None
     )
 
     grad_year = models.IntegerField(
@@ -348,7 +375,16 @@ class Application(models.Model):
     )
 
     # LEGAL INFO
-    agree_to_coc = models.BooleanField(choices=AGREE, default=None)
+    agree_to_mlh_policies = models.BooleanField(
+        choices=AGREE,
+        default=None,
+        help_text="Being an MLH event, we need participants to be familiar with the MLH Code of Conduct and the MLH Contest Terms and Conditions."
+    )
+    agree_to_privacy = models.BooleanField(
+        choices=AGREE,
+        default=None,
+        help_text="We need your authorization to share your application / registration information for event administration, ranking, MLH administration, pre and post-event informational e-mails, and occasional messages about hackathons, in-line with the MLH Privacy Policy."
+    )
     is_adult = models.BooleanField(
         "Please confirm you are 18 or older.",
         choices=AGREE,
@@ -361,33 +397,10 @@ class Application(models.Model):
     shirt_size = models.CharField(
         "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
     )
-    transport_needed = models.CharField(
-        "How will you be getting to the event?", choices=TRANSPORT_MODES, max_length=11
-    )
-    travel_reimbursement = models.BooleanField(
-        "I'd like to apply for travel reimbursement",
-        default=False,
-        help_text="Travel reimbursement is only provided if you stay the whole time and submit a project.",
-    )
-    additional_accommodations = models.TextField(
-        "Do you require any special accommodations at the event?",
-        max_length=500,
-        blank=True,
-    )
-    dietary_restrictions = models.CharField(
-        "Do you have any dietary restrictions?",
-        choices=DIETARY_RESTRICTIONS,
-        max_length=50,
-        default=NONE,
-    )
+    physical_location = models.CharField("Where will you be participating from?", max_length=20)
 
     # CONFIRMATION DEADLINE
     confirmation_deadline = models.DateTimeField(null=True, blank=True)
-
-    # MISCELLANEOUS
-    notes = models.TextField(
-        "Anything else you would like us to know?", max_length=300, blank=True
-    )
 
     def __str__(self):
         return "%s, %s - Application" % (self.last_name, self.first_name)

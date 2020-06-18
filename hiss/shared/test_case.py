@@ -51,9 +51,7 @@ class SharedTestCase(test.TestCase):
             "shirt_size": application_models.WOMENS_XXS,
             "major": "Computer Science",
             "school": self.first_school,
-            "transport_needed": application_models.MANUAL_POWER,
             "gender": application_models.FEMALE,
-            "dietary_restrictions": application_models.NONE,
             "classification": application_models.FRESHMAN,
             "grad_year": timezone.now().year + 1,
             "num_hackathons_attended": application_models.HACKATHONS_0,
@@ -64,8 +62,7 @@ class SharedTestCase(test.TestCase):
             "question2": "C",
             "question3": "D",
             "is_adult": True,
-            "additional_accommodations": "E",
-            "agree_to_coc": True,
+            "agree_to_mlh_policies": True,
             **self.resume_file_data,
         }
 
