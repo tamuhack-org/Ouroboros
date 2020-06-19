@@ -93,9 +93,7 @@ class CreateFoodEventView(views.APIView):
                 status=status.HTTP_412_PRECONDITION_FAILED,
             )
 
-        FoodEvent.objects.create(
-            user=application.user, meal=meal
-        )
+        FoodEvent.objects.create(user=application.user, meal=meal)
         return response.Response(status=status.HTTP_200_OK)
 
 

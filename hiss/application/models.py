@@ -4,7 +4,11 @@ from typing import Optional, List, Union, Tuple
 
 from django.conf import settings
 from django.core import exceptions
-from django.core.validators import FileExtensionValidator, MaxValueValidator, MinValueValidator
+from django.core.validators import (
+    FileExtensionValidator,
+    MaxValueValidator,
+    MinValueValidator,
+)
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -282,16 +286,14 @@ class Application(models.Model):
     question4 = models.TextField(QUESTION4_TEXT, max_length=500, blank=True)
     question5 = models.TextField(QUESTION5_TEXT, max_length=500, blank=True)
     question6 = models.TextField(QUESTION6_TEXT, max_length=500, blank=True)
-    
+
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         upload_to=uuid_generator,
     )
-    github_link = models.URLField(
-        "Your GitHub", max_length=255, blank=True, null=True
-    )
+    github_link = models.URLField("Your GitHub", max_length=255, blank=True, null=True)
     linkedin_link = models.URLField(
         "Your Linkedin", max_length=255, blank=True, null=True
     )
@@ -326,11 +328,8 @@ class Application(models.Model):
     )
     age = models.IntegerField(
         "What's your age?",
-        validators=[
-            MinValueValidator(10),
-            MaxValueValidator(100)
-        ],
-        default=None
+        validators=[MinValueValidator(10), MaxValueValidator(100)],
+        default=None,
     )
     race = MultiSelectField(
         "What race(s) do you identify with?", choices=RACES, max_length=41
@@ -341,7 +340,7 @@ class Application(models.Model):
     referral = models.CharField(
         "How did you hear about TAMU Datathon?",
         choices=REFERRAL_LOCATIONS,
-        max_length=10
+        max_length=10,
     )
     learner = models.BooleanField(
         "Would you like to apply to the learner track?",
@@ -355,17 +354,10 @@ class Application(models.Model):
         default=False,
     )
     first_generation = models.BooleanField(
-        "I am a first generation college student.",
-        default=False,
+        "I am a first generation college student.", default=False,
     )
-    datascience_experience = models.CharField(
-        max_length=2,
-        default=None
-    )
-    technology_experience = models.CharField(
-        max_length=150,
-        default=None
-    )
+    datascience_experience = models.CharField(max_length=2, default=None)
+    technology_experience = models.CharField(max_length=150, default=None)
 
     grad_year = models.IntegerField(
         "What is your anticipated graduation year?", choices=GRAD_YEARS
@@ -378,12 +370,12 @@ class Application(models.Model):
     agree_to_mlh_policies = models.BooleanField(
         choices=AGREE,
         default=None,
-        help_text="Being an MLH event, we need participants to be familiar with the MLH Code of Conduct and the MLH Contest Terms and Conditions."
+        help_text="Being an MLH event, we need participants to be familiar with the MLH Code of Conduct and the MLH Contest Terms and Conditions.",
     )
     agree_to_privacy = models.BooleanField(
         choices=AGREE,
         default=None,
-        help_text="We need your authorization to share your application / registration information for event administration, ranking, MLH administration, pre and post-event informational e-mails, and occasional messages about hackathons, in-line with the MLH Privacy Policy."
+        help_text="We need your authorization to share your application / registration information for event administration, ranking, MLH administration, pre and post-event informational e-mails, and occasional messages about hackathons, in-line with the MLH Privacy Policy.",
     )
     is_adult = models.BooleanField(
         "Please confirm you are 18 or older.",
@@ -397,7 +389,9 @@ class Application(models.Model):
     shirt_size = models.CharField(
         "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
     )
-    physical_location = models.CharField("Where will you be participating from?", max_length=20)
+    physical_location = models.CharField(
+        "Where will you be participating from?", max_length=20
+    )
 
     # CONFIRMATION DEADLINE
     confirmation_deadline = models.DateTimeField(null=True, blank=True)

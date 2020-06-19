@@ -25,8 +25,10 @@ class ApplicationModelForm(forms.ModelForm):
         ("Accounting", "Accounting"),
         ("Aerospace Engineering", "Aerospace Engineering"),
         ("Agricultural Economics", "Agricultural Economics"),
-        ("Agricultural Leadership, Education, and Communications",
-         "Agricultural Leadership, Education, and Communications"),
+        (
+            "Agricultural Leadership, Education, and Communications",
+            "Agricultural Leadership, Education, and Communications",
+        ),
         ("Agronomy", "Agronomy"),
         ("Alternative Dispute Resolution", "Alternative Dispute Resolution"),
         ("Analytics", "Analytics"),
@@ -37,8 +39,10 @@ class ApplicationModelForm(forms.ModelForm):
         ("Astronomy", "Astronomy"),
         ("Atmospheric Sciences", "Atmospheric Sciences"),
         ("Biochemistry and Biophysics", "Biochemistry and Biophysics"),
-        ("Biological and Agricultural Engineering",
-         "Biological and Agricultural Engineering"),
+        (
+            "Biological and Agricultural Engineering",
+            "Biological and Agricultural Engineering",
+        ),
         ("Biology", "Biology"),
         ("Biomedical Engineering", "Biomedical Engineering"),
         ("Biomedical Sciences", "Biomedical Sciences"),
@@ -57,16 +61,20 @@ class ApplicationModelForm(forms.ModelForm):
         ("Diagnostic Sciences", "Diagnostic Sciences"),
         ("Economics", "Economics"),
         ("Ecosystem Science and Management", "Ecosystem Science and Management"),
-        ("Educational Administration & Human Resource Development",
-         "Educational Administration & Human Resource Development"),
+        (
+            "Educational Administration & Human Resource Development",
+            "Educational Administration & Human Resource Development",
+        ),
         ("Educational Psychology", "Educational Psychology"),
         ("Electrical Engineering", "Electrical Engineering"),
         ("Electronic Systems Engineering", "Electronic Systems Engineering"),
         ("Endodontics", "Endodontics"),
         ("Energy", "Energy"),
         ("Energy Law", "Energy Law"),
-        ("Engineering Technology & Industrial Distribution",
-         "Engineering Technology & Industrial Distribution"),
+        (
+            "Engineering Technology & Industrial Distribution",
+            "Engineering Technology & Industrial Distribution",
+        ),
         ("English", "English"),
         ("Entomology", "Entomology"),
         ("Environmental Law", "Environmental Law"),
@@ -92,15 +100,21 @@ class ApplicationModelForm(forms.ModelForm):
         ("Humanities in Medicine", "Humanities in Medicine"),
         ("IP and Technology Law", "IP and Technology Law"),
         ("Immigration Law", "Immigration Law"),
-        ("Industrial and/or Systems Engineering",
-         "Industrial and/or Systems Engineering"),
+        (
+            "Industrial and/or Systems Engineering",
+            "Industrial and/or Systems Engineering",
+        ),
         ("Information Science", "Information Science"),
-        ("Information and Operations Management",
-         "Information and Operations Management"),
+        (
+            "Information and Operations Management",
+            "Information and Operations Management",
+        ),
         ("International Affairs", "International Affairs"),
         ("International Studies", "International Studies"),
-        ("Landscape Architecture & Urban Planning",
-         "Landscape Architecture & Urban Planning"),
+        (
+            "Landscape Architecture & Urban Planning",
+            "Landscape Architecture & Urban Planning",
+        ),
         ("Management Information Systems", "Management Information Systems"),
         ("Marketing", "Marketing"),
         ("Material Science", "Material Science"),
@@ -108,8 +122,10 @@ class ApplicationModelForm(forms.ModelForm):
         ("Mechanical Engineering", "Mechanical Engineering"),
         ("Medical Education", "Medical Education"),
         ("Medical Physiology", "Medical Physiology"),
-        ("Microbial Pathogenesis and Immunology",
-         "Microbial Pathogenesis and Immunology"),
+        (
+            "Microbial Pathogenesis and Immunology",
+            "Microbial Pathogenesis and Immunology",
+        ),
         ("Molecular & Cellular Medicine", "Molecular & Cellular Medicine"),
         ("Neuroscience", "Neuroscience"),
         ("Nuclear Engineering", "Nuclear Engineering"),
@@ -134,11 +150,12 @@ class ApplicationModelForm(forms.ModelForm):
         ("Psychiatry", "Psychiatry"),
         ("Psychology", "Psychology"),
         ("Public Health", "Public Health"),
-        ("Public Service and Administration",
-         "Public Service and Administration"),
+        ("Public Service and Administration", "Public Service and Administration"),
         ("Real Estate Law", "Real Estate Law"),
-        ("Recreation, Park and Tourism Sciences",
-         "Recreation, Park and Tourism Sciences"),
+        (
+            "Recreation, Park and Tourism Sciences",
+            "Recreation, Park and Tourism Sciences",
+        ),
         ("Restorative Sciences", "Restorative Sciences"),
         ("Sociology", "Sociology"),
         ("Soil and Crop Sciences", "Soil and Crop Sciences"),
@@ -152,13 +169,9 @@ class ApplicationModelForm(forms.ModelForm):
         ("Workplace Law", "Workplace Law"),
         ("Other", "Other"),
     )
-    majors = forms.MultipleChoiceField(
-        label="What's your major(s)?",
-        choices=MAJORS
-    )
+    majors = forms.MultipleChoiceField(label="What's your major(s)?", choices=MAJORS)
     minors = forms.MultipleChoiceField(
-        label="What's your minor(s)?",
-        choices=MAJORS
+        label="What's your minor(s)?", choices=MAJORS, required=False
     )
     STATES = (
         ("", "---------"),
@@ -214,8 +227,7 @@ class ApplicationModelForm(forms.ModelForm):
         ("Wyoming", "Wyoming"),
     )
     physical_location = forms.ChoiceField(
-        label='Where will you be participating from?',
-        choices=STATES
+        label="Where will you be participating from?", choices=STATES
     )
     DATASCIENCE_EXPERIENCE = (
         ("", "---------"),
@@ -227,7 +239,7 @@ class ApplicationModelForm(forms.ModelForm):
     )
     datascience_experience = forms.ChoiceField(
         label="How would you rank your experience with data science?",
-        choices=DATASCIENCE_EXPERIENCE
+        choices=DATASCIENCE_EXPERIENCE,
     )
     TECHNOLOGY_EXPERIENCE = (
         ("Excel", "Excel"),
@@ -246,7 +258,8 @@ class ApplicationModelForm(forms.ModelForm):
     )
     technology_experience = forms.MultipleChoiceField(
         label="What technologies do you have experience with?",
-        choices=TECHNOLOGY_EXPERIENCE
+        choices=TECHNOLOGY_EXPERIENCE,
+        required=False,
     )
 
     def __init__(self, *args, **kwargs):
@@ -258,7 +271,7 @@ class ApplicationModelForm(forms.ModelForm):
             'I have read and agree to the <a target="_blank" href="https://mlh.io/privacy">MLH Privacy Policy</a>.'
         )
         self.fields["first_generation"].label = mark_safe(
-            'I am a first generation college student.'
+            "I am a first generation college student."
         )
 
         # HACK: Disable the form if there's not an active wave
@@ -309,15 +322,20 @@ class ApplicationModelForm(forms.ModelForm):
                 }
             ),
             "github_link": forms.TextInput(
-                attrs={"placeholder": "ex. github.com/tamu-datathon-org"}),
+                attrs={"placeholder": "ex. github.com/tamu-datathon-org"}
+            ),
             "linkedin_link": forms.TextInput(
-                attrs={"placeholder": "ex. linkedin.com/in/tamudatathon"}),
+                attrs={"placeholder": "ex. linkedin.com/in/tamudatathon"}
+            ),
             "personal_website_link": forms.TextInput(
-                attrs={"placeholder": "ex. tamudatathon.com"}),
+                attrs={"placeholder": "ex. tamudatathon.com"}
+            ),
             "instagram_link": forms.TextInput(
-                attrs={"placeholder": "ex. instagram.com/tamudatathon"}),
+                attrs={"placeholder": "ex. instagram.com/tamudatathon"}
+            ),
             "devpost_link": forms.TextInput(
-                attrs={"placeholder": "ex. devpost.com/tamudatathon"}),
+                attrs={"placeholder": "ex. devpost.com/tamudatathon"}
+            ),
         }
 
         fields = [

@@ -292,14 +292,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 ]
             },
         ),
-        (
-            "Logistical Information",
-            {
-                "fields": [
-                    "shirt_size",
-                ]
-            },
-        ),
+        ("Logistical Information", {"fields": ["shirt_size",]},),
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
     ]
     list_per_page = 2000
