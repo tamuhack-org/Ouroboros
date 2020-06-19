@@ -36,9 +36,6 @@ ANYMAIL = {
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <connect@tamudatathon.com>"
 
-# Static Files URL
-STATIC_URL = "https://register.tamuhack.com/public/"
-
 MEDIA_ROOT = "/resumes"
 MEDIA_URL = "https://register.tamuhack.com/resumes/"
 
