@@ -716,8 +716,14 @@ label {
     font-size: 14px;
 }
 
-.application li {
+.application li,
+.select2-dropdown li  {
     height: auto;
+}
+
+.indented-input {
+    padding-left: 30px;
+    border-left: solid 2px grey;
 }
 
 label[for="id_agree_to_mlh_policies"],
