@@ -322,19 +322,19 @@ class ApplicationModelForm(forms.ModelForm):
                 }
             ),
             "github_link": forms.TextInput(
-                attrs={"placeholder": "ex. github.com/tamu-datathon-org"}
+                attrs={"placeholder": "ex. https://github.com/tamu-datathon-org"}
             ),
             "linkedin_link": forms.TextInput(
-                attrs={"placeholder": "ex. linkedin.com/in/tamudatathon"}
+                attrs={"placeholder": "ex. https://linkedin.com/in/tamudatathon"}
             ),
             "personal_website_link": forms.TextInput(
-                attrs={"placeholder": "ex. tamudatathon.com"}
+                attrs={"placeholder": "ex. https://tamudatathon.com"}
             ),
             "instagram_link": forms.TextInput(
-                attrs={"placeholder": "ex. instagram.com/tamudatathon"}
+                attrs={"placeholder": "ex. https://instagram.com/tamudatathon"}
             ),
             "devpost_link": forms.TextInput(
-                attrs={"placeholder": "ex. devpost.com/tamudatathon"}
+                attrs={"placeholder": "ex. https://devpost.com/tamudatathon"}
             ),
         }
 
