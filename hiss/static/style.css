@@ -421,12 +421,6 @@ input[type="submit"] {
     height: 50px;
 }
 
-.application p > #id_majors,
-.application p > #id_minors,
-.application p > #id_technology_experience {
-    height: 110px;
-}
-
 .application p > input[type=text],
 .application p > input[type=tel],
 .application p > input[type=number] {
@@ -722,6 +716,10 @@ label {
     font-size: 14px;
 }
 
+.application li {
+    height: auto;
+}
+
 label[for="id_agree_to_mlh_policies"],
 label[for="id_agree_to_privacy"],
 label[for="id_first_generation"],
@@ -742,7 +740,6 @@ label[for="id_is_adult"] {
     margin-top: -30px;
     margin-left: 45px;
 }
-
 
 .rsvp-here {
     position: relative;
