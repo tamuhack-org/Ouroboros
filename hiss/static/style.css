@@ -41,7 +41,7 @@
     /* ---- miscellaneous ----  */
     --reset-container-bkg: var(--main-bkg-color);
     /* the circles that show status */
-    --application-status: var(--simple-darkest-purple);
+    --application-status: #4286f3;
 }
 
 html, body {
