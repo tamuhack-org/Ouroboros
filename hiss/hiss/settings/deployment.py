@@ -39,4 +39,4 @@ DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <connect@tamudatathon.com>"
 MEDIA_ROOT = "/resumes"
 MEDIA_URL = "https://register.tamuhack.com/resumes/"
 
-AUTH_CHECK_URL = "https://galaxy.tamudatathon.now.sh/auth/user"
+AUTH_CHECK_URL = "https://dev.tamudatathon.com/auth/user"
