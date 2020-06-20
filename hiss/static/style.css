@@ -41,7 +41,7 @@
     /* ---- miscellaneous ----  */
     --reset-container-bkg: var(--main-bkg-color);
     /* the circles that show status */
-    --application-status: var(--simple-dark-purple);
+    --application-status: #4286f3;
 }
 
 html, body {
@@ -421,7 +421,9 @@ input[type="submit"] {
     height: 50px;
 }
 
-.application p > input[type=text], .application p > input[type=tel] {
+.application p > input[type=text],
+.application p > input[type=tel],
+.application p > input[type=number] {
     width: 50% !important;
 }
 
@@ -490,7 +492,6 @@ input[type="submit"] {
     -moz-appearance: none;
     appearance: none;
     background-color: var(--simple-white) !important;
-    padding: 100px !important;
     font-size: 14px;
 }
 
@@ -569,12 +570,6 @@ li .point {
 
 #rsvp-form {
     margin-top: 40px;
-}
-
-textarea[name="notes"] {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
 }
 
 ul label {
@@ -699,7 +694,7 @@ label {
     margin-right: 20px;
 }
 
-#id_race, #id_dietary_restrictions {
+#id_race {
     margin-top: -10px;
     margin-bottom: 20px;
 }
@@ -709,7 +704,7 @@ label {
     width: 100%;
 }
 
-#id_race li, #id_dietary_restrictions li {
+#id_race li {
     margin-bottom: 10px;
 }
 
@@ -721,29 +716,36 @@ label {
     font-size: 14px;
 }
 
-label[for="id_agree_to_coc"],
-label[for="id_is_adult"],
-label[for="id_travel_reimbursement"], 
-#id_travel_reimbursement ~ .helptext  {
+.application li,
+.select2-dropdown li  {
+    height: auto;
+}
+
+.indented-input {
+    padding-left: 30px;
+    border-left: solid 2px grey;
+}
+
+label[for="id_agree_to_mlh_policies"],
+label[for="id_agree_to_privacy"],
+label[for="id_first_generation"],
+label[for="id_is_adult"] {
     margin-left: 45px;
 }
 
-label[for=id_is_adult] {
-    margin-top: -20px;
-}
-
-#id_agree_to_coc,
-#id_is_adult,
-#id_travel_reimbursement {
+#id_agree_to_mlh_policies,
+#id_agree_to_privacy,
+#id_first_generation,
+#id_is_adult {
     top: -30px;
 }
 
 #id_is_adult ~ .helptext,
-#id_travel_reimbursement ~ .helptext  {
+#id_agree_to_mlh_policies ~ .helptext,
+#id_agree_to_privacy ~ .helptext  {
     margin-top: -30px;
     margin-left: 45px;
 }
-
 
 .rsvp-here {
     position: relative;
@@ -758,14 +760,6 @@ button {
 
 .application textarea {
     height: 70px;
-}
-
-.application textarea[name="notes"] {
-    margin-bottom: 35px;
-}
-
-.application form > p:nth-child(21), #id_notes {
-    margin-bottom: 0px !important;
 }
 
 .secondary {
@@ -810,15 +804,9 @@ button {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.application p > label[for="id_extra_links"]::after,
-.application p > label[for="id_additional_accommodations"]::after,
-.application p > label[for="id_notes"]::after {
+.application p > label[for="id_extra_links"]::after {
     content: " " !important;
     clear: both;
-}
-
-.application p > #id_notes {
-    margin-bottom: 30px !important;
 }
 
 .application p > label[for="id_adult"], 
@@ -961,7 +949,8 @@ button {
         font-size: 1.2rem;
     }
     .application p > input[type=text], 
-    .application p > input[type=tel] {
+    .application p > input[type=tel],
+    .application p > input[type=number] {
         width: 100% !important;
     }
 
@@ -1040,14 +1029,11 @@ button {
     }
 }
 
-@media only screen and (max-width: 422px ) {
-    #id_travel_reimbursement {
-        top: -53px;
-    }
-}
-
 @media only screen and (max-width: 390px ) {
-    #id_agree_to_coc {
+    #id_agree_to_mlh_policies,
+    #id_agree_to_privacy,
+    #id_is_adult,
+    #id_first_generation {
         top: -53px;
     }
 }

@@ -31,17 +31,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # Email Configuration Global Settings
 ANYMAIL = {
     "MAILGUN_API_KEY": os.getenv("MAILGUN_API_KEY"),
-    "MAILGUN_SENDER_DOMAIN": "mg.tamuhack.com",
+    "MAILGUN_SENDER_DOMAIN": "tamudatathon.com",
 }
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <connect@tamudatathon.com>"
 
-# Static Files URL
-STATIC_URL = "https://register.tamuhack.com/public/"
-
 MEDIA_ROOT = "/resumes"
 MEDIA_URL = "https://register.tamuhack.com/resumes/"
 
-AUTH_CHECK_URL = "https://galaxy.tamudatathon.now.sh/auth/user"
+AUTH_CHECK_URL = "https://dev.tamudatathon.com/auth/user"
 
 URL_ORIGIN = "https://dev.tamudatathon.com"
