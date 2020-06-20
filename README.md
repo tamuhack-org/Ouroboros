@@ -36,7 +36,9 @@ exit # In the container, moving to the host
 Now that you're on the host machine, just run the following:
 
 ```shell script
+docker-compose run web python3 manage.py makemigrations # Only if you modified models.py or forms.py
 docker-compose run web python3 manage.py migrate --run-syncdb
+docker-compose exec web python3 manage.py loaddata application/fixtures/schools.json
 docker-compose run web python3 manage.py createsuperuser # Enter details for an admin user to access the admin panel.
 ```
 
