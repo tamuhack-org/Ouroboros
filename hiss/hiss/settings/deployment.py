@@ -40,3 +40,5 @@ MEDIA_ROOT = "/resumes"
 MEDIA_URL = "https://register.tamuhack.com/resumes/"
 
 AUTH_CHECK_URL = "https://dev.tamudatathon.com/auth/user"
+
+URL_ORIGIN = "https://dev.tamudatathon.com"

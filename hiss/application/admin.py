@@ -56,6 +56,7 @@ def build_approval_email(
         "first_name": application.first_name,
         "event_name": settings.EVENT_NAME,
         "confirmation_deadline": confirmation_deadline,
+        "registration_url": settings.URL_ORIGIN,
     }
     html_message = render_to_string("application/emails/approved.html", context)
     message = strip_tags(html_message)
