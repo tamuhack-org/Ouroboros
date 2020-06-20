@@ -37,6 +37,8 @@ class ApplicationAdminForm(forms.ModelForm):
             "gender": forms.RadioSelect,
             "classification": forms.RadioSelect,
             "grad_year": forms.RadioSelect,
+            "learner": forms.RadioSelect,
+            "first_generation": forms.RadioSelect,
             "status": forms.RadioSelect,
         }
 
@@ -129,7 +131,8 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
             "school",
             "classification",
             "grad_year",
-            "major",
+            "majors",
+            "minors",
         ]
     )
     for instance in queryset:
@@ -142,7 +145,8 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
                 instance.school,
                 instance.classification,
                 instance.grad_year,
-                instance.major,
+                instance.majors,
+                instance.minors,
             ]
         )
 
@@ -179,17 +183,33 @@ class ApplicationAdmin(admin.ModelAdmin):
         "user",
         "is_adult",
         "gender",
+        "age",
         "race",
-        "major",
+        "majors",
+        "minors",
         "school",
         "classification",
         "grad_year",
         "num_hackathons_attended",
+        "technology_experience",
+        "datascience_experience",
+        "referral",
+        "learner",
+        "volunteer",
+        "first_generation",
+        "physical_location",
         "extra_links",
+        "github_link",
+        "linkedin_link",
+        "personal_website_link",
+        "instagram_link",
+        "devpost_link",
         "question1",
         "question2",
         "question3",
-        "notes",
+        "question4",
+        "question5",
+        "question6",
         "is_a_walk_in",
     ]
     list_filter = (
@@ -198,12 +218,14 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("classification", ChoiceDropdownFilter),
         ("gender", ChoiceDropdownFilter),
         ("grad_year", ChoiceDropdownFilter),
+        ("referral", ChoiceDropdownFilter),
+        ("learner", ChoiceDropdownFilter),
+        ("physical_location", ChoiceDropdownFilter),
         ("num_hackathons_attended", ChoiceDropdownFilter),
+        ("technology_experience", ChoiceDropdownFilter),
+        ("datascience_experience", ChoiceDropdownFilter),
         ("shirt_size", ChoiceDropdownFilter),
-        ("transport_needed", ChoiceDropdownFilter),
-        ("dietary_restrictions", ChoiceDropdownFilter),
         ("datetime_submitted", DateRangeFilter),
-        ("travel_reimbursement", DropdownFilter),
         RaceFilter,
     )
     list_display = (
@@ -214,6 +236,9 @@ class ApplicationAdmin(admin.ModelAdmin):
         "datetime_submitted",
         "classification",
         "grad_year",
+        "learner",
+        "physical_location",
+        "first_generation",
         "status",
     )
     fieldsets = [
@@ -226,9 +251,17 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "first_name",
                     "last_name",
                     "extra_links",
+                    "github_link",
+                    "linkedin_link",
+                    "personal_website_link",
+                    "instagram_link",
+                    "devpost_link",
                     "question1",
                     "question2",
                     "question3",
+                    "question4",
+                    "question5",
+                    "question6",
                     "resume",
                 ]
             },
@@ -239,31 +272,28 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "school",
                     "school_other",
-                    "major",
+                    "majors",
+                    "minors",
                     "classification",
+                    "referral",
+                    "learner",
+                    "volunteer",
+                    "first_generation",
+                    "physical_location",
                     "gender",
                     "gender_other",
+                    "age",
                     "race",
                     "race_other",
                     "grad_year",
                     "num_hackathons_attended",
+                    "technology_experience",
+                    "datascience_experience",
                 ]
             },
         ),
-        (
-            "Logistical Information",
-            {
-                "fields": [
-                    "shirt_size",
-                    "transport_needed",
-                    "travel_reimbursement",
-                    "additional_accommodations",
-                    "dietary_restrictions",
-                ]
-            },
-        ),
+        ("Logistical Information", {"fields": ["shirt_size",]},),
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
-        ("Miscellaneous", {"fields": ["notes"]}),
     ]
     list_per_page = 2000
 

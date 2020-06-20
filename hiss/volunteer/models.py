@@ -1,8 +1,6 @@
 from django.conf import settings
 from django.db import models
 
-from application.models import DIETARY_RESTRICTIONS
-
 BREAKFAST = "B"
 BREAKFAST_2 = "B2"
 LUNCH = "L"
@@ -36,7 +34,6 @@ class Event(models.Model):
 
 class FoodEvent(Event):
     meal = models.CharField(max_length=14, choices=MEAL_CHOICES)
-    restrictions = models.CharField(max_length=14, choices=DIETARY_RESTRICTIONS)
 
 
 class WorkshopEvent(Event):
