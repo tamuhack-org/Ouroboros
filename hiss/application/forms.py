@@ -255,10 +255,38 @@ class ApplicationModelForm(forms.ModelForm):
         ("NumPy", "NumPy"),
         ("Scikit-learn", "Scikit-learn"),
         ("MATLAB", "MATLAB"),
+        ("full_stack", "Full Stack"),
+        ("dev_ops", "Dev Ops"),
+        ("cloud", "Cloud Services (Google Cloud / AWS / Azure)"),
     )
     technology_experience = forms.MultipleChoiceField(
         label="What technologies do you have experience with?",
         choices=TECHNOLOGY_EXPERIENCE,
+        required=False,
+    )
+
+    INDUSTRIES = [
+        ("technology", "Technology"),
+        ("energy", "Energy"),
+        ("consulting", "Consulting"),
+        ("finance", "Finance"),
+        ("transportation", "Transportation"),
+        ("education", "Education"),
+        ("sports", "Sports"),
+        ("healthcare", "Healthcare"),
+        ("aerospace", "Aerospace"),
+        ("insurance", "Insurance"),
+        ("retail", "Retail"),
+        ("public_policy", "Public Policy"),
+        ("other", "Other"),
+    ]
+    question6 = forms.MultipleChoiceField(
+        label="What industry interests you the most?",
+        choices=INDUSTRIES,
+        required=False,
+    )
+    industries_other = forms.CharField(
+        label="If your industry of choice wasn't included in the options above, please elaborate.",
         required=False,
     )
 
@@ -307,6 +335,14 @@ class ApplicationModelForm(forms.ModelForm):
                     "Please fill out this field with the appropriate information."
                 )
                 self.add_error("race_other", msg)
+        industries = self.cleaned_data.get("question6")
+        if industries:
+            industries_other = self.cleaned_data.get("industries_other")
+            if "other" in industries and not industries_other:
+                msg = forms.ValidationError(
+                    "Please fill out this field with the appropriate information."
+                )
+                self.add_error("industries_other", msg)
         return self.cleaned_data
 
     class Meta:
@@ -374,6 +410,7 @@ class ApplicationModelForm(forms.ModelForm):
             "question4",
             "question5",
             "question6",
+            "industries_other",
             "agree_to_mlh_policies",
             "agree_to_privacy",
             "is_adult",

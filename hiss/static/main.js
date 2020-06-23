@@ -52,9 +52,23 @@ $(document).ready(function() {
          }
     });
 
+    if($("#id_question6").val().includes("other")) {
+        $("#id_industries_other").parent().show();
+    } else {
+        $("#id_industries_other").parent().hide();
+    }
+    $('#id_question6').on('change', () => {
+        if($("#id_question6").val().includes("other")) {
+            $("#id_industries_other").parent().show();
+        } else {
+            $("#id_industries_other").parent().hide();
+        }
+    });
+
     // Custom styling for multi-select inputs.
     // Reference: https://select2.org/getting-started/basic-usage.
     $('#id_majors').select2();
     $('#id_minors').select2();
     $('#id_technology_experience').select2();
+    $('#id_question6').select2();
 })

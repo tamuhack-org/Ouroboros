@@ -177,12 +177,12 @@ REFERRAL_LOCATIONS: List[Tuple[str, str]] = [
     ("other", "Other"),
 ]
 
-QUESTION1_TEXT = "What prize do you want to see at TD?"
-QUESTION2_TEXT = "What workshops do you want to see at TD?"
-QUESTION3_TEXT = "Have you taken any data science or CS related classes?"
-QUESTION4_TEXT = "Are you involved in any data science or CS related clubs on campus?"
-QUESTION5_TEXT = "Have you had any data science or CS related jobs/internships?"
-QUESTION6_TEXT = "What industry interests you the most?"
+QUESTION1_TEXT = "What prize(s) do you want to see at TD?"
+QUESTION2_TEXT = "What workshop(s) do you want to see at TD?"
+QUESTION3_TEXT = "Have you taken any data science or machine learning related classes?"
+QUESTION4_TEXT = "Are you involved in any data science or machine learning related clubs on campus?"
+QUESTION5_TEXT = "Have you had any data science or machine learning related jobs/internships?"
+# Question 6 is moved to forms.py
 
 WOMENS_XXS = "WXXS"
 WOMENS_XS = "WXS"
@@ -285,7 +285,10 @@ class Application(models.Model):
     question3 = models.TextField(QUESTION3_TEXT, max_length=500, blank=True)
     question4 = models.TextField(QUESTION4_TEXT, max_length=500, blank=True)
     question5 = models.TextField(QUESTION5_TEXT, max_length=500, blank=True)
-    question6 = models.TextField(QUESTION6_TEXT, max_length=500, blank=True)
+    question6 = models.TextField(max_length=500, blank=True)
+    industries_other = models.CharField(
+        "other-industries", max_length=255, null=True, blank=True
+    )
 
     resume = models.FileField(
         "Upload your resume (PDF only)",
