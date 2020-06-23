@@ -65,6 +65,20 @@ $(document).ready(function() {
         }
     });
 
+
+    if($("#id_physical_location").val() == "other") {
+        $("#id_physical_location_other").parent().show();
+    } else {
+        $("#id_physical_location_other").parent().hide();
+    }
+    $('#id_physical_location').on('change', () => {
+        if($("#id_physical_location").val() == "other") {
+            $("#id_physical_location_other").parent().show();
+        } else {
+            $("#id_physical_location_other").parent().hide();
+        }
+    });
+
     // Custom styling for multi-select inputs.
     // Reference: https://select2.org/getting-started/basic-usage.
     $('#id_majors').select2();

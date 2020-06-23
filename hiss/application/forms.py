@@ -225,10 +225,16 @@ class ApplicationModelForm(forms.ModelForm):
         ("West Virginia", "West Virginia"),
         ("Wisconsin", "Wisconsin"),
         ("Wyoming", "Wyoming"),
+        ("other", "Other"),
     )
     physical_location = forms.ChoiceField(
         label="Where will you be participating from?", choices=STATES
     )
+    physical_location_other = forms.CharField(
+        label="If your location wasn't included in the options above, please elaborate.",
+        required=False,
+    )
+
     DATASCIENCE_EXPERIENCE = (
         ("", "---------"),
         ("0", "None"),
@@ -327,6 +333,7 @@ class ApplicationModelForm(forms.ModelForm):
                     'Please fill out this field or choose "Prefer not to answer".'
                 )
                 self.add_error("gender_other", msg)
+                
         races = self.cleaned_data.get("race")
         if races:
             race_other = self.cleaned_data.get("race_other")
@@ -335,6 +342,7 @@ class ApplicationModelForm(forms.ModelForm):
                     "Please fill out this field with the appropriate information."
                 )
                 self.add_error("race_other", msg)
+
         industries = self.cleaned_data.get("question6")
         if industries:
             industries_other = self.cleaned_data.get("industries_other")
@@ -343,6 +351,15 @@ class ApplicationModelForm(forms.ModelForm):
                     "Please fill out this field with the appropriate information."
                 )
                 self.add_error("industries_other", msg)
+
+        location = self.cleaned_data.get("physical_location")
+        if location:
+            location_other = self.cleaned_data.get("physical_location_other")
+            if location == "other" and not location_other:
+                msg = forms.ValidationError(
+                    "Please fill out this field with the appropriate information."
+                )
+                self.add_error("physical_location_other", msg)
         return self.cleaned_data
 
     class Meta:
@@ -390,6 +407,7 @@ class ApplicationModelForm(forms.ModelForm):
             "school_other",
             "first_generation",
             "physical_location",
+            "physical_location_other",
             "majors",
             "minors",
             "classification",

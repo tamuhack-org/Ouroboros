@@ -395,6 +395,9 @@ class Application(models.Model):
     physical_location = models.CharField(
         "Where will you be participating from?", max_length=20
     )
+    physical_location_other = models.CharField(
+        "other-physical-location", max_length=20, null=True, blank=True
+    )
 
     # CONFIRMATION DEADLINE
     confirmation_deadline = models.DateTimeField(null=True, blank=True)
