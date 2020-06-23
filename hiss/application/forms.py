@@ -6,6 +6,8 @@ from application.models import School
 
 
 class ApplicationModelForm(forms.ModelForm):
+    required_css_class = 'required-form-input'
+
     gender_other = forms.CharField(
         label='If you chose "Prefer to self-describe", please elaborate.',
         required=False,
@@ -15,7 +17,7 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
     school = forms.ModelChoiceField(
-        School.objects.all(), label="What school do you go to?",
+        School.objects.all(), label="What school do you go to?"
     )
     school_other = forms.CharField(
         label='If you chose "Other", please enter your school\'s name here.',
@@ -255,7 +257,6 @@ class ApplicationModelForm(forms.ModelForm):
         ("Pytorch", "Pytorch"),
         ("R", "R"),
         ("SQL", "SQL"),
-        ("PyTorch", "PyTorch"),
         ("Keras", "Keras"),
         ("Pandas", "Pandas"),
         ("NumPy", "NumPy"),
