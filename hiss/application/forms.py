@@ -333,7 +333,7 @@ class ApplicationModelForm(forms.ModelForm):
                     'Please fill out this field or choose "Prefer not to answer".'
                 )
                 self.add_error("gender_other", msg)
-                
+
         races = self.cleaned_data.get("race")
         if races:
             race_other = self.cleaned_data.get("race_other")

@@ -180,8 +180,12 @@ REFERRAL_LOCATIONS: List[Tuple[str, str]] = [
 QUESTION1_TEXT = "What prize(s) do you want to see at TD?"
 QUESTION2_TEXT = "What workshop(s) do you want to see at TD?"
 QUESTION3_TEXT = "Have you taken any data science or machine learning related classes?"
-QUESTION4_TEXT = "Are you involved in any data science or machine learning related clubs on campus?"
-QUESTION5_TEXT = "Have you had any data science or machine learning related jobs/internships?"
+QUESTION4_TEXT = (
+    "Are you involved in any data science or machine learning related clubs on campus?"
+)
+QUESTION5_TEXT = (
+    "Have you had any data science or machine learning related jobs/internships?"
+)
 # Question 6 is moved to forms.py
 
 WOMENS_XXS = "WXXS"
