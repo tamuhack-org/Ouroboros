@@ -48,11 +48,6 @@ html, body {
     overflow-x: hidden;
 }
 
-.inner-container {
-    left: 50%;
-    transform: translateX(-50%);
-}
-
 /* target anchor colors */
 a {
     color: var(--simple-dark-purple);
@@ -64,44 +59,37 @@ a:hover {
     text-decoration: underline;
 }
 
+.navbar-span {
+    display: inline-flex;
+    align-items: center;
+	width: 90px;
+}
+
+.navbar-logo {
+  max-width: 40px;
+}
+
 .nav-bg {
     -webkit-box-shadow: 0 4px 3px -3px var(--grey);
     -moz-box-shadow: 0 4px 3px -3px var(--grey);
     box-shadow: 0 4px 3px -3px var(--grey);
-    font-family: sans-serif;
-    text-transform: uppercase;
     background-color: var(--simple-white);
-    padding: 10px 0;
+    padding: 10px 20px;
 }
 
 .navbar .nav-item {
-    display: inline;
-    margin-left: 40px;
-    margin-right: 20px;
+    margin: 10px 15px;
     color: var(--navitem-color);
-    white-space: nowrap;
+}
+
+.logout-link {
+	min-width: 60px;
 }
 
 .navbar .nav-item:hover {
     color: var(--navitem-hover-active);
     text-decoration: none;
     transition: 0.3s;
-}
-
-.navbar .nav-item .active {
-    color: var(--navitem-hover-active);
-    border-bottom: 1px solid var(--navitem-hover-active);
-}
-
-.navbar .nav-right{
-    float: right;
-    text-align: right;
-    white-space: nowrap;
-    margin-left: auto;
-}
-
-.navbar img {
-    max-width: 40px;
 }
 
 #logo_bar {
@@ -402,7 +390,6 @@ input[type="submit"] {
 }
 
 .application h5 {
-    text-transform: uppercase;
     margin-bottom: 3px !important;
     font-weight: 400 !important;
     letter-spacing: 1px;
