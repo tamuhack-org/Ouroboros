@@ -1,43 +1,48 @@
-{% extends 'base.html' %} {% load static %}
-
-{% block body %}
+{% extends 'base.html' %} {% load static %} {% block body %}
 <section class="dashboard">
-    <div class="nav-bg">
-        <div class="container">
-            <div class="row" style="background-color: white">
-                <div class="justify-content-center col-xl-10 col-md-12 inner-container">
-                    <nav class="navbar navbar-expand-lg navbar-light" role="navigation">
-                        <img src="{% static 'main.png' %}"></a>
-                        <button class="navbar-toggler ml-auto hidden-sm-up float-xs-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <a class="nav-item" href="{% url 'status' %}">Status</span></a>
-                            {% if user.application_set.exists %}
-                                {% if not user.team %}
-                                    <a class="nav-item" href="{% url 'team:create'  %}">Create Team</a>
-                                    <a class="nav-item" href="{% url 'team:join'  %}">Join Team</a>
-                                {% else %}
-                                    <a class="nav-item" href="{{ user.team.get_absolute_url }}">My Team</a>
-                                {% endif %}
-                            {% endif %}
-                            <a class="nav-item nav-right" href="{% url 'customauth:logout' %}">Log Out</a>
-                        </div>
-                    </nav>
-                </div>
-            </div> 
-        </div>
+  <nav class="navbar navbar-expand-md navbar-light nav-bg" role="navigation">
+    <span class="navbar-span">
+      <button
+        class="navbar-toggler hidden-sm-up float-xs-right"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <img
+        src="{% static 'main.png' %}"
+        class="navbar-logo d-none d-md-block"
+      />
+    </span>
+    <div
+      class="collapse navbar-collapse"
+      id="navbarSupportedContent"
+    >
+      <div class="navbar-nav justify-content-center w-100">
+        <a class="nav-item" href="/">Home</a>
+        <a class="nav-item" href="/events">Events</a>
+        <a class="nav-item" href="/schedule">Schedule</a>
+        <a class="nav-item" href="/challenges">Challenges</a>
+        <a class="nav-item" href="/apply">Apply</a>
+      </div>
+      <a class="nav-item logout-link" href="{% url 'customauth:logout' %}">Logout</a>
     </div>
-    
-    <div class="container">
-        <div class="row">
-            <div class="justify-content-center col-xl-10 col-md-12 pt-4 inner-container">
-                <div>
-                    {% block content %}
-                    {% endblock %}
-                </div>
-            </div>
+  </nav>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div
+        class="col justify-content-center col-xl-10 col-md-12 pt-4 inner-container"
+      >
+        <div>
+          {% block content %} {% endblock %}
         </div>
+      </div>
     </div>
+  </div>
 </section>
 {% endblock %}
