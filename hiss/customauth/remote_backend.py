@@ -39,7 +39,10 @@ class GatekeeperRemoteUserBackend(RemoteUserBackend):
                 user.is_superuser = True
                 # Needed for normal users to access admin interface
                 user.is_staff = True
-                return user.save()
+                user.save()
+            if user_creds["email"] != user.email:
+                user.email = user_creds["email"]
+                user.save()
 
             return user
 
