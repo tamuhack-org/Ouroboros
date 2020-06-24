@@ -370,7 +370,7 @@ class ApplicationModelForm(forms.ModelForm):
             "agree_to_mlh_policies": forms.CheckboxInput,
             "agree_to_privacy": forms.CheckboxInput,
             "first_generation": forms.CheckboxInput,
-            "extra_links": forms.TextInput(
+            "extra_links": forms.Textarea(
                 attrs={
                     "placeholder": "ex. personal projects, organization website, special circumstances, etc."
                 }
