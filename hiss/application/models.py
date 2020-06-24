@@ -272,9 +272,9 @@ class Application(models.Model):
     last_name = models.CharField(
         max_length=100, blank=False, null=False, verbose_name="last name"
     )
-    extra_links = models.CharField(
+    extra_links = models.TextField(
         "Is there anything else you'd like us to look at while considering your application?",
-        max_length=300,
+        max_length=500,
         blank=True,
     )
     question1 = models.TextField(QUESTION1_TEXT, max_length=500, blank=True)
