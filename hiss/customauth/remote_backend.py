@@ -2,7 +2,8 @@ from django.contrib.auth.backends import RemoteUserBackend
 from user.models import User
 from django.conf import settings
 from http.cookies import SimpleCookie
-import logging, requests
+import logging
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -31,11 +32,25 @@ class GatekeeperRemoteUserBackend(RemoteUserBackend):
                 raise Exception("Unauthorized")
             user_creds = auth_check_req.json()
 
-            return User.objects.get(auth_id=user_creds["authId"])
+            user = User.objects.get(auth_id=user_creds["authId"])
+
+            if user_creds["isAdmin"] and (not user.is_superuser or not user.is_staff):
+                # Needed for users to change things in the admin interface.
+                user.is_superuser = True
+                # Needed for normal users to access admin interface
+                user.is_staff = True
+                return user.save()
+
+            return user
 
         except User.DoesNotExist:
             new_user = User.objects.create_user(
-                email=user_creds["email"], password="", auth_id=user_creds["authId"]
+                email=user_creds["email"],
+                password="",
+                auth_id=user_creds["authId"],
+                is_superuser=user_creds["isAdmin"],
+                is_staff=user_creds["isAdmin"],
+                is_active=True,
             )
             new_user.save()
             return new_user
