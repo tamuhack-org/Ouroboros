@@ -111,7 +111,7 @@ USE_L10N = True
 USE_TZ = True
 
 MEDIA_ROOT = "resumes/"
-MEDIA_URL = "/resumes/"
+MEDIA_URL = "/" + BASE_PATHNAME + "resumes/"
 MAX_UPLOAD_SIZE = "10485760"
 
 # See https://docs.djangoproject.com/en/1.11/ref/settings/#data-upload-max-number-fields. Important for exporting
