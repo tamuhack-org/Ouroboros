@@ -179,13 +179,13 @@ REFERRAL_LOCATIONS: List[Tuple[str, str]] = [
 
 QUESTION1_TEXT = "What prize(s) do you want to see at TD?"
 QUESTION2_TEXT = "What workshop(s) do you want to see at TD?"
-QUESTION3_TEXT = "What data science or machine learning related classes have you taken, if any?"
+QUESTION3_TEXT = (
+    "What data science or machine learning related classes have you taken, if any?"
+)
 QUESTION4_TEXT = (
     "Are you involved in any data science or machine learning related clubs on campus?"
 )
-QUESTION5_TEXT = (
-    "What data science or machine learning related jobs/internships have you had, if any?"
-)
+QUESTION5_TEXT = "What data science or machine learning related jobs/internships have you had, if any?"
 # Question 6 is moved to forms.py
 
 WOMENS_XXS = "WXXS"
@@ -292,7 +292,8 @@ class Application(models.Model):
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         upload_to=uuid_generator,
-        null=True, blank=True
+        null=True,
+        blank=True,
     )
     github_link = models.URLField("Your GitHub", max_length=255, blank=True, null=True)
     linkedin_link = models.URLField(
@@ -343,12 +344,6 @@ class Application(models.Model):
         choices=REFERRAL_LOCATIONS,
         max_length=10,
     )
-    learner = models.BooleanField(
-        "Would you like to apply to the learner track?",
-        choices=TRUE_FALSE_CHOICES,
-        default=False,
-        help_text="Learners will recieve priority access to learner classes, be assigned a dedicated mentor, and have access to learner specific challenges / prizes.",
-    )
     volunteer = models.BooleanField(
         "Would you be interested in mentoring for part of the event?",
         choices=TRUE_FALSE_CHOICES,
@@ -388,7 +383,10 @@ class Application(models.Model):
 
     # LOGISTICAL INFO
     shirt_size = models.CharField(
-        "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
+        "What size shirt do you wear?",
+        choices=SHIRT_SIZES,
+        max_length=4,
+        help_text="Being an online event, we cannot promise everyone a t-shirt. However, we’ll try our best to get them to you.",
     )
     physical_location = models.CharField(
         "Where will you be participating from?", max_length=20

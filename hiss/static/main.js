@@ -1,6 +1,6 @@
 $(document).ready(function() {
     const optionalQuestionsNode = 
-        `<h6 style="color:#4286f3; padding: 2em 0em 1em 0em;">
+        `<h6 style="color:#4286f3; padding: 1em 0em 1em 0em;">
             The following questions are optional. Scroll down to submit your application, or continue to help us improve the event!
         </h6>`;
     // Insert header after shirt_size question.
@@ -78,6 +78,13 @@ $(document).ready(function() {
             $("#id_physical_location_other").parent().hide();
         }
     });
+
+    // Check for any django-based validation errors and show alert near submit button.
+    if($(".errorlist").length > 0) {
+        $(".form-incomplete-alert").show();
+    } else {
+        $(".form-incomplete-alert").hide();
+    }
 
     // Custom styling for multi-select inputs.
     // Reference: https://select2.org/getting-started/basic-usage.

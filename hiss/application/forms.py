@@ -6,7 +6,7 @@ from application.models import School
 
 
 class ApplicationModelForm(forms.ModelForm):
-    required_css_class = 'required-form-input'
+    required_css_class = "required-form-input"
 
     gender_other = forms.CharField(
         label='If you chose "Prefer to self-describe", please elaborate.',
@@ -402,7 +402,6 @@ class ApplicationModelForm(forms.ModelForm):
             "devpost_link",
             "resume",
             "referral",
-            "learner",
             "volunteer",
             "school",
             "school_other",
