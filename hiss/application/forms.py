@@ -420,7 +420,6 @@ class ApplicationModelForm(forms.ModelForm):
             "num_hackathons_attended",
             "technology_experience",
             "datascience_experience",
-            "shirt_size",
             "extra_links",
             "prize_suggestions",
             "workshop_suggestions",

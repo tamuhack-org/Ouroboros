@@ -382,12 +382,6 @@ class Application(models.Model):
     )
 
     # LOGISTICAL INFO
-    shirt_size = models.CharField(
-        "What size shirt do you wear?",
-        choices=SHIRT_SIZES,
-        max_length=4,
-        help_text="Being an online event, we cannot promise everyone a t-shirt. However, we’ll try our best to get them to you.",
-    )
     physical_location = models.CharField(
         "Where will you be participating from?", max_length=20
     )

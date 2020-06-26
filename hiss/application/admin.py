@@ -222,7 +222,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("num_hackathons_attended", ChoiceDropdownFilter),
         ("technology_experience", ChoiceDropdownFilter),
         ("datascience_experience", ChoiceDropdownFilter),
-        ("shirt_size", ChoiceDropdownFilter),
         ("datetime_submitted", DateRangeFilter),
         RaceFilter,
     )
@@ -290,7 +289,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                 ]
             },
         ),
-        ("Logistical Information", {"fields": ["shirt_size",]},),
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
     ]
     list_per_page = 2000

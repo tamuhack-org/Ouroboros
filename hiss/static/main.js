@@ -4,7 +4,7 @@ $(document).ready(function() {
             The following questions are optional. Scroll down to submit your application, or continue to help us improve the event!
         </h6>`;
     // Insert header after shirt_size question.
-    $("#id_shirt_size").parent().append(optionalQuestionsNode);
+    $("#id_datascience_experience").parent().append(optionalQuestionsNode);
 
     const linksHeaderNode = `<h6 style="color: #000; padding: 2em 0em 1em 0em;">Do you have any of the following links to give us?</h6>`;
     // Insert header after last_name question.
