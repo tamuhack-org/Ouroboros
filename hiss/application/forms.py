@@ -287,8 +287,8 @@ class ApplicationModelForm(forms.ModelForm):
         ("public_policy", "Public Policy"),
         ("other", "Other"),
     ]
-    question6 = forms.MultipleChoiceField(
-        label="What industry interests you the most?",
+    interesting_industries = forms.MultipleChoiceField(
+        label="What industries interest you the most?",
         choices=INDUSTRIES,
         required=False,
     )
@@ -344,7 +344,7 @@ class ApplicationModelForm(forms.ModelForm):
                 )
                 self.add_error("race_other", msg)
 
-        industries = self.cleaned_data.get("question6")
+        industries = self.cleaned_data.get("interesting_industries")
         if industries:
             industries_other = self.cleaned_data.get("industries_other")
             if "other" in industries and not industries_other:
@@ -422,12 +422,12 @@ class ApplicationModelForm(forms.ModelForm):
             "datascience_experience",
             "shirt_size",
             "extra_links",
-            "question1",
-            "question2",
-            "question3",
-            "question4",
-            "question5",
-            "question6",
+            "prize_suggestions",
+            "workshop_suggestions",
+            "ds_ml_classes",
+            "ds_ml_clubs",
+            "ds_ml_jobs",
+            "interesting_industries",
             "industries_other",
             "agree_to_mlh_policies",
             "agree_to_privacy",

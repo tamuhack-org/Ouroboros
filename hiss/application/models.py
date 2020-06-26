@@ -177,15 +177,15 @@ REFERRAL_LOCATIONS: List[Tuple[str, str]] = [
     ("other", "Other"),
 ]
 
-QUESTION1_TEXT = "What prize(s) do you want to see at TD?"
-QUESTION2_TEXT = "What workshop(s) do you want to see at TD?"
-QUESTION3_TEXT = (
+PRIZE_SUGGESTION_QTEXT = "What prize(s) do you want to see at TD?"
+WORKSHOPS_SUGGESTION_QTEXT = "What workshop(s) do you want to see at TD?"
+DS_ML_CLASSES_QTEXT = (
     "What data science or machine learning related classes have you taken, if any?"
 )
-QUESTION4_TEXT = (
+DS_ML_CLUBS_QTEXT = (
     "Are you involved in any data science or machine learning related clubs on campus?"
 )
-QUESTION5_TEXT = "What data science or machine learning related jobs/internships have you had, if any?"
+DS_ML_JOBS_QTEXT = "What data science or machine learning related jobs/internships have you had, if any?"
 # Question 6 is moved to forms.py
 
 WOMENS_XXS = "WXXS"
@@ -277,12 +277,12 @@ class Application(models.Model):
         max_length=500,
         blank=True,
     )
-    question1 = models.TextField(QUESTION1_TEXT, max_length=500, blank=True)
-    question2 = models.TextField(QUESTION2_TEXT, max_length=500, blank=True)
-    question3 = models.TextField(QUESTION3_TEXT, max_length=500, blank=True)
-    question4 = models.TextField(QUESTION4_TEXT, max_length=500, blank=True)
-    question5 = models.TextField(QUESTION5_TEXT, max_length=500, blank=True)
-    question6 = models.TextField(max_length=500, blank=True)
+    prize_suggestions = models.TextField(PRIZE_SUGGESTION_QTEXT, max_length=500, blank=True)
+    workshop_suggestions = models.TextField(WORKSHOPS_SUGGESTION_QTEXT, max_length=500, blank=True)
+    ds_ml_classes = models.TextField(DS_ML_CLASSES_QTEXT, max_length=500, blank=True)
+    ds_ml_clubs = models.TextField(DS_ML_CLUBS_QTEXT, max_length=500, blank=True)
+    ds_ml_jobs = models.TextField(DS_ML_JOBS_QTEXT, max_length=500, blank=True)
+    interesting_industries = models.TextField(max_length=500, blank=True)
     industries_other = models.CharField(
         "other-industries", max_length=255, null=True, blank=True
     )

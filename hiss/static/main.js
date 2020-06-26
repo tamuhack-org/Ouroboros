@@ -52,13 +52,13 @@ $(document).ready(function() {
          }
     });
 
-    if($("#id_question6").val().includes("other")) {
+    if($("#id_interesting_industries").val().includes("other")) {
         $("#id_industries_other").parent().show();
     } else {
         $("#id_industries_other").parent().hide();
     }
-    $('#id_question6').on('change', () => {
-        if($("#id_question6").val().includes("other")) {
+    $('#id_interesting_industries').on('change', () => {
+        if($("#id_interesting_industries").val().includes("other")) {
             $("#id_industries_other").parent().show();
         } else {
             $("#id_industries_other").parent().hide();
@@ -91,5 +91,5 @@ $(document).ready(function() {
     $('#id_majors').select2();
     $('#id_minors').select2();
     $('#id_technology_experience').select2();
-    $('#id_question6').select2();
+    $('#id_interesting_industries').select2();
 })
