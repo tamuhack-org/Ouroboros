@@ -36,9 +36,6 @@ ANYMAIL = {
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <connect@tamudatathon.com>"
 
-MEDIA_ROOT = "/resumes"
-MEDIA_URL = "https://register.tamuhack.com/resumes/"
-
 AUTH_CHECK_URL = "https://dev.tamudatathon.com/auth/user"
 
 URL_ORIGIN = "https://dev.tamudatathon.com"
