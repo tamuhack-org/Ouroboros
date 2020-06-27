@@ -6,6 +6,8 @@ from application.models import School
 
 
 class ApplicationModelForm(forms.ModelForm):
+    required_css_class = "required-form-input"
+
     gender_other = forms.CharField(
         label='If you chose "Prefer to self-describe", please elaborate.',
         required=False,
@@ -15,7 +17,7 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
     school = forms.ModelChoiceField(
-        School.objects.all(), label="What school do you go to?",
+        School.objects.all(), label="What school do you go to?"
     )
     school_other = forms.CharField(
         label='If you chose "Other", please enter your school\'s name here.',
@@ -225,10 +227,16 @@ class ApplicationModelForm(forms.ModelForm):
         ("West Virginia", "West Virginia"),
         ("Wisconsin", "Wisconsin"),
         ("Wyoming", "Wyoming"),
+        ("other", "Other"),
     )
     physical_location = forms.ChoiceField(
         label="Where will you be participating from?", choices=STATES
     )
+    physical_location_other = forms.CharField(
+        label="If your location wasn't included in the options above, please elaborate.",
+        required=False,
+    )
+
     DATASCIENCE_EXPERIENCE = (
         ("", "---------"),
         ("0", "None"),
@@ -249,16 +257,43 @@ class ApplicationModelForm(forms.ModelForm):
         ("Pytorch", "Pytorch"),
         ("R", "R"),
         ("SQL", "SQL"),
-        ("PyTorch", "PyTorch"),
         ("Keras", "Keras"),
         ("Pandas", "Pandas"),
         ("NumPy", "NumPy"),
         ("Scikit-learn", "Scikit-learn"),
         ("MATLAB", "MATLAB"),
+        ("full_stack", "Full Stack"),
+        ("dev_ops", "Dev Ops"),
+        ("cloud", "Cloud Services (Google Cloud / AWS / Azure)"),
     )
     technology_experience = forms.MultipleChoiceField(
         label="What technologies do you have experience with?",
         choices=TECHNOLOGY_EXPERIENCE,
+        required=False,
+    )
+
+    INDUSTRIES = [
+        ("technology", "Technology"),
+        ("energy", "Energy"),
+        ("consulting", "Consulting"),
+        ("finance", "Finance"),
+        ("transportation", "Transportation"),
+        ("education", "Education"),
+        ("sports", "Sports"),
+        ("healthcare", "Healthcare"),
+        ("aerospace", "Aerospace"),
+        ("insurance", "Insurance"),
+        ("retail", "Retail"),
+        ("public_policy", "Public Policy"),
+        ("other", "Other"),
+    ]
+    interesting_industries = forms.MultipleChoiceField(
+        label="What industries interest you the most?",
+        choices=INDUSTRIES,
+        required=False,
+    )
+    industries_other = forms.CharField(
+        label="If your industry of choice wasn't included in the options above, please elaborate.",
         required=False,
     )
 
@@ -299,6 +334,7 @@ class ApplicationModelForm(forms.ModelForm):
                     'Please fill out this field or choose "Prefer not to answer".'
                 )
                 self.add_error("gender_other", msg)
+
         races = self.cleaned_data.get("race")
         if races:
             race_other = self.cleaned_data.get("race_other")
@@ -307,6 +343,24 @@ class ApplicationModelForm(forms.ModelForm):
                     "Please fill out this field with the appropriate information."
                 )
                 self.add_error("race_other", msg)
+
+        industries = self.cleaned_data.get("interesting_industries")
+        if industries:
+            industries_other = self.cleaned_data.get("industries_other")
+            if "other" in industries and not industries_other:
+                msg = forms.ValidationError(
+                    "Please fill out this field with the appropriate information."
+                )
+                self.add_error("industries_other", msg)
+
+        location = self.cleaned_data.get("physical_location")
+        if location:
+            location_other = self.cleaned_data.get("physical_location_other")
+            if location == "other" and not location_other:
+                msg = forms.ValidationError(
+                    "Please fill out this field with the appropriate information."
+                )
+                self.add_error("physical_location_other", msg)
         return self.cleaned_data
 
     class Meta:
@@ -316,7 +370,7 @@ class ApplicationModelForm(forms.ModelForm):
             "agree_to_mlh_policies": forms.CheckboxInput,
             "agree_to_privacy": forms.CheckboxInput,
             "first_generation": forms.CheckboxInput,
-            "extra_links": forms.TextInput(
+            "extra_links": forms.Textarea(
                 attrs={
                     "placeholder": "ex. personal projects, organization website, special circumstances, etc."
                 }
@@ -348,12 +402,12 @@ class ApplicationModelForm(forms.ModelForm):
             "devpost_link",
             "resume",
             "referral",
-            "learner",
             "volunteer",
             "school",
             "school_other",
             "first_generation",
             "physical_location",
+            "physical_location_other",
             "majors",
             "minors",
             "classification",
@@ -366,14 +420,14 @@ class ApplicationModelForm(forms.ModelForm):
             "num_hackathons_attended",
             "technology_experience",
             "datascience_experience",
-            "shirt_size",
             "extra_links",
-            "question1",
-            "question2",
-            "question3",
-            "question4",
-            "question5",
-            "question6",
+            "prize_suggestions",
+            "workshop_suggestions",
+            "ds_ml_classes",
+            "ds_ml_clubs",
+            "ds_ml_jobs",
+            "interesting_industries",
+            "industries_other",
             "agree_to_mlh_policies",
             "agree_to_privacy",
             "is_adult",

@@ -177,12 +177,16 @@ REFERRAL_LOCATIONS: List[Tuple[str, str]] = [
     ("other", "Other"),
 ]
 
-QUESTION1_TEXT = "What prize do you want to see at TD?"
-QUESTION2_TEXT = "What workshops do you want to see at TD?"
-QUESTION3_TEXT = "Have you taken any data science or CS related classes?"
-QUESTION4_TEXT = "Are you involved in any data science or CS related clubs on campus?"
-QUESTION5_TEXT = "Have you had any data science or CS related jobs/internships?"
-QUESTION6_TEXT = "What industry interests you the most?"
+PRIZE_SUGGESTION_QTEXT = "What prize(s) do you want to see at TD?"
+WORKSHOPS_SUGGESTION_QTEXT = "What workshop(s) do you want to see at TD?"
+DS_ML_CLASSES_QTEXT = (
+    "What data science or machine learning related classes have you taken, if any?"
+)
+DS_ML_CLUBS_QTEXT = (
+    "Are you involved in any data science or machine learning related clubs on campus?"
+)
+DS_ML_JOBS_QTEXT = "What data science or machine learning related jobs/internships have you had, if any?"
+# Question 6 is moved to forms.py
 
 WOMENS_XXS = "WXXS"
 WOMENS_XS = "WXS"
@@ -200,13 +204,6 @@ UNISEX_XL = "XL"
 UNISEX_XXL = "XXL"
 
 SHIRT_SIZES = [
-    (WOMENS_XXS, "Women's XXS"),
-    (WOMENS_XS, "Women's XS"),
-    (WOMENS_S, "Women's S"),
-    (WOMENS_M, "Women's M"),
-    (WOMENS_L, "Women's L"),
-    (WOMENS_XL, "Women's XL"),
-    (WOMENS_XXL, "Women's XXL"),
     (UNISEX_XXS, "Unisex XXS"),
     (UNISEX_XS, "Unisex XS"),
     (UNISEX_S, "Unisex S"),
@@ -275,23 +272,28 @@ class Application(models.Model):
     last_name = models.CharField(
         max_length=100, blank=False, null=False, verbose_name="last name"
     )
-    extra_links = models.CharField(
+    extra_links = models.TextField(
         "Is there anything else you'd like us to look at while considering your application?",
-        max_length=300,
+        max_length=500,
         blank=True,
     )
-    question1 = models.TextField(QUESTION1_TEXT, max_length=500, blank=True)
-    question2 = models.TextField(QUESTION2_TEXT, max_length=500, blank=True)
-    question3 = models.TextField(QUESTION3_TEXT, max_length=500, blank=True)
-    question4 = models.TextField(QUESTION4_TEXT, max_length=500, blank=True)
-    question5 = models.TextField(QUESTION5_TEXT, max_length=500, blank=True)
-    question6 = models.TextField(QUESTION6_TEXT, max_length=500, blank=True)
+    prize_suggestions = models.TextField(PRIZE_SUGGESTION_QTEXT, max_length=500, blank=True)
+    workshop_suggestions = models.TextField(WORKSHOPS_SUGGESTION_QTEXT, max_length=500, blank=True)
+    ds_ml_classes = models.TextField(DS_ML_CLASSES_QTEXT, max_length=500, blank=True)
+    ds_ml_clubs = models.TextField(DS_ML_CLUBS_QTEXT, max_length=500, blank=True)
+    ds_ml_jobs = models.TextField(DS_ML_JOBS_QTEXT, max_length=500, blank=True)
+    interesting_industries = models.TextField(max_length=500, blank=True)
+    industries_other = models.CharField(
+        "other-industries", max_length=255, null=True, blank=True
+    )
 
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         upload_to=uuid_generator,
+        null=True,
+        blank=True,
     )
     github_link = models.URLField("Your GitHub", max_length=255, blank=True, null=True)
     linkedin_link = models.URLField(
@@ -342,14 +344,8 @@ class Application(models.Model):
         choices=REFERRAL_LOCATIONS,
         max_length=10,
     )
-    learner = models.BooleanField(
-        "Would you like to apply to the learner track?",
-        choices=TRUE_FALSE_CHOICES,
-        default=False,
-        help_text="Learners will recieve priority access to learner classes, be assigned a dedicated mentor, and have access to learner specific challenges / prizes.",
-    )
     volunteer = models.BooleanField(
-        "Would you be interested in volunteering / mentoring for part of the event?",
+        "Would you be interested in mentoring for part of the event?",
         choices=TRUE_FALSE_CHOICES,
         default=False,
     )
@@ -386,11 +382,11 @@ class Application(models.Model):
     )
 
     # LOGISTICAL INFO
-    shirt_size = models.CharField(
-        "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
-    )
     physical_location = models.CharField(
         "Where will you be participating from?", max_length=20
+    )
+    physical_location_other = models.CharField(
+        "other-physical-location", max_length=20, null=True, blank=True
     )
 
     # CONFIRMATION DEADLINE

@@ -195,6 +195,10 @@ input[type="submit"] {
     border: 0px solid var(--simple-white) !important;
 }
 
+.alert.form-incomplete-alert {
+    display: none;
+}
+
 .sign_up label {
     display: none;
 }
@@ -679,6 +683,11 @@ label {
     -moz-osx-font-smoothing: grayscale;
     cursor: pointer;
     margin-right: 20px;
+}
+
+label.required-form-input:after {
+    content: " * ";
+    color: red;
 }
 
 #id_race {
