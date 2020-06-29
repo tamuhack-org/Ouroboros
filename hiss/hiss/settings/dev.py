@@ -27,3 +27,5 @@ MEDIA_ROOT = "resumes"
 AUTH_CHECK_URL = "http://proxy:8080/auth/user"
 
 URL_ORIGIN = "http://localhost:8080"
+
+AWS_S3_KEY_PREFIX = "dev_resumes"

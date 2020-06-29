@@ -13,6 +13,9 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
 from multiselectfield import MultiSelectField
+from django_s3_storage.storage import S3Storage
+
+s3_storage = S3Storage()
 
 
 class WaveManager(models.Manager):
@@ -277,8 +280,12 @@ class Application(models.Model):
         max_length=500,
         blank=True,
     )
-    prize_suggestions = models.TextField(PRIZE_SUGGESTION_QTEXT, max_length=500, blank=True)
-    workshop_suggestions = models.TextField(WORKSHOPS_SUGGESTION_QTEXT, max_length=500, blank=True)
+    prize_suggestions = models.TextField(
+        PRIZE_SUGGESTION_QTEXT, max_length=500, blank=True
+    )
+    workshop_suggestions = models.TextField(
+        WORKSHOPS_SUGGESTION_QTEXT, max_length=500, blank=True
+    )
     ds_ml_classes = models.TextField(DS_ML_CLASSES_QTEXT, max_length=500, blank=True)
     ds_ml_clubs = models.TextField(DS_ML_CLUBS_QTEXT, max_length=500, blank=True)
     ds_ml_jobs = models.TextField(DS_ML_JOBS_QTEXT, max_length=500, blank=True)
@@ -292,6 +299,7 @@ class Application(models.Model):
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         upload_to=uuid_generator,
+        storage=s3_storage,
         null=True,
         blank=True,
     )

@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
 from django.urls import reverse_lazy
 import dj_database_url
 
@@ -61,6 +60,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "django_s3_storage",
 ]
 
 MIDDLEWARE = [
@@ -124,6 +124,12 @@ LOGIN_URL = reverse_lazy("customauth:login")
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+AWS_REGION = "us-east-1"
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_S3_BUCKET_NAME = "2020-obos-media"
+AWS_S3_KEY_PREFIX = "resumes"
+
 STATIC_URL = "/" + BASE_PATHNAME + "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
 STATIC_ROOT = "public/"
@@ -139,7 +145,6 @@ CORS_ORIGIN_WHITELIST = [
     "https://tamuhack-org.github.io",
 ]
 
-
 CORS_URLS_REGEX = r"^/api/.*$"
 
-AUTH_JWT_SECRET = os.getenv("AUTH_JWT_SECRET")
+AUTH_JWT_SECRET = os.environ.get("AUTH_JWT_SECRET")

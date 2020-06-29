@@ -13,5 +13,7 @@ services:
       DATABASE_URL: postgres://postgres:dev_password@db:5432/hiss
       MAILGUN_API_KEY: "YOUR_MAILGUN_API_KEY"
       SECRET_KEY: "SOME_SECRET_STRING"
+      AWS_ACCESS_KEY_ID: "YOUR_AWS_KEY"
+      AWS_SECRET_ACCESS_KEY: "YOUR_AWS_SECRET"
     expose:
       - 8000
