@@ -1,11 +1,13 @@
 from django import forms
 from django.utils.safestring import mark_safe
+import ast
 
 from application import models as application_models, models
 from application.models import School
 
 
 class ApplicationModelForm(forms.ModelForm):
+
     required_css_class = "required-form-input"
 
     gender_other = forms.CharField(
@@ -298,6 +300,19 @@ class ApplicationModelForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
+        # Any overrides to the 'initial' values of the fields need to occur before calling super.
+        if kwargs.get("instance"):
+            kwargs["initial"] = {
+                "majors": ast.literal_eval(kwargs.get("instance").majors or "[]"),
+                "minors": ast.literal_eval(kwargs.get("instance").minors or "[]"),
+                "technology_experience": ast.literal_eval(
+                    kwargs.get("instance").technology_experience or "[]"
+                ),
+                "interesting_industries": ast.literal_eval(
+                    kwargs.get("instance").interesting_industries or "[]"
+                ),
+            }
+
         super().__init__(*args, **kwargs)
         self.fields["agree_to_mlh_policies"].label = mark_safe(
             'I have read and agree to the <a target="_blank" href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a> and the <a target="_blank" href="https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md">MLH Contest Terms and Conditions</a>.'
@@ -376,19 +391,19 @@ class ApplicationModelForm(forms.ModelForm):
                 }
             ),
             "github_link": forms.TextInput(
-                attrs={"placeholder": "ex. https://github.com/tamu-datathon-org"}
+                attrs={"placeholder": "ex. github.com/tamu-datathon-org"}
             ),
             "linkedin_link": forms.TextInput(
-                attrs={"placeholder": "ex. https://linkedin.com/in/tamudatathon"}
+                attrs={"placeholder": "ex. linkedin.com/in/tamudatathon"}
             ),
             "personal_website_link": forms.TextInput(
-                attrs={"placeholder": "ex. https://tamudatathon.com"}
+                attrs={"placeholder": "ex. tamudatathon.com"}
             ),
             "instagram_link": forms.TextInput(
-                attrs={"placeholder": "ex. https://instagram.com/tamudatathon"}
+                attrs={"placeholder": "ex. instagram.com/tamudatathon"}
             ),
             "devpost_link": forms.TextInput(
-                attrs={"placeholder": "ex. https://devpost.com/tamudatathon"}
+                attrs={"placeholder": "ex. devpost.com/tamudatathon"}
             ),
         }
 
