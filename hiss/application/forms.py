@@ -50,6 +50,7 @@ class ApplicationModelForm(forms.ModelForm):
         ("Biology", "Biology"),
         ("Biomedical Engineering", "Biomedical Engineering"),
         ("Biomedical Sciences", "Biomedical Sciences"),
+        ("Business", "Business"),
         ("Business Law", "Business Law"),
         ("Chemical Engineering", "Chemical Engineering"),
         ("Chemistry", "Chemistry"),
