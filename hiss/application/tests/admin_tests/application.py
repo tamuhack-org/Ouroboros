@@ -84,13 +84,13 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         self.app.refresh_from_db()
         self.assertEqual(self.app.status, STATUS_REJECTED)
 
-    def test_export_application_emails(self):
+    def test_export_applicant_data(self):
         self.client.force_login(self.admin)
         change_url = reverse_lazy("admin:application_application_changelist")
         response = self.client.post(
             change_url,
             {
-                "action": "export_application_emails",
+                "action": "export_applicant_data",
                 admin.ACTION_CHECKBOX_NAME: [self.app.pk],
             },
             follow=True,

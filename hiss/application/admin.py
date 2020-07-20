@@ -115,38 +115,96 @@ def resend_confirmation(_modeladmin, _request: HttpRequest, queryset: QuerySet) 
         send_confirmation_email(application)
 
 
-def export_application_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
+def export_applicant_data(_modeladmin, _request: HttpRequest, queryset: QuerySet):
     """
-    Exports the emails related to the selected `Application`s to a CSV file
+    Exports all data related to the selected `Application`s to a CSV file
     """
     response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = 'attachment; filename="emails.csv"'
+    response["Content-Disposition"] = 'attachment; filename="applicant_data.csv"'
 
     writer = csv.writer(response)
     writer.writerow(
         [
+            "date_submitted",
+            "application_status",
             "first_name",
             "last_name",
             "email",
             "school",
-            "classification",
-            "grad_year",
+            "other_school",
             "majors",
             "minors",
+            "classification",
+            "gender",
+            "gender_other",
+            "age",
+            "race",
+            "race_other",
+            "physical_location",
+            "physical_location_other",
+            "referral",
+            "volunteer",
+            "first_generation",
+            "datascience_experience",
+            "technology_experience",
+            "grad_year",
+            "num_hackathons_attended",
+            "extra_links",
+            "prize_suggestions",
+            "workshop_suggestions",
+            "relavent_classes",
+            "relavent_clubs",
+            "relavent_careers",
+            "relavent_industries",
+            "other_industries",
+            "github_link",
+            "linkedin_link",
+            "personal_website_link",
+            "instagram_link",
+            "devpost_link",
         ]
     )
     for instance in queryset:
         instance: Application = instance
         writer.writerow(
             [
+                instance.datetime_submitted,
+                instance.status,
                 instance.first_name,
                 instance.last_name,
                 instance.user.email,
                 instance.school,
-                instance.classification,
-                instance.grad_year,
+                instance.school_other,
                 instance.majors,
                 instance.minors,
+                instance.classification,
+                instance.gender,
+                instance.gender_other,
+                instance.age,
+                instance.race,
+                instance.race_other,
+                instance.physical_location,
+                instance.physical_location_other,
+                instance.referral,
+                instance.volunteer,
+                instance.first_generation,
+                instance.datascience_experience,
+                instance.technology_experience,
+                instance.grad_year,
+                instance.num_hackathons_attended,
+                instance.extra_links,
+                instance.prize_suggestions,
+                instance.workshop_suggestions,
+                instance.ds_ml_classes,
+                instance.ds_ml_clubs,
+                instance.ds_ml_jobs,
+                instance.interesting_industries,
+                instance.industries_other,
+                instance.github_link,
+                instance.linkedin_link,
+                instance.personal_website_link,
+                instance.instagram_link,
+                instance.devpost_link,
             ]
         )
 
@@ -295,14 +353,14 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"
-    export_application_emails.short_description = (
-        "Export Emails for Selected Applications"
+    export_applicant_data.short_description = (
+        "Export Data for Selected Applicants"
     )
     resend_confirmation.short_description = (
         "Resend Confirmation to Selected Applications"
     )
 
-    actions = [approve, reject, export_application_emails, resend_confirmation]
+    actions = [approve, reject, export_applicant_data, resend_confirmation]
 
     def has_add_permission(self, request):
         return True
