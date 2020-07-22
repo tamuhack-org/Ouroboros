@@ -353,9 +353,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"
-    export_applicant_data.short_description = (
-        "Export Data for Selected Applicants"
-    )
+    export_applicant_data.short_description = "Export Data for Selected Applicants"
     resend_confirmation.short_description = (
         "Resend Confirmation to Selected Applications"
     )
