@@ -2,13 +2,15 @@ from django import views
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
 from django.db.models import QuerySet
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
+from django.conf import settings
 
 from application.emails import send_confirmation_email, send_creation_email
 from application.forms import ApplicationModelForm
+from application.admin import export_applicant_data
 from application.models import (
     Application,
     Wave,
@@ -120,3 +122,19 @@ class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
         app.status = STATUS_DECLINED
         app.save()
         return redirect(reverse_lazy("status"))
+
+
+class GetApplicationsCsvView(views.View):
+    """
+    Responds with a CSV of all applications and their information.
+    NOTE: Request should contain Gatekeeper integration secret.
+    """
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        if (
+            "HTTP_GATEKEEPER_INTEGRATION" not in request.META
+            or request.META["HTTP_GATEKEEPER_INTEGRATION"]
+            != settings.GATEKEEPER_INTEGRATION_SECRET
+        ):
+            return HttpResponse("Invalid Gatekeeper Integration Secret", status=400)
+        return export_applicant_data(None, request, Application.objects.all())
