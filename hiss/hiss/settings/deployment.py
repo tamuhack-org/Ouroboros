@@ -37,7 +37,7 @@ EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <hello@tamuhack.com>"
 
 # Static Files URL
-STATIC_URL = "https://register.tamuhack.com/public/"
+STATIC_URL = "https://register.tamuhack.com/staticfiles/"
 
 MEDIA_ROOT = "/resumes"
 MEDIA_URL = "https://register.tamuhack.com/resumes/"
