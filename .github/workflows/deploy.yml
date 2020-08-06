@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - howdy
 
 env:
   HEROKU_APP_NAME: tamuhack-registration
