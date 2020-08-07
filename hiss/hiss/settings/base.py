@@ -51,7 +51,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -112,7 +111,7 @@ LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 
 STATIC_URL = "/" + BASE_PATHNAME + "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = "public/"
 APPEND_SLASH = True
 AUTH_USER_MODEL = "user.User"
 
