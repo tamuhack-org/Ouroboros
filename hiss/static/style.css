@@ -75,7 +75,7 @@ html, body {
 
 
 .signin {
-    background-color: #F9ECEE;
+    background-color: #D8ECFE;
     padding-top: 4em !important;
     padding-bottom: 3em !important;
     height: 100vh;
@@ -94,7 +94,7 @@ html, body {
 }
 
 .reset-container {
-    background-color: #F9ECEE;
+    background-color: #D8ECFE;
 }
 
 .sm {
@@ -103,7 +103,7 @@ html, body {
 }
 
 .sign_up {
-    background-color: #D8ECFE;
+    background-color: #F9ECEE;
     height: 100vh !important;
     margin-bottom: 0;
 }
@@ -296,7 +296,7 @@ input[type="submit"] {
 }
 
 .dashboard {
-    background-color: #F9ECEE;
+    background-color: #D8ECFE;
     min-height: 100vh;
     min-width: 100vw;
     max-width: 100%;
