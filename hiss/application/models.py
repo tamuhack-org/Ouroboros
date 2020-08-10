@@ -9,6 +9,9 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
 from multiselectfield import MultiSelectField
+from django_s3_storage.storage import S3Storage
+
+s3_storage = S3Storage()
 
 
 class WaveManager(models.Manager):
@@ -298,6 +301,7 @@ class Application(models.Model):
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         upload_to=uuid_generator,
+        storage=s3_storage,
     )
 
     # DEMOGRAPHIC INFORMATION

@@ -37,4 +37,3 @@ EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <hello@tamuhack.com>"
 
 MEDIA_ROOT = "/resumes"
-MEDIA_URL = "https://register.tamuhack.com/resumes/"
