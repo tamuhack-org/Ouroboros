@@ -8,7 +8,7 @@ from .customization import *
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ["*"]
 SESSION_COOKIE_SECURE = False
 SECURE_BROWSER_XSS_FILTER = False
@@ -31,7 +31,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Email Configuration Global Settings
 ANYMAIL = {
     "MAILGUN_API_KEY": os.getenv("MAILGUN_API_KEY"),
-    "MAILGUN_SENDER_DOMAIN": "mg.tamuhack.com",
+    "MAILGUN_SENDER_DOMAIN": "mail.tamuhack.com",
 }
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <hello@tamuhack.com>"
