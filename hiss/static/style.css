@@ -103,7 +103,7 @@ html, body {
 }
 
 .sign_up {
-    background-color: #F9ECEE;
+    background-color: #D8ECFE;
     height: 100vh !important;
     margin-bottom: 0;
 }
@@ -141,12 +141,12 @@ input[type="submit"] {
 .sign_up input[type="submit"] {
     margin-top: 30px;
     padding: 15px;
-    background-color: #FF90A4;
+    background-color: #3E678C;
     color: white;
 }
 
 .sign_up input[type="submit"]:hover {
-    background-color: #E86E84;
+    background-color: #4878a4;
     -webkit-transition: all, 0.8%;
     transition: all 0.8%;
     border: 0px solid #fff !important;
