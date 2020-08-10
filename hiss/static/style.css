@@ -141,12 +141,12 @@ input[type="submit"] {
 .sign_up input[type="submit"] {
     margin-top: 30px;
     padding: 15px;
-    background-color: #3E678C;
+    background-color: #FF90A4;
     color: white;
 }
 
 .sign_up input[type="submit"]:hover {
-    background-color: #24405A;
+    background-color: #E86E84;
     -webkit-transition: all, 0.8%;
     transition: all 0.8%;
     border: 0px solid #fff !important;
@@ -235,7 +235,7 @@ input[type="submit"] {
 
 .btn-login {
     border-radius: 3px;
-    background: #FF90A4;
+    background: #3E678C;
     color: #fff;
     -webkit-transition: all, 0.8%;
     transition: all 0.8%;
@@ -246,7 +246,7 @@ input[type="submit"] {
 }
 
 .btn-login:hover {
-    background: #E86E84;
+    background: #4878a4;
 }
 
 .a-btn {
@@ -525,7 +525,7 @@ input[type="radio"] {
     position: relative;
     border: #c5c5c5 solid 1px;
     border-radius: 100px;
-    color: #FF90A4;
+    color: #3E678C;
     top: 10px;
     height: 30px;
     width: 30px;
@@ -539,7 +539,7 @@ input[type="radio"]:checked::after {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background: #FF90A4;
+    background: #3E678C;
     border-radius: 100px;
     content: ' ';
     height: 20px;
@@ -585,7 +585,7 @@ input[type="checkbox"]:checked::before {
 }
 
 input[type="checkbox"]:checked {
-    background-color: #FF90A4;
+    background-color: #3E678C;
 }
 
 input[type="file"] {
