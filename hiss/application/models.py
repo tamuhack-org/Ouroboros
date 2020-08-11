@@ -300,7 +300,10 @@ class Application(models.Model):
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
-        validators=[FileExtensionValidator(allowed_extensions=["pdf"]), FileSizeValidator(max_filesize=2.5)],
+        validators=[
+            FileExtensionValidator(allowed_extensions=["pdf"]),
+            FileSizeValidator(max_filesize=2.5),
+        ],
         upload_to=uuid_generator,
         storage=s3_storage,
     )
