@@ -1,0 +1,40 @@
+  
+on:
+  branches:
+    - master
+  pull-requests: true
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: dev_password
+    port: 5432
+    serve:
+      - ls -la
+    do-not-expose: true
+  proxy:
+    image: nginx
+    port: 8080
+    environment:
+      GATEKEEPER_BASE_PATHNAME: auth
+      GATEKEEPER_HOSTNAME: https://dev.tamudatathon.com  # keep in mind host.docker.internal doesn't work on docker for linux
+
+      OBOS_BASE_PATHNAME: apply
+      OBOS_HOSTNAME: https://web:8000
+
+      PORT: 8080
+    build:
+      - envsubst '$GATEKEEPER_BASE_PATHNAME $GATEKEEPER_HOSTNAME $OBOS_BASE_PATHNAME $OBOS_HOSTNAME $PORT' < routes.conf > /etc/nginx/conf.d/default.conf
+    serve:
+      - nginx -g 'daemon off;'
+  web:
+    image: ./Dockerfile.dev
+    port: 8000
+    environment:
+      PORT: 8000
+      DATABASE_URL: postgres://db:dev_password@db:5432/hiss
+      BASE_PATHNAME: apply
+      SECRET_KEY: "SOME_SECRET_STRING"
+      AWS_ACCESS_KEY_ID: "YOUR_AWS_KEY"
+      AWS_SECRET_ACCESS_KEY: "YOUR_AWS_SECRET"
+      GATEKEEPER_INTEGRATION_SECRET: "SECRET_HERE"
