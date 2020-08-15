@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "django_s3_storage",
 ]
 
 MIDDLEWARE = [
@@ -97,7 +98,7 @@ USE_L10N = True
 USE_TZ = True
 
 MEDIA_ROOT = "resumes/"
-MEDIA_URL = "/resumes/"
+MEDIA_URL = "/" + BASE_PATHNAME + "resumes/"
 MAX_UPLOAD_SIZE = "10485760"
 
 # See https://docs.djangoproject.com/en/1.11/ref/settings/#data-upload-max-number-fields. Important for exporting
@@ -108,6 +109,12 @@ LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+
+AWS_REGION = "us-east-1"
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_S3_BUCKET_NAME = "2020-hh-resumes"
+AWS_S3_KEY_PREFIX = "resumes"
 
 STATIC_URL = "/" + BASE_PATHNAME + "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]

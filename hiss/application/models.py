@@ -10,6 +10,9 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
 from multiselectfield import MultiSelectField
+from django_s3_storage.storage import S3Storage
+
+s3_storage = S3Storage()
 
 
 class WaveManager(models.Manager):
@@ -302,6 +305,7 @@ class Application(models.Model):
             FileSizeValidator(max_filesize=2.5),
         ],
         upload_to=uuid_generator,
+        storage=s3_storage,
     )
 
     # DEMOGRAPHIC INFORMATION
