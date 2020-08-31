@@ -15,7 +15,8 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
     school = forms.ModelChoiceField(
-        School.objects.all(), label="What school do you go to?",
+        School.objects.all(),
+        label="What school do you go to?",
     )
     school_other = forms.CharField(
         label='If you chose "Other", please enter your school\'s name here.',
