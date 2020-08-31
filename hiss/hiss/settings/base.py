@@ -89,7 +89,7 @@ WSGI_APPLICATION = "hiss.wsgi.application"
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "US/Central"
+TIME_ZONE = "America/Chicago"
 
 USE_I18N = True
 
