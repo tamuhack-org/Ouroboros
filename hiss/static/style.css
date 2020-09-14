@@ -21,7 +21,7 @@ html, body {
     display: inline;
     margin-left: 40px;
     margin-right: 20px;
-    color: black;
+    color: #FEB914;
     white-space: nowrap;
 }
 
@@ -75,7 +75,7 @@ html, body {
 
 
 .signin {
-    background-color: #F9ECEE;
+    background-color: #FEA55B;
     padding-top: 4em !important;
     padding-bottom: 3em !important;
     height: 100vh;
@@ -166,7 +166,7 @@ input[type="submit"] {
 }
 
 .header-logo {
-    max-width: 40px;
+    max-width: 80px;
     margin-bottom: 20px;
 }
 
@@ -235,7 +235,7 @@ input[type="submit"] {
 
 .btn-login {
     border-radius: 3px;
-    background: #FF90A4;
+    background: #FE8826;
     color: #fff;
     -webkit-transition: all, 0.8%;
     transition: all 0.8%;
@@ -246,7 +246,7 @@ input[type="submit"] {
 }
 
 .btn-login:hover {
-    background: #E86E84;
+    background: #FD7301;
 }
 
 .a-btn {

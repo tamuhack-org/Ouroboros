@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('gender_other', models.CharField(blank=True, max_length=255, null=True, verbose_name='Self-describe')),
                 ('race', multiselectfield.db.fields.MultiSelectField(choices=[('AI', 'American Indian or Alaskan Native'), ('AS', 'Asian'), ('BL', 'Black or African-American'), ('HI', 'Hispanic or Latino'), ('NH', 'Native Hawaiian or other Pacific Islander'), ('WH', 'White'), ('NA', 'Prefer not to answer'), ('O', 'Prefer to self-describe')], max_length=41, verbose_name='What race(s) do you identify with?')),
                 ('race_other', models.CharField(blank=True, max_length=255, null=True, verbose_name='Self-describe')),
-                ('grad_year', models.IntegerField(choices=[(2020, 2020), (2021, 2021), (2022, 2022), (2023, 2023), (2024, 2024)], verbose_name='What is your anticipated graduation year?')),
+                ('grad_year', models.IntegerField(choices=[(2021, 2021), (2022, 2022), (2023, 2023), (2024, 2024), (2025, 2025)], verbose_name='What is your anticipated graduation year?')),
                 ('num_hackathons_attended', models.CharField(choices=[('0', 'This will be my first!'), ('1-3', '1-3'), ('4-7', '4-7'), ('8-10', '8-10'), ('10+', '10+')], max_length=22, verbose_name='How many hackathons have you attended?')),
                 ('agree_to_coc', models.BooleanField(choices=[(True, 'Agree')], default=None)),
                 ('is_adult', models.BooleanField(choices=[(True, 'Agree')], default=None, help_text='Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas A&M.', verbose_name='Please confirm you are 18 or older.')),
