@@ -21,7 +21,7 @@ html, body {
     display: inline;
     margin-left: 40px;
     margin-right: 20px;
-    color: #FEB914;
+    color: #FEA55B;
     white-space: nowrap;
 }
 
@@ -50,18 +50,6 @@ html, body {
 #logo_bar {
     background-color: white !important;
 }
-
-.register-btn {
-    outline: none !important;
-    border-style: none !important;
-    background-color: #2ebfc7 !important;
-}
-
-.register-btn:hover {
-    background: white !important;
-    color: #2ebfc7 !important;
-}
-
 
 ._content h1 {
     font-family: 'Courier New', Courier, monospace;
@@ -94,7 +82,7 @@ html, body {
 }
 
 .reset-container {
-    background-color: #F9ECEE;
+    background-color: #FEA55B;
 }
 
 .sm {
@@ -103,7 +91,7 @@ html, body {
 }
 
 .sign_up {
-    background-color: #D8ECFE;
+    background-color: #FEA55B;
     height: 100vh !important;
     margin-bottom: 0;
 }
@@ -247,6 +235,22 @@ input[type="submit"] {
 
 .btn-login:hover {
     background: #FD7301;
+}
+
+.btn-register {
+    border-radius: 3px;
+    background: #FE8826 !important;
+    color: #fff;
+    -webkit-transition: all, 0.8%;
+    transition: all 0.8%;
+    border: 0px solid #fff !important;
+    text-transform: uppercase;
+    font-weight: 500 !important;
+    letter-spacing: 1px;
+}
+
+.btn-register:hover {
+    background: #FD7301 !important;
 }
 
 .a-btn {

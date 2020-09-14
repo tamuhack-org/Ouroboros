@@ -9,7 +9,7 @@
 
                 <header class="text-center">
                     <img class="header-logo" src="{% static 'hacklahoma.svg' %}">
-                    <h1>{{ event_name }} 2020 Application</h1>
+                    <h1>{{ event_name }} 2021 Application</h1>
                 </header>
                 <p>To activate your account, enter your email address and click
                     the activation link in the email you receive.</p>
@@ -17,13 +17,13 @@
                     {% csrf_token %}    <!-- security -->
 
                     {{ form.as_p }}
-                    <input type="submit" value="Resend Verification" class="btn btn-lg btn-block btn-login">
+                    <input type="submit" value="Resend Verification" class="btn btn-lg btn-block btn-register"/>
                 </form>
                 <div class="row login-alt-options pt-4">
                     <div class="col-sm-12 col-lg-12 text-left">
                         If you still have issues accessing your account,
                         please email us at <a
-                            href="mailto:hello@tamuhack.com">hello@tamuhack.com</a>.
+                            href="mailto:team@hacklahoma.org">team@hacklahoma.org</a>.
                     </div>
                 </div>
             </div>

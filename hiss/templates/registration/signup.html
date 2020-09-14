@@ -9,15 +9,14 @@
 
                 <header>
                     <img class="header-logo" src="{% static 'hacklahoma.svg' %}">
-                    <h1>{{ event_name }} 2020 Application</h1>
+                    <h1>{{ event_name }} 2021 Application</h1>
                 </header>
 
                 <form method="POST">
                     {% csrf_token %}    <!-- security -->
 
                     {{form.as_p}}
-                    <input type="submit" value="Register" class="btn btn-lg btn-block btn-login"
-                    >
+                    <input type="submit" value="Register" class="btn btn-lg btn-block btn-register"/>
                 </form>
 
                 <div class="row login-alt-options pt-4">
