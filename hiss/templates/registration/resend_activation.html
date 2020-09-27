@@ -8,7 +8,7 @@
             <div class="col-sm-12 col-md-8 col-lg-6 login-box">
 
                 <header class="text-center">
-                    <img class="header-logo" src="{% static 'hacklahoma_logo.png' %}">
+                    <img class="header-logo" src="{% static 'hacklahoma.svg' %}">
                     <h1>{{ event_name }} 2021 Application</h1>
                 </header>
                 <p>To activate your account, enter your email address and click
@@ -17,7 +17,7 @@
                     {% csrf_token %}    <!-- security -->
 
                     {{ form.as_p }}
-                    <input type="submit" value="Resend Verification" class="btn btn-lg btn-block btn-login">
+                    <input type="submit" value="Resend Verification" class="btn btn-lg btn-block btn-register"/>
                 </form>
                 <div class="row login-alt-options pt-4">
                     <div class="col-sm-12 col-lg-12 text-left">

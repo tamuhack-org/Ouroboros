@@ -165,26 +165,14 @@ GRAD_YEARS: List[Tuple[int, int]] = [
 ]
 
 DRIVING = "D"
-EVENT_PROVIDED_BUS = "B"
-EVENT_PROVIDED_BUS_UT = "BUT"
-EVENT_PROVIDED_BUS_UTD = "BUTD"
-EVENT_PROVIDED_BUS_UTA = "BUTA"
-EVENT_PROVIDED_BUS_UTSA = "BUTSA"
-EVENT_PROVIDED_BUS_UTRGV = "BUTRGV"
-OTHER_BUS = "OB"
+BUS = "OB"
 FLYING = "F"
 PUBLIC_TRANSPORTATION = "P"
 MANUAL_POWER = "M"
 
 TRANSPORT_MODES: List[Tuple[str, str]] = [
     (DRIVING, "Driving"),
-    (EVENT_PROVIDED_BUS, f"{settings.EVENT_NAME} Bus"),
-    (EVENT_PROVIDED_BUS_UT, f"{settings.EVENT_NAME} Bus - UT Austin"),
-    (EVENT_PROVIDED_BUS_UTD, f"{settings.EVENT_NAME} Bus - UT Dallas"),
-    (EVENT_PROVIDED_BUS_UTA, f"{settings.EVENT_NAME} Bus - UT Arlington"),
-    (EVENT_PROVIDED_BUS_UTSA, f"{settings.EVENT_NAME} Bus - UTSA"),
-    (EVENT_PROVIDED_BUS_UTRGV, f"{settings.EVENT_NAME} Bus - UTRGV"),
-    (OTHER_BUS, "Other Bus (Greyhound, Megabus, etc.)"),
+    (BUS, "Bus (Greyhound, Megabus, etc.)"),
     (FLYING, "Flying"),
     (PUBLIC_TRANSPORTATION, "Public Transportation"),
     (MANUAL_POWER, "Walking/Biking"),
