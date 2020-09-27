@@ -30,9 +30,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Email Configuration Global Settings
 ANYMAIL = {
-    "MAILDRILL_API_KEY": os.getenv("MAILDRILL_API_KEY"),
+    "MANDRILL_API_KEY": os.getenv("MANDRILL_API_KEY"),
 }
-EMAIL_BACKEND = "anymail.backends.maildrill.EmailBackend"
+EMAIL_BACKEND = "anymail.backends.mandrill.EmailBackend"
 DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <team@hacklahoma.org>"
 
 MEDIA_ROOT = "/resumes"
