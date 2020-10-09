@@ -4,7 +4,7 @@ name: Push Container to Heroku
 on:
   push:
     branches:
-      - master
+      - main
       - howdy
 
 env:

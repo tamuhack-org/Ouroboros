@@ -1,4 +1,4 @@
-[![codecov](https://codecov.io/gh/tamuhack-org/Ouroboros/branch/master/graph/badge.svg)](https://codecov.io/gh/tamuhack-org/Ouroboros)
+[![codecov](https://codecov.io/gh/tamuhack-org/Ouroboros/branch/main/graph/badge.svg)](https://codecov.io/gh/tamuhack-org/Ouroboros)
 
 
 ![TAMUhack](/resources/img/TAMUhack.png)
