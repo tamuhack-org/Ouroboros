@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: verify access key (not sensitive)
+        run: echo $AWS_ACCESS_KEY_ID
       - name: Build the stack
         run: docker-compose run web python3 manage.py test
   coverage:
