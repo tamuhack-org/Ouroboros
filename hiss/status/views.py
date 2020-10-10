@@ -1,8 +1,9 @@
+from django.conf import settings
 from django.contrib.auth import mixins
 from django.views import generic
 
 from application import models as application_models
-from application.models import Wave, Application
+from application.models import Application, Wave
 from user.models import User
 
 
@@ -11,6 +12,7 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["organizer_email"] = settings.ORGANIZER_EMAIL
         user: User = self.request.user
 
         active_wave = Wave.objects.active_wave()
