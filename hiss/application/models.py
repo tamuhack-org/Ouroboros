@@ -1,16 +1,17 @@
 # pylint: disable=C0330
 import uuid
-from typing import Optional, List, Tuple
+from typing import List, Optional, Tuple
 
 from django.conf import settings
 from django.core import exceptions
 from django.core.validators import FileExtensionValidator
-from application.filesize_validation import FileSizeValidator
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
-from multiselectfield import MultiSelectField
 from django_s3_storage.storage import S3Storage
+from multiselectfield import MultiSelectField
+
+from application.filesize_validation import FileSizeValidator
 
 s3_storage = S3Storage()
 
@@ -391,7 +392,7 @@ class Application(models.Model):
         if not self.is_adult:
             raise exceptions.ValidationError(
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
-                "us at highschool@tamuhack.com. "
+                f"us at {settings.ORGANIZER_EMAIL}. "
             )
         if not self.first_name.isalpha():
             raise exceptions.ValidationError("First name can only contain letters.")
