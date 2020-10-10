@@ -58,3 +58,12 @@ To use it, simply replace the values in `docker-compose.prod.yml` with the value
 ```shell script
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 ```
+
+# Contributing
+
+Install [Poetry](https://python-poetry.org/docs/#installation). Once installed, navigate to the root of the project and run the following:
+```
+poetry install
+poetry run autohooks activate
+```
+This enables pre-commit hooks to make sure your code is formatted prooperly, so you won't get blocked in a PR.
