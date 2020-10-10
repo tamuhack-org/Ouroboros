@@ -68,6 +68,6 @@ poetry run autohooks activate
 This enables pre-commit hooks to make sure your code is formatted prooperly, so you won't get blocked in a PR.
 
 
-### Brough to you by
+## Brought to you by
 
 ![TAMUhack](/resources/img/TAMUhack.png)
