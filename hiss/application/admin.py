@@ -5,26 +5,26 @@ from typing import List, Tuple
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.admin.filters import RelatedOnlyFieldListFilter
 from django.db import transaction
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import strip_tags
-from django.contrib.admin.filters import RelatedOnlyFieldListFilter
 from django_admin_listfilter_dropdown.filters import (
-    DropdownFilter,
     ChoiceDropdownFilter,
+    DropdownFilter,
 )
 from rangefilter.filter import DateRangeFilter
 
 from application.emails import send_confirmation_email
 from application.models import (
-    Application,
-    Wave,
+    RACES,
     STATUS_ADMITTED,
     STATUS_REJECTED,
-    RACES,
+    Application,
+    Wave,
 )
 from shared.admin_functions import send_mass_html_mail
 
@@ -54,6 +54,7 @@ def build_approval_email(
         "first_name": application.first_name,
         "event_name": settings.EVENT_NAME,
         "confirmation_deadline": confirmation_deadline,
+        "organizer_email": settings.ORGANIZER_EMAIL,
     }
     html_message = render_to_string("application/emails/approved.html", context)
     message = strip_tags(html_message)
@@ -67,7 +68,11 @@ def build_rejection_email(application: Application) -> Tuple[str, str, None, Lis
     """
     subject = f"Regarding your {settings.EVENT_NAME} application"
 
-    context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME}
+    context = {
+        "first_name": application.first_name,
+        "event_name": settings.EVENT_NAME,
+        "organizer_email": settings.ORGANIZER_EMAIL,
+    }
     html_message = render_to_string("application/emails/rejected.html", context)
     message = strip_tags(html_message)
     return subject, message, html_message, None, [application.user.email]
