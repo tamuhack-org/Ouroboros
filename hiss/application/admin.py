@@ -11,6 +11,7 @@ from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import strip_tags
+from django.contrib.admin.filters import RelatedOnlyFieldListFilter
 from django_admin_listfilter_dropdown.filters import (
     DropdownFilter,
     ChoiceDropdownFilter,
@@ -180,6 +181,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "gender",
         "race",
         "major",
+        "school",
         "classification",
         "grad_year",
         "num_hackathons_attended",
@@ -190,19 +192,8 @@ class ApplicationAdmin(admin.ModelAdmin):
         "notes",
         "is_a_walk_in",
     ]
-    list_display = (
-        "first_name",
-        "last_name",
-        "datetime_submitted",
-        "school",
-        "major",
-        "classification",
-        "grad_year",
-        "travel_reimbursement",
-        "transport_needed",
-        "status",
-    )
     list_filter = (
+        ("school", RelatedOnlyFieldListFilter),
         ("status", ChoiceDropdownFilter),
         ("classification", ChoiceDropdownFilter),
         ("gender", ChoiceDropdownFilter),
@@ -218,6 +209,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_display = (
         "first_name",
         "last_name",
+        "school",
         "user_email",
         "datetime_submitted",
         "classification",
@@ -246,6 +238,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             {
                 "fields": [
                     "school",
+                    "school_other",
                     "major",
                     "classification",
                     "gender",

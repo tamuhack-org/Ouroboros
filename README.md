@@ -1,22 +1,69 @@
-# Hiss
+[![codecov](https://codecov.io/gh/tamuhack-org/Ouroboros/branch/main/graph/badge.svg)](https://codecov.io/gh/tamuhack-org/Ouroboros)
 
-An open-source, hackathon registration system.
 
-## Questions
+![TAMUhack](/resources/img/TAMUhack.png)
+# :snake: Hiss
 
-If you have questions, we might've answered them already on the wiki! Check it out.
+An open-source, hackathon registration system. :school:
 
-## Running Locally
+## :question: Questions
 
-For local development, this application is self-contained (it uses a SQLite table). Just follow the steps below!
+If you have questions, we might've answered them already on the [wiki](https://github.com/tamuhack-org/Ouroboros/wiki)! Check it out.
 
-1. Create a virtualenv for Python 3.6 (`python3 -m venv env`)
-2. `source env/bin/activate`
-2. `cd hiss`
-3. `pip install -r requirements.txt`
-4. `python3 manage.py makemigrations application customauth user`
-5. `python3 manage.py migrate --run-syncdb`
-6. `python3 manage.py seeddb <NUM_USERS_WHO_CREATED_AN_ACCOUNT> <NUM_USERS_WHO_APPLIED> <NUM_USERS_WE'VE_ALREADY_ACCEPTED>`
-6. `python3 manage.py createsuperuser`
-7. `python3 manage.py runserver`
+## :computer: Running Locally
 
+### Local Development
+
+For local development, we highly encourage using [Docker Compose](https://docs.docker.com/compose/).
+
+After Docker Compose is installed, there are just a few steps left for first-time setup:
+
+```shell script
+docker-compose up -d
+docker-compose exec db su postgres # Currently on host, moving into container
+psql # Currently in container, moving into PostgreSQL prompt 
+```
+Now that you're in the PostgreSQL prompt, just run
+
+```sql
+CREATE DATABASE hiss;
+```
+
+This will create the database for you, and you're done with setup!
+
+```shell script
+exit # In the PostgreSQL prompt, moving to container
+exit # In the container, moving to the host
+```
+
+Now that you're on the host machine, just run the following:
+
+```shell script
+docker-compose run web python3 manage.py makemigrations # Only if you modified models.py or forms.py
+docker-compose run web python3 manage.py migrate --run-syncdb
+docker-compose exec web python3 manage.py loaddata application/fixtures/schools.json # Loads in schools for school dropdown in application
+docker-compose run web python3 manage.py createsuperuser # Enter details for an admin user to access the admin panel.
+```
+
+You're all set! Just run `docker-compose up` and you're good to go!
+
+### Mimic Production
+
+To mimic a real production environment, a `docker-compose.prod.yml` file has been included in the repository for you to use.
+
+This file is set up on the assumption that you are using [Mailgun](https://mailgun.com) as your team's email provider.
+
+To use it, simply replace the values in `docker-compose.prod.yml` with the values you need, and run
+
+```shell script
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+```
+
+# Contributing
+
+Install [Poetry](https://python-poetry.org/docs/#installation). Once installed, navigate to the root of the project and run the following:
+```
+poetry install
+poetry run autohooks activate
+```
+This enables pre-commit hooks to make sure your code is formatted prooperly, so you won't get blocked in a PR.

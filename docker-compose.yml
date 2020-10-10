@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - /tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: dev_password
+    ports:
+     - "5432:5432"
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./hiss:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      PORT: 8000
+      DATABASE_URL: postgres://postgres:dev_password@db:5432/hiss
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+    expose:
+      - 8000

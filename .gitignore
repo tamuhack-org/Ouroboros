@@ -1,3 +1,16 @@
+# Dev Environments
+.idea
+.DS_Store
+.vscode
+*.iml
+
+# Code Coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
 # Resume Directories
 **/test_resume_dir
 **/resumes

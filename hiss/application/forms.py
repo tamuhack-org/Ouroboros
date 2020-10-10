@@ -2,6 +2,7 @@ from django import forms
 from django.utils.safestring import mark_safe
 
 from application import models as application_models, models
+from application.models import School
 
 
 class ApplicationModelForm(forms.ModelForm):
@@ -11,6 +12,14 @@ class ApplicationModelForm(forms.ModelForm):
     )
     race_other = forms.CharField(
         label='If you chose "Prefer to self-describe", please elaborate.',
+        required=False,
+    )
+    school = forms.ModelChoiceField(
+        School.objects.all(),
+        label="What school do you go to?",
+    )
+    school_other = forms.CharField(
+        label='If you chose "Other", please enter your school\'s name here.',
         required=False,
     )
 
@@ -72,6 +81,7 @@ class ApplicationModelForm(forms.ModelForm):
             "first_name",
             "last_name",
             "school",
+            "school_other",
             "major",
             "classification",
             "grad_year",
@@ -81,9 +91,6 @@ class ApplicationModelForm(forms.ModelForm):
             "race_other",
             "num_hackathons_attended",
             "shirt_size",
-            "dietary_restrictions",
-            "transport_needed",
-            "travel_reimbursement",
             "resume",
             "extra_links",
             "question1",

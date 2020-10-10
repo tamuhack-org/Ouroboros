@@ -13,9 +13,19 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 from django.urls import reverse_lazy
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Base Pathname for Obos (when not being hosted at root)
+BASE_PATHNAME = (
+    os.environ.get("BASE_PATHNAME") if os.environ.get("BASE_PATHNAME") else ""
+)
+BASE_PATHNAME_REGEX = BASE_PATHNAME + r"/$"
+
+if len(BASE_PATHNAME) > 0:
+    BASE_PATHNAME += "/"
 
 # Application definition
 INSTALLED_APPS = [
@@ -38,10 +48,12 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "django_s3_storage",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -77,7 +89,7 @@ WSGI_APPLICATION = "hiss.wsgi.application"
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "US/Central"
+TIME_ZONE = "America/Chicago"
 
 USE_I18N = True
 
@@ -86,7 +98,7 @@ USE_L10N = True
 USE_TZ = True
 
 MEDIA_ROOT = "resumes/"
-MEDIA_URL = "/resumes/"
+MEDIA_URL = "/" + BASE_PATHNAME + "resumes/"
 MAX_UPLOAD_SIZE = "10485760"
 
 # See https://docs.djangoproject.com/en/1.11/ref/settings/#data-upload-max-number-fields. Important for exporting
@@ -98,17 +110,25 @@ LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = "/static/"
+AWS_REGION = "us-east-2"
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_S3_BUCKET_NAME = "2021-th-resumes"
+AWS_S3_KEY_PREFIX = "dev"
+
+STATIC_URL = "/" + BASE_PATHNAME + "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
 STATIC_ROOT = "public/"
 APPEND_SLASH = True
 AUTH_USER_MODEL = "user.User"
 
-# TODO(SaltyQuetzals): Remove http://localhost:3000 for day-of
+# Database
+# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
+
 CORS_ORIGIN_WHITELIST = [
     "https://volunteer.tamuhack.com",
     "https://tamuhack-org.github.io",
-    "http://localhost:3000",
 ]
 
 

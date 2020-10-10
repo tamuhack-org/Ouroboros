@@ -4,3 +4,4 @@ from .create_food_event import *
 from .create_workshop_event import *
 from .search import *
 from .user_summary import *
+from .list_dietary_restrictions import *

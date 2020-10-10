@@ -7,7 +7,7 @@ from rest_framework import status, response, permissions, authentication
 from rest_framework.authtoken import views
 from rest_framework.request import Request
 
-from application.models import Application, STATUS_CHECKED_IN
+from application.models import Application, STATUS_CHECKED_IN, DietaryRestriction
 from volunteer.models import (
     FoodEvent,
     WorkshopEvent,
@@ -63,6 +63,27 @@ class CheckinHackerView(views.APIView):
         return response.Response(status=status.HTTP_200_OK)
 
 
+class ListDietaryRestrictionsView(views.APIView):
+    """
+    Lists all of the available DietaryRestrictions
+    """
+
+    permission_classes = [
+        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
+    ]
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def get(self, request: Request):
+        return JsonResponse(
+            {
+                "dietary_restrictions": [
+                    {"id": r.pk, "name": r.name}
+                    for r in DietaryRestriction.objects.all()
+                ]
+            }
+        )
+
+
 class CreateFoodEventView(views.APIView):
     permission_classes = [
         permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
@@ -94,9 +115,9 @@ class CreateFoodEventView(views.APIView):
                 status=status.HTTP_412_PRECONDITION_FAILED,
             )
 
-        FoodEvent.objects.create(
-            user=application.user, meal=meal, restrictions=restrictions
-        )
+        food_event = FoodEvent.objects.create(user=application.user, meal=meal)
+        food_event.restrictions.set(restrictions)
+        food_event.save()
         return response.Response(status=status.HTTP_200_OK)
 
 
@@ -190,6 +211,8 @@ class UserSummaryView(views.APIView):
                 "num_workshops": workshop_events.count(),
                 "checked_in": checked_in,
                 "status": application.status,
-                "restrictions": application.dietary_restrictions,
+                "restrictions": [
+                    r.name for r in application.dietary_restrictions.all()
+                ],
             }
         )

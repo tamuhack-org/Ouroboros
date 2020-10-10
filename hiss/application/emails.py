@@ -45,7 +45,7 @@ def send_confirmation_email(app: Application) -> None:
             "first_name": app.first_name,
             "last_name": app.last_name,
             "email": app.user.email,
-            "university": app.school,
+            "university": app.school.name,
         }
     )
     qr_code = pyqrcode.create(qr_content)
