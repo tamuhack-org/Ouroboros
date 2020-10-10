@@ -1,7 +1,3 @@
-[tool.autohooks]
-mode = "poetry"
-pre-commit = ["autohooks.plugins.black", "autohooks.plugins.pylint", "autohooks.plugins.isort"]
-
 [tool.poetry]
 name = "hiss"
 version = "0.1.0"
@@ -10,7 +6,7 @@ authors = ["Gabriel Britain", "Cameron Brill <tamuhack@cameronbrill.me>", "Adil 
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7"
 
 [tool.poetry.dev-dependencies]
 autohooks = "^2.2.0"
@@ -21,6 +17,31 @@ autohooks-plugin-isort = "^1.0.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+# Pre-commit hooks
+[tool.autohooks]
+mode = "poetry"
+pre-commit = ["autohooks.plugins.black", "autohooks.plugins.pylint", "autohooks.plugins.isort"]
+
+[tool.autohooks.plugins.pylint]
+arguments = ["--exit-zero", "--rcfile=./hiss/.pylintrc", "application", "rsvp", "shared", "status", "user", "volunteer"]
+
+[tool.black]
+exclude = '''
+/(
+   \.git
+  | \.hg
+  | \.venv
+  | \.circleci
+  | \.github
+  | \.vscode
+  | _build
+  | build
+  | dist
+  | docs
+  | \./*/migrations
+)/
+'''
 
 [tool.isort]
 multi_line_output = 3
