@@ -1,7 +1,6 @@
 [![codecov](https://codecov.io/gh/tamuhack-org/Ouroboros/branch/main/graph/badge.svg)](https://codecov.io/gh/tamuhack-org/Ouroboros)
 
 
-![TAMUhack](/resources/img/TAMUhack.png)
 # :snake: Hiss
 
 An open-source, hackathon registration system. :school:
@@ -67,3 +66,8 @@ poetry install
 poetry run autohooks activate
 ```
 This enables pre-commit hooks to make sure your code is formatted prooperly, so you won't get blocked in a PR.
+
+
+### Brough to you by
+
+![TAMUhack](/resources/img/TAMUhack.png)
