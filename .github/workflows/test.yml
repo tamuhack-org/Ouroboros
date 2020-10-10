@@ -2,6 +2,12 @@ name: Test Application
 
 on: [push]
 
+env:
+  MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
 jobs:
   django-tests:
     name: 'Run unit tests'

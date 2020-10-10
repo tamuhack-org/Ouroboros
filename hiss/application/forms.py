@@ -15,7 +15,8 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
     school = forms.ModelChoiceField(
-        School.objects.all(), label="What school do you go to?",
+        School.objects.all(),
+        label="What school do you go to?",
     )
     school_other = forms.CharField(
         label='If you chose "Other", please enter your school\'s name here.',
@@ -90,9 +91,6 @@ class ApplicationModelForm(forms.ModelForm):
             "race_other",
             "num_hackathons_attended",
             "shirt_size",
-            "dietary_restrictions",
-            "transport_needed",
-            "travel_reimbursement",
             "resume",
             "extra_links",
             "question1",
