@@ -67,7 +67,7 @@ mode = "poetry"
 pre-commit = ["autohooks.plugins.black", "autohooks.plugins.pylint", "autohooks.plugins.isort"]
 
 [tool.autohooks.plugins.pylint]
-arguments = ["--exit-zero", "--rcfile=./hiss/.pylintrc", "application", "rsvp", "shared", "status", "user", "volunteer"]
+arguments = ["--exit-zero", "--rcfile=./hiss/.pylintrc"]
 
 [tool.black]
 exclude = '''

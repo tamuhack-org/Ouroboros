@@ -34,6 +34,6 @@ ANYMAIL = {
     "MAILGUN_SENDER_DOMAIN": "mail.tamuhack.com",
 }
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <hello@tamuhack.com>"
+DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <{ORGANIZER_EMAIL}>"
 
 MEDIA_ROOT = "/resumes"

@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 
 from application.admin import build_approval_email, build_rejection_email
-from application.models import Application, STATUS_REJECTED, STATUS_ADMITTED
+from application.models import STATUS_ADMITTED, STATUS_REJECTED, Application
 from shared import test_case
 
 
@@ -21,6 +21,12 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         with self.settings(EVENT_NAME=event_name):
             subject, *_ = build_approval_email(self.app, timezone.now())
             self.assertIn(event_name, subject)
+
+    def test_approval_email_customizes_organizer_email(self):
+        organizer_email = "BESTHACKATHON@BALLER.COM"
+        with self.settings(ORGANIZER_EMAIL=organizer_email):
+            _, message, *_ = build_approval_email(self.app, timezone.now())
+            self.assertIn(organizer_email, message)
 
     def test_approval_email_customizes_user_first_name(self):
         _, message, *_ = build_approval_email(self.app, timezone.now())
