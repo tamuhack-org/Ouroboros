@@ -30,10 +30,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Email Configuration Global Settings
 ANYMAIL = {
-    "MANDRILL_API_KEY": os.getenv("MANDRILL_API_KEY"),
+    "MAILGUN_API_KEY": os.getenv("MAILGUN_API_KEY"),
 }
-EMAIL_BACKEND = "anymail.backends.mandrill.EmailBackend"
-DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team <team@hacklahoma.org>"
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team postmaster@sandbox9808ed465b3a4728a841e778ec1aa2bc.mailgun.org"
 
 MEDIA_ROOT = "/resumes"
 MEDIA_URL = "https://register.hacklahoma.org/resumes/"
