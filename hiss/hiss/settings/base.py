@@ -120,8 +120,8 @@ AUTH_USER_MODEL = "user.User"
 DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
 
 CORS_ORIGIN_WHITELIST = [
-    "https://volunteer.tamuhack.com",
-    "https://tamuhack-org.github.io",
+    "https://volunteer.hacklahoma.org",
+    "https://hacklahoma.github.io",
 ]
 
 

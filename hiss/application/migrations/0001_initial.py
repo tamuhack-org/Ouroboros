@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('extra_links', models.CharField(blank=True, max_length=200, verbose_name="Point us to anything you'd like us to look at while considering your application")),
                 ('question1', models.TextField(max_length=500, verbose_name='Tell us your best programming joke')),
                 ('question2', models.TextField(max_length=500, verbose_name="What is the one thing you'd build if you had unlimited resources?")),
-                ('question3', models.TextField(max_length=500, verbose_name="What is a cool prize you'd like to win at TAMUhack?")),
+                ('question3', models.TextField(max_length=500, verbose_name="What is a cool prize you'd like to win at Hacklahoma?")),
                 ('resume', models.FileField(help_text='Companies will use this resume to offer interviews for internships and full-time positions.', upload_to=application.models.uuid_generator, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['pdf'])], verbose_name='Upload your resume (PDF only)')),
                 ('major', models.CharField(max_length=255, verbose_name="What's your major?")),
                 ('classification', models.CharField(choices=[('Fr', 'Freshman'), ('So', 'Sophomore'), ('Jr', 'Junior'), ('Sr', 'Senior'), ('Ma', "Master's Student"), ('PhD', 'PhD Student'), ('O', 'Other')], max_length=3, verbose_name='What classification are you?')),
