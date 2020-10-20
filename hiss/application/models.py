@@ -179,8 +179,8 @@ TRANSPORT_MODES: List[Tuple[str, str]] = [
 ]
 
 QUESTION1_TEXT = "Tell us your best programming joke"
-QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
-QUESTION3_TEXT = f"What is a cool prize you'd like to win at {settings.EVENT_NAME}?"
+QUESTION2_TEXT = "This is a question?"
+QUESTION3_TEXT = "What is a cool prize you'd like to win at Hacklahoma?"
 
 WOMENS_XXS = "WXXS"
 WOMENS_XS = "WXS"

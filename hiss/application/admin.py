@@ -48,11 +48,11 @@ def build_approval_email(
     Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
     application has been approved.
     """
-    subject = f"Your {settings.EVENT_NAME} application has been approved!"
+    subject = f"Your Hacklahoma application has been approved!"
 
     context = {
         "first_name": application.first_name,
-        "event_name": settings.EVENT_NAME,
+        "event_name": "Hacklahoma",
         "confirmation_deadline": confirmation_deadline,
     }
     html_message = render_to_string("application/emails/approved.html", context)
@@ -65,9 +65,9 @@ def build_rejection_email(application: Application) -> Tuple[str, str, None, Lis
     Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
     application has been rejected.
     """
-    subject = f"Regarding your {settings.EVENT_NAME} application"
+    subject = f"Regarding your Hacklahoma application"
 
-    context = {"first_name": application.first_name, "event_name": settings.EVENT_NAME}
+    context = {"first_name": application.first_name, "event_name": "Hacklahoma"}
     html_message = render_to_string("application/emails/rejected.html", context)
     message = strip_tags(html_message)
     return subject, message, html_message, None, [application.user.email]
