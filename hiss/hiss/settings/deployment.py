@@ -33,7 +33,7 @@ ANYMAIL = {
     "MAILGUN_API_KEY": os.getenv("MAILGUN_API_KEY"),
 }
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team team@hacklahoma.org"
+DEFAULT_FROM_EMAIL = f"The {EVENT_NAME} Team postmaster@hacklahoma.org"
 
 MEDIA_ROOT = "/resumes"
 MEDIA_URL = "https://register.hacklahoma.org/resumes/"
