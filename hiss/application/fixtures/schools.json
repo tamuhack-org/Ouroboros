@@ -1,6 +1,13 @@
 [
   {
     "model": "application.school",
+    "pk": 1829,
+    "fields": {
+      "name": "University of Oklahoma"
+    }
+  },
+  {
+    "model": "application.school",
     "pk": 1,
     "fields": {
       "name": "Academy of Art College"
@@ -12793,13 +12800,6 @@
     "pk": 1828,
     "fields": {
       "name": "University of Notre Dame"
-    }
-  },
-  {
-    "model": "application.school",
-    "pk": 1829,
-    "fields": {
-      "name": "University of Oklahoma"
     }
   },
   {

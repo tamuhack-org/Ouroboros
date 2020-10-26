@@ -7,11 +7,11 @@ from application.models import School
 
 class ApplicationModelForm(forms.ModelForm):
     gender_other = forms.CharField(
-        label='If you chose "Prefer to self-describe", please elaborate.',
+        label='If you chose "Other", please elaborate.',
         required=False,
     )
     race_other = forms.CharField(
-        label='If you chose "Prefer to self-describe", please elaborate.',
+        label='If you chose "Other", please elaborate.',
         required=False,
     )
     school = forms.ModelChoiceField(
@@ -20,6 +20,10 @@ class ApplicationModelForm(forms.ModelForm):
     )
     school_other = forms.CharField(
         label='If you chose "Other", please enter your school\'s name here.',
+        required=False,
+    )
+    hear_about_other = forms.CharField(
+        label='If you chose "Other", please tell us where you heard about Haklahoma.',
         required=False,
     )
 
@@ -51,7 +55,7 @@ class ApplicationModelForm(forms.ModelForm):
             gender_other = self.cleaned_data.get("gender_other")
             if not gender_other:
                 msg = forms.ValidationError(
-                    'Please fill out this field or choose "Prefer not to answer".'
+                    'Please fill out this field or choose "Other".'
                 )
                 self.add_error("gender_other", msg)
         races = self.cleaned_data.get("race")
@@ -62,6 +66,14 @@ class ApplicationModelForm(forms.ModelForm):
                     "Please fill out this field with the appropriate information."
                 )
                 self.add_error("race_other", msg)
+        hear = self.cleaned_data.get("hear_about")
+        if hear:
+            hear_other = self.cleaned_data.get("hear_about_other")
+            if models.ABOUT_OTHER in hear and not hear_other:
+                msg = forms.ValidationError(
+                    "Please fill out this field with the appropriate information."
+                )
+                self.add_error("hear_other", msg)
         return self.cleaned_data
 
     class Meta:
@@ -80,22 +92,27 @@ class ApplicationModelForm(forms.ModelForm):
         fields = [
             "first_name",
             "last_name",
+            "email",
+            "phone_number",
             "school",
             "school_other",
-            "major",
-            "classification",
-            "grad_year",
             "gender",
             "gender_other",
+            "pronouns",
             "race",
             "race_other",
-            "num_hackathons_attended",
+            "current_level_study",
+            "grad_year",
+            "major",
             "shirt_size",
             "resume",
+            "num_hackathons_attended",
             "extra_links",
             "question1",
             "question2",
             "question3",
+            "hear_about",
+            "hear_about_other",
             "additional_accommodations",
             "notes",
             "agree_to_coc",

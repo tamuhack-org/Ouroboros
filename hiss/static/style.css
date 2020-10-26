@@ -641,7 +641,7 @@ label {
     margin-right: 20px;
 }
 
-#id_race, #id_dietary_restrictions {
+#id_race, #id_dietary_restrictions, #id_hear_about {
     margin-top: -10px;
     margin-bottom: 20px;
 }
@@ -651,17 +651,18 @@ label {
     width: 100%;
 }
 
-#id_race li, #id_dietary_restrictions li {
+#id_race li, #id_dietary_restrictions li, #id_hear_about li {
     margin-bottom: 10px;
 }
 
-#id_race li {
+#id_race li, #id_hear_about li  {
     width: 45%;
 }
 
-#id_race li label {
+#id_race li label, #id_hear_about li label {
     font-size: 14px;
 }
+
 
 label[for="id_agree_to_coc"],
 label[for="id_is_adult"],

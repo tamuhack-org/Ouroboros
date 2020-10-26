@@ -98,7 +98,19 @@ GENDERS: List[Tuple[str, str]] = [
     (MALE, "Male"),
     (FEMALE, "Female"),
     (NON_BINARY, "Non-binary"),
-    (GENDER_OTHER, "Prefer to self-describe"),
+    (GENDER_OTHER, "Other"),
+]
+
+HIGH_SCHOOL = "H"
+TECH_SCHOOL = "T"
+UNDERGRAD_UNIVERSITY = "U"
+GRAD_UNIVERSITY = "G"
+
+LEVEL_OF_STUDY: List[Tuple[str, str]] = [
+    (HIGH_SCHOOL, "High school"),
+    (TECH_SCHOOL, "Tech school"),
+    (UNDERGRAD_UNIVERSITY, "Undergrad univsity"),
+    (GRAD_UNIVERSITY, "Graduate university"),
 ]
 
 AMERICAN_INDIAN = "AI"
@@ -117,7 +129,27 @@ RACES: List[Tuple[str, str]] = [
     (NATIVE_HAWAIIAN, "Native Hawaiian or other Pacific Islander"),
     (WHITE, "White"),
     (NO_ANSWER, "Prefer not to answer"),
-    (RACE_OTHER, "Prefer to self-describe"),
+    (RACE_OTHER, "Other"),
+]
+
+
+SOCIAL_MEDIA = "SM"
+FRIEND = "FR"
+EMAIL = "EM"
+FLYER = "FL"
+IN_CLASS = "IC"
+MLH = "ML"
+ABOUT_OTHER = "O"
+
+
+HEAR_ABOUT: List[Tuple[str, str]] = [
+    (SOCIAL_MEDIA, "Social media"),
+    (FRIEND, "Friend"),
+    (EMAIL, "Email"),
+    (FLYER, "Flyer"),
+    (IN_CLASS, "In class"),
+    (MLH, "Major League Hacking"),
+    (ABOUT_OTHER, "Other"),
 ]
 
 FRESHMAN = "Fr"
@@ -142,26 +174,18 @@ CLASSIFICATIONS: List[Tuple[str, str]] = [
 class DietaryRestriction(models.Model):
     name = models.CharField(max_length=255)
 
+GRAD_YEAR_NA = "N"
+GRAD_YEAR_1 = "2020"
+GRAD_YEAR_2 = "2021"
+GRAD_YEAR_3 = "2022"
+GRAD_YEAR_4 = "2023"
 
-HACKATHONS_0 = "0"
-HACKATHONS_1_TO_3 = "1-3"
-HACKATHONS_4_TO_7 = "4-7"
-HACKATHONS_8_TO_10 = "8-10"
-HACKATHONS_OVER_TEN = "10+"
-
-HACKATHON_TIMES: List[Tuple[str, str]] = [
-    (HACKATHONS_0, "This will be my first!"),
-    (HACKATHONS_1_TO_3, "1-3"),
-    (HACKATHONS_4_TO_7, "4-7"),
-    (HACKATHONS_8_TO_10, "8-10"),
-    (HACKATHONS_OVER_TEN, "10+"),
-]
-
-GRAD_YEARS: List[Tuple[int, int]] = [
-    (int(y), int(y))
-    for y in range(
-        timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION
-    )
+GRAD_YEARS: List[Tuple[str, str]] = [
+    (GRAD_YEAR_NA, "N/A"),
+    (GRAD_YEAR_1, "2020"),
+    (GRAD_YEAR_2, "2021"),
+    (GRAD_YEAR_3, "2022"),
+    (GRAD_YEAR_4, "2023"),
 ]
 
 DRIVING = "D"
@@ -178,17 +202,10 @@ TRANSPORT_MODES: List[Tuple[str, str]] = [
     (MANUAL_POWER, "Walking/Biking"),
 ]
 
-QUESTION1_TEXT = "Tell us your best programming joke"
-QUESTION2_TEXT = "This is a question?"
-QUESTION3_TEXT = "What is a cool prize you'd like to win at Hacklahoma?"
+QUESTION1_TEXT = "Why is the history of computing so important?"
+QUESTION2_TEXT = "What workshops do you want to see at Hacklahoma?"
+QUESTION3_TEXT = "What kind of prizes do you want to see at Hacklahoma?"
 
-WOMENS_XXS = "WXXS"
-WOMENS_XS = "WXS"
-WOMENS_S = "WS"
-WOMENS_M = "WM"
-WOMENS_L = "WL"
-WOMENS_XL = "WXL"
-WOMENS_XXL = "WXXL"
 UNISEX_XXS = "XXS"
 UNISEX_XS = "XS"
 UNISEX_S = "S"
@@ -198,13 +215,6 @@ UNISEX_XL = "XL"
 UNISEX_XXL = "XXL"
 
 SHIRT_SIZES = [
-    (WOMENS_XXS, "Women's XXS"),
-    (WOMENS_XS, "Women's XS"),
-    (WOMENS_S, "Women's S"),
-    (WOMENS_M, "Women's M"),
-    (WOMENS_L, "Women's L"),
-    (WOMENS_XL, "Women's XL"),
-    (WOMENS_XXL, "Women's XXL"),
     (UNISEX_XXS, "Unisex XXS"),
     (UNISEX_XS, "Unisex XS"),
     (UNISEX_S, "Unisex S"),
@@ -273,21 +283,35 @@ class Application(models.Model):
     last_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="last name"
     )
+    email = models.CharField(
+        max_length=255, blank=True, verbose_name="email address"
+    )
+    phone_number = models.CharField(
+        max_length=255, blank=True, verbose_name="phone number"
+    )
+    current_level_study = models.CharField(
+        "What is your most current level of study?", choices=LEVEL_OF_STUDY, max_length=2, default=NO_ANSWER
+    )
     extra_links = models.CharField(
-        "Point us to anything you'd like us to look at while considering your application",
+        "Point us to any social links you'd like us to look at while considering your application",
         max_length=200,
         blank=True,
     )
     question1 = models.TextField(QUESTION1_TEXT, max_length=500)
     question2 = models.TextField(QUESTION2_TEXT, max_length=500)
-    question3 = models.TextField(QUESTION3_TEXT, max_length=500)
+    question3 = models.TextField(QUESTION3_TEXT, max_length=500) 
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         upload_to=uuid_generator,
     )
-
+    hear_about = MultiSelectField(
+        "How did you hear about Hacklahoma?", null=True, choices=HEAR_ABOUT, max_length=41
+    )
+    hear_about_other = models.CharField(
+        "Other", max_length=255, null=True, blank=True
+    )
     # DEMOGRAPHIC INFORMATION
     school = models.ForeignKey(
         School,
@@ -304,20 +328,23 @@ class Application(models.Model):
         "What's your gender?", choices=GENDERS, max_length=2, default=NO_ANSWER
     )
     gender_other = models.CharField(
-        "Self-describe", max_length=255, null=True, blank=True
+        "Other", max_length=255, null=True, blank=True
+    )
+    pronouns = models.CharField(
+        max_length=255, blank=False, null=False, default= "",verbose_name="pronouns"
     )
     race = MultiSelectField(
         "What race(s) do you identify with?", choices=RACES, max_length=41
     )
     race_other = models.CharField(
-        "Self-describe", max_length=255, null=True, blank=True
+        "Other", max_length=255, null=True, blank=True
     )
 
     grad_year = models.IntegerField(
         "What is your anticipated graduation year?", choices=GRAD_YEARS
     )
     num_hackathons_attended = models.CharField(
-        "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
+        "How many hackathons have you attended?", max_length=3
     )
 
     # LEGAL INFO
@@ -371,9 +398,13 @@ class Application(models.Model):
         if not self.is_adult:
             raise exceptions.ValidationError(
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
-                "us at highschool@tamuhack.com. "
+                "us at team@hacklahoma.org. "
             )
         if not self.first_name.isalpha():
             raise exceptions.ValidationError("First name can only contain letters.")
         if not self.last_name.isalpha():
             raise exceptions.ValidationError("Last name can only contain letters.")
+        if not self.phone_number.isnumeric():
+            raise exceptions.ValidationError("Phone number can only contain numbers.")
+        if not self.num_hackathons_attended.isnumeric():
+            raise exceptions.ValidationError("The number of hackathons can only contain numbers.")
