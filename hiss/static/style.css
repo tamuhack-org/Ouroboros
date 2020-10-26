@@ -158,6 +158,17 @@ input[type="submit"] {
     margin-bottom: 20px;
 }
 
+.social-media-container {
+    margin-top: 2vh;
+}
+
+
+.social-media-logo {
+    max-width: 40px;
+    max-height: 30px;
+    margin: 20px;
+}
+
 .nav-brand {
     max-width: 80px !important;
     margin-left: 10px;
@@ -186,9 +197,10 @@ input[type="submit"] {
     padding: 6em !important;
 }
 
+
 .status-box {
     margin-top: 3rem;
-    margin-bottom: 5em;
+    margin-bottom: 0px !important;
 }
 
 .submit-pg .status-box {
