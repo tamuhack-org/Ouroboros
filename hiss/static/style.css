@@ -23,12 +23,15 @@ html, body {
     margin-right: 20px;
     color: #FE8826;
     white-space: nowrap;
+    padding: 4px 8px;
+    border-radius: 3px;
 }
 
 .navbar .nav-item:hover {
     color: #FD7301;
-    text-decoration: none;
+    text-decoration: underline;
     transition: 0.3s;
+    background-color: #f2f2f2;
 }
 
 .navbar .nav-item .active {
@@ -958,6 +961,7 @@ button {
         font-size: 14px;
         display: block;
         margin: 15px 0 10px;
+        width: 100%;
     }
     .navbar .nav-right {
         text-align: left;
