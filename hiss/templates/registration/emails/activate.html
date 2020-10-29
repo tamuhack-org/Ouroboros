@@ -1,22 +1,81 @@
 <html>
-<div style="max-width:800px; background-color: #FEA55B; z-index: -1; position: absolute; top: 0; left: 0; padding: 20px">
+<style>
+    .container {
+        min-width: 400px;
+        width: 100vw;
+        height: 100vh;
+        background-color: #FFF8E8;
+        z-index: 0;
+        top: 0;
+        position: absolute;
+    }
 
-    <div style="font-family: Questrial, sans-serif;
-			background: #fff;
-		    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
-	  	    border-radius: 3px;
-  		    padding: 50px!important;
-	   	    max-width: 500px;
-	  	    display: block;
-	  	    margin: 20px auto;">
+    * {
+        padding: 0;
+        margin: 0;
+    }
 
-        <h2 style="margin-bottom: 20px; font-size: 14px; color: #777777">Howdy!</h2>
-        {% autoescape off %}
-        Thanks for signing up! Please click <a href="https://{{ domain }}{% url 'customauth:activate' uidb64=uid token=token %}">here</a>
-        to verify your account.
+    .box {
+        z-index: 1;
+        font-family: Questrial, sans-serif;
+        background: #fff;
+        box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        padding: 50px !important;
+        display: block;
+        margin: 100px auto;
+        max-width: 600px;
+    }
 
-        {% endautoescape %}
+    img {
+        height: 100px;
+        margin-left: 50%;
+        margin-bottom: 40px;
+        transform: translateX(-50%);
+    }
 
+    .content {
+        text-align: center;
+    }
+
+    a {
+        width:fit-content;
+        color: white;
+        text-decoration: none;
+        display: block;
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .button:hover {
+        background: #FC801A;
+    }
+    
+    .button {
+        background: #FE8826;
+        padding: 15px 20px;
+        border-radius: 0.25rem;
+        width: min-content;
+        display: block;
+    }
+</style>
+<div class="container">
+
+    <div class="box">
+
+        <img src="../../../static/hacklahoma.svg" />
+
+        <div class="content">
+            {% autoescape off %}
+            Thanks for signing up! Please click the button below to verify your account.
+            <a href="https://{{ domain }}{% url 'customauth:activate' uidb64=uid token=token %}">
+                <div class="button">
+                    VERIFY
+                </div>
+            </a>
+            {% endautoescape %}
+        </div>
+        
         <h3 style=" margin-bottom: 5px;
 				    font-size: 14px;
 				    line-height: 30px;
@@ -27,7 +86,7 @@
 
         <strong style=" color: #FE8826;
 						font-size: 14px;">
-            The {{ event_name }} Team
+            {{ event_name }} Team
         </strong>
 
     </div>
