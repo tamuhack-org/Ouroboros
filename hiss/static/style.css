@@ -29,7 +29,7 @@ html, body {
 
 .navbar .nav-item:hover {
     color: #FD7301;
-    text-decoration: underline;
+    text-decoration: none;
     transition: 0.3s;
     background-color: #f2f2f2;
 }
