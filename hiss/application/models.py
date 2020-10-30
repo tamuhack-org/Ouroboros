@@ -357,7 +357,7 @@ class Application(models.Model):
     num_hackathons_attended = models.CharField(
         "How many hackathons have you attended?",
         null=True,
-        max_length=2
+        max_length=22
     )
 
     # Question Text Fields
@@ -382,24 +382,25 @@ class Application(models.Model):
     interested_in_hacklahoma = models.BooleanField(
         "Are you interested in joining the Hacklahoma 2022 team?", 
         choices=AGREE, 
-        default=None,
+        default=None, 
+        help_text="We'll possibly reach out to you for next year's event!"
     )
 
     # Interested in Hacklahoma CheckBox
     mlh_authorize = models.BooleanField("I authorize Major League Hacking to send me occasional messages about hackathons.", choices=AGREE, default=None)
 
     # Liability Waiver CheckBox
-    liability_waiver = models.BooleanField("Liability Waiver", choices=AGREE, default=None)
+    liability_waiver = models.BooleanField(choices=AGREE, default=None)
 
     # MLH Code of Conduct CheckBox
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
 
     # Photo Release
-    photo_release = models.BooleanField("I authorize Hacklahoma to release and photo's with me in it.", choices=AGREE, default=None)
+    photo_release = models.BooleanField(choices=AGREE, default=None)
 
     # Over 18 CheckBox
     is_adult = models.BooleanField(
-        "Please confirm you are 18 or older.",
+        "I confirm I am 18 years or older.",
         choices=AGREE,
         default=None,
     )
