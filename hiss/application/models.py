@@ -187,7 +187,7 @@ TRANSPORT_MODES: List[Tuple[str, str]] = [
 ]
 
 QUESTION1_TEXT = "Why is the history of computing so important?"
-QUESTION2_TEXT = "What workshops do you want to see at Hacklahoma?"
+QUESTION2_TEXT = "What workshops/activities do you want to see at Hacklahoma?"
 QUESTION3_TEXT = "What kind of prizes do you want to see at Hacklahoma?"
 
 UNISEX_XXS = "XXS"
@@ -380,10 +380,10 @@ class Application(models.Model):
 
     # Interested in Hacklahoma CheckBox
     interested_in_hacklahoma = models.BooleanField(
-        "Are you interested in joining the Hacklahoma 2022 team?", 
+        "Are you interested in organizing the Hacklahoma 2022 event?", 
         choices=AGREE, 
         default=None, 
-        help_text="We'll possibly reach out to you for next year's event!"
+        help_text="We'll possibly reach out to you to join the executive team!"
     )
 
     # Interested in Hacklahoma CheckBox
@@ -396,7 +396,11 @@ class Application(models.Model):
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
 
     # Photo Release
-    photo_release = models.BooleanField(choices=AGREE, default=None)
+    photo_release = models.BooleanField(
+        "I authorize Hacklahoma to release photos with me in it.",
+        choices=AGREE, 
+        default=None
+    )
 
     # Over 18 CheckBox
     is_adult = models.BooleanField(
