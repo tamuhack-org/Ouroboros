@@ -24,15 +24,15 @@ $(function () {
         }
     });
 
-    if (!$('#id_hear_about input[value="O"]')[0].checked) {
-        $('#id_hear_about_other').parent().hide();
+    if (!$('#id_where_did_you_hear input[value="O"]')[0].checked) {
+        $('#id_where_did_you_hear_other').parent().hide();
     }
-    $('#id_hear_about input[value="O"]').click(function () {
-        if ($('#id_hear_about input[value="O"]')[0].checked) {
-            $('#id_hear_about_other').parent().show();
+    $('#id_where_did_you_hear input[value="O"]').click(function () {
+        if ($('#id_where_did_you_hear input[value="O"]')[0].checked) {
+            $('#id_where_did_you_hear_other').parent().show();
         }
         else {
-            $('#id_hear_about_other').parent().hide();
+            $('#id_where_did_you_hear_other').parent().hide();
         }
     });
 

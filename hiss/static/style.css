@@ -644,7 +644,7 @@ label {
     margin-right: 20px;
 }
 
-#id_race, #id_dietary_restrictions, #id_hear_about {
+#id_race, #id_hear_about {
     margin-top: -10px;
     margin-bottom: 20px;
 }
@@ -654,7 +654,7 @@ label {
     width: 100%;
 }
 
-#id_race li, #id_dietary_restrictions li, #id_hear_about li {
+#id_race li, #id_hear_about li {
     margin-bottom: 10px;
 }
 
@@ -669,8 +669,10 @@ label {
 
 label[for="id_agree_to_coc"],
 label[for="id_is_adult"],
-label[for="id_travel_reimbursement"], 
-#id_travel_reimbursement ~ .helptext  {
+label[for="id_interested_in_hacklahoma"],
+label[for="id_mlh_authorize"],
+label[for="id_liability_waiver"],
+label[for="id_photo_release"] {
     margin-left: 45px;
 }
 
@@ -680,12 +682,14 @@ label[for=id_is_adult] {
 
 #id_agree_to_coc,
 #id_is_adult,
-#id_travel_reimbursement {
+#id_interested_in_hacklahoma,
+#id_mlh_authorize,
+#id_liability_waiver,
+#id_photo_release{
     top: -30px;
 }
 
-#id_is_adult ~ .helptext,
-#id_travel_reimbursement ~ .helptext  {
+#id_is_adult ~ .helptext {
     margin-top: -30px;
     margin-left: 45px;
 }
@@ -757,7 +761,6 @@ button {
 }
 
 .application p > label[for="id_extra_links"]::after,
-.application p > label[for="id_additional_accommodations"]::after,
 .application p > label[for="id_notes"]::after {
     content: " " !important;
     clear: both;
@@ -774,7 +777,11 @@ button {
 }
 
 .application p > #id_adult, 
-.application p > #id_mlh_coc {
+.application p > #id_mlh_coc,
+.application p > #id_interested_in_hacklahoma,
+.application p > #id_mlh_authorize,
+.application p > #id_liability_waiver,
+.application p > #id_photo_release {
     margin: 0;
     float: left;
     margin-top: -12px;
@@ -987,14 +994,32 @@ button {
     }
 }
 
-@media only screen and (max-width: 422px ) {
-    #id_travel_reimbursement {
+@media only screen and (max-width: 390px ) {
+    #id_interested_in_hacklahoma {
+        top: -53px;
+    }
+}
+
+@media only screen and (max-width: 390px ) {
+    #id_mlh_authorize {
+        top: -53px;
+    }
+}
+
+@media only screen and (max-width: 390px ) {
+    #id_liability_waiver {
         top: -53px;
     }
 }
 
 @media only screen and (max-width: 390px ) {
     #id_agree_to_coc {
+        top: -53px;
+    }
+}
+
+@media only screen and (max-width: 390px ) {
+    #id_photo_release {
         top: -53px;
     }
 }

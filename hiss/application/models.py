@@ -82,12 +82,14 @@ class School(models.Model):
         return self.name
 
 
+# Model for CheckBox
 AGREE = ((True, "Agree"),)
 
+# Yes No Model
 TRUE_FALSE_CHOICES = ((True, "Yes"), (False, "No"))
 
+# Genders Model
 NO_ANSWER = "NA"
-
 MALE = "M"
 FEMALE = "F"
 NON_BINARY = "NB"
@@ -101,6 +103,7 @@ GENDERS: List[Tuple[str, str]] = [
     (GENDER_OTHER, "Other"),
 ]
 
+# Level of Study Model
 HIGH_SCHOOL = "H"
 TECH_SCHOOL = "T"
 UNDERGRAD_UNIVERSITY = "U"
@@ -109,10 +112,11 @@ GRAD_UNIVERSITY = "G"
 LEVEL_OF_STUDY: List[Tuple[str, str]] = [
     (HIGH_SCHOOL, "High school"),
     (TECH_SCHOOL, "Tech school"),
-    (UNDERGRAD_UNIVERSITY, "Undergrad univsity"),
+    (UNDERGRAD_UNIVERSITY, "Undergrad university"),
     (GRAD_UNIVERSITY, "Graduate university"),
 ]
 
+#Race Model
 AMERICAN_INDIAN = "AI"
 ASIAN = "AS"
 BLACK = "BL"
@@ -132,7 +136,7 @@ RACES: List[Tuple[str, str]] = [
     (RACE_OTHER, "Other"),
 ]
 
-
+# Where did you hear about Hacklahoma model
 SOCIAL_MEDIA = "SM"
 FRIEND = "FR"
 EMAIL = "EM"
@@ -140,7 +144,6 @@ FLYER = "FL"
 IN_CLASS = "IC"
 MLH = "ML"
 ABOUT_OTHER = "O"
-
 
 HEAR_ABOUT: List[Tuple[str, str]] = [
     (SOCIAL_MEDIA, "Social media"),
@@ -151,25 +154,6 @@ HEAR_ABOUT: List[Tuple[str, str]] = [
     (MLH, "Major League Hacking"),
     (ABOUT_OTHER, "Other"),
 ]
-
-FRESHMAN = "Fr"
-SOPHOMORE = "So"
-JUNIOR = "Jr"
-SENIOR = "Sr"
-MASTERS = "Ma"
-PHD = "PhD"
-CLASSIFICATION_OTHER = "O"
-
-CLASSIFICATIONS: List[Tuple[str, str]] = [
-    (FRESHMAN, "Freshman"),
-    (SOPHOMORE, "Sophomore"),
-    (JUNIOR, "Junior"),
-    (SENIOR, "Senior"),
-    (MASTERS, "Master's Student"),
-    (PHD, "PhD Student"),
-    (CLASSIFICATION_OTHER, "Other"),
-]
-
 
 class DietaryRestriction(models.Model):
     name = models.CharField(max_length=255)
@@ -255,7 +239,6 @@ STATUS_OPTIONS = [
     (STATUS_EXPIRED, "Expired"),
 ]
 
-
 def uuid_generator(_instance, filename: str):
     ext = filename.split(".")[-1]
     filename = "%s.%s" % (uuid.uuid4(), ext)
@@ -277,115 +260,152 @@ class Application(models.Model):
     )
 
     # ABOUT YOU
+    # First Name Character Field
     first_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="first name"
     )
+
+    # Last Name Character Field
     last_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="last name"
     )
+
+    # Email Character Field
     email = models.CharField(
-        max_length=255, blank=True, verbose_name="email address"
+        max_length=255, blank=False, null=True, verbose_name="email address"
     )
+
+    # Phone Character Field
     phone_number = models.CharField(
-        max_length=255, blank=True, verbose_name="phone number"
+        blank=False, null=True, verbose_name="phone number", max_length=15
     )
-    current_level_study = models.CharField(
-        "What is your most current level of study?", choices=LEVEL_OF_STUDY, max_length=2, default=NO_ANSWER
-    )
-    extra_links = models.CharField(
-        "Point us to any social links you'd like us to look at while considering your application",
-        max_length=200,
-        blank=True,
-    )
-    question1 = models.TextField(QUESTION1_TEXT, max_length=500)
-    question2 = models.TextField(QUESTION2_TEXT, max_length=500)
-    question3 = models.TextField(QUESTION3_TEXT, max_length=500) 
-    resume = models.FileField(
-        "Upload your resume (PDF only)",
-        help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
-        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
-        upload_to=uuid_generator,
-    )
-    hear_about = MultiSelectField(
-        "How did you hear about Hacklahoma?", null=True, choices=HEAR_ABOUT, max_length=41
-    )
-    hear_about_other = models.CharField(
-        "Other", max_length=255, null=True, blank=True
-    )
-    # DEMOGRAPHIC INFORMATION
+
+    # School Selection Box
     school = models.ForeignKey(
         School,
         null=True,
         on_delete=models.SET_NULL,
         verbose_name="What school do you go to?",
     )
+
     school_other = models.CharField(null=True, blank=True, max_length=255)
-    major = models.CharField("What's your major?", max_length=255)
-    classification = models.CharField(
-        "What classification are you?", choices=CLASSIFICATIONS, max_length=3
+
+    # Birthday Character Field
+    birthday = models.CharField(
+        max_length=255, blank=False, null=True, verbose_name="birthday"
     )
+
+    # Gender Selection Box
     gender = models.CharField(
         "What's your gender?", choices=GENDERS, max_length=2, default=NO_ANSWER
     )
+
     gender_other = models.CharField(
         "Other", max_length=255, null=True, blank=True
     )
+
+    # Pronouns Model
     pronouns = models.CharField(
         max_length=255, blank=False, null=False, default= "",verbose_name="pronouns"
     )
+
+    # Race Selection Field
     race = MultiSelectField(
-        "What race(s) do you identify with?", choices=RACES, max_length=41
+        "What race(s) do you identify with?", choices=RACES, max_length=41, null=True
     )
+
     race_other = models.CharField(
         "Other", max_length=255, null=True, blank=True
     )
 
-    grad_year = models.IntegerField(
-        "What is your anticipated graduation year?", choices=GRAD_YEARS
-    )
-    num_hackathons_attended = models.CharField(
-        "How many hackathons have you attended?", max_length=3
+    # Level of Study Model
+    level_of_study = models.CharField(
+        "What is your most current level of study?", choices=LEVEL_OF_STUDY, max_length=2, default=NO_ANSWER
     )
 
-    # LEGAL INFO
+    # Graduation Year Model
+    graduation_year = models.CharField(
+        "What is your anticipated graduation year?", choices=GRAD_YEARS, null=True, max_length=4
+    )
+
+    # Major Character Field
+    major = models.CharField("What's your major?", max_length=255, null=True)
+
+    # Shirt Size Selection Box
+    shirt_size = models.CharField(
+        "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4, null=True
+    )
+
+    # Resume File Input
+    resume = models.FileField(
+        "Upload your resume (PDF only)",
+        help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
+        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
+        upload_to=uuid_generator, 
+        null=True
+    )
+
+    # Social Link Character Field
+    social_links = models.CharField(
+        "Point us to any social links you'd like us to look at while considering your application",
+        max_length=200,
+        blank=True,
+    )
+
+    # Number of Hackathons Integer Field
+    num_hackathons_attended = models.CharField(
+        "How many hackathons have you attended?",
+        null=True,
+        max_length=2
+    )
+
+    # Question Text Fields
+    question1 = models.TextField(QUESTION1_TEXT, max_length=500, null=True)
+    question2 = models.TextField(QUESTION2_TEXT, max_length=500, null=True)
+    question3 = models.TextField(QUESTION3_TEXT, max_length=500, null=True) 
+    
+    # Where did you hear about us selections field
+    where_did_you_hear = MultiSelectField(
+        "How did you hear about Hacklahoma?", null=True, choices=HEAR_ABOUT, max_length=41
+    )
+    where_did_you_hear_other = models.CharField(
+        "Other", max_length=255, null=True, blank=True
+    )
+
+    # Mailing Adress Adress Form
+    #mailing_address = where_did_you_hear_other = models.CharField(
+       # "What is your mailing address?", max_length=255, null=True, blank=True
+    #)
+
+    # Interested in Hacklahoma CheckBox
+    interested_in_hacklahoma = models.BooleanField("Are you interested in joining the Hacklahoma 2022 team?", choices=AGREE, default=None)
+
+    # Interested in Hacklahoma CheckBox
+    mlh_authorize = models.BooleanField("I authorize Major League Hacking to send me occasional messages about hackathons.", choices=AGREE, default=None)
+
+    # Liability Waiver CheckBox
+    liability_waiver = models.BooleanField("Liability Waiver", choices=AGREE, default=None)
+
+    # MLH Code of Conduct CheckBox
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
+
+    # Photo Release
+    photo_release = models.BooleanField("I authorize Hacklahoma to release and photo's with me in it.", choices=AGREE, default=None)
+
+    # Over 18 CheckBox
     is_adult = models.BooleanField(
         "Please confirm you are 18 or older.",
         choices=AGREE,
         default=None,
-        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
-        "A&M.",
     )
 
-    # LOGISTICAL INFO
-    shirt_size = models.CharField(
-        "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
-    )
-    transport_needed = models.CharField(
-        "How will you be getting to the event?", choices=TRANSPORT_MODES, max_length=11
-    )
-    travel_reimbursement = models.BooleanField(
-        "I'd like to apply for travel reimbursement",
-        default=False,
-        help_text="Travel reimbursement is only provided if you stay the whole time and submit a project.",
-    )
-    additional_accommodations = models.TextField(
-        "Do you require any special accommodations at the event?",
-        max_length=500,
-        blank=True,
-    )
-    dietary_restrictions = models.ManyToManyField(DietaryRestriction, blank=True)
-    dietary_restrictions_other = models.CharField(
-        "Self-describe", max_length=255, null=True, blank=True
-    )
-
-    # CONFIRMATION DEADLINE
-    confirmation_deadline = models.DateTimeField(null=True, blank=True)
-
-    # MISCELLANEOUS
+    # Addtion Notes Text Field
     notes = models.TextField(
         "Anything else you would like us to know?", max_length=300, blank=True
     )
+    
+    # CONFIRMATION DEADLINE
+    confirmation_deadline = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return "%s, %s - Application" % (self.last_name, self.first_name)
@@ -395,15 +415,15 @@ class Application(models.Model):
 
     def clean(self):
         super().clean()
+        if not self.first_name.isalpha():
+            raise exceptions.ValidationError("First name can only contain letters.")
+        if not self.last_name.isalpha():
+            raise exceptions.ValidationError("Last name can only contain letters.")
         if not self.is_adult:
             raise exceptions.ValidationError(
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 "us at team@hacklahoma.org. "
             )
-        if not self.first_name.isalpha():
-            raise exceptions.ValidationError("First name can only contain letters.")
-        if not self.last_name.isalpha():
-            raise exceptions.ValidationError("Last name can only contain letters.")
         if not self.phone_number.isnumeric():
             raise exceptions.ValidationError("Phone number can only contain numbers.")
         if not self.num_hackathons_attended.isnumeric():

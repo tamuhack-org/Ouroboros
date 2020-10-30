@@ -6,11 +6,11 @@ from application.models import School
 
 
 class ApplicationModelForm(forms.ModelForm):
-    gender_other = forms.CharField(
+    race_other = forms.CharField(
         label='If you chose "Other", please elaborate.',
         required=False,
     )
-    race_other = forms.CharField(
+    gender_other = forms.CharField(
         label='If you chose "Other", please elaborate.',
         required=False,
     )
@@ -22,8 +22,8 @@ class ApplicationModelForm(forms.ModelForm):
         label='If you chose "Other", please enter your school\'s name here.',
         required=False,
     )
-    hear_about_other = forms.CharField(
-        label='If you chose "Other", please tell us where you heard about Haklahoma.',
+    where_did_you_hear_other = forms.CharField(
+        label='If you chose "Other", please elaborate.',
         required=False,
     )
 
@@ -32,6 +32,11 @@ class ApplicationModelForm(forms.ModelForm):
         self.fields["agree_to_coc"].label = mark_safe(
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
+
+        # Set the fields that are required to required
+        for field in self.Meta.required:
+            self.fields[field].required = True
+            self.fields[field].label = mark_safe(f"{self.fields[field].label}<b style=\"color: red;\">*</b> ")
 
         # HACK: Disable the form if there's not an active wave
         if not application_models.Wave.objects.active_wave():
@@ -50,14 +55,6 @@ class ApplicationModelForm(forms.ModelForm):
         return super().is_valid()
 
     def clean(self):
-        gender = self.cleaned_data.get("gender")
-        if gender == models.GENDER_OTHER:
-            gender_other = self.cleaned_data.get("gender_other")
-            if not gender_other:
-                msg = forms.ValidationError(
-                    'Please fill out this field or choose "Other".'
-                )
-                self.add_error("gender_other", msg)
         races = self.cleaned_data.get("race")
         if races:
             race_other = self.cleaned_data.get("race_other")
@@ -67,21 +64,17 @@ class ApplicationModelForm(forms.ModelForm):
                 )
                 self.add_error("race_other", msg)
         hear = self.cleaned_data.get("hear_about")
-        if hear:
-            hear_other = self.cleaned_data.get("hear_about_other")
-            if models.ABOUT_OTHER in hear and not hear_other:
-                msg = forms.ValidationError(
-                    "Please fill out this field with the appropriate information."
-                )
-                self.add_error("hear_other", msg)
         return self.cleaned_data
 
     class Meta:
         model = application_models.Application
         widgets = {
+            "interested_in_hacklahoma": forms.CheckboxInput,
+            "mlh_authorize": forms.CheckboxInput,
+            "liability_waiver": forms.CheckboxInput,
             "is_adult": forms.CheckboxInput,
             "agree_to_coc": forms.CheckboxInput,
-            "travel_reimbursement": forms.CheckboxInput,
+            "photo_release": forms.CheckboxInput,
             "extra_links": forms.TextInput(
                 attrs={
                     "placeholder": "ex. GitHub, Devpost, personal website, LinkedIn, etc."
@@ -96,25 +89,54 @@ class ApplicationModelForm(forms.ModelForm):
             "phone_number",
             "school",
             "school_other",
+            "birthday",
             "gender",
             "gender_other",
             "pronouns",
             "race",
             "race_other",
-            "current_level_study",
-            "grad_year",
+            "level_of_study",
+            "graduation_year",
             "major",
             "shirt_size",
             "resume",
+            "social_links",
             "num_hackathons_attended",
-            "extra_links",
             "question1",
             "question2",
             "question3",
-            "hear_about",
-            "hear_about_other",
-            "additional_accommodations",
-            "notes",
+            "where_did_you_hear",
+            "where_did_you_hear_other",
+            "interested_in_hacklahoma",
+            "mlh_authorize",
+            "liability_waiver",
             "agree_to_coc",
+            "photo_release",
+            "is_adult",
+            "notes",
+        ]
+
+        required = [
+            "first_name",
+            "last_name",
+            "email",
+            "phone_number",
+            "school",
+            "birthday",
+            "gender",
+            "pronouns",
+            "race",
+            "level_of_study",
+            "graduation_year",
+            "major",
+            "shirt_size",
+            "num_hackathons_attended",
+            "question1",
+            "question2",
+            "question3",
+            "where_did_you_hear",
+            "liability_waiver",
+            "agree_to_coc",
+            "photo_release",
             "is_adult",
         ]
