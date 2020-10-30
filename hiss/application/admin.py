@@ -35,7 +35,6 @@ class ApplicationAdminForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             "gender": forms.RadioSelect,
-            "classification": forms.RadioSelect,
             "grad_year": forms.RadioSelect,
             "status": forms.RadioSelect,
         }
@@ -127,7 +126,6 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
             "last_name",
             "email",
             "school",
-            "classification",
             "grad_year",
             "major",
         ]
@@ -140,7 +138,6 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
                 instance.last_name,
                 instance.user.email,
                 instance.school,
-                instance.classification,
                 instance.grad_year,
                 instance.major,
             ]
@@ -177,43 +174,24 @@ class ApplicationAdmin(admin.ModelAdmin):
     readonly_fields = [
         "datetime_submitted",
         "user",
-        "is_adult",
-        "gender",
-        "race",
-        "major",
-        "school",
-        "classification",
-        "grad_year",
-        "num_hackathons_attended",
-        "extra_links",
-        "question1",
-        "question2",
-        "question3",
-        "notes",
         "is_a_walk_in",
     ]
     list_filter = (
-        ("school", RelatedOnlyFieldListFilter),
+        #("school", RelatedOnlyFieldListFilter),
         ("status", ChoiceDropdownFilter),
-        ("classification", ChoiceDropdownFilter),
-        ("gender", ChoiceDropdownFilter),
-        ("grad_year", ChoiceDropdownFilter),
-        ("num_hackathons_attended", ChoiceDropdownFilter),
-        ("shirt_size", ChoiceDropdownFilter),
-        ("transport_needed", ChoiceDropdownFilter),
-        ("dietary_restrictions", ChoiceDropdownFilter),
-        ("datetime_submitted", DateRangeFilter),
-        ("travel_reimbursement", DropdownFilter),
-        RaceFilter,
+        #("gender", ChoiceDropdownFilter),
+        #("grad_year", ChoiceDropdownFilter),
+        #("num_hackathons_attended", ChoiceDropdownFilter),
+        #("datetime_submitted", DateRangeFilter),
+        #RaceFilter,
     )
     list_display = (
         "first_name",
         "last_name",
-        "school",
+        #"school",
         "user_email",
         "datetime_submitted",
-        "classification",
-        "grad_year",
+        #"grad_year",
         "status",
     )
     fieldsets = [
@@ -225,7 +203,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "first_name",
                     "last_name",
-                    "extra_links",
+                    
                     "question1",
                     "question2",
                     "question3",
@@ -240,7 +218,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "school",
                     "school_other",
                     "major",
-                    "classification",
                     "gender",
                     "gender_other",
                     "race",
@@ -255,10 +232,6 @@ class ApplicationAdmin(admin.ModelAdmin):
             {
                 "fields": [
                     "shirt_size",
-                    "transport_needed",
-                    "travel_reimbursement",
-                    "additional_accommodations",
-                    "dietary_restrictions",
                 ]
             },
         ),
