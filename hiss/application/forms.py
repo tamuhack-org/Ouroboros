@@ -33,10 +33,18 @@ class ApplicationModelForm(forms.ModelForm):
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
 
+        # Remove the colons
+        self.label_suffix=""
+
+        # Set certain fields to not be required
+        self.fields['resume'].required = False
+        self.fields['interested_in_hacklahoma'].required = False
+        self.fields['mlh_authorize'].required = False
+
         # Set the fields that are required to required
         for field in self.Meta.required:
             self.fields[field].required = True
-            self.fields[field].label = mark_safe(f"{self.fields[field].label}<b style=\"color: red;\">*</b> ")
+            self.fields[field].label = mark_safe(f"{self.fields[field].label} <b style=\"color: red;\">*</b> ")
 
         # HACK: Disable the form if there's not an active wave
         if not application_models.Wave.objects.active_wave():
@@ -114,6 +122,7 @@ class ApplicationModelForm(forms.ModelForm):
             "photo_release",
             "is_adult",
             "notes",
+            
         ]
 
         required = [

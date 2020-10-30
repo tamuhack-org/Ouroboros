@@ -83,7 +83,7 @@ class School(models.Model):
 
 
 # Model for CheckBox
-AGREE = ((True, "Agree"),)
+AGREE = ((True, "Agree"), (False, "Disagree"))
 
 # Yes No Model
 TRUE_FALSE_CHOICES = ((True, "Yes"), (False, "No"))
@@ -159,17 +159,17 @@ class DietaryRestriction(models.Model):
     name = models.CharField(max_length=255)
 
 GRAD_YEAR_NA = "N"
-GRAD_YEAR_1 = "2020"
-GRAD_YEAR_2 = "2021"
-GRAD_YEAR_3 = "2022"
-GRAD_YEAR_4 = "2023"
+GRAD_YEAR_1 = "2021"
+GRAD_YEAR_2 = "2022"
+GRAD_YEAR_3 = "2023"
+GRAD_YEAR_4 = "2024"
 
 GRAD_YEARS: List[Tuple[str, str]] = [
     (GRAD_YEAR_NA, "N/A"),
-    (GRAD_YEAR_1, "2020"),
-    (GRAD_YEAR_2, "2021"),
-    (GRAD_YEAR_3, "2022"),
-    (GRAD_YEAR_4, "2023"),
+    (GRAD_YEAR_1, "2021"),
+    (GRAD_YEAR_2, "2022"),
+    (GRAD_YEAR_3, "2023"),
+    (GRAD_YEAR_4, "2024"),
 ]
 
 DRIVING = "D"
@@ -342,7 +342,8 @@ class Application(models.Model):
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         upload_to=uuid_generator, 
-        null=True
+        null=True,
+        blank=True
     )
 
     # Social Link Character Field
@@ -378,7 +379,11 @@ class Application(models.Model):
     #)
 
     # Interested in Hacklahoma CheckBox
-    interested_in_hacklahoma = models.BooleanField("Are you interested in joining the Hacklahoma 2022 team?", choices=AGREE, default=None)
+    interested_in_hacklahoma = models.BooleanField(
+        "Are you interested in joining the Hacklahoma 2022 team?", 
+        choices=AGREE, 
+        default=None,
+    )
 
     # Interested in Hacklahoma CheckBox
     mlh_authorize = models.BooleanField("I authorize Major League Hacking to send me occasional messages about hackathons.", choices=AGREE, default=None)

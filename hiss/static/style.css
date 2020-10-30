@@ -644,7 +644,7 @@ label {
     margin-right: 20px;
 }
 
-#id_race, #id_hear_about {
+#id_race, #id_where_did_you_hear {
     margin-top: -10px;
     margin-bottom: 20px;
 }
@@ -654,18 +654,17 @@ label {
     width: 100%;
 }
 
-#id_race li, #id_hear_about li {
+#id_race li, #id_where_did_you_hear li {
     margin-bottom: 10px;
 }
 
-#id_race li, #id_hear_about li  {
+#id_race li, #id_where_did_you_hear li  {
     width: 45%;
 }
 
-#id_race li label, #id_hear_about li label {
+#id_race li label, #id_where_did_you_hear li label {
     font-size: 14px;
 }
-
 
 label[for="id_agree_to_coc"],
 label[for="id_is_adult"],
@@ -674,19 +673,19 @@ label[for="id_mlh_authorize"],
 label[for="id_liability_waiver"],
 label[for="id_photo_release"] {
     margin-left: 45px;
-}
-
-label[for=id_is_adult] {
-    margin-top: -20px;
+    margin-top: 40px;
 }
 
 #id_agree_to_coc,
-#id_is_adult,
+#id_is_adult {
+    top: -35px;
+}
+
 #id_interested_in_hacklahoma,
 #id_mlh_authorize,
 #id_liability_waiver,
-#id_photo_release{
-    top: -30px;
+#id_photo_release {
+    top: -22px;
 }
 
 #id_is_adult ~ .helptext {
