@@ -81,6 +81,109 @@ class School(models.Model):
     def __str__(self):
         return self.name
 
+# States
+OKLAHOMA = "OK"
+ALASKA = "AK"
+ARIZONA = "AZ"
+ARKANSAS = "AR"
+CALIFORNIA = "CA"
+COLORADO = "CO"
+CONNECTICUT = "CT"
+DELAWARE = "DE"
+FLORIDA = "FL"
+GEORGIA = "GA"
+HAWAII = "HI"
+IDAHO = "ID"
+ILLINOIS = "IL"
+INDIANA = "IN"
+IOWA = "IA"
+KANSAS = "KS"
+KENTUCKY = "KY"
+LOUISIANA = "LA"
+MAINE = "ME"
+MARYLAND = "MD"
+MASSACHUSETTS = "MA"
+MICHIGAN = "MI"
+MINNESOTA = "MN"
+MISSISSIPPI = "MS"
+MISSOURI = "MO"
+MONTANA = "MT"
+NEBRASKA = "NE"
+NEVADA = "NV"
+NEW_HAMPSHIRE = "NH"
+NEW_JERSEY = "NJ"
+NEW_MEXICO = "NM"
+NEW_YORK = "NY"
+NORTH_CAROLINA = "NC"
+NORTH_DAKOTA = "ND"
+OHIO = "OH"
+OREGON = "OR"
+PENNSYLVANIA = "PA"
+RHODE_ISLAND = "RI"
+SOUTH_CAROLINA = "SC"
+SOUTH_DAKOTA = "SD"
+TENNESSEE = "TN"
+TEXAS = "TX"
+UTAH = "UT"
+VERMONT = "VT"
+VIRGINIA = "VA"
+WASHINGTON = "WA"
+WEST_VIRGINIA = "WV"
+WISCONSIN = "WI"
+WYOMING = "WY"
+
+STATES: List[Tuple[str, str]] = [
+    (OKLAHOMA, "OK"),
+    (ALASKA, "AK"),
+    (ARIZONA, "AZ"),
+    (ARKANSAS, "AR"),
+    (CALIFORNIA, "CA"),
+    (COLORADO, "CO"),
+    (CONNECTICUT, "CT"),
+    (DELAWARE, "DE"),
+    (FLORIDA, "FL"),
+    (GEORGIA, "GA"),
+    (HAWAII, "HI"),
+    (IDAHO, "ID"),
+    (ILLINOIS, "IL"),
+    (INDIANA, "IN"),
+    (IOWA, "IA"),
+    (KANSAS, "KS"),
+    (KENTUCKY, "KY"),
+    (LOUISIANA, "LA"),
+    (MAINE, "ME"),
+    (MARYLAND, "MD"),
+    (MASSACHUSETTS, "MA"),
+    (MICHIGAN, "MI"),
+    (MINNESOTA, "MN"),
+    (MISSISSIPPI, "MS"),
+    (MISSOURI, "MO"),
+    (MONTANA, "MT"),
+    (NEBRASKA, "NE"),
+    (NEVADA, "NV"),
+    (NEW_HAMPSHIRE, "NH"),
+    (NEW_JERSEY, "NJ"),
+    (NEW_MEXICO, "NM"),
+    (NEW_YORK, "NY"),
+    (NORTH_CAROLINA, "NC"),
+    (NORTH_DAKOTA, "ND"),
+    (OHIO, "OH"),
+    (OREGON, "OR"),
+    (PENNSYLVANIA, "PA"),
+    (RHODE_ISLAND, "RI"),
+    (SOUTH_CAROLINA, "SC"),
+    (SOUTH_DAKOTA, "SD"),
+    (TENNESSEE, "TN"),
+    (TEXAS, "TX"),
+    (UTAH, "UT"),
+    (VERMONT, "VT"),
+    (VIRGINIA, "VA"),
+    (WASHINGTON, "WA"),
+    (WEST_VIRGINIA, "WV"),
+    (WISCONSIN, "WI"),
+    (WYOMING, "WY")
+]
+
 
 # Model for CheckBox
 AGREE = ((True, "Agree"), (False, "Disagree"))
@@ -373,10 +476,42 @@ class Application(models.Model):
         "Other", max_length=255, null=True, blank=True
     )
 
-    # Mailing Adress Adress Form
-    #mailing_address = where_did_you_hear_other = models.CharField(
-       # "What is your mailing address?", max_length=255, null=True, blank=True
-    #)
+     # Mailing Adress Adress Form
+    address1 = models.CharField(
+        "Address line 1",
+        max_length=1024,
+        blank=True,
+        null=True,
+    )
+
+    address2 = models.CharField(
+        "Address line 2",
+        max_length=1024,
+        blank=True,
+        null=True,
+    )
+
+    city = models.CharField(
+        "City",
+        max_length=1024,
+        blank=True,
+        null=True,
+    )
+
+    state = models.CharField(
+        "State",
+        max_length=2,
+        choices=STATES,
+        blank=True,
+        null=True,
+    )
+
+    zip_code = models.CharField(
+        "ZIP / Postal code",
+        max_length=12,
+        blank=True,
+        null=True,
+    )
 
     # Interested in Hacklahoma CheckBox
     interested_in_hacklahoma = models.BooleanField(
@@ -434,7 +569,5 @@ class Application(models.Model):
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 "us at team@hacklahoma.org. "
             )
-        if not self.phone_number.isnumeric():
-            raise exceptions.ValidationError("Phone number can only contain numbers.")
         if not self.num_hackathons_attended.isnumeric():
             raise exceptions.ValidationError("The number of hackathons can only contain numbers.")

@@ -92,6 +92,21 @@ class ApplicationModelForm(forms.ModelForm):
                     "placeholder": "ex. GitHub, Devpost, personal website, LinkedIn, etc."
                 }
             ),
+            "phone_number": forms.TextInput(
+                attrs={
+                    "placeholder": "(xxx) xxx-xxxx"
+                }
+            ),
+            "birthday": forms.TextInput(
+                attrs={
+                    "placeholder": "mm/dd/yyyy"
+                }
+            ),
+            "pronouns": forms.TextInput(
+                attrs={
+                    "placeholder": "ex: He/Him"
+                }
+            ),
         }
 
         fields = [
@@ -119,14 +134,18 @@ class ApplicationModelForm(forms.ModelForm):
             "question3",
             "where_did_you_hear",
             "where_did_you_hear_other",
+            "address1",
+            "address2",
+            "city",
+            "state",
+            "zip_code",
             "interested_in_hacklahoma",
             "mlh_authorize",
             "liability_waiver",
             "agree_to_coc",
             "photo_release",
             "is_adult",
-            "notes",
-            
+            "notes"  
         ]
 
         required = [
@@ -151,5 +170,5 @@ class ApplicationModelForm(forms.ModelForm):
             "liability_waiver",
             "agree_to_coc",
             "photo_release",
-            "is_adult",
+            "is_adult"
         ]
