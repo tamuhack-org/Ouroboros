@@ -482,7 +482,7 @@ class Application(models.Model):
         "Would you like to have swag and snacks shipped directly to you?",
         choices=AGREE,
         default=None,
-        help_text="Note: US residents only and must be participating in Hacklahoma"
+        help_text="Note: US residents only and must submit a project"
     )
 
      # Mailing Adress Adress Form
