@@ -44,6 +44,7 @@ class ApplicationModelForm(forms.ModelForm):
         self.fields['resume'].required = False
         self.fields['interested_in_hacklahoma'].required = False
         self.fields['mlh_authorize'].required = False
+        self.fields['shipping_address'].required = False
 
         # Set the fields that are required to required
         for field in self.Meta.required:
