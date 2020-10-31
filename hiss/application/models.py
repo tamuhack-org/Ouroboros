@@ -376,7 +376,7 @@ class Application(models.Model):
 
     # Email Character Field
     email = models.CharField(
-        max_length=255, blank=False, null=True, verbose_name="email address"
+        max_length=255, blank=False, null=True, verbose_name="email address", help_text="Please enter your school address ending in .edu to be considered. Contact us at team@hacklahoma.org for any exceptions."
     )
 
     # Phone Character Field
@@ -482,7 +482,7 @@ class Application(models.Model):
         "Would you like to have swag and snacks shipped directly to you?",
         choices=AGREE,
         default=None,
-        help_text="Note: US residents only and must be participating in Hacklahoma"
+        help_text="Note: US residents only and must submit a project"
     )
 
      # Mailing Adress Adress Form
