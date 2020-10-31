@@ -94,12 +94,12 @@ class ApplicationModelForm(forms.ModelForm):
             ),
             "phone_number": forms.TextInput(
                 attrs={
-                    "placeholder": "(xxx) xxx-xxxx"
+                    "placeholder": "xxxxxxxxxx"
                 }
             ),
             "birthday": forms.TextInput(
                 attrs={
-                    "placeholder": "mm/dd/yyyy"
+                    "placeholder": "mm/dd/yyyy or mm-dd-yyyy"
                 }
             ),
             "pronouns": forms.TextInput(

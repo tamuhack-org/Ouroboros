@@ -9,6 +9,7 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
 from multiselectfield import MultiSelectField
+import re
 
 
 class WaveManager(models.Manager):
@@ -558,8 +559,23 @@ class Application(models.Model):
     def get_absolute_url(self):
         return reverse_lazy("application:update", args=[self.id])
 
+    # Check the formatting of the birthday
+    def checkBirthday(self):
+        sb = re.split('/|-', self.birthday)
+        if not len(sb) == 3:
+            raise exceptions.ValidationError("Birthday is formatted wrong. Must be formatted mm/dd/yyyy or mm-dd-yyyy")
+        for item in sb:
+            for character in item:
+                if not character.isdigit():
+                    raise exceptions.ValidationError("Birthday is formatted wrong. Must be formatted mm/dd/yyyy or mm-dd-yyyy")
+        if not len(sb[2]) == 4:
+            raise exceptions.ValidationError("Birthday is formatted wrong. Must be formatted mm/dd/yyyy or mm-dd-yyyy")    
+
     def clean(self):
         super().clean()
+        
+        self.checkBirthday()
+        
         if not self.first_name.isalpha():
             raise exceptions.ValidationError("First name can only contain letters.")
         if not self.last_name.isalpha():
@@ -569,5 +585,7 @@ class Application(models.Model):
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 "us at team@hacklahoma.org. "
             )
+        if not self.phone_number.isnumeric():
+            raise exceptions.ValidationError("Please format your phone number to contain no spaces, dashes, or parenthesis.")
         if not self.num_hackathons_attended.isnumeric():
-            raise exceptions.ValidationError("The number of hackathons can only contain numbers.")
+            raise exceptions.ValidationError("Please enter a number for the number of hackathons.")
