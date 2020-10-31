@@ -93,9 +93,9 @@ class ApplicationModelForm(forms.ModelForm):
             "agree_to_coc": forms.CheckboxInput,
             "photo_release": forms.CheckboxInput,
             "shipping_address": forms.CheckboxInput,
-            "extra_links": forms.TextInput(
+            "social_links": forms.TextInput(
                 attrs={
-                    "placeholder": "ex. GitHub, Devpost, personal website, LinkedIn, etc."
+                    "placeholder": "ex: GitHub, Devpost, personal website, LinkedIn, etc."
                 }
             ),
             "phone_number": forms.TextInput(
