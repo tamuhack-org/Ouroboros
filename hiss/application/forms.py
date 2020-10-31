@@ -87,6 +87,7 @@ class ApplicationModelForm(forms.ModelForm):
             "is_adult": forms.CheckboxInput,
             "agree_to_coc": forms.CheckboxInput,
             "photo_release": forms.CheckboxInput,
+            "shipping_address": forms.CheckboxInput,
             "extra_links": forms.TextInput(
                 attrs={
                     "placeholder": "ex. GitHub, Devpost, personal website, LinkedIn, etc."
@@ -134,6 +135,7 @@ class ApplicationModelForm(forms.ModelForm):
             "question3",
             "where_did_you_hear",
             "where_did_you_hear_other",
+            "shipping_address",
             "address1",
             "address2",
             "city",
@@ -145,7 +147,7 @@ class ApplicationModelForm(forms.ModelForm):
             "agree_to_coc",
             "photo_release",
             "is_adult",
-            "notes"  
+            "notes"
         ]
 
         required = [

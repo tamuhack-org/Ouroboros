@@ -565,7 +565,6 @@ input[type="radio"]:checked::after {
     width: 20px;
 }
 
-
 input[type="checkbox"] {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -669,6 +668,7 @@ label {
 label[for="id_agree_to_coc"],
 label[for="id_is_adult"],
 label[for="id_interested_in_hacklahoma"],
+label[for="id_shipping_address"],
 label[for="id_mlh_authorize"],
 label[for="id_liability_waiver"],
 label[for="id_photo_release"] {
@@ -677,11 +677,13 @@ label[for="id_photo_release"] {
 }
 
 #id_agree_to_coc,
+#id_interested_in_hacklahoma,
 #id_is_adult {
     top: -35px;
 }
 
 #id_interested_in_hacklahoma,
+#id_shipping_address,
 #id_mlh_authorize,
 #id_liability_waiver,
 #id_photo_release {
@@ -784,6 +786,12 @@ button {
     margin: 0;
     float: left;
     margin-top: -12px;
+}
+
+.application p > #id_shipping_address {
+    margin: 0;
+    float: left;
+    margin-top: -12px;;
 }
 
 #id_shifts {
@@ -995,6 +1003,12 @@ button {
 
 @media only screen and (max-width: 390px ) {
     #id_interested_in_hacklahoma {
+        top: -53px;
+    }
+}
+
+@media only screen and (max-width: 390px ) {
+    #id_shipping_address {
         top: -53px;
     }
 }

@@ -477,6 +477,14 @@ class Application(models.Model):
         "Other", max_length=255, null=True, blank=True
     )
 
+    # Shipping Address "Label"
+    shipping_address = models.BooleanField(
+        "Would you like to have swag and snacks shipped directly to you?",
+        choices=AGREE,
+        default=None,
+        help_text="Note: US residents only and must be participating in Hacklahoma"
+    )
+
      # Mailing Adress Adress Form
     address1 = models.CharField(
         "Address line 1",
@@ -516,9 +524,9 @@ class Application(models.Model):
 
     # Interested in Hacklahoma CheckBox
     interested_in_hacklahoma = models.BooleanField(
-        "Are you interested in organizing the Hacklahoma 2022 event?", 
-        choices=AGREE, 
-        default=None, 
+        "Are you interested in organizing the Hacklahoma 2022 event?",
+        choices=AGREE,
+        default=None,
         help_text="We'll possibly reach out to you to join the executive team!"
     )
 
@@ -534,7 +542,7 @@ class Application(models.Model):
     # Photo Release
     photo_release = models.BooleanField(
         "I authorize Hacklahoma to release photos with me in it.",
-        choices=AGREE, 
+        choices=AGREE,
         default=None
     )
 
