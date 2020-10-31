@@ -37,7 +37,7 @@ $(function () {
     });
 
 
-    if (!$('#id_shipping_address').val()) {
+    if (!$('#id_shipping_address')[0].checked) {
         $('#id_address1').parent().hide();
         $('#id_address2').parent().hide();
         $('#id_city').parent().hide();
@@ -45,8 +45,7 @@ $(function () {
         $('#id_zip_code').parent().hide();
     }
     $('#id_shipping_address').on('change', function () {
-        console.log($('#id_shipping_address').val());
-        if ($('#id_shipping_address').val()) {
+        if ($('#id_shipping_address')[0].checked) {
             $('#id_address1').parent().show();
             $('#id_address2').parent().show();
             $('#id_city').parent().show();
