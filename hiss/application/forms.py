@@ -30,11 +30,15 @@ class ApplicationModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["liability_waiver"].label = mark_safe(
-            'I agree to the terms in the <a target="_blank" href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">Liability Waiver</a>.'
+            'I agree to the terms in the <a target="_blank" href="https://2021.hacklahoma.org/release_of_liability.pdf">Liability Waiver</a>.'
         )
 
         self.fields["agree_to_coc"].label = mark_safe(
             'I agree to the <a target="_blank" href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>.'
+        )
+
+        self.fields["photo_release"].label = mark_safe(
+            'I agree to the terms in the <a target="_blank" href="https://2021.hacklahoma.org/photo_release.pdf">Photo Release</a>.'
         )
 
         # Remove the colons
