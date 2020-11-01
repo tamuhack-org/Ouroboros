@@ -455,6 +455,7 @@ class Application(models.Model):
         "Point us to any social links you'd like us to look at while considering your application",
         max_length=200,
         blank=True,
+        help_text="Please separate links with a comma."
     )
 
     # Number of Hackathons Integer Field
