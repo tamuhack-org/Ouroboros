@@ -1,21 +1,20 @@
 <html>
 <style>
-    .container {
-        min-width: 250px;
-        width: 100vw;
-        height: 100vh;
-        background-color: #FFF8E8;
-        z-index: 0;
-        top: 0;
-        position: absolute;
+    .button:hover {
+        background: #FC801A;
     }
+</style>
+<div class="container" style="
+    min-width: 250px;
+    width: 100vw;
+    height: 100vh;
+    background-color: #FFF8E8;
+    z-index: 0;
+    top: 0;
+    position: absolute;
+">
 
-    * {
-        padding: 0;
-        margin: 0;
-    }
-
-    .box {
+    <div class="box" style="
         z-index: 1;
         font-family: Questrial, sans-serif;
         background: #fff;
@@ -25,48 +24,14 @@
         display: block;
         margin: 100px auto;
         max-width: 600px;
-    }
+    ">
 
-    .logo {
-        height: 100px;
-        margin-left: 50%;
-        margin-bottom: 40px;
-        transform: translateX(-50%);
-    }
-
-    .content {
-        text-align: center;
-        font-size: 1.2em;
-    }
-
-    .link {
-        width:fit-content;
-        color: white;
-        text-decoration: none;
-        display: block;
-        margin: 25px 0 25px 50%;
-        transform: translateX(-50%);
-        width: 120px;
-    }
-    
-    .button:hover {
-        background: #FC801A;
-    }
-    
-    .button {
-        background: #FE8826;
-        padding: 15px 0;
-        border-radius: 0.25rem;
-        width: min-content;
-        display: block;
-        width: 120px;
-    }
-</style>
-<div class="container">
-
-    <div class="box">
-
-        <svg class="logo" width="192px" height="192px" viewBox="0 0 192 192" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <svg style="
+            height: 100px;
+            margin-left: 50%;
+            margin-bottom: 40px;
+            transform: translateX(-50%);
+        " class="logo" width="192px" height="192px" viewBox="0 0 192 192" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <title>Artboard</title>
             <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                 <g id="logo" transform="translate(0.000000, -0.000000)" fill-rule="nonzero">
@@ -95,11 +60,26 @@
             </g>
         </svg>
 
-        <div class="content">
+        <div class="content" style="text-align: center; font-size: 1.2em;">
             {% autoescape off %}
             Thanks for signing up! Please click the button below to verify your account.
-            <a class="link" href="https://{{ domain }}{% url 'customauth:activate' uidb64=uid token=token %}">
-                <div class="button">
+            <a class="link" style="
+                width:fit-content;
+                color: white;
+                text-decoration: none;
+                display: block;
+                margin: 25px 0 25px 50%;
+                transform: translateX(-50%);
+                width: 120px;
+            " href="https://{{ domain }}{% url 'customauth:activate' uidb64=uid token=token %}">
+                <div class="button" style="
+                    background: #FE8826;
+                    padding: 15px 0;
+                    border-radius: 0.25rem;
+                    width: min-content;
+                    display: block;
+                    width: 120px;"
+                >
                     VERIFY
                 </div>
             </a>
