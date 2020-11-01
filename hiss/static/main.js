@@ -1,4 +1,7 @@
-$(function() {
+$(document).ready(function() {
+    const optionalQuestionsStyle = "color:#4286f3; padding: 2em 0em 1em 0em;";
+    const optionalQuestionsText = "The following questions are optional. Scroll down to submit your application, or continue to help us improve the event!"
+    const optionalQuestionsNode = `<h6 style="${optionalQuestionsStyle}">${optionalQuestionsText}</br></h6>`
     if (!$('#id_race input[value="O"]')[0].checked) {
         $('#id_race_other').parent().hide();
     }
