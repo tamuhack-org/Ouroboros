@@ -62,7 +62,7 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 
 We also have a staging environment Github Action workflow. To run this, simply create another heroku app, set `HEROKU_APP_NAME` in `.github/workflows/staging.yml` to the name of the heroku app, and push to a non-protected branch.
 
-In order for the staging environment to work, you must connect a [Heroku Postgre](https://www.heroku.com/postgres) instance to the app. Anytime you change models or forms and make a new migration, you must manually sync the database in the heroku console. 
+In order for the staging environment to work, you must connect a [Heroku Postgres](https://www.heroku.com/postgres) instance to the app. Anytime you change models or forms and make a new migration, you must manually sync the database in the heroku console. 
 
 To do this, push to the staging environment, open the Heroku bash shell, and run the following command:
 ```
