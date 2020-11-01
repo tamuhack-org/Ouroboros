@@ -375,7 +375,7 @@ class Application(models.Model):
     )
 
     # Email Character Field
-    email = models.CharField(
+    school_email = models.CharField(
         max_length=255, blank=False, null=True, verbose_name="email address", help_text="Please enter your school address ending in .edu to be considered. Contact us at team@hacklahoma.org for any exceptions."
     )
 

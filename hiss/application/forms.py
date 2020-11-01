@@ -114,7 +114,7 @@ class ApplicationModelForm(forms.ModelForm):
         fields = [
             "first_name",
             "last_name",
-            "email",
+            "school_email",
             "phone_number",
             "school",
             "school_other",
@@ -154,7 +154,7 @@ class ApplicationModelForm(forms.ModelForm):
         required = [
             "first_name",
             "last_name",
-            "email",
+            "school_email",
             "phone_number",
             "school",
             "birthday",
