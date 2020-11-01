@@ -278,7 +278,7 @@ PURPOSE_RECRUITING = "R"
 PURPOSE_MESS_AROUND = "M"
 """The user wants to use this hackathon as an excuse to mess around and get some swag"""
 
-PURPOSE_OPTIONS: List[Tuple[str, str]] = [
+PURPOSE_OPTIONS = [
     (PURPOSE_WIN, "I want to win!"),
     (PURPOSE_LEARN, "I want to learn something new!"),
     (PURPOSE_WORKSHOP, "I just want to attend all the workshops"),
