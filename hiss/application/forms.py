@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.safestring import mark_safe
 
-from application import models as application_models, models
+from application import models as application_models
 from application.models import School
 
 
@@ -90,6 +90,10 @@ class ApplicationModelForm(forms.ModelForm):
             "race",
             "race_other",
             "num_hackathons_attended",
+            "technology_experience",
+            "has_team",
+            "wants_team",
+            "hackathon_purpose",
             "shirt_size",
             "resume",
             "extra_links",

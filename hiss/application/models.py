@@ -262,6 +262,87 @@ STATUS_OPTIONS = [
     (STATUS_EXPIRED, "Expired"),
 ]
 
+# Languages
+PYTHON = "Python"
+JAVA_SCRIPT = "JavaScript"
+TYPE_SCRIPT = "TypeScript"
+JAVA = "Java"
+C_SHARP = "C#"
+C_LANG = "C"
+CPP = "C++"
+GOLANG = "Go"
+R_LANG = "R"
+SWIFT = "Swift"
+DART = "Dart"
+KOTLIN = "Kotlin"
+RUBY = "Ruby"
+RUST = "Rust"
+SCALA = "Scala"
+# Concepts
+MACHINE_LEARNING = "ML"
+FULL_STACK = "full-stack"
+FRONT_END = "front-end"
+BACK_END = "back-end"
+WEB = "web-dev"
+MOBILE = "mobile-dev"
+DESIGN = "design"
+DATA_SCIENCE = "data-science"
+DEV_OPS = "dev-ops"
+CLOUD = "cloud"
+
+TECHNOLOGY_EXPERIENCE = (
+    (NO_ANSWER, "None"),
+    (PYTHON, "Python"),
+    (JAVA_SCRIPT, "JavaScript"),
+    (TYPE_SCRIPT, "TypeScript"),
+    (JAVA, "Java"),
+    (C_SHARP, "C#"),
+    (C_LANG, "C"),
+    (CPP, "C++"),
+    (GOLANG, "Golang"),
+    (R_LANG, "R"),
+    (SWIFT, "Swift"),
+    (DART, "Dart"),
+    (KOTLIN, "Kotlin"),
+    (RUBY, "Ruby"),
+    (RUST, "Rust"),
+    (SCALA, "Scala"),
+    (FULL_STACK, "Full Stack"),
+    (FRONT_END, "Front End Development"),
+    (BACK_END, "Back End Development"),
+    (WEB, "Web Development"),
+    (MOBILE, "Mobile Development"),
+    (DESIGN, "Design"),
+    (DEV_OPS, "Dev Ops"),
+    (CLOUD, "Cloud Services (AWS / Azure / Google Cloud)"),
+)
+
+PURPOSE_WIN = "W"
+"""The user wants to win this freaking hackathon"""
+
+PURPOSE_LEARN = "L"
+"""The user wants to use this hackathon to learn something"""
+
+PURPOSE_WORKSHOP = "WR"
+"""The user wants to use this hackathon for all it's great workshops"""
+
+PURPOSE_RECRUITING = "R"
+"""The user wants to use this hackathon to get a job or internship"""
+
+PURPOSE_MESS_AROUND = "M"
+"""The user wants to use this hackathon as an excuse to mess around and get some swag"""
+
+PURPOSE_OPTIONS: List[Tuple[str, str]] = [
+    (PURPOSE_WIN, "I want to win!"),
+    (PURPOSE_LEARN, "I want to learn something new!"),
+    (PURPOSE_WORKSHOP, "I just want to attend all the workshops"),
+    (
+        PURPOSE_RECRUITING,
+        "I literally signed up to talk to the awesome sponsors and get a job",
+    ),
+    (PURPOSE_MESS_AROUND, "I want to just mess around on the Minecraft server!"),
+]
+
 
 def uuid_generator(_instance, filename: str):
     ext = filename.split(".")[-1]
@@ -371,6 +452,29 @@ class Application(models.Model):
     dietary_restrictions = models.ManyToManyField(DietaryRestriction, blank=True)
     dietary_restrictions_other = models.CharField(
         "Self-describe", max_length=255, null=True, blank=True
+    )
+
+    # SKILLS
+    technology_experience = models.MultipleChoiceField(
+        label="What technical skills do you have?",
+        choices=TECHNOLOGY_EXPERIENCE,
+        required=True,
+    )
+
+    # TEAM MATCHING INFO
+    has_team = models.BooleanField(
+        "I have a team already",
+        default=True,
+    )
+    wants_team = models.BooleanField(
+        "I would like to be paired with a hand-crafted team",
+        default=False,
+        help_text="We will take into account many factors to make sure you are paired with a team that works well.",
+    )
+    hackathon_purpose = models.CharField(
+        "What is your main purpose for registering for this event?",
+        chioces=PURPOSE_OPTIONS,
+        max_length=2,
     )
 
     # CONFIRMATION DEADLINE
