@@ -36,4 +36,7 @@ $(function() {
              $('#id_school_other').parent().hide();
          }
     });
+    // Custom styling for multi-select inputs.
+    // Reference: https://select2.org/getting-started/basic-usage
+    $('#id_technology_experience').select2();
 })
