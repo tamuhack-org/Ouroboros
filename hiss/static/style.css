@@ -374,6 +374,10 @@ input[type="submit"] {
     content: " ";
 }
 
+.application p #id_technology_experience {
+    height: 110px;
+}
+
 .rsvp-response-btn{
     display: inline-block;
     margin: 0 10px;

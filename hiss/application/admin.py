@@ -190,6 +190,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "classification",
         "grad_year",
         "num_hackathons_attended",
+        "technology_experience",
         "extra_links",
         "question1",
         "question2",
@@ -204,11 +205,9 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("gender", ChoiceDropdownFilter),
         ("grad_year", ChoiceDropdownFilter),
         ("num_hackathons_attended", ChoiceDropdownFilter),
+        ("technology_experience", ChoiceDropdownFilter),
         ("shirt_size", ChoiceDropdownFilter),
-        ("transport_needed", ChoiceDropdownFilter),
-        ("dietary_restrictions", ChoiceDropdownFilter),
         ("datetime_submitted", DateRangeFilter),
-        ("travel_reimbursement", DropdownFilter),
         RaceFilter,
     )
     list_display = (
@@ -252,6 +251,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "race_other",
                     "grad_year",
                     "num_hackathons_attended",
+                    "technology_experience",
                 ]
             },
         ),
@@ -260,10 +260,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             {
                 "fields": [
                     "shirt_size",
-                    "transport_needed",
-                    "travel_reimbursement",
                     "additional_accommodations",
-                    "dietary_restrictions",
                 ]
             },
         ),

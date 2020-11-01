@@ -400,6 +400,8 @@ class Application(models.Model):
         "Self-describe", max_length=255, null=True, blank=True
     )
 
+    technology_experience = models.CharField(max_length=150, default=None)
+
     # TEAM MATCHING INFO
     has_team = models.BooleanField(
         "I have a team already",
