@@ -413,7 +413,7 @@ class Application(models.Model):
     hackathon_purpose = models.CharField(
         "What is your main purpose for registering for this event?",
         chioces=PURPOSE_OPTIONS,
-        max_length=2,
+        max_length=16,
     )
 
     # CONFIRMATION DEADLINE
