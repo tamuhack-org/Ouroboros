@@ -23,6 +23,68 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
 
+    # Languages
+    PYTHON = "Python"
+    JAVA_SCRIPT = "JavaScript"
+    TYPE_SCRIPT = "TypeScript"
+    JAVA = "Java"
+    C_SHARP = "C#"
+    C_LANG = "C"
+    CPP = "C++"
+    GOLANG = "Go"
+    R_LANG = "R"
+    SWIFT = "Swift"
+    DART = "Dart"
+    KOTLIN = "Kotlin"
+    RUBY = "Ruby"
+    RUST = "Rust"
+    SCALA = "Scala"
+    # Concepts
+    MACHINE_LEARNING = "ML"
+    FULL_STACK = "full-stack"
+    FRONT_END = "front-end"
+    BACK_END = "back-end"
+    WEB = "web-dev"
+    MOBILE = "mobile-dev"
+    DESIGN = "design"
+    DATA_SCIENCE = "data-science"
+    DEV_OPS = "dev-ops"
+    CLOUD = "cloud"
+    NO_ANSWER = "NA"
+
+    TECHNOLOGY_EXPERIENCE = (
+        (NO_ANSWER, "None"),
+        (PYTHON, "Python"),
+        (JAVA_SCRIPT, "JavaScript"),
+        (TYPE_SCRIPT, "TypeScript"),
+        (JAVA, "Java"),
+        (C_SHARP, "C#"),
+        (C_LANG, "C"),
+        (CPP, "C++"),
+        (GOLANG, "Golang"),
+        (R_LANG, "R"),
+        (SWIFT, "Swift"),
+        (DART, "Dart"),
+        (KOTLIN, "Kotlin"),
+        (RUBY, "Ruby"),
+        (RUST, "Rust"),
+        (SCALA, "Scala"),
+        (FULL_STACK, "Full Stack"),
+        (FRONT_END, "Front End Development"),
+        (BACK_END, "Back End Development"),
+        (WEB, "Web Development"),
+        (MOBILE, "Mobile Development"),
+        (DESIGN, "Design"),
+        (DEV_OPS, "Dev Ops"),
+        (CLOUD, "Cloud Services (AWS / Azure / Google Cloud)"),
+    )
+    # SKILLS
+    technology_experience = forms.MultipleChoiceField(
+        label="What technical skills do you have?",
+        choices=TECHNOLOGY_EXPERIENCE,
+        required=True,
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["agree_to_coc"].label = mark_safe(
