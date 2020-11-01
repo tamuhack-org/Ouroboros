@@ -58,6 +58,17 @@ To use it, simply replace the values in `docker-compose.prod.yml` with the value
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 ```
 
+### Staging Environment
+
+We also have a staging environment Github Action workflow. To run this, simply create another heroku app, set `HEROKU_APP_NAME` in `.github/workflows/staging.yml` to the name of the heroku app, and push to a non-protected branch.
+
+In order for the staging environment to work, you must connect a [Heroku Postgre](https://www.heroku.com/postgres) instance to the app. Anytime you change models or forms and make a new migration, you must manually sync the database in the heroku console. 
+
+To do this, push to the staging environment, open the Heroku bash shell, and run the following command:
+```
+python3 manage.py migrate --run-syncdb
+```
+
 # Contributing
 
 Install [Poetry](https://python-poetry.org/docs/#installation). Once installed, navigate to the root of the project and run the following:
