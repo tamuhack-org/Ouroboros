@@ -375,7 +375,7 @@ class Application(models.Model):
     )
 
     # Email Character Field
-    email = models.CharField(
+    school_email = models.CharField(
         max_length=255, 
         blank=False, 
         null=True, 
