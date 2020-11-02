@@ -4,7 +4,7 @@ from typing import Optional, List, Tuple
 
 from django.conf import settings
 from django.core import exceptions
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, RegexValidator
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -375,8 +375,13 @@ class Application(models.Model):
     )
 
     # Email Character Field
-    school_email = models.CharField(
-        max_length=255, blank=False, null=True, verbose_name="email address", help_text="Please enter your school address ending in .edu to be considered. Contact us at team@hacklahoma.org for any exceptions."
+    email = models.CharField(
+        max_length=255, 
+        blank=False, 
+        null=True, 
+        verbose_name="email address", 
+        help_text="Please enter your school address ending in .edu to be considered. Contact us at team@hacklahoma.org for any exceptions.",
+        validators=[RegexValidator(regex="^([a-z0-9_\.-]+\@[\da-z\.-]+\.edu)$", message="Enter a valid email address ending in .edu")]
     )
 
     # Phone Character Field
