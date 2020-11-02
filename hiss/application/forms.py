@@ -100,7 +100,7 @@ class ApplicationModelForm(forms.ModelForm):
             ),
             "phone_number": forms.TextInput(
                 attrs={
-                    "placeholder": "xxxxxxxxxx"
+                    "placeholder": "xxxxxxxxxxx"
                 }
             ),
             "birthday": forms.TextInput(
