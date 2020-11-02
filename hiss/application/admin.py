@@ -126,7 +126,6 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
             "last_name",
             "email",
             "school",
-            "grad_year",
             "major",
         ]
     )
@@ -138,7 +137,6 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
                 instance.last_name,
                 instance.user.email,
                 instance.school,
-                instance.grad_year,
                 instance.major,
             ]
         )
@@ -175,12 +173,12 @@ class ApplicationAdmin(admin.ModelAdmin):
         "datetime_submitted",
         "user",
         "is_a_walk_in",
+        "user_email",
     ]
     list_filter = (
-        #("school", RelatedOnlyFieldListFilter),
+        ("school", RelatedOnlyFieldListFilter),
         ("status", ChoiceDropdownFilter),
         #("gender", ChoiceDropdownFilter),
-        #("grad_year", ChoiceDropdownFilter),
         #("num_hackathons_attended", ChoiceDropdownFilter),
         #("datetime_submitted", DateRangeFilter),
         #RaceFilter,
@@ -188,10 +186,9 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_display = (
         "first_name",
         "last_name",
-        #"school",
+        "school",
         "user_email",
         "datetime_submitted",
-        #"grad_year",
         "status",
     )
     fieldsets = [
@@ -203,7 +200,10 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "first_name",
                     "last_name",
-                    
+                    "school_email",
+                    "phone_number",
+                    "birthday",
+                    "social_links",
                     "question1",
                     "question2",
                     "question3",
@@ -217,12 +217,14 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "school",
                     "school_other",
-                    "major",
                     "gender",
                     "gender_other",
+                    "pronouns",
                     "race",
                     "race_other",
-                    "grad_year",
+                    "level_of_study",
+                    "graduation_year",
+                    "major",
                     "num_hackathons_attended",
                 ]
             },
@@ -232,6 +234,15 @@ class ApplicationAdmin(admin.ModelAdmin):
             {
                 "fields": [
                     "shirt_size",
+                    "where_did_you_hear",
+                    "where_did_you_hear_other",
+                    "shipping_address",
+                    "address1",
+                    "address2",
+                    "city",
+                    "state",
+                    "zip_code",
+                    "interested_in_hacklahoma",
                 ]
             },
         ),
