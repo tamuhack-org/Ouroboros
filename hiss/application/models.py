@@ -299,7 +299,7 @@ PURPOSE_OPTIONS = [
     (PURPOSE_WORKSHOP, "I just want to attend all the workshops"),
     (
         PURPOSE_RECRUITING,
-        "I literally signed up to talk to the awesome sponsors and get a job",
+        "I just want to talk to the awesome sponsors and get a job",
     ),
     (PURPOSE_MESS_AROUND, "I want to just mess around on the Minecraft server!"),
 ]
