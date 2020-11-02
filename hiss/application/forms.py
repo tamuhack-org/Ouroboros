@@ -52,10 +52,8 @@ class ApplicationModelForm(forms.ModelForm):
     DATA_SCIENCE = "data-science"
     DEV_OPS = "dev-ops"
     CLOUD = "cloud"
-    NO_ANSWER = "NA"
 
     TECHNOLOGY_EXPERIENCE = (
-        (NO_ANSWER, "None"),
         (PYTHON, "Python"),
         (JAVA_SCRIPT, "JavaScript"),
         (TYPE_SCRIPT, "TypeScript"),
@@ -78,7 +76,9 @@ class ApplicationModelForm(forms.ModelForm):
         (MOBILE, "Mobile"),
         (DESIGN, "Design"),
         (DEV_OPS, "Dev Ops"),
-        (CLOUD, "Cloud Services (AWS / Azure / Google Cloud)"),
+        (CLOUD, "Cloud (AWS, etc.)"),
+        (DATA_SCIENCE, "Data Science"),
+        (MACHINE_LEARNING, "Machine Learning"),
     )
     # SKILLS
     technology_experience = forms.MultipleChoiceField(
