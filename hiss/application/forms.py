@@ -8,6 +8,9 @@ from application.models import School
 
 
 class ApplicationModelForm(forms.ModelForm):
+
+    required_css_class = "required-form-input"
+
     gender_other = forms.CharField(
         label='If you chose "Prefer to self-describe", please elaborate.',
         required=False,
@@ -83,8 +86,9 @@ class ApplicationModelForm(forms.ModelForm):
     # SKILLS
     technology_experience = forms.MultipleChoiceField(
         label="What technical skills do you have?",
+        help_text="Select all that apply",
         choices=TECHNOLOGY_EXPERIENCE,
-        required=True,
+        required=False,
     )
 
     def __init__(self, *args, **kwargs):
