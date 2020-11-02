@@ -262,6 +262,21 @@ STATUS_OPTIONS = [
     (STATUS_EXPIRED, "Expired"),
 ]
 
+HAS_TEAM = "HT"
+HAS_NO_TEAM = "HNT"
+
+HAS_TEAM_OPTIONS = [
+    (HAS_TEAM, "I do have a team"),
+    (HAS_NO_TEAM, "I do not have a team"),
+]
+
+WANTS_TEAM = "WT"
+DOESNT_WANT_TEAM = "DWT"
+
+WANTS_TEAM_OPTIONS = [
+    (WANTS_TEAM, "I would like you to make me a team"),
+    (DOESNT_WANT_TEAM, "I would not like for you to make me a team"),
+]
 
 PURPOSE_WIN = "W"
 """The user wants to win this freaking hackathon"""
@@ -403,19 +418,23 @@ class Application(models.Model):
     technology_experience = models.CharField(max_length=150, default=None)
 
     # TEAM MATCHING INFO
-    has_team = models.BooleanField(
-        "I have a team already",
-        default=True,
+    has_team = models.CharField(
+        "Do you have a team yet?",
+        choices=HAS_TEAM_OPTIONS,
+        default=HAS_TEAM_OPTIONS[1],
+        max_length=16,
     )
-    wants_team = models.BooleanField(
-        "I would like to be paired with a hand-crafted team",
-        default=False,
-        help_text="We will take into account many factors to make sure you are paired with a team that works well.",
+    wants_team = models.CharField(
+        "Would you like to be paired with a hand-crafted team",
+        choices=WANTS_TEAM_OPTIONS,
+        default=WANTS_TEAM_OPTIONS[0],
+        help_text="We will take into account many factors to make sure you are paired with a team that works well",
+        max_length=16,
     )
     hackathon_purpose = models.CharField(
         "What is your main purpose for registering for this event?",
         choices=PURPOSE_OPTIONS,
-        default=PURPOSE_RECRUITING,
+        default="",
         max_length=16,
     )
 
