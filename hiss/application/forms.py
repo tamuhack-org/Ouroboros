@@ -89,7 +89,7 @@ class ApplicationModelForm(forms.ModelForm):
             "interested_in_hacklahoma": forms.CheckboxInput,
             "mlh_authorize": forms.CheckboxInput,
             "liability_waiver": forms.CheckboxInput,
-            "is_adult": forms.CheckboxInput,
+            # "is_adult": forms.CheckboxInput,
             "agree_to_coc": forms.CheckboxInput,
             "photo_release": forms.CheckboxInput,
             "shipping_address": forms.CheckboxInput,
@@ -151,7 +151,7 @@ class ApplicationModelForm(forms.ModelForm):
             "liability_waiver",
             "agree_to_coc",
             "photo_release",
-            "is_adult",
+            # "is_adult",
             "notes"
         ]
 
@@ -177,5 +177,5 @@ class ApplicationModelForm(forms.ModelForm):
             "liability_waiver",
             "agree_to_coc",
             "photo_release",
-            "is_adult"
+            # "is_adult"
         ]

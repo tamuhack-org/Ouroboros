@@ -553,11 +553,11 @@ class Application(models.Model):
     )
 
     # Over 18 CheckBox
-    is_adult = models.BooleanField(
-        "I confirm I am 18 years or older.",
-        choices=AGREE,
-        default=None,
-    )
+    # is_adult = models.BooleanField(
+    #     "I confirm I am 18 years or older.",
+    #     choices=AGREE,
+    #     default=None,
+    # )
 
     # Addtion Notes Text Field
     notes = models.TextField(
@@ -594,11 +594,11 @@ class Application(models.Model):
             raise exceptions.ValidationError("First name can only contain letters.")
         if not self.last_name.isalpha():
             raise exceptions.ValidationError("Last name can only contain letters.")
-        if not self.is_adult:
-            raise exceptions.ValidationError(
-                "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
-                "us at team@hacklahoma.org. "
-            )
+        # if not self.is_adult:
+        #     raise exceptions.ValidationError(
+        #         "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
+        #         "us at team@hacklahoma.org. "
+        #     )
         if not self.phone_number.isnumeric():
             raise exceptions.ValidationError("Please format your phone number to contain no spaces, dashes, or parenthesis.")
         if not self.num_hackathons_attended.isnumeric():
