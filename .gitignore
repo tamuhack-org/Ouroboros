@@ -4,6 +4,8 @@
 .vscode
 *.iml
 
+docker-compose.prod.yml
+
 # Code Coverage
 htmlcov/
 .coverage
