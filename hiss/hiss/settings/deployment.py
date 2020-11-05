@@ -40,7 +40,6 @@ MEDIA_ROOT = "/resumes"
 MEDIA_URL = "https://register.hacklahoma.org/resumes/"
 
 # Storing media (resumes) to dropbox
-INSTALLED_APPS += ( 'storages', )
 DEFAULT_FILE_STORAGE = "storages.backends.dropbox.DropBoxStorage"
 DROPBOX_OAUTH2_TOKEN = os.getenv("DROPBOX_TOKEN")
 DROPBOX_ROOT_PATH = "/resumes-2021"

@@ -13,6 +13,6 @@ services:
       DATABASE_URL: postgres://postgres:dev_password@db:5432/hiss
       MAILGUN_API_KEY: "MAILGUN_API_KEY"
       SECRET_KEY: "SOME_SECRET_STRING"
-      DROPBOX_TOKEN: "DROPBOX_TOKEN"
+      DROPBOX_TOKEN: "sl.AkvLhXTPfz-RHTBESsfIjuCUzC57Vic_gepH6DAMGFsLSHW4sCXb4ouG-N-4HJ2OJafvHSa5M9r97oY5JoJzRs5YkgIjKAm9GzwFFVUZaSCgK3Fs_nnRp8F4zrERV1FZpZy8-bQ"
     expose:
       - 8000
