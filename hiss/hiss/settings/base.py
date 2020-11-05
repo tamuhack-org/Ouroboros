@@ -14,6 +14,8 @@ import os
 
 from django.urls import reverse_lazy
 import dj_database_url
+from .base import *
+from .customization import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -100,6 +102,7 @@ USE_TZ = True
 
 MEDIA_ROOT = "resumes/"
 MEDIA_URL = "/resumes/"
+
 MAX_UPLOAD_SIZE = "10485760"
 
 # See https://docs.djangoproject.com/en/1.11/ref/settings/#data-upload-max-number-fields. Important for exporting
