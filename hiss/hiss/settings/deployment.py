@@ -36,8 +36,8 @@ ANYMAIL = {
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = "team@hacklahoma.org (Hacklahoma Team)"
 
-#MEDIA_ROOT = "/resumes"
-#MEDIA_URL = "https://register.hacklahoma.org/resumes/"
+MEDIA_ROOT = "/resumes"
+MEDIA_URL = "https://register.hacklahoma.org/resumes/"
 
 # Storing media (resumes) to dropbox
 DEFAULT_FILE_STORAGE = "storages.backends.dropbox.DropBoxStorage"
