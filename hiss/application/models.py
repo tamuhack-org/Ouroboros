@@ -397,7 +397,7 @@ class Application(models.Model):
     shirt_size = models.CharField(
         "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
     )
-    address = AddressField(on_delete=models.CASCADE)
+    address = AddressField(on_delete=models.CASCADE, default=None)
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
         max_length=500,
