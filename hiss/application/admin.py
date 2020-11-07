@@ -192,6 +192,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "num_hackathons_attended",
         "technology_experience",
         "extra_links",
+        "address",
         "question1",
         "question2",
         "question3",
@@ -261,6 +262,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "shirt_size",
                     "additional_accommodations",
+                    "admin",
                 ]
             },
         ),
