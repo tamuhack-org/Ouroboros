@@ -28,6 +28,9 @@ from application.models import (
 )
 from shared.admin_functions import send_mass_html_mail
 
+from address.forms import AddressWidget
+from address.models import AddressField
+
 
 class ApplicationAdminForm(forms.ModelForm):
     class Meta:
@@ -269,6 +272,15 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
         ("Miscellaneous", {"fields": ["notes"]}),
     ]
+    formfield_overrides = {
+        AddressField: {
+            'widget': AddressWidget(
+                attrs={
+                    'style': 'width: 300px;'
+                }
+            )
+        }
+    }
     list_per_page = 2000
 
     approve.short_description = "Approve Selected Applications"

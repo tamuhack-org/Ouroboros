@@ -27,7 +27,7 @@ BASE_PATHNAME_REGEX = BASE_PATHNAME + r"/$"
 if len(BASE_PATHNAME) > 0:
     BASE_PATHNAME += "/"
 
-GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 
 # Application definition
 INSTALLED_APPS = [
