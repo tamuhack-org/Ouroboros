@@ -262,7 +262,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "shirt_size",
                     "additional_accommodations",
-                    "admin",
+                    "address",
                 ]
             },
         ),
