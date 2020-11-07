@@ -6,6 +6,8 @@ from django.utils.safestring import mark_safe
 from application import models as application_models
 from application.models import School
 
+from address.forms import AddressField
+
 
 class ApplicationModelForm(forms.ModelForm):
 
@@ -90,6 +92,7 @@ class ApplicationModelForm(forms.ModelForm):
         choices=TECHNOLOGY_EXPERIENCE,
         required=False,
     )
+    address = AddressField()
 
     def __init__(self, *args, **kwargs):
         if kwargs.get("instance"):
