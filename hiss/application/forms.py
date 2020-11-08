@@ -93,7 +93,10 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
     
-    address = AddressField(help_text="We will use your address for swag and prizes",required=False)
+    address = AddressField(
+        help_text="We will use your address for swag and prizes",
+        required=False
+    )
 
     def __init__(self, *args, **kwargs):
         if kwargs.get("instance"):
