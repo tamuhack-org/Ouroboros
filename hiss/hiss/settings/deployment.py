@@ -42,4 +42,4 @@ DEFAULT_FROM_EMAIL = "team@hacklahoma.org (Hacklahoma Team)"
 # Storing media (resumes) to dropbox
 DEFAULT_FILE_STORAGE = "storages.backends.dropbox.DropBoxStorage"
 DROPBOX_OAUTH2_TOKEN = os.getenv("DROPBOX_TOKEN")
-DROPBOX_ROOT_PATH = "/"
+DROPBOX_ROOT_PATH = "/resumes-2021"
