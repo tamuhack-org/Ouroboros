@@ -9,7 +9,6 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
 from multiselectfield import MultiSelectField
-from storages.backends.dropbox import DropBoxStorage
 import re
 
 
@@ -452,7 +451,6 @@ class Application(models.Model):
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         upload_to=uuid_generator, 
-        storage=DropBoxStorage(),
         null=True,
         blank=True
     )
