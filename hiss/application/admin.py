@@ -39,7 +39,7 @@ class ApplicationAdminForm(forms.ModelForm):
             "status": forms.RadioSelect,
         }
 
-
+# Build the approval email from the template
 def build_approval_email(
     application: Application, confirmation_deadline: timezone.datetime
 ) -> Tuple[str, str, str, None, List[str]]:
