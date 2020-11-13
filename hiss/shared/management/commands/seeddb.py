@@ -104,7 +104,6 @@ class Command(base.BaseCommand):
                     race=[random.choice(RACES[1:])[0]],
                     classification=random.choice(CLASSIFICATIONS[1:])[0],
                     gender=random.choice(GENDERS[1:])[0],
-                    transport_needed=random.choice(TRANSPORT_MODES[1:])[0],
                     grad_year=random.choice(GRAD_YEARS[1:])[0],
                     num_hackathons_attended=random.choice(HACKATHON_TIMES[1:])[0],
                     extra_links="a",

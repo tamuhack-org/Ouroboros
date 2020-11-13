@@ -51,7 +51,6 @@ class SharedTestCase(test.TestCase):
             "shirt_size": application_models.WOMENS_XXS,
             "major": "Computer Science",
             "school": self.first_school,
-            "transport_needed": application_models.MANUAL_POWER,
             "gender": application_models.FEMALE,
             "classification": application_models.FRESHMAN,
             "grad_year": timezone.now().year + 1,
