@@ -14,7 +14,6 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from django_admin_listfilter_dropdown.filters import (
     ChoiceDropdownFilter,
-    DropdownFilter,
 )
 from rangefilter.filter import DateRangeFilter
 
@@ -273,13 +272,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("Miscellaneous", {"fields": ["notes"]}),
     ]
     formfield_overrides = {
-        AddressField: {
-            'widget': AddressWidget(
-                attrs={
-                    'style': 'width: 300px;'
-                }
-            )
-        }
+        AddressField: {"widget": AddressWidget(attrs={"style": "width: 300px;"})}
     }
     list_per_page = 2000
 
