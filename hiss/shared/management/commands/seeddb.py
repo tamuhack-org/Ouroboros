@@ -12,7 +12,6 @@ from application.models import (
     GRAD_YEARS,
     Wave,
     GENDERS,
-    TRANSPORT_MODES,
     STATUS_PENDING,
     STATUS_ADMITTED,
 )
