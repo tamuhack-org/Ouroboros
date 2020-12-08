@@ -211,8 +211,5 @@ class UserSummaryView(views.APIView):
                 "num_workshops": workshop_events.count(),
                 "checked_in": checked_in,
                 "status": application.status,
-                "restrictions": [
-                    r.name for r in application.dietary_restrictions.all()
-                ],
             }
         )

@@ -625,6 +625,11 @@ label {
     margin-right: 20px;
 }
 
+label.required-form-input:after {
+    content: " * ";
+    color: red;
+}
+
 #id_race, #id_dietary_restrictions {
     margin-top: -10px;
     margin-bottom: 20px;
@@ -645,6 +650,10 @@ label {
 
 #id_race li label {
     font-size: 14px;
+}
+
+.application li {
+    height: auto;
 }
 
 label[for="id_agree_to_coc"],

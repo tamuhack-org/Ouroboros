@@ -27,6 +27,8 @@ BASE_PATHNAME_REGEX = BASE_PATHNAME + r"/$"
 if len(BASE_PATHNAME) > 0:
     BASE_PATHNAME += "/"
 
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
+
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "django_s3_storage",
+    "address",
 ]
 
 MIDDLEWARE = [

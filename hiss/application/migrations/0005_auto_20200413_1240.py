@@ -6,22 +6,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('application', '0004_dietaryrestriction'),
+        ("application", "0004_dietaryrestriction"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='application',
-            name='dietary_restrictions_other',
-            field=models.CharField(blank=True, max_length=255, null=True, verbose_name='Self-describe'),
+            model_name="application",
+            name="dietary_restrictions_other",
+            field=models.CharField(
+                blank=True, max_length=255, null=True, verbose_name="Self-describe"
+            ),
         ),
         migrations.RemoveField(
-            model_name='application',
-            name='dietary_restrictions',
+            model_name="application",
+            name="dietary_restrictions",
         ),
         migrations.AddField(
-            model_name='application',
-            name='dietary_restrictions',
-            field=models.ManyToManyField(to='application.DietaryRestriction'),
+            model_name="application",
+            name="dietary_restrictions",
+            field=models.ManyToManyField(to="application.DietaryRestriction"),
         ),
     ]

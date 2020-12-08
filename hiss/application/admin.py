@@ -14,7 +14,6 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from django_admin_listfilter_dropdown.filters import (
     ChoiceDropdownFilter,
-    DropdownFilter,
 )
 from rangefilter.filter import DateRangeFilter
 
@@ -27,6 +26,9 @@ from application.models import (
     Wave,
 )
 from shared.admin_functions import send_mass_html_mail
+
+from address.forms import AddressWidget
+from address.models import AddressField
 
 
 class ApplicationAdminForm(forms.ModelForm):
@@ -190,7 +192,9 @@ class ApplicationAdmin(admin.ModelAdmin):
         "classification",
         "grad_year",
         "num_hackathons_attended",
+        "technology_experience",
         "extra_links",
+        "address",
         "question1",
         "question2",
         "question3",
@@ -204,11 +208,9 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("gender", ChoiceDropdownFilter),
         ("grad_year", ChoiceDropdownFilter),
         ("num_hackathons_attended", ChoiceDropdownFilter),
+        ("technology_experience", ChoiceDropdownFilter),
         ("shirt_size", ChoiceDropdownFilter),
-        ("transport_needed", ChoiceDropdownFilter),
-        ("dietary_restrictions", ChoiceDropdownFilter),
         ("datetime_submitted", DateRangeFilter),
-        ("travel_reimbursement", DropdownFilter),
         RaceFilter,
     )
     list_display = (
@@ -252,6 +254,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "race_other",
                     "grad_year",
                     "num_hackathons_attended",
+                    "technology_experience",
                 ]
             },
         ),
@@ -260,16 +263,17 @@ class ApplicationAdmin(admin.ModelAdmin):
             {
                 "fields": [
                     "shirt_size",
-                    "transport_needed",
-                    "travel_reimbursement",
                     "additional_accommodations",
-                    "dietary_restrictions",
+                    "address",
                 ]
             },
         ),
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
         ("Miscellaneous", {"fields": ["notes"]}),
     ]
+    formfield_overrides = {
+        AddressField: {"widget": AddressWidget(attrs={"style": "width: 300px;"})}
+    }
     list_per_page = 2000
 
     approve.short_description = "Approve Selected Applications"

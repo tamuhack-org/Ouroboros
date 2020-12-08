@@ -8,6 +8,7 @@ def customization(_request: HttpRequest):
     """
     return {
         "event_name": settings.EVENT_NAME,
+        "event_year": settings.EVENT_YEAR,
         "event_start_date": settings.EVENT_START_DATETIME,
         "event_end_date": settings.EVENT_END_DATETIME,
         "organizer_email": settings.ORGANIZER_EMAIL,

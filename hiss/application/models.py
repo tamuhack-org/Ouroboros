@@ -12,6 +12,7 @@ from django_s3_storage.storage import S3Storage
 from multiselectfield import MultiSelectField
 
 from application.filesize_validation import FileSizeValidator
+from address.models import AddressField
 
 s3_storage = S3Storage()
 
@@ -262,6 +263,48 @@ STATUS_OPTIONS = [
     (STATUS_EXPIRED, "Expired"),
 ]
 
+HAS_TEAM = "HT"
+HAS_NO_TEAM = "HNT"
+
+HAS_TEAM_OPTIONS = [
+    (HAS_TEAM, "I do have a team"),
+    (HAS_NO_TEAM, "I do not have a team"),
+]
+
+WANTS_TEAM = "WT"
+DOESNT_WANT_TEAM = "DWT"
+
+WANTS_TEAM_OPTIONS = [
+    (WANTS_TEAM, "I would like you to contact me for a team"),
+    (DOESNT_WANT_TEAM, "I would not like for you to contact me for a team"),
+]
+
+PURPOSE_WIN = "W"
+"""The user wants to win this freaking hackathon"""
+
+PURPOSE_LEARN = "L"
+"""The user wants to use this hackathon to learn something"""
+
+PURPOSE_WORKSHOP = "WR"
+"""The user wants to use this hackathon for all it's great workshops"""
+
+PURPOSE_RECRUITING = "R"
+"""The user wants to use this hackathon to get a job or internship"""
+
+PURPOSE_MESS_AROUND = "M"
+"""The user wants to use this hackathon as an excuse to mess around and get some swag"""
+
+PURPOSE_OPTIONS = [
+    (PURPOSE_WIN, "I want to win!"),
+    (PURPOSE_LEARN, "I want to learn something new!"),
+    (PURPOSE_WORKSHOP, "I just want to attend all the workshops"),
+    (
+        PURPOSE_RECRUITING,
+        "I just want to talk to the sponsors and get a job",
+    ),
+    (PURPOSE_MESS_AROUND, "I want to just mess around on the Minecraft server!"),
+]
+
 
 def uuid_generator(_instance, filename: str):
     ext = filename.split(".")[-1]
@@ -333,7 +376,6 @@ class Application(models.Model):
     race_other = models.CharField(
         "Self-describe", max_length=255, null=True, blank=True
     )
-
     grad_year = models.IntegerField(
         "What is your anticipated graduation year?", choices=GRAD_YEARS
     )
@@ -355,22 +397,26 @@ class Application(models.Model):
     shirt_size = models.CharField(
         "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
     )
-    transport_needed = models.CharField(
-        "How will you be getting to the event?", choices=TRANSPORT_MODES, max_length=11
-    )
-    travel_reimbursement = models.BooleanField(
-        "I'd like to apply for travel reimbursement",
-        default=False,
-        help_text="Travel reimbursement is only provided if you stay the whole time and submit a project.",
-    )
+    address = AddressField(on_delete=models.CASCADE, default=None)
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
         max_length=500,
         blank=True,
     )
-    dietary_restrictions = models.ManyToManyField(DietaryRestriction, blank=True)
-    dietary_restrictions_other = models.CharField(
-        "Self-describe", max_length=255, null=True, blank=True
+
+    technology_experience = models.CharField(max_length=150, default=None)
+
+    # TEAM MATCHING INFO
+    has_team = models.CharField(
+        "Do you have a team yet?",
+        choices=HAS_TEAM_OPTIONS,
+        max_length=16,
+    )
+    wants_team = models.CharField(
+        "Would you like to be contacted to help get a team?",
+        choices=WANTS_TEAM_OPTIONS,
+        help_text="We will take into account many factors to make sure you are paired with a team that works well",
+        max_length=16,
     )
 
     # CONFIRMATION DEADLINE
