@@ -24,6 +24,6 @@ services:
       AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
       AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
       AWS_S3_BUCKET_NAME: "${AWS_S3_BUCKET_NAME}"
-      AWS_S3_KEY_PREFIX: "dev"
+      AWS_S3_KEY_PREFIX: "${AWS_S3_KEY_PREFIX}"
     expose:
       - 8000
