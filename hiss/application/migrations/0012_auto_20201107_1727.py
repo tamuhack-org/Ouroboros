@@ -8,13 +8,17 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('application', '0011_auto_20201107_1706'),
+        ("application", "0011_auto_20201107_1706"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='application',
-            name='address',
-            field=address.models.AddressField(default=None, on_delete=django.db.models.deletion.CASCADE, to='address.Address'),
+            model_name="application",
+            name="address",
+            field=address.models.AddressField(
+                default=None,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="address.Address",
+            ),
         ),
     ]

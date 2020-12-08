@@ -15,27 +15,85 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='WorkshopEvent',
+            name="WorkshopEvent",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='FoodEvent',
+            name="FoodEvent",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('meal', models.CharField(choices=[('B', 'Breakfast'), ('L', 'Lunch'), ('D', 'Dinner'), ('MS', 'Midnight Snack'), ('B2', 'Breakfast (Day 2)'), ('L2', 'Lunch (Day 2)')], max_length=14)),
-                ('restrictions', models.CharField(choices=[('None', None), ('Vegan', 'Vegan'), ('Vegetarian', 'Vegetarian'), ('Halal', 'Halal'), ('Kosher', 'Kosher'), ('Gluten-free', 'Gluten-free'), ('Food allergy', 'Food allergy'), ('Other', 'Other')], max_length=14)),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                (
+                    "meal",
+                    models.CharField(
+                        choices=[
+                            ("B", "Breakfast"),
+                            ("L", "Lunch"),
+                            ("D", "Dinner"),
+                            ("MS", "Midnight Snack"),
+                            ("B2", "Breakfast (Day 2)"),
+                            ("L2", "Lunch (Day 2)"),
+                        ],
+                        max_length=14,
+                    ),
+                ),
+                (
+                    "restrictions",
+                    models.CharField(
+                        choices=[
+                            ("None", None),
+                            ("Vegan", "Vegan"),
+                            ("Vegetarian", "Vegetarian"),
+                            ("Halal", "Halal"),
+                            ("Kosher", "Kosher"),
+                            ("Gluten-free", "Gluten-free"),
+                            ("Food allergy", "Food allergy"),
+                            ("Other", "Other"),
+                        ],
+                        max_length=14,
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]

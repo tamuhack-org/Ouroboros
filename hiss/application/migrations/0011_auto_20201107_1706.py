@@ -8,40 +8,53 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('address', '0003_auto_20200830_1851'),
-        ('application', '0010_auto_20201101_2142'),
+        ("address", "0003_auto_20200830_1851"),
+        ("application", "0010_auto_20201101_2142"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='application',
-            name='dietary_restrictions',
+            model_name="application",
+            name="dietary_restrictions",
         ),
         migrations.RemoveField(
-            model_name='application',
-            name='dietary_restrictions_other',
+            model_name="application",
+            name="dietary_restrictions_other",
         ),
         migrations.RemoveField(
-            model_name='application',
-            name='hackathon_purpose',
+            model_name="application",
+            name="hackathon_purpose",
         ),
         migrations.RemoveField(
-            model_name='application',
-            name='transport_needed',
+            model_name="application",
+            name="transport_needed",
         ),
         migrations.RemoveField(
-            model_name='application',
-            name='travel_reimbursement',
+            model_name="application",
+            name="travel_reimbursement",
         ),
         migrations.AddField(
-            model_name='application',
-            name='address',
-            field=address.models.AddressField(default=None, on_delete=django.db.models.deletion.CASCADE, to='address.Address'),
+            model_name="application",
+            name="address",
+            field=address.models.AddressField(
+                default=None,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="address.Address",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='application',
-            name='wants_team',
-            field=models.CharField(choices=[('WT', 'I would like you to make me a team'), ('DWT', 'I would not like for you to make me a team')], default=('WT', 'I would like you to make me a team'), help_text='We will take into account many factors to make sure you are paired with a team that works well', max_length=16, verbose_name='Would you like to be paired with a hand-crafted team/teammates?'),
+            model_name="application",
+            name="wants_team",
+            field=models.CharField(
+                choices=[
+                    ("WT", "I would like you to make me a team"),
+                    ("DWT", "I would not like for you to make me a team"),
+                ],
+                default=("WT", "I would like you to make me a team"),
+                help_text="We will take into account many factors to make sure you are paired with a team that works well",
+                max_length=16,
+                verbose_name="Would you like to be paired with a hand-crafted team/teammates?",
+            ),
         ),
     ]

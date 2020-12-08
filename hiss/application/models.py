@@ -410,13 +410,11 @@ class Application(models.Model):
     has_team = models.CharField(
         "Do you have a team yet?",
         choices=HAS_TEAM_OPTIONS,
-#        default=HAS_TEAM_OPTIONS[1],
         max_length=16,
     )
     wants_team = models.CharField(
         "Would you like to be contacted to help get a team?",
         choices=WANTS_TEAM_OPTIONS,
-#       default=WANTS_TEAM_OPTIONS[0],
         help_text="We will take into account many factors to make sure you are paired with a team that works well",
         max_length=16,
     )
