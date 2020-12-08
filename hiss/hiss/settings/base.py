@@ -114,10 +114,10 @@ LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 AWS_REGION = "us-east-2"
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_S3_BUCKET_NAME = os.environ.get("AWS_S3_BUCKET_NAME")
-AWS_S3_KEY_PREFIX = os.environ.get("AWS_S3_KEY_PREFIX")
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_S3_BUCKET_NAME = os.getenv("AWS_S3_BUCKET_NAME")
+AWS_S3_KEY_PREFIX = os.getenv("AWS_S3_KEY_PREFIX")
 
 STATIC_URL = "/" + BASE_PATHNAME + "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
