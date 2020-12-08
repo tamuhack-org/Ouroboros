@@ -275,8 +275,8 @@ WANTS_TEAM = "WT"
 DOESNT_WANT_TEAM = "DWT"
 
 WANTS_TEAM_OPTIONS = [
-    (WANTS_TEAM, "I would like you to make me a team"),
-    (DOESNT_WANT_TEAM, "I would not like for you to make me a team"),
+    (WANTS_TEAM, "I would like you to contact me for a team"),
+    (DOESNT_WANT_TEAM, "I would not like for you to contact me for a team"),
 ]
 
 PURPOSE_WIN = "W"
