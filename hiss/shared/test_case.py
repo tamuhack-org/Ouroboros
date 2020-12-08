@@ -57,6 +57,8 @@ class SharedTestCase(test.TestCase):
             "num_hackathons_attended": application_models.HACKATHONS_0,
             "user": self.user,
             "race": [application_models.NO_ANSWER],
+            "has_team": application_models.HAS_TEAM,
+            "wants_team": application_models.WANTS_TEAM,
             "technology_experience": [],
             "address": "1600 Pennsylvania Avenue Northwest, Washington, DC, USA",
             "extra_links": "A",
