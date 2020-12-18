@@ -68,6 +68,7 @@ class SharedTestCase(test.TestCase):
             "is_adult": True,
             "additional_accommodations": "E",
             "agree_to_coc": True,
+            "agree_to_mlh_stuff": True,
             **self.resume_file_data,
         }
 

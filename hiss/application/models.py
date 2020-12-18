@@ -385,6 +385,7 @@ class Application(models.Model):
 
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
+    agree_to_mlh_stuff = models.BooleanField(choices=AGREE, default=None)
     is_adult = models.BooleanField(
         "Please confirm you are 18 or older.",
         choices=AGREE,
