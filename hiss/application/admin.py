@@ -190,6 +190,8 @@ class ApplicationAdmin(admin.ModelAdmin):
         "user_email",
         "datetime_submitted",
         "status",
+        "discord_id",
+        "checked_in"
     )
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),

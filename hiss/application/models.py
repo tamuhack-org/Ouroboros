@@ -362,6 +362,8 @@ class Application(models.Model):
     status = models.CharField(
         choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
     )
+    discord_id = models.CharField(max_length=32, null=True)
+    checked_in = models.BooleanField(default=False)
 
     # ABOUT YOU
     # First Name Character Field
