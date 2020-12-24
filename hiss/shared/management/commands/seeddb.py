@@ -111,6 +111,7 @@ class Command(base.BaseCommand):
                     question3="d",
                     status=random.choice([STATUS_PENDING, STATUS_ADMITTED]),
                     agree_to_coc=True,
+                    agree_to_mlh_stuff=True,
                     is_adult=True,
                     additional_accommodations="",
                     resume="f.pdf",

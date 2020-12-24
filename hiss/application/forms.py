@@ -1,6 +1,7 @@
 import ast
 
 from django import forms
+from django.conf import settings
 from django.utils.safestring import mark_safe
 
 from application import models as application_models
@@ -94,7 +95,8 @@ class ApplicationModelForm(forms.ModelForm):
     )
 
     address = AddressField(
-        help_text="You will not receive swag and prizes without an address", required=False
+        help_text="You will not receive swag and prizes without an address",
+        required=False,
     )
 
     def __init__(self, *args, **kwargs):
@@ -109,6 +111,17 @@ class ApplicationModelForm(forms.ModelForm):
         self.fields["agree_to_coc"].label = mark_safe(
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
+
+        mlh_stuff = (
+            f"I authorize {settings.EVENT_NAME} to share my application/registration information for"
+            " event administration, ranking, MLH administration, pre- and post-event informational e-mails,"
+            'and occasional messages about hackathons in-line with the <a href="https://mlh.io/privacy">MLH'
+            ' Privacy Policy</a>. I further agree to the terms of both the <a href="https://github.com/MLH'
+            '/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</a>'
+            ' and the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>'
+        )
+
+        self.fields["agree_to_mlh_stuff"].label = mark_safe(mlh_stuff)
 
         # HACK: Disable the form if there's not an active wave
         if not application_models.Wave.objects.active_wave():
@@ -150,6 +163,7 @@ class ApplicationModelForm(forms.ModelForm):
         widgets = {
             "is_adult": forms.CheckboxInput,
             "agree_to_coc": forms.CheckboxInput,
+            "agree_to_mlh_stuff": forms.CheckboxInput,
             "travel_reimbursement": forms.CheckboxInput,
             "extra_links": forms.TextInput(
                 attrs={
@@ -184,5 +198,6 @@ class ApplicationModelForm(forms.ModelForm):
             "additional_accommodations",
             "notes",
             "agree_to_coc",
+            "agree_to_mlh_stuff",
             "is_adult",
         ]
