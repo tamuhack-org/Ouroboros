@@ -385,6 +385,9 @@ class Application(models.Model):
 
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
+    agree_to_mlh_stuff = models.BooleanField(
+        choices=AGREE, null=True, default=None, blank=True
+    )
     is_adult = models.BooleanField(
         "Please confirm you are 18 or older.",
         choices=AGREE,
@@ -397,7 +400,7 @@ class Application(models.Model):
     shirt_size = models.CharField(
         "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
     )
-    address = AddressField(on_delete=models.CASCADE, default=None)
+    address = AddressField(on_delete=models.CASCADE, default=None, null=True)
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event?",
         max_length=500,
