@@ -625,6 +625,7 @@ label {
     margin-right: 20px;
 }
 
+label[for="id_agree_to_mlh_stuff"]:after,
 label.required-form-input:after {
     content: " * ";
     color: red;
@@ -668,8 +669,11 @@ label[for=id_is_adult] {
     margin-top: -20px;
 }
 
+#id_agree_to_mlh_stuff {
+    top: -100px;
+}
+
 #id_agree_to_coc,
-#id_agree_to_mlh_stuff,
 #id_is_adult,
 #id_travel_reimbursement {
     top: -30px;
