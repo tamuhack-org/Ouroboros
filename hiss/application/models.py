@@ -407,7 +407,7 @@ class Application(models.Model):
         blank=True,
     )
 
-    technology_experience = models.CharField(max_length=150, default=None)
+    technology_experience = models.CharField(max_length=450, default=None)
 
     # TEAM MATCHING INFO
     has_team = models.CharField(
