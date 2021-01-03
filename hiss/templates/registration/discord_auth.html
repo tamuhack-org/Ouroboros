@@ -1,0 +1,68 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block body %}
+
+<section class="signin">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-sm-12 col-md-8 col-lg-6 login-box">
+
+                <header class="text-center">
+                    <img class="header-logo" src="{% static 'hacklahoma.svg' %}">
+                    <h1>{{ event_name }} 2021 Application</h1>
+                </header>
+
+                <form id="login-form" method="POST" action="{% url 'customauth:login' %}">
+                    {% csrf_token %}
+                    <!-- security -->
+                    <div class="form-row">
+                        {% if form.errors %}
+                        {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        {{ csrf_input }}
+                        {% for field in form %}
+                        {{ field.errors }}
+                        {{ field.label_tag }} {{ field }}
+                        {% if field.help_text %}
+                        <p class="help">{{ field.help_text|safe }}</p>
+                        {% endif %}
+
+                        {% endfor %}
+
+                        <div class="forgot-pswd-wrapper">
+                            <a href="{% url 'customauth:password_reset' %}" class="forgot-pswd">Forgot Password?</a>
+                        </div>
+                        <div class="forgot-pswd-wrapper">
+                            <a href="{% url 'customauth:resend_activation' %}" class="forgot-pswd">Can't Log In?</a>
+                        </div>
+
+
+                        <input type="submit" class="btn btn-lg btn-block btn-login" value="Log In"/>
+                    </div>
+                    {% csrf_token %}
+                </form>
+
+                <div class="row login-alt-options pt-4">
+                    <div class="col-sm-12 col-lg-12 text-center">
+                        Don't have an account? <a href="{% url 'customauth:signup' %}">Sign up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="social-media-container ">
+            <div class="text-center">
+                Stay up to date with Hacklahoma by following our social media!
+            </div>
+            <div class = "text-center" >
+                <a href="https://www.facebook.com/Hacklahoma/" target="_blank"><img class="social-media-logo" src="{% static 'facebook.svg' %}"></a>
+                <a href="https://twitter.com/hacklahoma/" target="_blank"><img class="social-media-logo" src="{% static 'twitter.svg' %}"></a>
+                <a href="https://www.instagram.com/hacklahoma/" target="_blank"><img class="social-media-logo" src="{% static 'instagram.svg' %}"></a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

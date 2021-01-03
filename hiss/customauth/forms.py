@@ -84,3 +84,19 @@ class PlaceholderSetPasswordForm(auth_forms.SetPasswordForm):
         widget=forms.PasswordInput(attrs={"placeholder": "Confirm new password"}),
         label="",
     )
+
+class DiscordAuthForm(auth_forms.AuthenticationForm):
+    error_messages = {
+        "invalid_login": "Please enter a correct %(username)s and password. Note that both fields may be "
+        "case-sensitive. Make sure you've activated your account via email as well.",
+        "inactive": "This account is inactive.",
+    }
+    username = forms.EmailField(
+        widget=widgets.EmailInput(attrs={"placeholder": "Email"}), label=""
+    )
+    password = forms.CharField(
+        widget=widgets.PasswordInput(attrs={"placeholder": "Password"}), label=""
+    )
+
+    class Meta:
+        fields = ["username", "password"]

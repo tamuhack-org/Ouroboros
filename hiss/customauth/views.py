@@ -99,3 +99,14 @@ class PlaceholderPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
     template_name = "registration/password_reset_confirm.html"
     form_class = customauth_forms.PlaceholderSetPasswordForm
     success_url = reverse_lazy("customauth:login")
+
+class DiscordAuthView(auth_views.LoginView):
+    """
+    Discord Authentication portion of registration
+    """
+
+    template_name = "registration/discord_auth.html"
+    form_class = customauth_forms.DiscordAuthForm
+    
+
+    
