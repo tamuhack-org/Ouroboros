@@ -94,7 +94,9 @@ def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
             ) + timezone.timedelta(application.wave.num_days_to_rsvp)
             application.status = STATUS_ADMITTED
             application.confirmation_deadline = deadline
-            email_tuples.append(build_approval_email(application, deadline))
+            approval_email = build_approval_email(application, deadline)
+            print(f"approval email built for {approval_email[-1:]}")
+            email_tuples.append(approval_email)
             application.save()
     send_mass_html_mail(email_tuples)
 
