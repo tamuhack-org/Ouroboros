@@ -1,35 +1,37 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block body %}
+{% extends 'base.html' %} {% load static %} {% block body %}
 
 <section class="signin sign_up">
-    <div class="container">
-        <div class="row justify-content-md-center">
-            <div class="col-sm-12 col-md-8 col-lg-6 login-box">
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-sm-12 col-md-8 col-lg-6 login-box">
+        <header class="text-center">
+          <img class="header-logo" src="{% static 'hh.svg' %}" />
+          <h1>{{ event_name }} {{ event_year }} Application</h1>
+        </header>
+        <p>
+          To activate your account, enter your email address and click the
+          activation link in the email you receive.
+        </p>
+        <form method="POST">
+          {% csrf_token %}
+          <!-- security -->
 
-                <header class="text-center">
-                    <img class="header-logo" src="{% static 'th_bw.svg' %}">
-                    <h1>{{ event_name }} {{ event_year }} Application</h1>
-                </header>
-                <p>To activate your account, enter your email address and click
-                    the activation link in the email you receive.</p>
-                <form method="POST">
-                    {% csrf_token %}    <!-- security -->
-
-                    {{ form.as_p }}
-                    <input type="submit" value="Resend Verification" class="btn btn-lg btn-block btn-login">
-                </form>
-                <div class="row login-alt-options pt-4">
-                    <div class="col-sm-12 col-lg-12 text-left">
-                        If you still have issues accessing your account,
-                        please email us at <a
-                            href="mailto:{{ organizer_email }}">{{ organizer_email }}</a>.
-                    </div>
-                </div>
-            </div>
+          {{ form.as_p }}
+          <input
+            type="submit"
+            value="Resend Verification"
+            class="btn btn-lg btn-block btn-login"
+          />
+        </form>
+        <div class="row login-alt-options pt-4">
+          <div class="col-sm-12 col-lg-12 text-left">
+            If you still have issues accessing your account, please email us at
+            <a href="mailto:{{ organizer_email }}">{{ organizer_email }}</a>.
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>
-
 
 {% endblock %}
