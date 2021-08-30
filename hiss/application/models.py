@@ -402,7 +402,7 @@ class Application(models.Model):
     )
     address = AddressField(on_delete=models.CASCADE, default=None, null=True)
     additional_accommodations = models.TextField(
-        "Do you require any special accommodations at the event?",
+        "Do you require any special accommodations at the event? Please list all dietary restrictions here.",
         max_length=500,
         blank=True,
     )
