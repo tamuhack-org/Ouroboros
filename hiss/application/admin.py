@@ -50,7 +50,7 @@ def build_approval_email(
     Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
     application has been approved.
     """
-    subject = f"Your {settings.EVENT_NAME} application has been approved!"
+    subject = f"Action Required: Your HowdyHack application has been approved!"
 
     context = {
         "first_name": application.first_name,
