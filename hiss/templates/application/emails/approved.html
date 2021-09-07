@@ -4,9 +4,6 @@
       max-width: 800px;
       background-color: #f9ecee;
       z-index: -1;
-      position: absolute;
-      top: 0;
-      left: 0;
       padding: 20px;
     "
   >
@@ -29,41 +26,16 @@
       <p
         style="
           line-height: 20px;
-          font-weight: normal;
-          color: #777777;
-          margin-bottom: 20px;
-        "
-      >
-        You have been accepted to {{ event_name }}! We were very impressed by
-        your application and have handpicked you to attend.
-      </p>
-      <p
-        style="
-          line-height: 20px;
           -webkit-font-smoothing: antialiased;
           font-weight: normal;
           color: #777777;
           margin-bottom: 20px;
         "
       >
-        We hope to see you attend virtually on
+        You have been accepted to HowdyHack 2021! We were impressed by your application and we’re excited to see you this coming weekend, 
         <span style="color: #ed768b; font-weight: 700"
-          >January 30 - 31, 2021.</span
-        >
-      </p>
-      <p
-        style="
-          line-height: 20px;
-          -webkit-font-smoothing: antialiased;
-          font-weight: normal;
-          color: #777777;
-          margin-bottom: 20px;
-        "
+        >September 11 - 12, 2021.</span
       >
-        <span style="color: #ed768b; font-weight: 700"
-          >We'll be sending out an email soon with the full schedule of events
-          and more details!</span
-        >
       </p>
 
       <p
@@ -74,12 +46,31 @@
           margin-bottom: 20px;
         "
       >
+        We have some important information to share before we get started, so please use the link below to RSVP for the event if you're still intending to attend!
+      </p>
+
+      <a href="https://register.tamuhack.com/status/" style="cursor: pointer;">
+        <button style="padding: 15px 10px; width: 250px; background-color: #ed768b; border-radius: .25em; border:none; color: white; font-size: 16px;">
+          Login to RSVP
+        </button>
+      </a>
+      
+      <br />
+      <br />
+
+      <p
+        style="
+          line-height: 20px;
+          color: #777777;
+        "
+      >
         In the meantime, feel free to email
         <a href="mailto:{{ organizer_email }}" style="color: #00add8"
           >{{ organizer_email }}</a
         >
         if you have any questions.
       </p>
+
 
       <h3
         style="
