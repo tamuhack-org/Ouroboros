@@ -224,7 +224,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "classification",
         "grad_year",
         "status",
-        "additional_accommodations"
+        "additional_accommodations",
     )
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),
