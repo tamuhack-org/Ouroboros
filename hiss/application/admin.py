@@ -139,6 +139,11 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
             "classification",
             "grad_year",
             "major",
+            "additional_accommodations",
+            "extra_links",
+            "question1",
+            "question2",
+            "question3",
         ]
     )
     for instance in queryset:
@@ -152,6 +157,11 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
                 instance.classification,
                 instance.grad_year,
                 instance.major,
+                instance.additional_accommodations,
+                instance.extra_links,
+                instance.question1,
+                instance.question2,
+                instance.question3,
             ]
         )
 
