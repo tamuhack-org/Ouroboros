@@ -113,10 +113,10 @@ LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-AWS_REGION = "us-east-1"
+AWS_REGION = "us-east-2"
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_S3_BUCKET_NAME = "2022-th-resumes"
+AWS_S3_BUCKET_NAME = "2021-hh-resumes"
 AWS_S3_KEY_PREFIX = "prod"
 
 STATIC_URL = "/" + BASE_PATHNAME + "static/"
