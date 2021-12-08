@@ -1,6 +1,7 @@
 [![codecov](https://codecov.io/gh/tamuhack-org/Ouroboros/branch/main/graph/badge.svg)](https://codecov.io/gh/tamuhack-org/Ouroboros)
 
 
+
 # :snake: Hiss
 
 An open-source, hackathon registration system. :school:
