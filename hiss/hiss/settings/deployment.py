@@ -6,7 +6,7 @@ from .customization import *
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ["*"]
 SESSION_COOKIE_SECURE = False
 SECURE_BROWSER_XSS_FILTER = False
