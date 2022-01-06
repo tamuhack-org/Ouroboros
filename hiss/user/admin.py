@@ -58,7 +58,7 @@ class UserAdmin(admin.ModelAdmin):
             },
         ),
     ]
-    list_per_page = 2000
+    list_per_page = 500
 
     export_user_emails.short_description = "Export Emails of Selected Users"
     actions = [export_user_emails]
