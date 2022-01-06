@@ -45,6 +45,7 @@ class UserAdmin(admin.ModelAdmin):
         "is_active",
         "is_staff",
         "has_applied",
+        "last_login"
     )
     list_filter = ("is_active", "is_staff", HasAppliedFilter)
     readonly_fields = ("email", "password")
@@ -58,7 +59,7 @@ class UserAdmin(admin.ModelAdmin):
             },
         ),
     ]
-    list_per_page = 500
+    list_per_page = 200
 
     export_user_emails.short_description = "Export Emails of Selected Users"
     actions = [export_user_emails]
