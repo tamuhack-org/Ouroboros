@@ -41,6 +41,19 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.min.js" type="text/javascript"></script>
 <script src="{%  static 'main.js' %}"></script>
+                        <script>
+                        var countChecked = function() {
+                          var n = $( "input:checked" ).length;
+                          if(n == 1) {
+                                $("#toggle-click").show()
+                            } else {
+                                $("#toggle-click").hide()
+                            }
+                        };
+                        countChecked();
+
+                        $( "input[type=checkbox]" ).on( "click", countChecked );
+                    </script>
 </body>
 
 </html>
