@@ -124,7 +124,25 @@
                     IMPORTANT: Read our official <a href="https://tamuhack.com/covid" target="_blank" style="color: #007bff!important; padding: 0px;"> COVID policy here</a>. 
                 </p>
 
-            
+                <div>
+                    <input type="checkbox" id="confirm-box" name="scales">
+                     I read the above and understand the COVID policy. 
+
+                    <script>
+                        var countChecked = function() {
+                          var n = $( "input:checked" ).length;
+                          if(n == 1) {
+                                $(".login-alt-options").show()
+                            } else {
+                                $(".login-alt-options").hide()
+                            }
+                        };
+                        countChecked();
+
+                        $( "input[type=checkbox]" ).on( "click", countChecked );
+                    </script>
+
+                </div>            
             
                 <div class="row login-alt-options">
                     <div class="col-sm-12 col-lg-12 text-center">
@@ -165,26 +183,6 @@
                 <p class="status-subtitle">
                     Have additional questions? Email us at <a href="mailto:{{ organizer_email }}" style="color: #007bff!important; padding: 0px;">{{ organizer_email }}</a>.
                 </p>
-
-                <div>
-                    <input type="checkbox" id="confirm-box" name="scales">
-                     I read the above and understand the COVID policy. 
-
-                    <script>
-                        var countChecked = function() {
-                          var n = $( "input:checked" ).length;
-                          if(n == 1) {
-                                $(".login-alt-options").show()
-                            } else {
-                                $(".login-alt-options").hide()
-                            }
-                        };
-                        countChecked();
-
-                        $( "input[type=checkbox]" ).on( "click", countChecked );
-                    </script>
-
-                </div>
 
 
             {% elif REJECTED %}
