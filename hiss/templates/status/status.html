@@ -142,7 +142,7 @@
                         <form method="POST" action="{% url 'application:confirm' pk=application.pk %}" class="rsvp-response-btn">
                             {% csrf_token %}
 
-                            <input class="btn btn-login" type="submit" value="I'll be there in person or virtually!">
+                            <input class="btn btn-login" type="submit" value="I'll be there!">
                         </form>
                         <form method="POST" action="{% url 'application:decline' pk=application.pk %}" class="rsvp-response-btn">
                             {% csrf_token %}
