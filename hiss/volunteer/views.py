@@ -116,7 +116,6 @@ class CreateFoodEventView(views.APIView):
             )
 
         food_event = FoodEvent.objects.create(user=application.user, meal=meal)
-        food_event.restrictions.set(restrictions)
         food_event.save()
         return response.Response(status=status.HTTP_200_OK)
 
