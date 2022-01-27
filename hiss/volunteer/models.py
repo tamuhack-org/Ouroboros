@@ -36,7 +36,7 @@ class Event(models.Model):
 
 class FoodEvent(Event):
     meal = models.CharField(max_length=14, choices=MEAL_CHOICES)
-    restrictions = models.ManyToManyField(DietaryRestriction)
+    restrictions = models.CharField(max_length=255)
 
 
 class WorkshopEvent(Event):
