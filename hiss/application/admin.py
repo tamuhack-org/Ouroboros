@@ -132,36 +132,14 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
     writer = csv.writer(response)
     writer.writerow(
         [
-            "first_name",
-            "last_name",
             "email",
-            "school",
-            "classification",
-            "grad_year",
-            "major",
-            "additional_accommodations",
-            "extra_links",
-            "question1",
-            "question2",
-            "question3",
         ]
     )
     for instance in queryset:
         instance: Application = instance
         writer.writerow(
             [
-                instance.first_name,
-                instance.last_name,
                 instance.user.email,
-                instance.school,
-                instance.classification,
-                instance.grad_year,
-                instance.major,
-                instance.additional_accommodations,
-                instance.extra_links,
-                instance.question1,
-                instance.question2,
-                instance.question3,
             ]
         )
 
