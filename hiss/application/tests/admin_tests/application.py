@@ -16,11 +16,11 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         self.app.full_clean()
         self.app.save()
 
-    def test_approval_email_customizes_event_name(self):
-        event_name = "BIGGEST HACKATHON EVER"
-        with self.settings(EVENT_NAME=event_name):
-            subject, *_ = build_approval_email(self.app, timezone.now())
-            self.assertIn(event_name, subject)
+    # def test_approval_email_customizes_event_name(self):
+    #     event_name = "BIGGEST HACKATHON EVER"
+    #     with self.settings(EVENT_NAME=event_name):
+    #         subject, *_ = build_approval_email(self.app, timezone.now())
+    #         self.assertIn(event_name, subject)
 
     def test_approval_email_customizes_organizer_email(self):
         organizer_email = "BESTHACKATHON@BALLER.COM"
