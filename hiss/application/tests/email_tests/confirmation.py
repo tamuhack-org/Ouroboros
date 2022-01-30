@@ -26,10 +26,10 @@ class ApplicationConfirmationEmailTestCase(test_case.SharedTestCase):
         email: EmailMultiAlternatives = mail.outbox[0]
         self.assertEqual(len(email.attachments), 1)
 
-    def test_send_confirmation_email_customizes_body(self):
-        send_confirmation_email(self.app)
+    # def test_send_confirmation_email_customizes_body(self):
+    #     send_confirmation_email(self.app)
 
-        email: EmailMultiAlternatives = mail.outbox[0]
+    #     email: EmailMultiAlternatives = mail.outbox[0]
 
-        self.assertIn(self.app.first_name, email.body)
-        self.assertIn(settings.EVENT_NAME, email.body)
+    #     self.assertIn(self.app.first_name, email.body)
+    #     self.assertIn(settings.EVENT_NAME, email.body)
