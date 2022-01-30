@@ -16,6 +16,9 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         self.app.full_clean()
         self.app.save()
 
+    """
+    Email subject should have settings.EVENT_NAME, not hard-coded "TAMUhack"
+    """
     # def test_approval_email_customizes_event_name(self):
     #     event_name = "BIGGEST HACKATHON EVER"
     #     with self.settings(EVENT_NAME=event_name):
