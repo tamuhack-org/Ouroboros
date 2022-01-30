@@ -19,7 +19,7 @@ jobs:
       - name: Check formatting
         run: |
           cd hiss
-          black . --check --exclude=".*/migrations"
+          black . --check --exclude=".*/migrations,env"
   flake:
     name: 'Check code health with Flake8'
     runs-on: ubuntu-latest
