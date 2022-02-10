@@ -133,6 +133,7 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
     writer.writerow(
         [
             "email",
+            "shirt_size"
         ]
     )
     for instance in queryset:
@@ -140,6 +141,7 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
         writer.writerow(
             [
                 instance.user.email,
+                instance.shirt_size
             ]
         )
 
