@@ -8,23 +8,38 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('application', '0013_auto_20201208_1521'),
+        ("application", "0013_auto_20201208_1521"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='application',
-            name='agree_to_mlh_stuff',
-            field=models.BooleanField(blank=True, choices=[(True, 'Agree')], default=None, null=True),
+            model_name="application",
+            name="agree_to_mlh_stuff",
+            field=models.BooleanField(
+                blank=True, choices=[(True, "Agree")], default=None, null=True
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='address',
-            field=address.models.AddressField(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to='address.Address'),
+            model_name="application",
+            name="address",
+            field=address.models.AddressField(
+                default=None,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="address.Address",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='wants_team',
-            field=models.CharField(choices=[('WT', 'I would like you to contact me for a team'), ('DWT', 'I would not like for you to contact me for a team')], help_text='We will take into account many factors to make sure you are paired with a team that works well', max_length=16, verbose_name='Would you like to be contacted to help get a team?'),
+            model_name="application",
+            name="wants_team",
+            field=models.CharField(
+                choices=[
+                    ("WT", "I would like you to contact me for a team"),
+                    ("DWT", "I would not like for you to contact me for a team"),
+                ],
+                help_text="We will take into account many factors to make sure you are paired with a team that works well",
+                max_length=16,
+                verbose_name="Would you like to be contacted to help get a team?",
+            ),
         ),
     ]

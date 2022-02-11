@@ -40,13 +40,7 @@ class HasAppliedFilter(admin.SimpleListFilter):
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = (
-        "email",
-        "is_active",
-        "is_staff",
-        "has_applied",
-        "last_login"
-    )
+    list_display = ("email", "is_active", "is_staff", "has_applied", "last_login")
     list_filter = ("is_active", "is_staff", HasAppliedFilter)
     readonly_fields = ("email", "password")
     fieldsets = [
