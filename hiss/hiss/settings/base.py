@@ -116,8 +116,8 @@ LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 AWS_REGION = "us-east-2"
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_S3_BUCKET_NAME = os.environ.get("AWS_S3_BUCKET_NAME") 
-AWS_S3_KEY_PREFIX = os.environ.get("AWS_S3_KEY_PREFIX")
+AWS_S3_BUCKET_NAME = "2022-hh-resumes" 
+AWS_S3_KEY_PREFIX = "prod"
 
 STATIC_URL = "/" + BASE_PATHNAME + "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
@@ -136,6 +136,5 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://tamuhack.com",
 ]
-
 
 CORS_URLS_REGEX = r"^/api/.*$"
