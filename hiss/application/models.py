@@ -198,7 +198,7 @@ TRANSPORT_MODES: List[Tuple[str, str]] = [
 
 QUESTION1_TEXT = "Tell us your best programming joke"
 QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
-QUESTION3_TEXT = f"If given the choice, would you attend {settings.EVENT_NAME} in-person or virtually?"
+QUESTION3_TEXT = f"If given the choice, would you prefer attend {settings.EVENT_NAME} in-person or virtually? (Note: A virtual option does NOT exist for this hackathon)"
 
 WOMENS_XXS = "WXXS"
 WOMENS_XS = "WXS"
