@@ -196,9 +196,9 @@ TRANSPORT_MODES: List[Tuple[str, str]] = [
     (MANUAL_POWER, "Walking/Biking"),
 ]
 
-QUESTION1_TEXT = "Tell us your best programming joke"
+QUESTION1_TEXT = "Tell us your best programming joke."
 QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
-QUESTION3_TEXT = f"How did you hear about {settings.EVENT_NAME}?"
+QUESTION3_TEXT = "What's your hidden talent?"
 
 WOMENS_XXS = "WXXS"
 WOMENS_XS = "WXS"
@@ -271,12 +271,15 @@ HAS_TEAM_OPTIONS = [
     (HAS_NO_TEAM, "I do not have a team"),
 ]
 
-WANTS_TEAM = "WT"
-DOESNT_WANT_TEAM = "DWT"
-
 WANTS_TEAM_OPTIONS = [
-    (WANTS_TEAM, "I would like you to contact me for a team"),
-    (DOESNT_WANT_TEAM, "I would not like for you to contact me for a team"),
+    ("Friend", "From a friend"),
+    ("Yard sign", "Yard sign"),
+    ("Social media", "Social media"),
+    ("Student orgs", "Though another student org"),
+    ("TAMUhack organizer", "From a TAMUhack organizer"),
+    ("Engineering newsletter", "From the TAMU Engineering Newsletter"),
+    ("MLH", "Major League Hacking (MLH)"),
+    ("Attended before", f"I've attended {settings.EVENT_NAME} before")
 ]
 
 PURPOSE_WIN = "W"
@@ -416,9 +419,9 @@ class Application(models.Model):
         max_length=16,
     )
     wants_team = models.CharField(
-        "Would you like to be contacted to help get a team?",
+        f"How did you hear about {settings.EVENT_NAME}?",
         choices=WANTS_TEAM_OPTIONS,
-        help_text="We will take into account many factors to make sure you are paired with a team that works well",
+        help_text="",
         max_length=16,
     )
 
