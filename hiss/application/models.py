@@ -273,13 +273,13 @@ HAS_TEAM_OPTIONS = [
 
 WANTS_TEAM_OPTIONS = [
     ("Friend", "From a friend"),
-    ("Yard sign", "Yard sign"),
-    ("Social media", "Social media"),
-    ("Student orgs", "Though another student org"),
-    ("TAMUhack organizer", "From a TAMUhack organizer"),
-    ("Engineering newsletter", "From the TAMU Engineering Newsletter"),
+    ("Yard Sign", "Yard sign"),
+    ("Social Media", "Social media"),
+    ("Student Orgs", "Though another student org"),
+    ("TH Organizer", "From a TAMUhack organizer"),
+    ("ENGR Newsletter", "From the TAMU Engineering Newsletter"),
     ("MLH", "Major League Hacking (MLH)"),
-    ("Attended before", f"I've attended {settings.EVENT_NAME} before")
+    ("Attended Before", f"I've attended {settings.EVENT_NAME} before")
 ]
 
 PURPOSE_WIN = "W"
@@ -422,7 +422,7 @@ class Application(models.Model):
         f"How did you hear about {settings.EVENT_NAME}?",
         choices=WANTS_TEAM_OPTIONS,
         help_text="",
-        max_length=255,
+        max_length=16,
     )
 
     # CONFIRMATION DEADLINE
