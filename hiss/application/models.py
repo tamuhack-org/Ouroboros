@@ -422,7 +422,7 @@ class Application(models.Model):
         f"How did you hear about {settings.EVENT_NAME}?",
         choices=WANTS_TEAM_OPTIONS,
         help_text="",
-        max_length=16,
+        max_length=255,
     )
 
     # CONFIRMATION DEADLINE
