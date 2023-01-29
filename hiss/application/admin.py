@@ -267,7 +267,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     formfield_overrides = {
         AddressField: {"widget": AddressWidget(attrs={"style": "width: 300px;"})}
     }
-    list_per_page = 100
+    list_per_page = 1500
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"
