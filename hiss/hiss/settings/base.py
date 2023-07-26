@@ -116,7 +116,7 @@ LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 AWS_REGION = "us-east-2"
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_S3_BUCKET_NAME = "2023-th-resumes" 
+AWS_S3_BUCKET_NAME = "2023-hh-resumes" 
 AWS_S3_KEY_PREFIX = "prod"
 
 STATIC_URL = "/" + BASE_PATHNAME + "static/"
@@ -131,10 +131,13 @@ DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
 
 CORS_ORIGIN_WHITELIST = [
     "https://volunteer.tamuhack.com",
+    "https://volunteer.tamuhack.org",
     "https://tamuhack-org.github.io",
     "https://tamuhack.com",
+    "https://tamuhack.org",
     "http://localhost:3000",
     "http://tamuhack.com",
+    "http://tamuhack.org",
 ]
 
 CORS_URLS_REGEX = r"^/api/.*$"

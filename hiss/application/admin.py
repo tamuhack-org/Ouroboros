@@ -50,7 +50,7 @@ def build_approval_email(
     Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
     application has been approved.
     """
-    subject = f"ACTION REQUIRED: One last step for your TAMUhack application!"
+    subject = f"ACTION REQUIRED: One last step for your HowdyHack application!"
 
     context = {
         "first_name": application.first_name,
