@@ -192,7 +192,7 @@ class ApplicationModelForm(forms.ModelForm):
     dietary_restrictions = forms.MultipleChoiceField(
         label="Do you have any dietary restrictions?",
         help_text="Select all that apply",
-        choices=tuple([(item["fields"]["name"].replace(" ", "-"), item["fields"]["name"]) for item in dietary_restrictions_list]),
+        choices=tuple([(item.replace(" ", "-"), item) for item in dietary_restrictions_list]),
         required=False,
     )
 
