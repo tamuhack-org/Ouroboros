@@ -197,8 +197,8 @@ TRANSPORT_MODES: List[Tuple[str, str]] = [
 ]
 
 QUESTION1_TEXT = "Tell us your best programming joke."
-QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
-QUESTION3_TEXT = "What's your hidden talent?"
+# QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
+# QUESTION3_TEXT = "What's your hidden talent?"
 
 WOMENS_XXS = "WXXS"
 WOMENS_XS = "WXS"
@@ -342,8 +342,8 @@ class Application(models.Model):
         blank=True,
     )
     question1 = models.TextField(QUESTION1_TEXT, max_length=500)
-    question2 = models.TextField(QUESTION2_TEXT, max_length=500)
-    question3 = models.TextField(QUESTION3_TEXT, max_length=500)
+    # question2 = models.TextField(QUESTION2_TEXT, max_length=500)
+    # question3 = models.TextField(QUESTION3_TEXT, max_length=500)
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
@@ -403,14 +403,16 @@ class Application(models.Model):
     shirt_size = models.CharField(
         "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
     )
-    address = AddressField(on_delete=models.CASCADE, default=None, null=True)
+    # address = AddressField(on_delete=models.CASCADE, default=None, null=True)
     additional_accommodations = models.TextField(
-        "Do you require any special accommodations at the event? Please list all dietary restrictions here.",
+        "Do you require any special accommodations at the event? Please list dietary restrictions here if you selected \"food allergy\" or \"other\".",
         max_length=500,
         blank=True,
     )
 
-    technology_experience = models.CharField(max_length=450, default=None)
+    dietary_restrictions = models.CharField(max_length=5000, default=None)
+
+    technology_experience = models.CharField(max_length=5000, default=None)
 
     # TEAM MATCHING INFO
     has_team = models.CharField(

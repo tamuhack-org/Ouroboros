@@ -1,4 +1,5 @@
 import ast
+import json
 
 from django import forms
 from django.conf import settings
@@ -47,6 +48,14 @@ class ApplicationModelForm(forms.ModelForm):
     RUBY = "Ruby"
     RUST = "Rust"
     SCALA = "Scala"
+    SQL = "SQL"
+    HTML = "HTML"
+    CSS = "CSS"
+    PHP = "PHP"
+    ELIXIR = "Elixir"
+    VERILOG = "Verilog"
+    HASKELL = "Haskell"
+    LUA = "Lua"
     # Concepts
     MACHINE_LEARNING = "ML"
     FULL_STACK = "full-stack"
@@ -58,6 +67,45 @@ class ApplicationModelForm(forms.ModelForm):
     DATA_SCIENCE = "data-science"
     DEV_OPS = "dev-ops"
     CLOUD = "cloud"
+    DATABASES = "databases"
+    UI_UX = "UI/UX"
+    GENERATIVE_AI = "generative-ai"
+    DATA_VIS = "data-visualization"
+    COMPUTER_GRAPHICS = "computer-graphics"
+    GAME_DEV = "game-development"
+    CYBERSECURITY = "cybersecurity"
+    DATA_STRUCTURES = "data-structures"
+    REST_APIS = "rest-apis"
+    TESTING = "software-testing"
+    MICROCONTROLLERS = "microcontrollers"
+    SYSTEMS_PROGRAMMING = "computer-systems-programming"
+    HARDWARE = "computer-hardware"
+    OS = "operating-systems"
+    # Industry Standards
+    AWS = "AWS"
+    GOOGLE_CLOUD = "Google-Cloud"
+    MS_AZURE = "Microsoft-Azure"
+    VERCEL = "Vercel"
+    POSTGRESQL = "PostgreSQL"
+    MONGO_DB = "MongoDB"
+    REACT = "React"
+    ANGULAR = "Angular"
+    VUE = "Vue.js"
+    SVELTE = "Svelte"
+    BOOTSTRAP = "Bootstrap"
+    RAILS = "Ruby-on-Rails"
+    DJANGO = "Django"
+    FIREBASE = "Firebase"
+    GIT = "Git"
+    UNIX_LINUX = "Unix/Linux"
+    JUPYTER_NOTEBOOKS = "Jupyter-Notebooks"
+    NODE_JS = "Node.js"
+    DOCKER = "Docker"
+    KUBERNETES = "Kubernetes"
+    TENSORFLOW = "Tensorflow"
+    PYTORCH = "PyTorch"
+    FLUTTER = "Flutter"
+    REACT_NATIVE = "React-Native"
 
     TECHNOLOGY_EXPERIENCE = (
         (PYTHON, "Python"),
@@ -75,6 +123,14 @@ class ApplicationModelForm(forms.ModelForm):
         (RUBY, "Ruby"),
         (RUST, "Rust"),
         (SCALA, "Scala"),
+        (SQL, "SQL"),
+        (HTML, "HTML"),
+        (CSS, "CSS"),
+        (PHP, "PHP"),
+        (ELIXIR, "Elixir"),
+        (VERILOG, "Verilog"),
+        (HASKELL, "Haskell"),
+        (LUA, "Lua"),
         (FULL_STACK, "Full Stack"),
         (FRONT_END, "Front End"),
         (BACK_END, "Back End"),
@@ -82,9 +138,47 @@ class ApplicationModelForm(forms.ModelForm):
         (MOBILE, "Mobile"),
         (DESIGN, "Design"),
         (DEV_OPS, "Dev Ops"),
-        (CLOUD, "Cloud (AWS, etc.)"),
+        (CLOUD, "Cloud"),
         (DATA_SCIENCE, "Data Science"),
         (MACHINE_LEARNING, "Machine Learning"),
+        (DATABASES, "Databases")
+        (UI_UX, "UI/UX")
+        (GENERATIVE_AI, "Generative AI")
+        (DATA_VIS, "Data Visualization")
+        (COMPUTER_GRAPHICS, "Computer Graphics")
+        (GAME_DEV, "Game Development")
+        (CYBERSECURITY, "Cybersecurity")
+        (DATA_STRUCTURES, "Data Structures")
+        (REST_APIS, "REST APIs")
+        (TESTING, "Software Testing")
+        (MICROCONTROLLERS, "Microcontrollers")
+        (SYSTEMS_PROGRAMMING, "Computer Systems Programming")
+        (HARDWARE, "Computer Hardware")
+        (OS, "Operating Systems")
+        (AWS, "AWS")
+        (GOOGLE_CLOUD, "Google Cloud")
+        (MS_AZURE, "Microsoft Azure")
+        (VERCEL, "Vercel")
+        (POSTGRESQL, "PostgreSQL")
+        (MONGO_DB, "MongoDB")
+        (REACT, "React")
+        (ANGULAR, "Angular")
+        (VUE, "Vue.js")
+        (SVELTE, "Svelte")
+        (BOOTSTRAP, "Bootstrap")
+        (RAILS, "Ruby on Rails")
+        (DJANGO, "Django")
+        (FIREBASE, "Firebase")
+        (GIT, "Git")
+        (UNIX_LINUX, "Unix/Linux")
+        (JUPYTER_NOTEBOOKS, "Jupyter Notebooks")
+        (NODE_JS, "Node.js")
+        (DOCKER, "Docker")
+        (KUBERNETES, "Kubernetes")
+        (TENSORFLOW, "Tensorflow")
+        (PYTORCH, "PyTorch")
+        (FLUTTER, "Flutter")
+        (REACT_NATIVE, "React Native")
     )
     # SKILLS
     technology_experience = forms.MultipleChoiceField(
@@ -94,10 +188,18 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
 
-    address = AddressField(
-        help_text="You will not receive swag and prizes without an address",
+    dietary_restrictions_list = ["Vegan", "Vegetarian", "No Beef", "No Pork", "Halal", "Kosher", "Gluten-Free", "Food Allergy", "Other"]
+    dietary_restrictions = forms.MultipleChoiceField(
+        label="Do you have any dietary restrictions?",
+        help_text="Select all that apply",
+        choices=tuple([(item["fields"]["name"].replace(" ", "-"), item["fields"]["name"]) for item in dietary_restrictions_list]),
         required=False,
     )
+
+    # address = AddressField(
+    #     help_text="You will not receive swag and prizes without an address",
+    #     required=False,
+    # )
 
     def __init__(self, *args, **kwargs):
         if kwargs.get("instance"):
@@ -186,15 +288,16 @@ class ApplicationModelForm(forms.ModelForm):
             "race_other",
             "num_hackathons_attended",
             "technology_experience",
+            "dietary_restrictions",
             "has_team",
             "wants_team",
             "shirt_size",
-            "address",
+            # "address",
             "resume",
             "extra_links",
             "question1",
-            "question2",
-            "question3",
+            # "question2",
+            # "question3",
             "additional_accommodations",
             "notes",
             "agree_to_coc",
