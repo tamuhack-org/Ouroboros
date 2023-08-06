@@ -403,7 +403,7 @@ class Application(models.Model):
     shirt_size = models.CharField(
         "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
     )
-    address = AddressField(on_delete=models.CASCADE, default=None, null=True)
+    # address = AddressField(on_delete=models.CASCADE, default=None, null=True)
     additional_accommodations = models.TextField(
         "Do you require any special accommodations at the event? Please list all dietary restrictions here.",
         max_length=500,

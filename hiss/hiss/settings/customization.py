@@ -1,6 +1,6 @@
 from django.utils import timezone
 
-MAX_YEARS_ADMISSION = 5
+MAX_YEARS_ADMISSION = 6
 EVENT_NAME = "HowdyHack"
 EVENT_YEAR = "2023"
 ORGANIZER_EMAIL = "hello@tamuhack.com"
