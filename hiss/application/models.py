@@ -405,12 +405,14 @@ class Application(models.Model):
     )
     # address = AddressField(on_delete=models.CASCADE, default=None, null=True)
     additional_accommodations = models.TextField(
-        "Do you require any special accommodations at the event? Please list all dietary restrictions here.",
+        "Do you require any special accommodations at the event? Please list dietary restrictions here if you selected \"food allergy\" or \"other\".",
         max_length=500,
         blank=True,
     )
 
-    technology_experience = models.CharField(max_length=450, default=None)
+    dietary_restrictions = models.CharField(max_length=5000, default=None)
+
+    technology_experience = models.CharField(max_length=5000, default=None)
 
     # TEAM MATCHING INFO
     has_team = models.CharField(

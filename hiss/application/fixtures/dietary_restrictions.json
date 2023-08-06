@@ -17,33 +17,47 @@
     "model": "application.dietaryrestriction",
     "pk": 3,
     "fields": {
-      "name": "Halal"
+      "name": "No Beef"
     }
   },
   {
     "model": "application.dietaryrestriction",
     "pk": 4,
     "fields": {
-      "name": "Kosher"
+      "name": "No Pork"
     }
   },
   {
     "model": "application.dietaryrestriction",
     "pk": 5,
     "fields": {
-      "name": "Gluten-free"
+      "name": "Halal"
     }
   },
   {
     "model": "application.dietaryrestriction",
     "pk": 6,
     "fields": {
-      "name": "Food allergy"
+      "name": "Kosher"
     }
   },
   {
     "model": "application.dietaryrestriction",
     "pk": 7,
+    "fields": {
+      "name": "Gluten-free"
+    }
+  },
+  {
+    "model": "application.dietaryrestriction",
+    "pk": 8,
+    "fields": {
+      "name": "Food allergy"
+    }
+  },
+  {
+    "model": "application.dietaryrestriction",
+    "pk": 9,
     "fields": {
       "name": "Other"
     }

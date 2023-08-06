@@ -1,4 +1,5 @@
 import ast
+import json
 
 from django import forms
 from django.conf import settings
@@ -187,6 +188,14 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
 
+    dietary_restrictions_list = ["Vegan", "Vegetarian", "No Beef", "No Pork", "Halal", "Kosher", "Gluten-Free", "Food Allergy", "Other"]
+    dietary_restrictions = forms.MultipleChoiceField(
+        label="Do you have any dietary restrictions?",
+        help_text="Select all that apply",
+        choices=tuple([(item["fields"]["name"].replace(" ", "-"), item["fields"]["name"]) for item in dietary_restrictions_list]),
+        required=False,
+    )
+
     # address = AddressField(
     #     help_text="You will not receive swag and prizes without an address",
     #     required=False,
@@ -279,6 +288,7 @@ class ApplicationModelForm(forms.ModelForm):
             "race_other",
             "num_hackathons_attended",
             "technology_experience",
+            "dietary_restrictions",
             "has_team",
             "wants_team",
             "shirt_size",

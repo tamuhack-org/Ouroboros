@@ -185,6 +185,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "grad_year",
         "num_hackathons_attended",
         "technology_experience",
+        "dietary_restrictions",
         "extra_links",
         "address",
         "question1",
@@ -201,6 +202,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("grad_year", ChoiceDropdownFilter),
         ("num_hackathons_attended", ChoiceDropdownFilter),
         ("technology_experience", ChoiceDropdownFilter),
+        ("dietary_restrictions", ChoiceDropdownFilter),
         ("shirt_size", ChoiceDropdownFilter),
         ("datetime_submitted", DateRangeFilter),
         RaceFilter,
@@ -256,6 +258,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             {
                 "fields": [
                     "shirt_size",
+                    "dietary_restrictions",
                     "additional_accommodations",
                     "address",
                 ]
