@@ -141,43 +141,43 @@ class ApplicationModelForm(forms.ModelForm):
         (CLOUD, "Cloud"),
         (DATA_SCIENCE, "Data Science"),
         (MACHINE_LEARNING, "Machine Learning"),
-        (DATABASES, "Databases")
-        (UI_UX, "UI/UX")
-        (GENERATIVE_AI, "Generative AI")
-        (DATA_VIS, "Data Visualization")
-        (COMPUTER_GRAPHICS, "Computer Graphics")
-        (GAME_DEV, "Game Development")
-        (CYBERSECURITY, "Cybersecurity")
-        (DATA_STRUCTURES, "Data Structures")
-        (REST_APIS, "REST APIs")
-        (TESTING, "Software Testing")
-        (MICROCONTROLLERS, "Microcontrollers")
-        (SYSTEMS_PROGRAMMING, "Computer Systems Programming")
-        (HARDWARE, "Computer Hardware")
-        (OS, "Operating Systems")
-        (AWS, "AWS")
-        (GOOGLE_CLOUD, "Google Cloud")
-        (MS_AZURE, "Microsoft Azure")
-        (VERCEL, "Vercel")
-        (POSTGRESQL, "PostgreSQL")
-        (MONGO_DB, "MongoDB")
-        (REACT, "React")
-        (ANGULAR, "Angular")
-        (VUE, "Vue.js")
-        (SVELTE, "Svelte")
-        (BOOTSTRAP, "Bootstrap")
-        (RAILS, "Ruby on Rails")
-        (DJANGO, "Django")
-        (FIREBASE, "Firebase")
-        (GIT, "Git")
-        (UNIX_LINUX, "Unix/Linux")
-        (JUPYTER_NOTEBOOKS, "Jupyter Notebooks")
-        (NODE_JS, "Node.js")
-        (DOCKER, "Docker")
-        (KUBERNETES, "Kubernetes")
-        (TENSORFLOW, "Tensorflow")
-        (PYTORCH, "PyTorch")
-        (FLUTTER, "Flutter")
+        (DATABASES, "Databases"),
+        (UI_UX, "UI/UX"),
+        (GENERATIVE_AI, "Generative AI"),
+        (DATA_VIS, "Data Visualization"),
+        (COMPUTER_GRAPHICS, "Computer Graphics"),
+        (GAME_DEV, "Game Development"),
+        (CYBERSECURITY, "Cybersecurity"),
+        (DATA_STRUCTURES, "Data Structures"),
+        (REST_APIS, "REST APIs"),
+        (TESTING, "Software Testing"),
+        (MICROCONTROLLERS, "Microcontrollers"),
+        (SYSTEMS_PROGRAMMING, "Computer Systems Programming"),
+        (HARDWARE, "Computer Hardware"),
+        (OS, "Operating Systems"),
+        (AWS, "AWS"),
+        (GOOGLE_CLOUD, "Google Cloud"),
+        (MS_AZURE, "Microsoft Azure"),
+        (VERCEL, "Vercel"),
+        (POSTGRESQL, "PostgreSQL"),
+        (MONGO_DB, "MongoDB"),
+        (REACT, "React"),
+        (ANGULAR, "Angular"),
+        (VUE, "Vue.js"),
+        (SVELTE, "Svelte"),
+        (BOOTSTRAP, "Bootstrap"),
+        (RAILS, "Ruby on Rails"),
+        (DJANGO, "Django"),
+        (FIREBASE, "Firebase"),
+        (GIT, "Git"),
+        (UNIX_LINUX, "Unix/Linux"),
+        (JUPYTER_NOTEBOOKS, "Jupyter Notebooks"),
+        (NODE_JS, "Node.js"),
+        (DOCKER, "Docker"),
+        (KUBERNETES, "Kubernetes"),
+        (TENSORFLOW, "Tensorflow"),
+        (PYTORCH, "PyTorch"),
+        (FLUTTER, "Flutter"),
         (REACT_NATIVE, "React Native")
     )
     # SKILLS
