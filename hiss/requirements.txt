@@ -32,7 +32,7 @@ lazy-object-proxy==1.4.2
 mccabe==0.6.1
 phonenumbers==8.10.15
 protobuf==3.10.0
-psycopg2-binary==2.8.3
+# psycopg2-binary==2.8.3
 pyasn1==0.4.7
 pyasn1-modules==0.2.7
 pycodestyle==2.5.0
@@ -49,7 +49,7 @@ rsa==4.0
 six==1.12.0
 sqlparse==0.3.0
 tblib==1.5.0
-typed-ast==1.4.0
+# typed-ast==1.4.0
 urllib3==1.25.6
 whitenoise==5.2.0
 wrapt==1.11.2

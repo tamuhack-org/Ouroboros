@@ -187,7 +187,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "technology_experience",
         "dietary_restrictions",
         "extra_links",
-        "address",
+        # "address",
         "question1",
         # "question2",
         # "question3",
@@ -260,7 +260,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "shirt_size",
                     "dietary_restrictions",
                     "additional_accommodations",
-                    "address",
+                    # "address",
                 ]
             },
         ),
