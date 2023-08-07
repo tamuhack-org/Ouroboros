@@ -189,8 +189,8 @@ class ApplicationAdmin(admin.ModelAdmin):
         "extra_links",
         "address",
         "question1",
-        "question2",
-        "question3",
+        # "question2",
+        # "question3",
         "notes",
         "is_a_walk_in",
     ]
@@ -229,8 +229,8 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "last_name",
                     "extra_links",
                     "question1",
-                    "question2",
-                    "question3",
+                    # "question2",
+                    # "question3",
                     "resume",
                 ]
             },
