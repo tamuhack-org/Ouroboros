@@ -205,8 +205,8 @@ class ApplicationModelForm(forms.ModelForm):
         (NO_PORK, "No Pork"),
         (HALAL, "Halal"),
         (KOSHER, "Kosher"),
-        (GLUTEN_FREE, "Gluten-Free")
-        (FOOD_ALLERGY, "Food Allergy")
+        (GLUTEN_FREE, "Gluten-Free"),
+        (FOOD_ALLERGY, "Food Allergy"),
         (OTHER_DIETARY_RESTRICTION, "Other")
     )
     dietary_restrictions = forms.MultipleChoiceField(
