@@ -188,11 +188,31 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
 
-    dietary_restrictions_list = ["Vegan", "Vegetarian", "No Beef", "No Pork", "Halal", "Kosher", "Gluten-Free", "Food Allergy", "Other"]
+    VEGAN = "Vegan"
+    VEGETARIAN = "Vegetarian"
+    NO_BEEF = "No-Beef"
+    NO_PORK = "No-Pork"
+    HALAL = "Halal"
+    KOSHER = "Kosher"
+    GLUTEN_FREE = "Gluten-Free"
+    FOOD_ALLERGY = "Food-Allergy"
+    OTHER_DIETARY_RESTRICTION = "Other"
+
+    DIETARY_RESTRICTIONS = (
+        (VEGAN, "Vegan"),
+        (VEGETARIAN, "Vegetarian"),
+        (NO_BEEF, "No Beef"),
+        (NO_PORK, "No Pork"),
+        (HALAL, "Halal"),
+        (KOSHER, "Kosher"),
+        (GLUTEN_FREE, "Gluten-Free")
+        (FOOD_ALLERGY, "Food Allergy")
+        (OTHER_DIETARY_RESTRICTION, "Other")
+    )
     dietary_restrictions = forms.MultipleChoiceField(
         label="Do you have any dietary restrictions?",
         help_text="Select all that apply",
-        choices=tuple([(item.replace(" ", "-"), item) for item in dietary_restrictions_list]),
+        choices=DIETARY_RESTRICTIONS,
         required=False,
     )
 
@@ -206,6 +226,9 @@ class ApplicationModelForm(forms.ModelForm):
             kwargs["initial"] = {
                 "technology_experience": ast.literal_eval(
                     kwargs.get("instance").technology_experience or "[]"
+                ),
+                "dietary_restrictions": ast.literal_eval(
+                    kwargs.get("instance").dietary_restrictions or "[]"
                 ),
             }
 

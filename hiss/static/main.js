@@ -42,4 +42,5 @@ $(document).ready(function() {
     // Custom styling for multi-select inputs.
     // Reference: https://select2.org/getting-started/basic-usage
     $('#id_technology_experience').select2();
+    $('#id_dietary_restrictions').select2();
 })
