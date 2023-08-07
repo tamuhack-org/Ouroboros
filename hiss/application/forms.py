@@ -209,6 +209,7 @@ class ApplicationModelForm(forms.ModelForm):
         (FOOD_ALLERGY, "Food Allergy"),
         (OTHER_DIETARY_RESTRICTION, "Other")
     )
+    
     dietary_restrictions = forms.MultipleChoiceField(
         label="Do you have any dietary restrictions?",
         help_text="Select all that apply",
