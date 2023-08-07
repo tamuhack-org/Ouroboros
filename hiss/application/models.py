@@ -197,8 +197,8 @@ TRANSPORT_MODES: List[Tuple[str, str]] = [
 ]
 
 QUESTION1_TEXT = "Tell us your best programming joke."
-# QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
-# QUESTION3_TEXT = "What's your hidden talent?"
+QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
+QUESTION3_TEXT = "What's your hidden talent?"
 
 WOMENS_XXS = "WXXS"
 WOMENS_XS = "WXS"
@@ -342,8 +342,8 @@ class Application(models.Model):
         blank=True,
     )
     question1 = models.TextField(QUESTION1_TEXT, max_length=500)
-    # question2 = models.TextField(QUESTION2_TEXT, max_length=500)
-    # question3 = models.TextField(QUESTION3_TEXT, max_length=500)
+    question2 = models.TextField(QUESTION2_TEXT, max_length=500, default=NO_ANSWER)
+    question3 = models.TextField(QUESTION3_TEXT, max_length=500, default=NO_ANSWER)
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
