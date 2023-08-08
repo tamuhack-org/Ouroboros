@@ -239,7 +239,7 @@ class ApplicationModelForm(forms.ModelForm):
         )
 
         mlh_stuff = (
-            f"I authorize {settings.EVENT_NAME} to share my application/registration information for"
+            f"I authorize {settings.ORGANIZER_NAME} to share my application/registration information for"
             " event administration, ranking, MLH administration, pre- and post-event informational e-mails,"
             'and occasional messages about hackathons in-line with the <a href="https://mlh.io/privacy">MLH'
             ' Privacy Policy</a>. I further agree to the terms of both the <a href="https://github.com/MLH'
