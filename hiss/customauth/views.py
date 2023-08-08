@@ -25,6 +25,7 @@ def send_confirmation_email(curr_domain: RequestSite, user: User) -> None:
         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
         "token": email_confirmation_generator.make_token(user),
         "event_name": settings.EVENT_NAME,
+        "organizer_name": settings.ORGANIZER_NAME,
     }
     user.send_html_email(template_name, context, subject)
 
@@ -88,7 +89,7 @@ class PlaceholderPasswordResetView(auth_views.PasswordResetView):
     email_template_name = "registration/emails/password_reset.html"
     subject_template_name = "registration/emails/password_reset_subject.txt"
     success_url = reverse_lazy("customauth:password_reset_done")
-    extra_email_context = {"event_name": settings.EVENT_NAME}
+    extra_email_context = {"event_name": settings.EVENT_NAME, "organizer_name": settings.ORGANIZER_NAME}
 
 
 class PlaceholderPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
