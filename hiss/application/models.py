@@ -150,17 +150,17 @@ class DietaryRestriction(models.Model):
 
 
 HACKATHONS_0 = "0"
-HACKATHONS_1_TO_3 = "1-3"
-HACKATHONS_4_TO_7 = "4-7"
-HACKATHONS_8_TO_10 = "8-10"
-HACKATHONS_OVER_TEN = "10+"
+HACKATHONS_1 = "1"
+HACKATHONS_2_TO_3 = "2-3"
+HACKATHONS_4_TO_5 = "4-5"
+HACKATHONS_6 = "6+"
 
 HACKATHON_TIMES: List[Tuple[str, str]] = [
     (HACKATHONS_0, "This will be my first!"),
-    (HACKATHONS_1_TO_3, "1-3"),
-    (HACKATHONS_4_TO_7, "4-7"),
-    (HACKATHONS_8_TO_10, "8-10"),
-    (HACKATHONS_OVER_TEN, "10+"),
+    (HACKATHONS_1, "1"),
+    (HACKATHONS_2_TO_3, "2-3"),
+    (HACKATHONS_4_TO_5, "4-5"),
+    (HACKATHONS_6, "6+"),
 ]
 
 GRAD_YEARS: List[Tuple[int, int]] = [
