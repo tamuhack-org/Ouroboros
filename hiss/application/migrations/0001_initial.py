@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
                     models.CharField(
                         choices=[
                             ("P", "Under Review"),
-                            ("R", "Waitlisted"),
+                            ("R", "Rejected"),
                             ("A", "Admitted"),
                             ("C", "Confirmed"),
                             ("X", "Declined"),

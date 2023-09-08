@@ -255,7 +255,7 @@ STATUS_EXPIRED = "E"
 
 STATUS_OPTIONS = [
     (STATUS_PENDING, "Under Review"),
-    (STATUS_REJECTED, "Waitlisted"),
+    (STATUS_REJECTED, "Rejected"),
     (STATUS_ADMITTED, "Admitted"),
     (STATUS_CONFIRMED, "Confirmed"),
     (STATUS_DECLINED, "Declined"),
