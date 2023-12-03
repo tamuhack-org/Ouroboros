@@ -195,6 +195,14 @@ ALTER TABLE "application_application" ALTER COLUMN "technology_experience" TYPE 
 --
 -- Alter field wants_team on application
 --
+
+
+-- new stuff cuz i couldnt get django to make a migration for this
+-- ALTER TABLE "application_application" ADD COLUMN "emergency_contact_name" varchar(300) NOT NULL;
+-- ALTER TABLE "application_application" ADD COLUMN "emergency_contact_relationship" varchar(300) NOT NULL;
+-- ALTER TABLE "application_application" ADD COLUMN "emergency_contact_phone" varchar(300) NOT NULL;
+-- ALTER TABLE "application_application" ADD COLUMN "emergency_contact_email" varchar(300) NOT NULL;
+
 COMMIT;
 
 
