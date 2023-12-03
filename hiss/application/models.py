@@ -108,7 +108,10 @@ GENDERS: List[Tuple[str, str]] = [
 ]
 
 AMERICAN_INDIAN = "AI"
-ASIAN = "AS"
+ASIAN_INDIAN_SUB = "ASI"
+ASIAN_EAST = "ASE"
+ASIAN_SOUTHEAST = "ASSE"
+ASIAN_OTHER = "AS"
 BLACK = "BL"
 HISPANIC = "HI"
 NATIVE_HAWAIIAN = "NH"
@@ -117,7 +120,10 @@ RACE_OTHER = "O"
 
 RACES: List[Tuple[str, str]] = [
     (AMERICAN_INDIAN, "American Indian or Alaskan Native"),
-    (ASIAN, "Asian"),
+    (ASIAN_INDIAN_SUB, "Asian (Indian Subcontinent)"),
+    (ASIAN_EAST, "Asian (East Asia)"),
+    (ASIAN_SOUTHEAST, "Asian (Southeast Asia)"),
+    (ASIAN_OTHER, "Asian (Other)"),
     (BLACK, "Black or African-American"),
     (HISPANIC, "Hispanic or Latino"),
     (NATIVE_HAWAIIAN, "Native Hawaiian or other Pacific Islander"),
@@ -273,6 +279,7 @@ HAS_TEAM_OPTIONS = [
 
 WANTS_TEAM_OPTIONS = [
     ("Friend", "From a friend"),
+    ("Tabling", "Tabling outside Zachry"),
     ("Yard Sign", "Yard sign"),
     ("Social Media", "Social media"),
     ("Student Orgs", "Though another student org"),
@@ -305,7 +312,7 @@ PURPOSE_OPTIONS = [
         PURPOSE_RECRUITING,
         "I just want to talk to the sponsors and get a job",
     ),
-    (PURPOSE_MESS_AROUND, "I want to just mess around on the Minecraft server!"),
+    (PURPOSE_MESS_AROUND, "I want to have a fun weekend with my friends!"),
 ]
 
 
@@ -408,6 +415,20 @@ class Application(models.Model):
         "Do you require any special accommodations at the event? Please list dietary restrictions here if you selected \"food allergy\" or \"other\".",
         max_length=500,
         blank=True,
+    )
+
+    # Emergency Contact Info
+    emergency_contact_name = models.CharField(
+        "Emergency Contact Name", max_length=255, blank=True
+    )
+    emergency_contact_relationship = models.CharField(
+        "Emergency Contact Relationship", max_length=255, blank=True
+    )
+    emergency_contact_phone = models.CharField(
+        "Emergency Contact Phone Number", max_length=255, blank=True
+    )
+    emergency_contact_email = models.CharField(
+        "Emergency Contact Email", max_length=255, blank=True
     )
 
     dietary_restrictions = models.CharField(max_length=5000, default=None)

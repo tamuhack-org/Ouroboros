@@ -263,6 +263,10 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "dietary_restrictions",
                     "additional_accommodations",
                     # "address",
+                    "emergency_contact_name",
+                    "emergency_contact_relationship",
+                    "emergency_contact_phone",
+                    "emergency_contact_email",
                 ]
             },
         ),
