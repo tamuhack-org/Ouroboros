@@ -419,16 +419,16 @@ class Application(models.Model):
 
     # Emergency Contact Info
     emergency_contact_name = models.CharField(
-        "Emergency Contact Name", max_length=255, blank=True
+        "Emergency Contact Name", max_length=255, blank=False
     )
     emergency_contact_relationship = models.CharField(
-        "Emergency Contact Relationship", max_length=255, blank=True
+        "Emergency Contact Relationship", max_length=255, blank=False
     )
     emergency_contact_phone = models.CharField(
-        "Emergency Contact Phone Number", max_length=255, blank=True
+        "Emergency Contact Phone Number", max_length=255, blank=False
     )
     emergency_contact_email = models.CharField(
-        "Emergency Contact Email", max_length=255, blank=True
+        "Emergency Contact Email", max_length=255, blank=False
     )
 
     dietary_restrictions = models.CharField(max_length=5000, default=None)
