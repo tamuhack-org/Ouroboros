@@ -247,5 +247,8 @@ BEGIN;
 --
 -- Alter field emergency_contact_relationship on application
 --
+-- Add field wares on application
+ALTER TABLE "application_application" ADD COLUMN "wares" varchar(5000) DEFAULT '' NOT NULL;
+ALTER TABLE "application_application" ALTER COLUMN "wares" DROP DEFAULT;
 COMMIT;
 
