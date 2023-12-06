@@ -30,9 +30,4 @@ class Migration(migrations.Migration):
             name='emergency_contact_relationship',
             field=models.CharField(max_length=255, verbose_name='Emergency Contact Relationship'),
         ),
-        migrations.AlterField(
-            model_name='application',
-            name='wares',
-            field=models.CharField(max_length=255, verbose_name='Software or Hardware Track'),
-        ),
     ]
