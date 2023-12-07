@@ -315,6 +315,11 @@ PURPOSE_OPTIONS = [
     (PURPOSE_MESS_AROUND, "I want to have a fun weekend with my friends!"),
 ]
 
+WARECHOICE = [
+    ("SW", "SOFTWARE"),
+    ("HW", "HARDWARE")
+]
+"""HW - Hardware, SW - Software"""
 
 def uuid_generator(_instance, filename: str):
     ext = filename.split(".")[-1]
@@ -392,7 +397,9 @@ class Application(models.Model):
     num_hackathons_attended = models.CharField(
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
-
+    wares = models.CharField(
+        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware tracks", choices=WARECHOICE, max_length=8, default=NO_ANSWER, blank=False
+    )
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
     agree_to_mlh_stuff = models.BooleanField(
@@ -419,16 +426,16 @@ class Application(models.Model):
 
     # Emergency Contact Info
     emergency_contact_name = models.CharField(
-        "Emergency Contact Name", max_length=255, blank=True
+        "Emergency Contact Name", max_length=255, blank=False
     )
     emergency_contact_relationship = models.CharField(
-        "Emergency Contact Relationship", max_length=255, blank=True
+        "Emergency Contact Relationship", max_length=255, blank=False
     )
     emergency_contact_phone = models.CharField(
-        "Emergency Contact Phone Number", max_length=255, blank=True
+        "Emergency Contact Phone Number", max_length=255, blank=False
     )
     emergency_contact_email = models.CharField(
-        "Emergency Contact Email", max_length=255, blank=True
+        "Emergency Contact Email", max_length=255, blank=False
     )
 
     dietary_restrictions = models.CharField(max_length=5000, default=None)

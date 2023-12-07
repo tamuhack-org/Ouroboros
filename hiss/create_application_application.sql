@@ -195,15 +195,57 @@ ALTER TABLE "application_application" ALTER COLUMN "technology_experience" TYPE 
 --
 -- Alter field wants_team on application
 --
-
-
--- new stuff cuz i couldnt get django to make a migration for this
--- ALTER TABLE "application_application" ADD COLUMN "emergency_contact_name" varchar(300) NOT NULL;
--- ALTER TABLE "application_application" ADD COLUMN "emergency_contact_relationship" varchar(300) NOT NULL;
--- ALTER TABLE "application_application" ADD COLUMN "emergency_contact_phone" varchar(300) NOT NULL;
--- ALTER TABLE "application_application" ADD COLUMN "emergency_contact_email" varchar(300) NOT NULL;
-
 COMMIT;
 
 
+-- 0018
+
+BEGIN;
+--
+-- Add field emergency_contact_email to application
+--
+ALTER TABLE "application_application" ADD COLUMN "emergency_contact_email" varchar(255) DEFAULT '' NOT NULL;
+ALTER TABLE "application_application" ALTER COLUMN "emergency_contact_email" DROP DEFAULT;
+--
+-- Add field emergency_contact_name to application
+--
+ALTER TABLE "application_application" ADD COLUMN "emergency_contact_name" varchar(255) DEFAULT '' NOT NULL;
+ALTER TABLE "application_application" ALTER COLUMN "emergency_contact_name" DROP DEFAULT;
+--
+-- Add field emergency_contact_phone to application
+--
+ALTER TABLE "application_application" ADD COLUMN "emergency_contact_phone" varchar(255) DEFAULT '' NOT NULL;
+ALTER TABLE "application_application" ALTER COLUMN "emergency_contact_phone" DROP DEFAULT;
+--
+-- Add field emergency_contact_relationship to application
+--
+ALTER TABLE "application_application" ADD COLUMN "emergency_contact_relationship" varchar(255) DEFAULT '' NOT NULL;
+ALTER TABLE "application_application" ALTER COLUMN "emergency_contact_relationship" DROP DEFAULT;
+--
+-- Alter field num_hackathons_attended on application
+--
+--
+-- Alter field race on application
+--
+--
+-- Alter field wants_team on application
+--
+COMMIT;
+
+
+-- 0019
+BEGIN;
+--
+-- Alter field emergency_contact_email on application
+--
+--
+-- Alter field emergency_contact_name on application
+--
+--
+-- Alter field emergency_contact_phone on application
+--
+--
+-- Alter field emergency_contact_relationship on application
+--
+COMMIT;
 
