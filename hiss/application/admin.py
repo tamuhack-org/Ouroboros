@@ -55,6 +55,7 @@ def build_approval_email(
     context = {
         "first_name": application.first_name,
         "event_name": settings.EVENT_NAME,
+        "event_year": settings.EVENT_YEAR,
         "confirmation_deadline": confirmation_deadline,
         "organizer_email": settings.ORGANIZER_EMAIL,
     }
@@ -73,6 +74,7 @@ def build_rejection_email(application: Application) -> Tuple[str, str, None, Lis
     context = {
         "first_name": application.first_name,
         "event_name": settings.EVENT_NAME,
+        "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
     }
     html_message = render_to_string("application/emails/rejected.html", context)

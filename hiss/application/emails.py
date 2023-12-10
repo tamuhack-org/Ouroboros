@@ -21,6 +21,7 @@ def send_creation_email(app: Application) -> None:
     context = {
         "first_name": app.first_name,
         "event_name": settings.EVENT_NAME,
+        "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
     }
 
@@ -39,6 +40,7 @@ def send_confirmation_email(app: Application) -> None:
     context = {
         "first_name": app.first_name,
         "event_name": settings.EVENT_NAME,
+        "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
     }
     html_msg = render_to_string(email_template, context)
