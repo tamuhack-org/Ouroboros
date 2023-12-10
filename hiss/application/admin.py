@@ -259,6 +259,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             "Logistical Information",
             {
                 "fields": [
+                    "wares",
                     "shirt_size",
                     "dietary_restrictions",
                     "additional_accommodations",
