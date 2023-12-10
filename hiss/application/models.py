@@ -316,8 +316,8 @@ PURPOSE_OPTIONS = [
 ]
 
 WARECHOICE = [
-    ("SW", "SOFTWARE"),
-    ("HW", "HARDWARE")
+    ("SW", "Software"),
+    ("HW", "Hardware")
 ]
 """HW - Hardware, SW - Software"""
 
@@ -398,7 +398,7 @@ class Application(models.Model):
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
     wares = models.CharField(
-        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware tracks", choices=WARECHOICE, max_length=8, default=NO_ANSWER, blank=False
+        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track", choices=WARECHOICE, max_length=8, default=NO_ANSWER, blank=False
     )
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
