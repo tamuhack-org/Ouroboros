@@ -1,6 +1,13 @@
 [
   {
     "model": "application.school",
+    "pk": 1565,
+    "fields": {
+      "name": "Texas A&M University"
+    }
+  },
+  {
+    "model": "application.school",
     "pk": 1,
     "fields": {
       "name": "Academy of Art College"
@@ -10945,13 +10952,6 @@
     "pk": 1564,
     "fields": {
       "name": "Texas A&M International University"
-    }
-  },
-  {
-    "model": "application.school",
-    "pk": 1565,
-    "fields": {
-      "name": "Texas A&M University"
     }
   },
   {
