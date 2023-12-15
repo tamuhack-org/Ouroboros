@@ -315,7 +315,7 @@ class ApplicationModelForm(forms.ModelForm):
             "major",
             "classification",
             "grad_year",
-            "level_of_study"
+            "level_of_study",
             "gender",
             "gender_other",
             "race",

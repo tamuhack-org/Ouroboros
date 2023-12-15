@@ -14,7 +14,7 @@ from multiselectfield import MultiSelectField
 from application.filesize_validation import FileSizeValidator
 from address.models import AddressField
 
-from countries import COUNTRIES_TUPLES
+from application.countries import COUNTRIES_TUPLES
 
 s3_storage = S3Storage()
 
