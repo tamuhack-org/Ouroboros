@@ -231,6 +231,9 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "first_name",
                     "last_name",
+                    "age",
+                    "phone_number",
+                    "country",
                     "extra_links",
                     "question1",
                     # "question2",
@@ -252,6 +255,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "race",
                     "race_other",
                     "grad_year",
+                    "level_of_study",
                     "num_hackathons_attended",
                     "technology_experience",
                 ]
