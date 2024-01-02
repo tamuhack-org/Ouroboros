@@ -5,6 +5,7 @@ from volunteer import views
 app_name = "volunteer"
 urlpatterns = [
     path("login", views.EmailObtainAuthToken.as_view(), name="login"),
+    path("verify", views.VerifyAuthenticated.as_view(), name="verify"),
     path("checkin", views.CheckinHackerView.as_view(), name="user-checkin"),
     path(
         "dietary_restrictions",

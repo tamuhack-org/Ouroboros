@@ -38,6 +38,21 @@ class EmailObtainAuthToken(views.ObtainAuthToken):
     serializer_class = EmailAuthTokenSerializer
 
 
+class VerifyAuthenticated(views.APIView):
+    permission_classes = [
+        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
+    ]
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def post(self, request: Request, format: str = None):
+        """
+        See if a user's token is valid and if they are authorized to use the API.
+        This is a certified workaround-because-i-need-auth-but-i-don't-want-to-learn-django moment.
+        Love, Naveen <3
+        """
+        return response.Response(status=status.HTTP_200_OK)
+
+
 class CheckinHackerView(views.APIView):
     permission_classes = [
         permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
