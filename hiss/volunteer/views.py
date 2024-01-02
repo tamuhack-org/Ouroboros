@@ -49,6 +49,13 @@ class VerifyAuthenticated(views.APIView):
         See if a user's token is valid and if they are authorized to use the API.
         This is a certified workaround-because-i-need-auth-but-i-don't-want-to-learn-django moment.
         Love, Naveen <3
+
+        This will return
+            200 if the user is logged in and is authorized
+            401 if the user is not logged in (i.e. the token is invalid or missing)
+            403 if the user is logged in (token is valid) but is not authorized
+        
+        BTW these requests expect the "Authorization" header to be set to "Token <token>"
         """
         return response.Response(status=status.HTTP_200_OK)
 
