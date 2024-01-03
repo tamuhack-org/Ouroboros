@@ -64,6 +64,10 @@ class Wave(models.Model):
 
     def clean(self):
         super().clean()
+        if not (self.start and self.end):
+            raise exceptions.ValidationError(
+                {"start": "Start field cannot be empty.", "end": "End field cannot be empty."}
+            )
         if self.start >= self.end:
             raise exceptions.ValidationError(
                 {"start": "Start date can't be after end date."}
