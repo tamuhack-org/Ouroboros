@@ -2,11 +2,22 @@
   <div
     style="
       max-width: 800px;
-      background-color: #f9ecee;
+      background-color: #ADD8E6;
       z-index: -1;
       padding: 20px;
     "
   >
+    <header style='
+      max-width: 500px;
+      display: block;
+      margin-right: auto;
+      margin-left: 12.5%;
+    '>
+      <div id='created-banner'>
+        <img src='tamuhack-header.jpg' alt='tamuhack banner'>
+      </div>
+    </header>
+
     <div
       style="
         font-family: Questrial, sans-serif;
@@ -17,8 +28,10 @@
         max-width: 500px;
         display: block;
         margin: 20px auto;
+        margin-top: 0px;
       "
     >
+
       <h2 style="margin-bottom: 20px; font-size: 16px; color: #777777">
         Congratulations, {{ first_name }}!
       </h2>
@@ -33,7 +46,7 @@
         "
       >
         You have been accepted to {{EVENT_NAME}} {{EVENT_YEAR}}! We were impressed by your application and we’re excited to see you  
-        <span style="color: #ed768b; font-weight: 700"
+        <span style="color: #ADD8E6; font-weight: 700"
         >January 27 - 28, 2024.</span
       >
       </p>
@@ -73,7 +86,7 @@
   -->
 
       <a href="https://register.tamuhack.com/status/" style="cursor: pointer;">
-        <button style="padding: 15px 10px; width: 250px; background-color: #ed768b; border-radius: .25em; border:none; color: white; font-size: 16px;">
+        <button style="padding: 15px 10px; width: 250px; background-color: #ADD8E6; border-radius: .25em; border:none; color: white; font-size: 16px;">
           Login to RSVP
         </button>
       </a>
@@ -109,7 +122,7 @@
         Thanks!
       </h3>
 
-      <strong style="color: #ed768b; font-size: 16px">
+      <strong style="color: #ADD8E6; font-size: 16px">
         The {{ ORGANIZER_NAME }} Team
       </strong>
     </div>
