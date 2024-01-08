@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.utils import html
 
 from application.models import Application
+from application.apple_wallet import get_apple_wallet_pass_url
 
 
 def send_creation_email(app: Application) -> None:
@@ -44,6 +45,7 @@ def send_confirmation_email(app: Application) -> None:
         "organizer_name": settings.ORGANIZER_NAME,
         "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
+        "apple_wallet_url": get_apple_wallet_pass_url(app.user.email),
     }
     html_msg = render_to_string(email_template, context)
     msg = html.strip_tags(html_msg)
