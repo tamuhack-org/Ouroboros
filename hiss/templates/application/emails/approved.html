@@ -2,11 +2,22 @@
   <div
     style="
       max-width: 800px;
-      background-color: #f9ecee;
+      background-color: #ADD8E6;
       z-index: -1;
       padding: 20px;
     "
   >
+  <header style='
+      max-width: 500px;
+      display: block;
+      margin-right: auto;
+      margin-left: 12.5%;
+    '>
+      <div id='created-banner'>
+        <img src='/resources/img/tamuhack-header.jpg' alt='tamuhack banner'>
+      </div>
+  </header>
+
     <div
       style="
         font-family: Questrial, sans-serif;
@@ -17,8 +28,10 @@
         max-width: 500px;
         display: block;
         margin: 20px auto;
+        margin-top: 0px;
       "
     >
+
       <h2 style="margin-bottom: 20px; font-size: 16px; color: #777777">
         Congratulations, {{ first_name }}!
       </h2>
@@ -33,7 +46,7 @@
         "
       >
         You have been accepted to {{event_name}} {{event_year}}! We were impressed by your application and we’re excited to see you  
-        <span style="color: #ed768b; font-weight: 700"
+        <span style="color: #ADD8E6; font-weight: 700"
         >January 27 - 28, 2024.</span>
       </p>
 
@@ -58,8 +71,21 @@
         We have some important information to share before we get started, so please use the link below to RSVP for the event if you're still intending to attend!
       </p>
 
+      <!--<p
+      style="
+        line-height: 20px;
+        color: #777777;
+        font-size: 12px;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+      "
+    >
+    * If you are not located in the Bryan/College Station area and intend to attend TAMUhack in person, we provide travel reimbursements for participants driving to the event depending on distance traveled. Receipts for gas are required to claim reimbursement, which will take place on the second day of the event.
+    </p>
+  -->
+
       <a href="https://register.tamuhack.com/status/" style="cursor: pointer;">
-        <button style="padding: 15px 10px; width: 250px; background-color: #ed768b; border-radius: .25em; border:none; color: white; font-size: 16px;">
+        <button style="padding: 15px 10px; width: 250px; background-color: #ADD8E6; border-radius: .25em; border:none; color: white; font-size: 16px;">
           Login to RSVP
         </button>
       </a>
@@ -75,7 +101,7 @@
       >
         In the meantime, feel free to email
         <a href="mailto:hello@tamuhack.com" style="color: #00add8"
-          >{{ organizer_email }}</a
+          >{{ ORGANIZER_EMAIL }}</a
         >
         if you have any questions.
       </p>
@@ -95,7 +121,7 @@
         Thanks!
       </h3>
 
-      <strong style="color: #ed768b; font-size: 16px">
+      <strong style="color: #ADD8E6; font-size: 16px">
         The {{ organizer_name }} Team
       </strong>
     </div>
