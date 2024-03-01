@@ -14,6 +14,8 @@ from multiselectfield import MultiSelectField
 from application.filesize_validation import FileSizeValidator
 from address.models import AddressField
 
+from application.countries import COUNTRIES_TUPLES
+
 s3_storage = S3Storage()
 
 
@@ -93,6 +95,7 @@ class School(models.Model):
 
 
 AGREE = ((True, "Agree"),)
+AGREE_DISAGREE = ((True, "Agree"), (False, "Disagree"))
 
 TRUE_FALSE_CHOICES = ((True, "Yes"), (False, "No"))
 
@@ -172,6 +175,33 @@ HACKATHON_TIMES: List[Tuple[str, str]] = [
     (HACKATHONS_4_TO_5, "4-5"),
     (HACKATHONS_6, "6+"),
 ]
+
+STUDY_LESS_THAN_SECONDARY = "Less than Secondary / High School"
+STUDY_SECONDARY = "Secondary / High School"
+STUDY_UNDERGRAD_2YEAR = "Undergraduate University (2 year - community college or similar)"
+STUDY_UNDERGRAD_3YEAR = "Undergraduate University (3+ year)"
+STUDY_GRADUATE = "Graduate University (Masters, Professional, Doctoral, etc)"
+STUDY_CODE_SCHOOL = "Code School / Bootcamp"
+STUDY_OTHER_VOCATIONAL = "Other Vocational / Trade Program or Apprenticeship"
+STUDY_POSTDOC = "Post Doctorate"
+STUDY_OTHER = "Other"
+STUDY_NOT_STUDENT = "I'm not currently a student"
+STUDY_NO_ANSWER = "Prefer not to answer"
+
+LEVELS_OF_STUDY = [
+    (STUDY_LESS_THAN_SECONDARY, STUDY_LESS_THAN_SECONDARY),
+    (STUDY_SECONDARY, STUDY_SECONDARY),
+    (STUDY_UNDERGRAD_2YEAR, STUDY_UNDERGRAD_2YEAR),
+    (STUDY_UNDERGRAD_3YEAR, STUDY_UNDERGRAD_3YEAR),
+    (STUDY_GRADUATE, STUDY_GRADUATE),
+    (STUDY_CODE_SCHOOL, STUDY_CODE_SCHOOL),
+    (STUDY_OTHER_VOCATIONAL, STUDY_OTHER_VOCATIONAL),
+    (STUDY_POSTDOC, STUDY_POSTDOC),
+    (STUDY_OTHER, STUDY_OTHER),
+    (STUDY_NOT_STUDENT, STUDY_NOT_STUDENT),
+    (STUDY_NO_ANSWER, STUDY_NO_ANSWER),
+]
+    
 
 GRAD_YEARS: List[Tuple[int, int]] = [
     (int(y), int(y))
@@ -352,6 +382,15 @@ class Application(models.Model):
     last_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="last name"
     )
+    age = models.CharField(
+        max_length=5, blank=False, null=True, verbose_name="age"
+    )
+    phone_number = models.CharField(
+        max_length=13, blank=False, null=True, verbose_name="phone number"
+    )
+    country = models.CharField(
+        "What is your country of residence?", max_length=100, choices=COUNTRIES_TUPLES, blank=False, null=True
+    )
     extra_links = models.CharField(
         "Point us to anything you'd like us to look at while considering your application",
         max_length=200,
@@ -398,6 +437,9 @@ class Application(models.Model):
     grad_year = models.IntegerField(
         "What is your anticipated graduation year?", choices=GRAD_YEARS
     )
+    level_of_study = models.CharField(
+        "What is your current level of study?", max_length=100, choices=LEVELS_OF_STUDY, blank=False, null=True
+    )
     num_hackathons_attended = models.CharField(
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
@@ -408,6 +450,9 @@ class Application(models.Model):
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
     agree_to_mlh_stuff = models.BooleanField(
         choices=AGREE, null=True, default=None, blank=True
+    )
+    signup_to_mlh_newsletter = models.BooleanField(
+        choices=AGREE_DISAGREE, null=True, default=None, blank=True
     )
     is_adult = models.BooleanField(
         "Please confirm you are 18 or older.",

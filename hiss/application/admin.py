@@ -50,12 +50,13 @@ def build_approval_email(
     Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
     application has been approved.
     """
-    subject = f"ACTION REQUIRED: One last step for your HowdyHack application!"
+    subject = f"ACTION REQUIRED: One last step for your {settings.EVENT_NAME} application!"
 
     context = {
         "first_name": application.first_name,
         "event_name": settings.EVENT_NAME,
         "organizer_name": settings.ORGANIZER_NAME,
+        "event_year": settings.EVENT_YEAR,
         "confirmation_deadline": confirmation_deadline,
         "organizer_email": settings.ORGANIZER_EMAIL,
     }
@@ -75,6 +76,7 @@ def build_rejection_email(application: Application) -> Tuple[str, str, None, Lis
         "first_name": application.first_name,
         "event_name": settings.EVENT_NAME,
         "organizer_name": settings.ORGANIZER_NAME,
+        "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
     }
     html_message = render_to_string("application/emails/rejected.html", context)
@@ -203,8 +205,9 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("gender", ChoiceDropdownFilter),
         ("grad_year", ChoiceDropdownFilter),
         ("num_hackathons_attended", ChoiceDropdownFilter),
-        ("technology_experience", ChoiceDropdownFilter),
-        ("dietary_restrictions", ChoiceDropdownFilter),
+        ("wares", ChoiceDropdownFilter),
+        # ("technology_experience", ChoiceDropdownFilter),
+        # ("dietary_restrictions", ChoiceDropdownFilter),
         ("shirt_size", ChoiceDropdownFilter),
         ("datetime_submitted", DateRangeFilter),
         RaceFilter,
@@ -229,6 +232,9 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "first_name",
                     "last_name",
+                    "age",
+                    "phone_number",
+                    "country",
                     "extra_links",
                     "question1",
                     # "question2",
@@ -250,6 +256,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "race",
                     "race_other",
                     "grad_year",
+                    "level_of_study",
                     "num_hackathons_attended",
                     "technology_experience",
                 ]

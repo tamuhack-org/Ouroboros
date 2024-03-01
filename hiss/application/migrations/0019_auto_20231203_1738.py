@@ -30,9 +30,9 @@ class Migration(migrations.Migration):
             name='emergency_contact_relationship',
             field=models.CharField(max_length=255, verbose_name='Emergency Contact Relationship'),
         ),
-        migrations.AlterField(
+        migrations.AddField(
             model_name='application',
             name='wares',
-            field=models.CharField(max_length=255, verbose_name='Hardware or Software Track'),
+            field=models.CharField(choices=[('SW', 'Software'), ('HW', 'Hardware')], default='NA', max_length=8, verbose_name='TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track'),
         ),
     ]
