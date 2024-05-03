@@ -1,0 +1,6 @@
+[tools]
+poetry = {version='latest', pyproject='pyproject.toml'}
+
+
+[plugins]
+poetry="https://github.com/mise-plugins/mise-poetry.git"
