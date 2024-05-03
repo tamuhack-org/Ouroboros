@@ -13,6 +13,12 @@ If you have questions, we might've answered them already on the [wiki](https://g
 
 ### Local Development
 
+#### First time here?
+
+You should run `./setup.bash` to set up your local environment. This will ensure you have the correct versions of all tools now and as they're updated.
+
+#### Everyone else
+
 For local development, we highly encourage using [Docker Compose](https://docs.docker.com/compose/).
 
 After Docker Compose is installed, there are just a few steps left for first-time setup:
