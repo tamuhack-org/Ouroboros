@@ -15,4 +15,4 @@ sed -i '' -e 's/curl -sSL "$install_url"/curl -sSL "$install_url" | sed '\''s\/s
 
 ~/.local/bin/mise install
 
-lefthook install
+~/.local/share/mise/shims/lefthook install
