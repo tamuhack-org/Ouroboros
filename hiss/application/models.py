@@ -342,7 +342,7 @@ WARECHOICE = [("SW", "Software"), ("HW", "Hardware")]
 
 def uuid_generator(_instance, filename: str):
     ext = filename.split(".")[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
+    filename = f"{uuid.uuid4()}.{ext}"
     return filename
 
 
@@ -507,7 +507,7 @@ class Application(models.Model):
     )
 
     def __str__(self):
-        return "%s, %s - Application" % (self.last_name, self.first_name)
+        return f"{self.last_name}, {self.first_name} - Application"
 
     def get_absolute_url(self):
         return reverse_lazy("application:update", args=[self.id])

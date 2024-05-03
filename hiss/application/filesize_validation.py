@@ -3,7 +3,7 @@ from django.utils.deconstruct import deconstructible
 
 
 @deconstructible
-class FileSizeValidator(object):
+class FileSizeValidator:
 
     """Validator to ensure files are of a desired size or less."""
 

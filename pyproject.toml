@@ -67,6 +67,7 @@ select = [
   "I", # isort (import sorting)
   "N", # pep8-naming
   "D", # pydocstyle
+  "UP", # pyupgrade (make upgrading python version easier by automating syntax changes)
 
 ]
 ignore = [
