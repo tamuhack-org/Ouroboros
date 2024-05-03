@@ -1,9 +1,3 @@
-# noinspection PyUnresolvedReferences
-from .base import *
-
-# noinspection PyUnresolvedReferences
-from .customization import *
-
 SECRET_KEY = "development"
 DEBUG = True
 # Database

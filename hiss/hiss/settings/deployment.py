@@ -1,8 +1,10 @@
 # noinspection PyUnresolvedReferences
-from .base import *
-from .customization import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
+import os
+from hiss.hiss.settings.customization import ORGANIZER_EMAIL, ORGANIZER_NAME
+
+
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!

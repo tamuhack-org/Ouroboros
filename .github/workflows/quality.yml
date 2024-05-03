@@ -17,14 +17,6 @@ jobs:
         run: |
           cd hiss
           black . --check --exclude=".*/migrations,env"
-  flake:
-    name: 'Check code health with Flake8'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: cclauss/GitHub-Action-for-Flake8@0.0.1
-        with:
-          args: "flake8 . --exclude=\"env,**/migrations,__init__.py,hiss/hiss/settings/**\" --max-line-length=120"
   pylint:
     name: 'Check code quality with pylint'
     runs-on: ubuntu-latest
@@ -37,4 +29,4 @@ jobs:
       - name: Lint
         run: |
           cd hiss
-          pylint --exit-zero --rcfile=.pylintrc application rsvp shared status user volunteer
+          mise run lint

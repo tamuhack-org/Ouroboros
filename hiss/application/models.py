@@ -12,7 +12,6 @@ from django_s3_storage.storage import S3Storage
 from multiselectfield import MultiSelectField
 
 from application.filesize_validation import FileSizeValidator
-from address.models import AddressField
 
 from application.countries import COUNTRIES_TUPLES
 

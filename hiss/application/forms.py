@@ -1,5 +1,4 @@
 import ast
-import json
 
 from django import forms
 from django.conf import settings
@@ -8,7 +7,6 @@ from django.utils.safestring import mark_safe
 from application import models as application_models
 from application.models import School
 
-from address.forms import AddressField
 
 
 class ApplicationModelForm(forms.ModelForm):
