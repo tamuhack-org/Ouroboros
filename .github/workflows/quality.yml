@@ -11,6 +11,9 @@ jobs:
       - name: Setup environment
         run: |
           ./setup.bash
+          echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+
       - name: Install python dependencies
         run: |
           poetry install --with dev
@@ -28,6 +31,9 @@ jobs:
       - name: Setup environment
         run: |
           ./setup.bash
+          echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+  
       - name: Install python dependencies
         run: |
           poetry install --with dev
