@@ -1,10 +1,6 @@
 [tools]
 poetry = {version='latest', pyproject='pyproject.toml'}
-
+python = "3.8.19"
 
 [plugins]
 poetry="https://github.com/mise-plugins/mise-poetry.git"
-
-
-[tasks."deps:install"]
-run = "poetry install"
