@@ -7,8 +7,8 @@ from django.core import mail
 from django.template.loader import render_to_string
 from django.utils import html
 
-from application.models import Application
 from application.apple_wallet import get_apple_wallet_pass_url
+from application.models import Application
 
 
 def send_creation_email(app: Application) -> None:

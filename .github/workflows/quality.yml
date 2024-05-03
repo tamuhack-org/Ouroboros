@@ -3,30 +3,30 @@ name: Code Quality Checks
 on: [push]
 
 jobs:
-  black:
-    name: 'Check code quality with black'
+  format:
+    name: 'Format code'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install black
-      - name: Check formatting
-        run: |
-          cd hiss
-          black . --check --exclude=".*/migrations,env"
-  pylint:
-    name: 'Check code quality with pylint'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
-      - name: Install dependencies
+      - name: Install python dependencies
         run: |
           poetry install --with dev
       - name: Lint
         run: |
           cd hiss
-          mise run lint
+          mise run format --check
+
+  lint:
+    name: 'Run python linter (ruff)'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - name: Install python dependencies
+        run: |
+          poetry install --with dev
+      - name: Lint
+        run: |
+          cd hiss
+          mise run lint --no-fix

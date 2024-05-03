@@ -1,4 +1,4 @@
-from django.core.mail import get_connection, EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, get_connection
 
 
 def send_mass_html_mail(

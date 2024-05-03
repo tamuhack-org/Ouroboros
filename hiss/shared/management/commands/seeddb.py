@@ -1,19 +1,19 @@
 import random
 from datetime import timedelta
 
-from django.core.management import base, CommandParser
+from django.core.management import CommandParser, base
 from django.utils import timezone
 
 from application.models import (
-    Application,
-    RACES,
     CLASSIFICATIONS,
-    HACKATHON_TIMES,
-    GRAD_YEARS,
-    Wave,
     GENDERS,
-    STATUS_PENDING,
+    GRAD_YEARS,
+    HACKATHON_TIMES,
+    RACES,
     STATUS_ADMITTED,
+    STATUS_PENDING,
+    Application,
+    Wave,
 )
 from user.models import User
 

@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.core.management import call_command
 from django.utils import timezone
 
-from application.models import Application, STATUS_ADMITTED, STATUS_PENDING
+from application.models import STATUS_ADMITTED, STATUS_PENDING, Application
 from shared import test_case
 
 
@@ -14,7 +14,7 @@ class ExpireManagementCommandTestCase(test_case.SharedTestCase):
             **self.application_fields,
             wave=self.wave1,
             confirmation_deadline=timezone.now() - timedelta(days=1),
-            status=STATUS_PENDING
+            status=STATUS_PENDING,
         )
         new_app_fields = self.application_fields
         new_app_fields["user"] = self.admin
@@ -22,7 +22,7 @@ class ExpireManagementCommandTestCase(test_case.SharedTestCase):
             **new_app_fields,
             wave=self.wave1,
             confirmation_deadline=timezone.now() + timedelta(days=1),
-            status=STATUS_PENDING
+            status=STATUS_PENDING,
         )
 
         call_command("randomadmit", ".5")

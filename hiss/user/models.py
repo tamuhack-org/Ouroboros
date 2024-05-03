@@ -28,9 +28,7 @@ class EmailUserManager(auth_models.UserManager):
         extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, **extra_fields)
 
-    def create_superuser(
-        self, email, password, **extra_fields
-    ):  # pylint: disable=W0221
+    def create_superuser(self, email, password, **extra_fields):  # pylint: disable=W0221
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)

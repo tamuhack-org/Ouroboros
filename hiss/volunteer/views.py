@@ -1,22 +1,22 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Value, F
+from django.db.models import F, Value
 from django.db.models.functions import Concat
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from rest_framework import status, response, permissions, authentication
+from rest_framework import authentication, permissions, response, status
 from rest_framework.authtoken import views
 from rest_framework.request import Request
 
-from application.models import Application, STATUS_CHECKED_IN, DietaryRestriction
+from application.models import STATUS_CHECKED_IN, Application, DietaryRestriction
 from volunteer.models import (
+    BREAKFAST,
+    BREAKFAST_2,
+    DINNER,
+    LUNCH,
+    LUNCH_2,
+    MIDNIGHT_SNACK,
     FoodEvent,
     WorkshopEvent,
-    BREAKFAST,
-    LUNCH,
-    DINNER,
-    MIDNIGHT_SNACK,
-    BREAKFAST_2,
-    LUNCH_2,
 )
 from volunteer.permissions import IsVolunteer
 from volunteer.serializers import EmailAuthTokenSerializer
@@ -54,7 +54,7 @@ class VerifyAuthenticated(views.APIView):
             200 if the user is logged in and is authorized
             401 if the user is not logged in (i.e. the token is invalid or missing)
             403 if the user is logged in (token is valid) but is not authorized
-        
+
         BTW these requests expect the "Authorization" header to be set to "Token <token>"
         """
         return response.Response(status=status.HTTP_200_OK)
@@ -232,6 +232,6 @@ class UserSummaryView(views.APIView):
                 "num_workshops": workshop_events.count(),
                 "checked_in": checked_in,
                 "status": application.status,
-                "dietary_restrictions": application.dietary_restrictions
+                "dietary_restrictions": application.dietary_restrictions,
             }
         )

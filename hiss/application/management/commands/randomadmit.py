@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandParser
 
 from application.admin import approve
-from application.models import Application, STATUS_PENDING
+from application.models import STATUS_PENDING, Application
 
 
 class Command(BaseCommand):

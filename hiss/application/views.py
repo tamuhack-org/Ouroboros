@@ -10,11 +10,11 @@ from django.views import generic
 from application.emails import send_confirmation_email, send_creation_email
 from application.forms import ApplicationModelForm
 from application.models import (
-    Application,
-    Wave,
+    STATUS_ADMITTED,
     STATUS_CONFIRMED,
     STATUS_DECLINED,
-    STATUS_ADMITTED,
+    Application,
+    Wave,
 )
 
 

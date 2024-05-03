@@ -51,56 +51,17 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.2"
-autohooks = "^2.2.0"
-autohooks-plugin-black = "^1.2.0"
-autohooks-plugin-pylint = "^1.2.0"
-autohooks-plugin-isort = "^1.0.0"
-flake8 = "3.7.8"
-pycodestyle = "2.5.0"
-pyflakes = "2.1.1"
-pylint = "2.3.1"
-pylint-django = "2.0.11"
-pylint-plugin-utils = "0.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.autohooks]
-mode = "poetry"
-pre-commit = ["autohooks.plugins.black", "autohooks.plugins.pylint", "autohooks.plugins.isort"]
-
-[tool.autohooks.plugins.pylint]
-arguments = ["--exit-zero", "--rcfile=./hiss/.pylintrc"]
-
-[tool.black]
-exclude = '''
-/(
-   \.git
-  | \.hg
-  | \.venv
-  | \.circleci
-  | \.github
-  | \.vscode
-  | _build
-  | build
-  | dist
-  | docs
-  | \./*/migrations
-  | env
-)/
-'''
-
-[tool.isort]
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-line_length = 80
-
 [tool.ruff]
-
 src=["hiss"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F403"]

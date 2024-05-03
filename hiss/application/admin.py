@@ -2,6 +2,8 @@
 import csv
 from typing import List, Tuple
 
+from address.forms import AddressWidget
+from address.models import AddressField
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -27,9 +29,6 @@ from application.models import (
 )
 from shared.admin_functions import send_mass_html_mail
 
-from address.forms import AddressWidget
-from address.models import AddressField
-
 
 class ApplicationAdminForm(forms.ModelForm):
     class Meta:
@@ -50,7 +49,9 @@ def build_approval_email(
     Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
     application has been approved.
     """
-    subject = f"ACTION REQUIRED: One last step for your {settings.EVENT_NAME} application!"
+    subject = (
+        f"ACTION REQUIRED: One last step for your {settings.EVENT_NAME} application!"
+    )
 
     context = {
         "first_name": application.first_name,
@@ -134,20 +135,10 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
     response["Content-Disposition"] = 'attachment; filename="emails.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(
-        [
-            "email",
-            "shirt_size"
-        ]
-    )
+    writer.writerow(["email", "shirt_size"])
     for instance in queryset:
         instance: Application = instance
-        writer.writerow(
-            [
-                instance.user.email,
-                instance.shirt_size
-            ]
-        )
+        writer.writerow([instance.user.email, instance.shirt_size])
 
     return response
 

@@ -8,9 +8,7 @@ from application import models as application_models
 from application.models import School
 
 
-
 class ApplicationModelForm(forms.ModelForm):
-
     required_css_class = "required-form-input"
 
     gender_other = forms.CharField(
@@ -176,7 +174,7 @@ class ApplicationModelForm(forms.ModelForm):
         (TENSORFLOW, "Tensorflow"),
         (PYTORCH, "PyTorch"),
         (FLUTTER, "Flutter"),
-        (REACT_NATIVE, "React Native")
+        (REACT_NATIVE, "React Native"),
     )
     # SKILLS
     technology_experience = forms.MultipleChoiceField(
@@ -205,9 +203,9 @@ class ApplicationModelForm(forms.ModelForm):
         (KOSHER, "Kosher"),
         (GLUTEN_FREE, "Gluten-Free"),
         (FOOD_ALLERGY, "Food Allergy"),
-        (OTHER_DIETARY_RESTRICTION, "Other")
+        (OTHER_DIETARY_RESTRICTION, "Other"),
     )
-    
+
     dietary_restrictions = forms.MultipleChoiceField(
         label="Do you have any dietary restrictions?",
         help_text="Select all that apply",
@@ -245,9 +243,7 @@ class ApplicationModelForm(forms.ModelForm):
             ' and the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>'
         )
 
-        mlh_newsletter = (
-            "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
-        )
+        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
 
         self.fields["agree_to_mlh_stuff"].label = mark_safe(mlh_stuff)
         self.fields["signup_to_mlh_newsletter"].label = mark_safe(mlh_newsletter)

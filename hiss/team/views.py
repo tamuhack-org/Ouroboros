@@ -6,12 +6,11 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
+from application.models import Application
 from shared import mixins as shared_mixins
-
 from team.forms import CreateTeamForm, JoinTeamForm
 from team.models import Team
 from user.models import User
-from application.models import Application
 
 
 class CreateTeamView(shared_mixins.UserHasNoTeamMixin, generic.CreateView):

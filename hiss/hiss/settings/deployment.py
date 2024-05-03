@@ -2,8 +2,8 @@
 
 # SECURITY WARNING: keep the secret key used in production secret!
 import os
-from hiss.hiss.settings.customization import ORGANIZER_EMAIL, ORGANIZER_NAME
 
+from hiss.hiss.settings.customization import ORGANIZER_EMAIL, ORGANIZER_NAME
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 

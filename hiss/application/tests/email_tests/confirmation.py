@@ -25,7 +25,6 @@ class ApplicationConfirmationEmailTestCase(test_case.SharedTestCase):
         email: EmailMultiAlternatives = mail.outbox[0]
         self.assertEqual(len(email.attachments), 1)
 
-
     """
     Hard-coded email body should be modified to include application name and settings.EVENT_NAME, instead of hard-coded references to TAMUhack.
     """

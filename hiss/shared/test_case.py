@@ -4,7 +4,7 @@ from django.test import override_settings
 from django.utils import timezone
 
 from application import models as application_models
-from application.models import Wave, School
+from application.models import School, Wave
 from user.models import User
 
 TEST_RESUME_DIR = "test_resume_dir"
