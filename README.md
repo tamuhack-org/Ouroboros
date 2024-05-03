@@ -76,7 +76,7 @@ Install [Poetry](https://python-poetry.org/docs/#installation). Once installed, 
 poetry install
 poetry run autohooks activate
 ```
-This enables pre-commit hooks to make sure your code is formatted prooperly, so you won't get blocked in a PR.
+This enables pre-commit hooks to make sure your code is formatted properly, so you won't get blocked in a PR.
 
 
 # Brought to you by
