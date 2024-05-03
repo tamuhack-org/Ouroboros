@@ -135,6 +135,7 @@ ignore = [
   "INT", # flake8-gettext: this ruleset is handled by other rulesets.
   "PLR6301", # pylint-refactor[no-self-use]
   "RUF012", # this one is kind of a pain and not a huge a risk
+  "ISC001", # this conflicts with the formatter
 ]
 
 [tool.ruff.lint.per-file-ignores]
