@@ -254,9 +254,7 @@ class ApplicationModelForm(forms.ModelForm):
                 self.fields[field_name].widget.attrs["disabled"] = "disabled"
 
     def is_valid(self) -> bool:
-        """
-        Checks to ensure that a wave is currently active.
-        """
+        """Check to ensure that a wave is currently active."""
         if not application_models.Wave.objects.active_wave():
             self.add_error(
                 None,

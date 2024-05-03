@@ -21,10 +21,7 @@ class WaveManager(models.Manager):
     def next_wave(
         self, start_dt: Optional[timezone.datetime] = None
     ) -> Optional["Wave"]:
-        """
-        Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
-        `active_wave`.
-        """
+        """Return the next INACTIVE wave, if one exists. For the CURRENT active wave, use `active_wave`."""
         if not start_dt:
             start_dt = timezone.now()
         qs = self.get_queryset().filter(start__gt=start_dt).order_by("start")
@@ -33,10 +30,7 @@ class WaveManager(models.Manager):
     def active_wave(
         self, start_dt: Optional[timezone.datetime] = None
     ) -> Optional["Wave"]:
-        """
-        Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
-        `next_wave`.
-        """
+        """Return the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use `next_wave`."""
         if not start_dt:
             start_dt = timezone.now()
         qs = (
@@ -48,10 +42,8 @@ class WaveManager(models.Manager):
 
 
 class Wave(models.Model):
-    """
-    Representation of a registration period. `Application`s must be created during
-    a `Wave`, and are automatically associated with a wave through the `Application`'s `pre_save` handler.
-    """
+
+    """Representation of a registration period. `Application`s must be created during a `Wave`, and are automatically associated with a wave through the `Application`'s `pre_save` handler."""
 
     start = models.DateTimeField()
     end = models.DateTimeField()
@@ -78,9 +70,8 @@ class Wave(models.Model):
 
 
 class School(models.Model):
-    """
-    A simple model for representing colleges/universities.
-    """
+
+    """A simple model for representing colleges/universities."""
 
     name = models.CharField("name", max_length=255)
 
@@ -356,9 +347,8 @@ def uuid_generator(_instance, filename: str):
 
 
 class Application(models.Model):
-    """
-    Represents a `Hacker`'s application to this hackathon.
-    """
+
+    """Represents a `Hacker`'s application to this hackathon."""
 
     # META INFO
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

@@ -19,10 +19,8 @@ from application.models import (
 
 
 class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
-    """
-    Creates a new Application and links it to a User if one doesn't already exist and the User's not already
-    applied to be a volunteer.
-    """
+
+    """Create a new Application and links it to a User if one doesn't already exist and the User's not already applied to be a volunteer."""
 
     form_class = ApplicationModelForm
     template_name = "application/application_form.html"
@@ -46,10 +44,8 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
 
 
 class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
-    """
-    Updates a linked Application. Updating an Application does not change the Wave it was originally submitted
-    during.
-    """
+
+    """Updates a linked Application. Updating an Application does not change the Wave it was originally submitted during."""
 
     queryset = Application.objects.all()
     form_class = ApplicationModelForm
@@ -62,9 +58,7 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
         return context
 
     def get_object(self, queryset: QuerySet = None) -> Application:
-        """
-        Checks to make sure that the user actually owns the application requested.
-        """
+        """Check to make sure that the user actually owns the application requested."""
         app: Application = super().get_object()
         if self.request.user.is_superuser:
             return app
@@ -74,9 +68,8 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
 
 
 class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
-    """
-    Changes an application's status from STATUS_ADMITTED to STATUS_CONFIRMED
-    """
+
+    """Changes an application's status from STATUS_ADMITTED to STATUS_CONFIRMED."""
 
     def post(self, request: HttpRequest, *args, **kwargs):
         pk = self.kwargs["pk"]
@@ -99,9 +92,8 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
 
 
 class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
-    """
-    Changes an application's status from STATUS_ADMITTED to STATUS_DECLINED
-    """
+
+    """Changes an application's status from STATUS_ADMITTED to STATUS_DECLINED."""
 
     def post(self, request: HttpRequest, *args, **kwargs):
         pk = self.kwargs["pk"]

@@ -12,10 +12,10 @@ from application.models import Application
 
 
 def send_creation_email(app: Application) -> None:
-    """
-    Sends an email to the user informing them of their newly-created app.
+    """Send an email to the user informing them of their newly-created app.
+
     :param app: The user's newly-created application
-    :return: None
+    :return: None.
     """
     subject = f"We've received your application for {settings.EVENT_NAME}!"
     template_name = "application/emails/created.html"
@@ -31,11 +31,11 @@ def send_creation_email(app: Application) -> None:
 
 
 def send_confirmation_email(app: Application) -> None:
-    """
-    Sends a confirmation email to a user, which contains their QR code as well as additional event information.
+    """Send a confirmation email to a user, which contains their QR code as well as additional event information.
+
     :param app: The user's application
     :type app: Application
-    :return: None
+    :return: None.
     """
     subject = "TAMUhack Waitlist: Important Day-Of Information"
     email_template = "application/emails/confirmed.html"

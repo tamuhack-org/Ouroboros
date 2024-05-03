@@ -61,11 +61,11 @@ class Command(base.BaseCommand):
         )
 
     def handle(self, *args, **options):
-        """
-        Function that creates Users and Applications to make testing easier.
+        """Create Users and Applications to make testing easier.
+
         To run use -- python manage.py shell < shared/seed.py
         WARNING - Will delete most of the Users and Applications when run.
-        DO not use in production
+        DO not use in production.
         """
         self.stdout.write("Starting the seeding process.")
         num_users = options["num_users"]

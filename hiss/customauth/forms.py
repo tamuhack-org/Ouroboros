@@ -57,10 +57,8 @@ class ResendActivationEmailForm(forms.Form):
 
 
 class PlaceholderPasswordResetForm(auth_forms.PasswordResetForm):
-    """
-    It's the same as the parent form, just overriding the attributes to be placeholders
-    instead of labels.
-    """
+
+    """It's the same as the parent form, just overriding the attributes to be placeholders instead of labels."""
 
     email = forms.EmailField(
         widget=widgets.EmailInput(attrs={"placeholder": "Email"}), label=""
@@ -68,9 +66,8 @@ class PlaceholderPasswordResetForm(auth_forms.PasswordResetForm):
 
 
 class PlaceholderSetPasswordForm(auth_forms.SetPasswordForm):
-    """
-    It's the same as the parent form, just overriding attributes to be placeholders instead of labels.
-    """
+
+    """It's the same as the parent form, just overriding attributes to be placeholders instead of labels."""
 
     new_password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "New password"}),

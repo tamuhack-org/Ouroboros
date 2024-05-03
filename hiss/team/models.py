@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 
 
 class Team(models.Model):
+
     """A representation of a hackathon team that can be used for team-based admission."""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

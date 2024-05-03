@@ -14,9 +14,8 @@ from user.models import User
 
 
 class CreateTeamView(shared_mixins.UserHasNoTeamMixin, generic.CreateView):
-    """
-    If the user has applied, creates a Team and adds the User to it.
-    """
+
+    """If the user has applied, creates a Team and adds the User to it."""
 
     form_class = CreateTeamForm
     template_name = "team/team_form.html"
@@ -44,9 +43,8 @@ class CreateTeamView(shared_mixins.UserHasNoTeamMixin, generic.CreateView):
 
 
 class JoinTeamView(shared_mixins.UserHasNoTeamMixin, generic.FormView):
-    """
-    Adds the user to a team (if the team isn't already at capacity).
-    """
+
+    """Adds the user to a team (if the team isn't already at capacity)."""
 
     form_class = JoinTeamForm
     template_name = "team/join_form.html"
@@ -82,9 +80,8 @@ class JoinTeamView(shared_mixins.UserHasNoTeamMixin, generic.FormView):
 
 
 class DetailTeamView(shared_mixins.UserHasTeamMixin, generic.DetailView):
-    """
-    Renders a Team if the User is a member.
-    """
+
+    """Renders a Team if the User is a member."""
 
     model = Team
     template_name = "team/team_detail.html"
@@ -120,9 +117,8 @@ class DetailTeamView(shared_mixins.UserHasTeamMixin, generic.DetailView):
 
 
 class LeaveTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.base.View):
-    """
-    Removes a User from a Team. If the Team no longer has members, deletes the Team.
-    """
+
+    """Removes a User from a Team. If the Team no longer has members, deletes the Team."""
 
     def post(self, request: HttpRequest, *_args, **_kwargs):
         team: Team = request.user.team

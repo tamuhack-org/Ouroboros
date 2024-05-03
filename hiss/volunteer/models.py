@@ -74,10 +74,8 @@ MEAL_CHOICES = [
 
 
 class Event(models.Model):
-    """
-    An abstract model (see Django docs: https://docs.djangoproject.com/en/2.2/topics/db/models/#abstract-base-classes)
-    for recording activity during the event.
-    """
+
+    """An abstract model (see Django docs: https://docs.djangoproject.com/en/2.2/topics/db/models/#abstract-base-classes) for recording activity during the event."""
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True

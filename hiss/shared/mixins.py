@@ -2,9 +2,8 @@ from django.contrib.auth import mixins
 
 
 class LoginRequiredAndAppliedMixin(mixins.UserPassesTestMixin):
-    """
-    Deny a request with a permission error if the user isn't logged in or hasn't applied.
-    """
+
+    """Deny a request with a permission error if the user isn't logged in or hasn't applied."""
 
     def test_func(self) -> bool:
         # Ensure user is logged-in
@@ -19,10 +18,8 @@ class LoginRequiredAndAppliedMixin(mixins.UserPassesTestMixin):
 
 
 class UserHasNoTeamMixin(mixins.UserPassesTestMixin):
-    """
-    Deny a request with a permission error if the user isn't logged in or if the user
-    is already on another team.
-    """
+
+    """Deny a request with a permission error if the user isn't logged in or if the user is already on another team."""
 
     def test_func(self) -> bool:
         # Ensure the user is logged-in
@@ -41,10 +38,8 @@ class UserHasNoTeamMixin(mixins.UserPassesTestMixin):
 
 
 class UserHasTeamMixin(mixins.UserPassesTestMixin):
-    """
-    Deny a request with a permission error if the user isn't logged in or if the user
-    is not currently on a team.
-    """
+
+    """Deny a request with a permission error if the user isn't logged in or if the user is not currently on a team."""
 
     def test_func(self) -> bool:
         # Ensure the user is logged-in

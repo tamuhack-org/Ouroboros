@@ -60,9 +60,28 @@ build-backend = "poetry.core.masonry.api"
 src=["hiss"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I"]
+select = [
+  "F", # pyflakes
+  "E", # pycodestyle error rules
+  "W", # pydocstyle warn rules
+  "I", # isort (import sorting)
+  "N", # pep8-naming
+  "D", # pydocstyle
+
+]
 ignore = [
-  "E501", # ignoring style-focused lint rules beyond import sorting as ruff's formatter should be sufficient
+  "E501", # ignoring line-length lint rules as ruff's formatter should be sufficient
+  "C90", # mccabe (cyclomatic) complexity measures how technically testable a function is - this is not a good measure of complexity. when ruff supports it, enable a cognitive complexity rule
+  "D100", # Missing docstring in public module. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D101", # Missing docstring in public class. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D102", # Missing docstring in public method. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D103", # Missing docstring in public function. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D104", # Missing docstring in public package. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D105", # Missing docstring in magic method. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D106", # Missing docstring in public nested class. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D107", # Missing docstring in __init__. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D211", # no blank line before class. This is incompatible with D203
+  "D213", # multi line summary second lint. This is incompatible with D212
 ]
 
 [tool.ruff.lint.per-file-ignores]

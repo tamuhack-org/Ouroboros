@@ -27,9 +27,8 @@ USER_NOT_CHECKED_IN_MSG = (
 
 
 class EmailObtainAuthToken(views.ObtainAuthToken):
-    """
-    Given a request containing a user's "email" and "password", this view responds with the user's Token (which can
-    be used to authenticate consequent requests).
+
+    """Given a request containing a user's "email" and "password", this view responds with the user's Token (which can be used to authenticate consequent requests).
 
     More information on how `TokenAuthentication` works can be seen at the DRF documentation site:
     https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication
@@ -45,10 +44,10 @@ class VerifyAuthenticated(views.APIView):
     authentication_classes = [authentication.TokenAuthentication]
 
     def post(self, request: Request, format: str = None):
-        """
-        See if a user's token is valid and if they are authorized to use the API.
+        """See if a user's token is valid and if they are authorized to use the API.
+
         This is a certified workaround-because-i-need-auth-but-i-don't-want-to-learn-django moment.
-        Love, Naveen <3
+        Love, Naveen <3.
 
         This will return
             200 if the user is logged in and is authorized
@@ -67,10 +66,11 @@ class CheckinHackerView(views.APIView):
     authentication_classes = [authentication.TokenAuthentication]
 
     def post(self, request: Request, format: str = None):
-        """
-        Sets a specific user's Application status as STATUS_CHECKED_IN (indicating that a user has successfully
-        checked into the event). If the request is malformed (i.e. missing the user's email), returns a Django Rest
-        Framework Response with a 400 status code. if successful, returns a response with status 200.
+        """Set a specific user's Application status as STATUS_CHECKED_IN (indicating that a user has successfully checked into the event).
+
+        If the request is malformed (i.e. missing the user's email), returns a Django Rest
+        Framework Response with a 400 status code. I
+        f successful, returns a response with status 200.
         """
         user_email = request.data.get("email", None)
         if not user_email:
@@ -86,9 +86,8 @@ class CheckinHackerView(views.APIView):
 
 
 class ListDietaryRestrictionsView(views.APIView):
-    """
-    Lists all of the available DietaryRestrictions
-    """
+
+    """Lists all of the available DietaryRestrictions."""
 
     permission_classes = [
         permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
@@ -113,10 +112,10 @@ class CreateFoodEventView(views.APIView):
     authentication_classes = [authentication.TokenAuthentication]
 
     def post(self, request: Request, format: str = None):
-        """
-        Creates a new FoodEvent (indicating that a user has taken food for this meal). If the request is malformed (
-        i.e. missing the user's email, meal type, or restrictions), returns a Django Rest Framework Response with a
-        400 status code. if successful, returns a response with status 200.
+        """Create a new FoodEvent (indicating that a user has taken food for this meal).
+
+        If the request is malformed (i.e. missing the user's email, meal type, or restrictions), returns a Django Rest Framework Response with a 400 status code.
+        If successful, returns a response with status 200.
         """
         user_email = request.data.get("email", None)
         meal = request.data.get("meal", None)
@@ -149,10 +148,10 @@ class CreateWorkshopEventView(views.APIView):
     authentication_classes = [authentication.TokenAuthentication]
 
     def post(self, request: Request, format: str = None):
-        """
-        Creates a new WorkshopEvent (indicating that a user has attended a workshop). If the request is malformed (
-        i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status code. if
-        successful, returns a response with status 200.
+        """Create a new WorkshopEvent (indicating that a user has attended a workshop).
+
+        If the request is malformed (i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status code.
+        If successful, returns a response with status 200.
         """
         user_email = request.data.get("email", None)
 
@@ -182,10 +181,11 @@ class SearchView(views.APIView):
     authentication_classes = [authentication.TokenAuthentication]
 
     def get(self, request: Request, *args, **kwargs):
-        """
-        Performs a simple regex search for a matching application based on the user's first and last name. Creates a
-        new temporary column called "full_name" which is just "<FIRST_NAME> <LAST_NAME>", and then regex-searches the
-        query against the column, and returns all matches.
+        """Get a SearchView.
+
+        Perform a simple regex search for a matching application based on the user's first and last name.
+        Create a new temporary column called "full_name" which is just "<FIRST_NAME> <LAST_NAME>", and
+        then regex-searches the query against the column, and returns all matches.
         """
         query = request.GET.get("q")
         matches = list(
@@ -205,10 +205,11 @@ class UserSummaryView(views.APIView):
     authentication_classes = [authentication.TokenAuthentication]
 
     def get(self, request: Request, *args, **kwargs):
-        """
-        Compiles a summary about a specific user, given their email, and returns that summary as JSON. If the request
-        is malformed (i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status
-        code. if successful, returns a response with status 200.
+        """Compiles a summary about a specific user, given their email, and returns that summary as JSON.
+
+        If the request is malformed (i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status
+        code.
+        If successful, returns a response with status 200.
         """
         user_email = request.GET.get("email")
 
