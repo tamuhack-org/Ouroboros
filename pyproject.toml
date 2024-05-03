@@ -2,7 +2,7 @@
 name = "hiss"
 version = "0.1.0"
 description = "open source hackathon registration system"
-authors = ["Gabriel Britain", "Cameron Brill <tamuhack@cameronbrill.me>", "Adil Rasiyani"]
+authors = ["Gabriel Britain", "Cameron Brill <contact@cameronbrill.me>", "Adil Rasiyani"]
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
