@@ -65,9 +65,7 @@ class Wave(models.Model):  # noqa: DJ008
             has_end_overlap = wave.start < self.end < wave.end
             if has_start_overlap or has_end_overlap:
                 msg = "Cannot create wave; another wave with an overlapping time range exists."
-                raise exceptions.ValidationError(
-                    msg
-                )
+                raise exceptions.ValidationError(msg)
 
 
 class School(models.Model):
@@ -514,9 +512,7 @@ class Application(models.Model):
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
-            raise exceptions.ValidationError(
-                msg
-            )
+            raise exceptions.ValidationError(msg)
         if not self.first_name.isalpha():
             msg = "First name can only contain letters."
             raise exceptions.ValidationError(msg)

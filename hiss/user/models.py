@@ -76,7 +76,10 @@ class User(auth_models.AbstractUser):
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(
-    _sender, instance: User = None, created: bool = False, **kwargs  # noqa: ARG001
+    _sender,
+    instance: User = None,
+    created: bool = False,
+    **kwargs,  # noqa: ARG001
 ) -> None:
     """Using Django's model signals (https://docs.djangoproject.com/en/2.2/topics/signals/), creates a new Django Rest Framework Token for a newly-created user, for later use with Django Rest Framework's TokenAuthentication.
 
