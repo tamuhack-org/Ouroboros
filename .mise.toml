@@ -17,3 +17,6 @@ run = "ruff format . --force-exclude --preview --config ./pyproject.toml"
 [tasks.pre-commit]
 depends = ["lint", "format"]
 hide = true
+
+[settings]
+experimental = true

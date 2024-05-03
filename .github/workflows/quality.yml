@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
-        with:
-          experimental: true
+      - name: Setup environment
+        run: |
+          ./setup.bash
       - name: Install python dependencies
         run: |
           poetry install --with dev
@@ -25,9 +25,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
-        with:
-          experimental: true
+      - name: Setup environment
+        run: |
+          ./setup.bash
       - name: Install python dependencies
         run: |
           poetry install --with dev
