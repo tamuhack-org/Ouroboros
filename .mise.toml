@@ -1,5 +1,5 @@
 [tools]
-poetry = {version='latest', pyproject='pyproject.toml'}
+poetry = {version='1.8.2', pyproject='pyproject.toml'}
 python = "3.8.19"
 lefthook = "latest"
 
