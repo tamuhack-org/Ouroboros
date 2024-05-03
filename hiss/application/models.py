@@ -42,7 +42,6 @@ class WaveManager(models.Manager):
 
 
 class Wave(models.Model):  # noqa: DJ008
-
     """Representation of a registration period. `Application`s must be created during a `Wave`, and are automatically associated with a wave through the `Application`'s `pre_save` handler."""
 
     start = models.DateTimeField()
@@ -57,9 +56,9 @@ class Wave(models.Model):  # noqa: DJ008
     def clean(self):
         super().clean()
         if self.start >= self.end:
-            raise exceptions.ValidationError(
-                {"start": "Start date can't be after end date."}
-            )
+            raise exceptions.ValidationError({
+                "start": "Start date can't be after end date."
+            })
         for wave in Wave.objects.exclude(pk=self.pk).all():
             has_start_overlap = wave.start < self.start < wave.end
             has_end_overlap = wave.start < self.end < wave.end
@@ -69,7 +68,6 @@ class Wave(models.Model):  # noqa: DJ008
 
 
 class School(models.Model):
-
     """A simple model for representing colleges/universities."""
 
     name = models.CharField("name", max_length=255)
@@ -343,11 +341,10 @@ def uuid_generator(_instance, filename: str):
 
 
 class Application(models.Model):
-
     """Represents a `Hacker`'s application to this hackathon."""
 
     # META INFO
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)  # noqa: A003. As a best-practice and to avoid unforseen bugs, we really shouldn't be shadowing python builtins. But it'd be a pain to stop at this point, so just don't add more like this.
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     datetime_submitted = models.DateTimeField(auto_now_add=True)
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)

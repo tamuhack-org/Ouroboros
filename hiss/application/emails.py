@@ -54,14 +54,12 @@ def send_confirmation_email(app: Application) -> None:
     )
     email.attach_alternative(html_msg, "text/html")
 
-    qr_content = json.dumps(
-        {
-            "first_name": app.first_name,
-            "last_name": app.last_name,
-            "email": app.user.email,
-            "university": app.school.name,
-        }
-    )
+    qr_content = json.dumps({
+        "first_name": app.first_name,
+        "last_name": app.last_name,
+        "email": app.user.email,
+        "university": app.school.name,
+    })
     qr_code = pyqrcode.create(qr_content)
     qr_stream = BytesIO()
     qr_code.png(qr_stream, scale=5)

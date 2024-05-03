@@ -2,7 +2,6 @@ from django.contrib.auth import mixins
 
 
 class LoginRequiredAndAppliedMixin(mixins.UserPassesTestMixin):
-
     """Deny a request with a permission error if the user isn't logged in or hasn't applied."""
 
     def test_func(self) -> bool:
@@ -12,13 +11,10 @@ class LoginRequiredAndAppliedMixin(mixins.UserPassesTestMixin):
             return False
 
         # Ensure user has applied
-        if not user.application_set.exists():
-            return False
-        return True
+        return bool(user.application_set.exists())
 
 
 class UserHasNoTeamMixin(mixins.UserPassesTestMixin):
-
     """Deny a request with a permission error if the user isn't logged in or if the user is already on another team."""
 
     def test_func(self) -> bool:
@@ -32,13 +28,10 @@ class UserHasNoTeamMixin(mixins.UserPassesTestMixin):
             return False
 
         # Ensure user doesn't have a team
-        if user.team is not None:
-            return False
-        return True
+        return not user.team is not None
 
 
 class UserHasTeamMixin(mixins.UserPassesTestMixin):
-
     """Deny a request with a permission error if the user isn't logged in or if the user is not currently on a team."""
 
     def test_func(self) -> bool:
@@ -52,6 +45,4 @@ class UserHasTeamMixin(mixins.UserPassesTestMixin):
             return False
 
         # Ensure the user is already on a team
-        if user.team is None:
-            return False
-        return True
+        return user.team is not None

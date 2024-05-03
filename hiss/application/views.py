@@ -19,7 +19,6 @@ from application.models import (
 
 
 class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
-
     """Create a new Application and links it to a User if one doesn't already exist and the User's not already applied to be a volunteer."""
 
     form_class = ApplicationModelForm
@@ -44,7 +43,6 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
 
 
 class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
-
     """Updates a linked Application. Updating an Application does not change the Wave it was originally submitted during."""
 
     queryset = Application.objects.all()
@@ -69,7 +67,6 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
 
 
 class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
-
     """Changes an application's status from STATUS_ADMITTED to STATUS_CONFIRMED."""
 
     def post(self, request: HttpRequest, *args, **kwargs):  # noqa: ARG002
@@ -91,7 +88,6 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
 
 
 class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
-
     """Changes an application's status from STATUS_ADMITTED to STATUS_DECLINED."""
 
     def post(self, request: HttpRequest, *args, **kwargs):  # noqa: ARG002

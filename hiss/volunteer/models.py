@@ -58,7 +58,6 @@ MEAL_CHOICES = [
 
 
 class Event(models.Model):
-
     """An abstract model (see Django docs: https://docs.djangoproject.com/en/2.2/topics/db/models/#abstract-base-classes) for recording activity during the event."""
 
     user = models.ForeignKey(
@@ -70,10 +69,10 @@ class Event(models.Model):
         abstract = True
 
 
-class FoodEvent(Event):
+class FoodEvent(Event):  # noqa: DJ008
     meal = models.CharField(max_length=14, choices=MEAL_CHOICES)
     restrictions = models.ManyToManyField(DietaryRestriction)
 
 
-class WorkshopEvent(Event):
+class WorkshopEvent(Event):  # noqa: DJ008
     pass

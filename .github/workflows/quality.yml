@@ -14,7 +14,8 @@ jobs:
       - name: Install python dependencies
         run: |
           poetry install --with dev
-      - name: Lint
+          source $(poetry env info --path)/bin/activate
+      - name: Format
         run: |
           cd hiss
           mise run format --check
@@ -30,6 +31,7 @@ jobs:
       - name: Install python dependencies
         run: |
           poetry install --with dev
+          source $(poetry env info --path)/bin/activate
       - name: Lint
         run: |
           cd hiss

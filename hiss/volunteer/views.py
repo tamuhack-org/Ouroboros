@@ -29,7 +29,6 @@ USER_NOT_CHECKED_IN_MSG = (
 
 
 class EmailObtainAuthToken(views.ObtainAuthToken):
-
     """Given a request containing a user's "email" and "password", this view responds with the user's Token (which can be used to authenticate consequent requests).
 
     More information on how `TokenAuthentication` works can be seen at the DRF documentation site:
@@ -88,7 +87,6 @@ class CheckinHackerView(views.APIView):
 
 
 class ListDietaryRestrictionsView(views.APIView):
-
     """Lists all of the available DietaryRestrictions."""
 
     permission_classes = [
@@ -97,14 +95,11 @@ class ListDietaryRestrictionsView(views.APIView):
     authentication_classes = [authentication.TokenAuthentication]
 
     def get(self, _request: Request):
-        return JsonResponse(
-            {
-                "dietary_restrictions": [
-                    {"id": r.pk, "name": r.name}
-                    for r in DietaryRestriction.objects.all()
-                ]
-            }
-        )
+        return JsonResponse({
+            "dietary_restrictions": [
+                {"id": r.pk, "name": r.name} for r in DietaryRestriction.objects.all()
+            ]
+        })
 
 
 class CreateFoodEventView(views.APIView):
@@ -224,17 +219,15 @@ class UserSummaryView(views.APIView):
         workshop_events = WorkshopEvent.objects.filter(user=user)
         checked_in = application.status == STATUS_CHECKED_IN
 
-        return JsonResponse(
-            {
-                "num_breakfast": food_events.filter(meal=BREAKFAST).count(),
-                "num_lunch": food_events.filter(meal=LUNCH).count(),
-                "num_dinner": food_events.filter(meal=DINNER).count(),
-                "num_midnight_snack": food_events.filter(meal=MIDNIGHT_SNACK).count(),
-                "num_breakfast_2": food_events.filter(meal=BREAKFAST_2).count(),
-                "num_lunch_2": food_events.filter(meal=LUNCH_2).count(),
-                "num_workshops": workshop_events.count(),
-                "checked_in": checked_in,
-                "status": application.status,
-                "dietary_restrictions": application.dietary_restrictions,
-            }
-        )
+        return JsonResponse({
+            "num_breakfast": food_events.filter(meal=BREAKFAST).count(),
+            "num_lunch": food_events.filter(meal=LUNCH).count(),
+            "num_dinner": food_events.filter(meal=DINNER).count(),
+            "num_midnight_snack": food_events.filter(meal=MIDNIGHT_SNACK).count(),
+            "num_breakfast_2": food_events.filter(meal=BREAKFAST_2).count(),
+            "num_lunch_2": food_events.filter(meal=LUNCH_2).count(),
+            "num_workshops": workshop_events.count(),
+            "checked_in": checked_in,
+            "status": application.status,
+            "dietary_restrictions": application.dietary_restrictions,
+        })

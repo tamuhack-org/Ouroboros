@@ -4,7 +4,6 @@ from rest_framework import serializers
 
 
 class EmailAuthTokenSerializer(serializers.Serializer):
-
     """EmailAuthTokenSerializer is essentially a clone of the `AuthTokenSerializer` class implemented by Django Rest Framework, but instead of looking for "username", it looks for "email".
 
     See https://github.com/encode/django-rest-framework/blob/8988afa0827a139efeeb72afb21da08670fb4775/rest_framework/authtoken/serializers.py#L7 for more context.

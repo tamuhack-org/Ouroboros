@@ -10,7 +10,6 @@ from rest_framework.authtoken.models import Token
 
 
 class EmailUserManager(auth_models.UserManager):
-
     """An implementation of the UserManager that looks up based on email instead of based on username."""
 
     def _create_user(self, email, password, **extra_fields):  # pylint: disable=W0221
@@ -36,7 +35,6 @@ class EmailUserManager(auth_models.UserManager):
 
 
 class User(auth_models.AbstractUser):
-
     """A representation of a user within the registration system. Users are uniquely identified by their email, and are inactive until they confirm their email."""
 
     objects = EmailUserManager()

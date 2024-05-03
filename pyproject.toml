@@ -115,7 +115,8 @@ ignore = [
   "D105", # Missing docstring in magic method. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
   "D106", # Missing docstring in public nested class. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
   "D107", # Missing docstring in __init__. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
-  "D211", # no blank line before class. This is incompatible with D203
+  "D203", # one blank line before class. this is incompatible with formatter
+  "D211", # no blank line before class. This is incompatible with formatter
   "D213", # multi line summary second lint. This is incompatible with D212
   "YTT", # flake8-2020. this is a weird ruleset... kinda has 2012 movie vibes, these rules are handled by UP.
   "ANN", # flake8-annotations. These rules should be handled by a type checker, not linter.
