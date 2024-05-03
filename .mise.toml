@@ -7,7 +7,7 @@ poetry="https://github.com/mise-plugins/mise-poetry.git"
 
 [tasks.lint]
 alias = "l"
-run = "ruff check . --force-exclude"
+run = "ruff check . --force-exclude --preview"
 
 [tasks.format]
 alias = "f"

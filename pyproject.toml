@@ -71,6 +71,7 @@ select = [
   "B", # flake8-bugbear
   "ASYNC", # flake8-async
   "TRIO", # flake8-trio
+  "S", # flake8-bandit
 ]
 ignore = [
   "E501", # ignoring line-length lint rules as ruff's formatter should be sufficient
@@ -91,4 +92,10 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F403"]
+"**/tests/*" = ["S105"]
+"**/test*" = ["S105"]
+"hiss/hiss/settings/dev.py" = ["S105"]
+"hiss/shared/management/commands/seeddb.py" = [
+  "S311", # this file isn't using the pseudo-random generator for cryptographic purposes.
+]
 

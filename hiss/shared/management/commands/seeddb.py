@@ -41,7 +41,7 @@ COMMON_NAMES = [
 ]
 
 LAST_NAME = "Seedoe"
-PASSWORD = "password"
+PASSWORD = "password"  # noqa: S105
 
 
 class Command(base.BaseCommand):
@@ -72,7 +72,11 @@ class Command(base.BaseCommand):
         num_active = options["num_active"]
         num_apps = options["num_applications"]
 
-        assert num_users >= num_active >= num_apps
+        if num_users < num_active:
+            raise ValueError("more active users than plain users")
+        if num_active < num_apps:
+            raise ValueError("more applications than active users")
+
         User.objects.filter(is_superuser=False).delete()
         Application.objects.filter(last_name=LAST_NAME).delete()
         Wave.objects.all().delete()

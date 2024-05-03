@@ -230,7 +230,7 @@ class ApplicationModelForm(forms.ModelForm):
             }
 
         super().__init__(*args, **kwargs)
-        self.fields["agree_to_coc"].label = mark_safe(
+        self.fields["agree_to_coc"].label = mark_safe(  # noqa: S308
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
 
@@ -245,8 +245,8 @@ class ApplicationModelForm(forms.ModelForm):
 
         mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
 
-        self.fields["agree_to_mlh_stuff"].label = mark_safe(mlh_stuff)
-        self.fields["signup_to_mlh_newsletter"].label = mark_safe(mlh_newsletter)
+        self.fields["agree_to_mlh_stuff"].label = mark_safe(mlh_stuff)  # noqa: S308
+        self.fields["signup_to_mlh_newsletter"].label = mark_safe(mlh_newsletter)  # noqa: S308
 
         # HACK: Disable the form if there's not an active wave
         if not application_models.Wave.objects.active_wave():
