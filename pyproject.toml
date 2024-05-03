@@ -68,7 +68,9 @@ select = [
   "N", # pep8-naming
   "D", # pydocstyle
   "UP", # pyupgrade (make upgrading python version easier by automating syntax changes)
-
+  "B", # flake8-bugbear
+  "ASYNC", # flake8-async
+  "TRIO", # flake8-trio
 ]
 ignore = [
   "E501", # ignoring line-length lint rules as ruff's formatter should be sufficient
@@ -83,6 +85,8 @@ ignore = [
   "D107", # Missing docstring in __init__. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
   "D211", # no blank line before class. This is incompatible with D203
   "D213", # multi line summary second lint. This is incompatible with D212
+  "YTT", # flake8-2020. this is a weird ruleset... kinda has 2012 movie vibes, these rules are handled by UP.
+  "ANN", # flake8-annotations. These rules should be handled by a type checker, not linter.
 ]
 
 [tool.ruff.lint.per-file-ignores]
