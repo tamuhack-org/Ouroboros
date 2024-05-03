@@ -73,7 +73,7 @@ python3 manage.py migrate --run-syncdb
 
 Install [Poetry](https://python-poetry.org/docs/#installation). Once installed, navigate to the root of the project and run the following:
 ```
-poetry install
+mise run deps:install
 poetry run autohooks activate
 ```
 This enables pre-commit hooks to make sure your code is formatted properly, so you won't get blocked in a PR.
