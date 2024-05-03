@@ -10,7 +10,7 @@ class Command(BaseCommand):
             "pct", type=float, help="Percentage of non-reviewed applications to admit"
         )
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options):  # noqa: ARG002
         unreviewed = Application.objects.filter(status=STATUS_PENDING).order_by("?")
         num_unreviewed = unreviewed.count()
         num_to_approve = round(options["pct"] * num_unreviewed)

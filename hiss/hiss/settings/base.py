@@ -10,12 +10,13 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from pathlib import Path
 
 import dj_database_url
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path.parent(Path.parent(Path.resolve(__file__)))
 
 # Base Pathname for Obos (when not being hosted at root)
 BASE_PATHNAME = (
@@ -70,7 +71,7 @@ ROOT_URLCONF = "hiss.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "..", "templates")],
+        "DIRS": [Path(BASE_DIR) / ".." / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -119,7 +120,7 @@ AWS_S3_BUCKET_NAME = "2024-th-resumes"
 AWS_S3_KEY_PREFIX = "prod"
 
 STATIC_URL = "/" + BASE_PATHNAME + "static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
+STATICFILES_DIRS = [Path(BASE_DIR) / ".." / "static/"]
 STATIC_ROOT = "public/"
 APPEND_SLASH = True
 AUTH_USER_MODEL = "user.User"

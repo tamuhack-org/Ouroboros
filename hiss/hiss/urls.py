@@ -25,17 +25,8 @@ from django.urls import include, path
 from django.views.generic.base import RedirectView
 
 
-def healthcheck(request):
+def healthcheck(_request):
     return http.HttpResponse("")
 
 
-urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("accounts/", include("customauth.urls")),
-    path("application/", include("application.urls", namespace="application")),
-    path("healthy/", healthcheck),
-    url(r"^$", RedirectView.as_view(pattern_name="customauth:login")),
-    path("status/", include("status.urls")),
-    path("team/", include("team.urls")),
-    path("api/volunteer/", include("volunteer.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns = [path("admin/", admin.site.urls), path("accounts/", include("customauth.urls")), path("application/", include("application.urls", namespace="application")), path("healthy/", healthcheck), url("^$", RedirectView.as_view(pattern_name="customauth:login")), path("status/", include("status.urls")), path("team/", include("team.urls")), path("api/volunteer/", include("volunteer.urls")), *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)]

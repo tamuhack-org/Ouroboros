@@ -13,7 +13,7 @@ class ResendActivationEmailView(test_case.SharedTestCase):
     def setUp(self):
         self.email = "hacker@tamu.edu"
         self.password = "dummypassword"
-        self.inactive_user = User.objects._create_user(
+        self.inactive_user = User.objects._create_user(  # noqa: SLF001. we should not be accessing a private method here, but I don't want to fix it rn.
             email=self.email, password=self.password
         )
 

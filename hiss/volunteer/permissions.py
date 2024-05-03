@@ -8,9 +8,10 @@ class IsVolunteer(permissions.BasePermission):
 
     group_name = "volunteer"
 
-    def has_permission(self, request, view):
+    def has_permission(self, request, _view):
         try:
             request.user.groups.get(name=self.group_name)
-            return True
         except Group.DoesNotExist:
             return False
+        else:
+            return True

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from django.contrib.auth import get_user_model
 from django.db.models import F, Value
 from django.db.models.functions import Concat
@@ -43,7 +45,7 @@ class VerifyAuthenticated(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def post(self, request: Request, format: str = None):
+    def post(self, _request: Request, _format: Optional[str] = None):
         """See if a user's token is valid and if they are authorized to use the API.
 
         This is a certified workaround-because-i-need-auth-but-i-don't-want-to-learn-django moment.
@@ -65,7 +67,7 @@ class CheckinHackerView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def post(self, request: Request, format: str = None):
+    def post(self, request: Request, _format: Optional[str] = None):
         """Set a specific user's Application status as STATUS_CHECKED_IN (indicating that a user has successfully checked into the event).
 
         If the request is malformed (i.e. missing the user's email), returns a Django Rest
@@ -94,7 +96,7 @@ class ListDietaryRestrictionsView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def get(self, request: Request):
+    def get(self, _request: Request):
         return JsonResponse(
             {
                 "dietary_restrictions": [
@@ -111,7 +113,7 @@ class CreateFoodEventView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def post(self, request: Request, format: str = None):
+    def post(self, request: Request, _format: Optional[str] = None):
         """Create a new FoodEvent (indicating that a user has taken food for this meal).
 
         If the request is malformed (i.e. missing the user's email, meal type, or restrictions), returns a Django Rest Framework Response with a 400 status code.
@@ -130,7 +132,7 @@ class CreateFoodEventView(views.APIView):
         )
 
         # Ensure that user has checked in
-        if not application.status == STATUS_CHECKED_IN:
+        if application.status != STATUS_CHECKED_IN:
             return response.Response(
                 data={"error": USER_NOT_CHECKED_IN_MSG},
                 status=status.HTTP_412_PRECONDITION_FAILED,
@@ -147,7 +149,7 @@ class CreateWorkshopEventView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def post(self, request: Request, format: str = None):
+    def post(self, request: Request, _format: Optional[str] = None):
         """Create a new WorkshopEvent (indicating that a user has attended a workshop).
 
         If the request is malformed (i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status code.
@@ -164,7 +166,7 @@ class CreateWorkshopEventView(views.APIView):
         )
 
         # Ensure that user has checked in
-        if not application.status == STATUS_CHECKED_IN:
+        if application.status != STATUS_CHECKED_IN:
             return response.Response(
                 data={"error": USER_NOT_CHECKED_IN_MSG},
                 status=status.HTTP_412_PRECONDITION_FAILED,
@@ -180,7 +182,7 @@ class SearchView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def get(self, request: Request, *args, **kwargs):
+    def get(self, request: Request, *args, **kwargs):  # noqa: ARG002
         """Get a SearchView.
 
         Perform a simple regex search for a matching application based on the user's first and last name.
@@ -204,7 +206,7 @@ class UserSummaryView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def get(self, request: Request, *args, **kwargs):
+    def get(self, request: Request, *args, **kwargs):  # noqa: ARG002
         """Compiles a summary about a specific user, given their email, and returns that summary as JSON.
 
         If the request is malformed (i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status

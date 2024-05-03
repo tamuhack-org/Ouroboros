@@ -75,8 +75,7 @@ class ActivateView(views.View):
             user.save()
             login(request, user)
             return redirect(reverse_lazy("status"))
-        else:
-            return HttpResponse("Activation link is invalid.")
+        return HttpResponse("Activation link is invalid.")
 
 
 class PlaceholderPasswordResetView(auth_views.PasswordResetView):

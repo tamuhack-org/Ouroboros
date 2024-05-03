@@ -41,7 +41,7 @@ class WaveManager(models.Manager):
         return qs.first()
 
 
-class Wave(models.Model):
+class Wave(models.Model):  # noqa: DJ008
 
     """Representation of a registration period. `Application`s must be created during a `Wave`, and are automatically associated with a wave through the `Application`'s `pre_save` handler."""
 
@@ -64,8 +64,9 @@ class Wave(models.Model):
             has_start_overlap = wave.start < self.start < wave.end
             has_end_overlap = wave.start < self.end < wave.end
             if has_start_overlap or has_end_overlap:
+                msg = "Cannot create wave; another wave with an overlapping time range exists."
                 raise exceptions.ValidationError(
-                    "Cannot create wave; another wave with an overlapping time range exists."
+                    msg
                 )
 
 
@@ -143,7 +144,7 @@ CLASSIFICATIONS: List[Tuple[str, str]] = [
 ]
 
 
-class DietaryRestriction(models.Model):
+class DietaryRestriction(models.Model):  # noqa: DJ008
     name = models.CharField(max_length=255)
 
 
@@ -224,8 +225,6 @@ TRANSPORT_MODES: List[Tuple[str, str]] = [
 ]
 
 QUESTION1_TEXT = "Tell us your best programming joke."
-# QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
-# QUESTION3_TEXT = "What's your hidden talent?"
 
 WOMENS_XXS = "WXXS"
 WOMENS_XS = "WXS"
@@ -342,8 +341,7 @@ WARECHOICE = [("SW", "Software"), ("HW", "Hardware")]
 
 def uuid_generator(_instance, filename: str):
     ext = filename.split(".")[-1]
-    filename = f"{uuid.uuid4()}.{ext}"
-    return filename
+    return f"{uuid.uuid4()}.{ext}"
 
 
 class Application(models.Model):
@@ -351,7 +349,7 @@ class Application(models.Model):
     """Represents a `Hacker`'s application to this hackathon."""
 
     # META INFO
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)  # noqa: A003. As a best-practice and to avoid unforseen bugs, we really shouldn't be shadowing python builtins. But it'd be a pain to stop at this point, so just don't add more like this.
     datetime_submitted = models.DateTimeField(auto_now_add=True)
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
@@ -383,8 +381,6 @@ class Application(models.Model):
         blank=True,
     )
     question1 = models.TextField(QUESTION1_TEXT, max_length=500)
-    # question2 = models.TextField(QUESTION2_TEXT, max_length=500)
-    # question3 = models.TextField(QUESTION3_TEXT, max_length=500)
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
@@ -460,7 +456,6 @@ class Application(models.Model):
     shirt_size = models.CharField(
         "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
     )
-    # address = AddressField(on_delete=models.CASCADE, default=None, null=True)
     additional_accommodations = models.TextField(
         'Do you require any special accommodations at the event? Please list dietary restrictions here if you selected "food allergy" or "other".',
         max_length=500,
@@ -515,11 +510,16 @@ class Application(models.Model):
     def clean(self):
         super().clean()
         if not self.is_adult:
-            raise exceptions.ValidationError(
+            msg = (
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
+            raise exceptions.ValidationError(
+                msg
+            )
         if not self.first_name.isalpha():
-            raise exceptions.ValidationError("First name can only contain letters.")
+            msg = "First name can only contain letters."
+            raise exceptions.ValidationError(msg)
         if not self.last_name.isalpha():
-            raise exceptions.ValidationError("Last name can only contain letters.")
+            msg = "Last name can only contain letters."
+            raise exceptions.ValidationError(msg)

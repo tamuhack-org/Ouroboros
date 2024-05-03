@@ -57,13 +57,14 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
         context["active_wave"] = Wave.objects.active_wave()
         return context
 
-    def get_object(self, queryset: QuerySet = None) -> Application:
+    def get_object(self, _queryset: QuerySet = None) -> Application:
         """Check to make sure that the user actually owns the application requested."""
         app: Application = super().get_object()
         if self.request.user.is_superuser:
             return app
         if app.user != self.request.user:
-            raise PermissionDenied("You don't have permission to view this application")
+            msg = "You don't have permission to view this application"
+            raise PermissionDenied(msg)
         return app
 
 
@@ -71,19 +72,21 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
 
     """Changes an application's status from STATUS_ADMITTED to STATUS_CONFIRMED."""
 
-    def post(self, request: HttpRequest, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, **kwargs):  # noqa: ARG002
         pk = self.kwargs["pk"]
         app: Application = Application.objects.get(pk=pk)
         if app.status == STATUS_CONFIRMED:
             # Do nothing, they already confirmed.
             return redirect(reverse_lazy("status"))
         if app.user != request.user:
+            msg = "You don't have permission to view this application."
             raise PermissionDenied(
-                "You don't have permission to view this application."
+                msg
             )
         if app.status != STATUS_ADMITTED:
+            msg = "You can't confirm your application if it hasn't been approved."
             raise PermissionDenied(
-                "You can't confirm your application if it hasn't been approved."
+                msg
             )
         app.status = STATUS_CONFIRMED
         app.save()
@@ -95,19 +98,21 @@ class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
 
     """Changes an application's status from STATUS_ADMITTED to STATUS_DECLINED."""
 
-    def post(self, request: HttpRequest, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, **kwargs):  # noqa: ARG002
         pk = self.kwargs["pk"]
         app: Application = Application.objects.get(pk=pk)
         if app.status == STATUS_DECLINED:
             # Do nothing, they already declined
             return redirect(reverse_lazy("status"))
         if app.user != request.user:
+            msg = "You don't have permission to view this application."
             raise PermissionDenied(
-                "You don't have permission to view this application."
+                msg
             )
-        if not (app.status == STATUS_ADMITTED or app.status == STATUS_CONFIRMED):
+        if app.status not in {STATUS_ADMITTED, STATUS_CONFIRMED}:
+            msg = "You can't decline your spot if it hasn't been approved."
             raise PermissionDenied(
-                "You can't decline your spot if it hasn't been approved."
+                msg
             )
         app.status = STATUS_DECLINED
         app.save()

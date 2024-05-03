@@ -15,7 +15,8 @@ class EmailUserManager(auth_models.UserManager):
 
     def _create_user(self, email, password, **extra_fields):  # pylint: disable=W0221
         if not email:
-            raise ValueError("The given email must be set")
+            msg = "The given email must be set"
+            raise ValueError(msg)
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -75,7 +76,7 @@ class User(auth_models.AbstractUser):
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(
-    sender, instance: User = None, created: bool = False, **kwargs
+    _sender, instance: User = None, created: bool = False, **kwargs  # noqa: ARG001
 ) -> None:
     """Using Django's model signals (https://docs.djangoproject.com/en/2.2/topics/signals/), creates a new Django Rest Framework Token for a newly-created user, for later use with Django Rest Framework's TokenAuthentication.
 

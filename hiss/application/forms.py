@@ -213,11 +213,6 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
 
-    # address = AddressField(
-    #     help_text="You will not receive swag and prizes without an address",
-    #     required=False,
-    # )
-
     def __init__(self, *args, **kwargs):
         if kwargs.get("instance"):
             kwargs["initial"] = {
@@ -248,9 +243,9 @@ class ApplicationModelForm(forms.ModelForm):
         self.fields["agree_to_mlh_stuff"].label = mark_safe(mlh_stuff)  # noqa: S308
         self.fields["signup_to_mlh_newsletter"].label = mark_safe(mlh_newsletter)  # noqa: S308
 
-        # HACK: Disable the form if there's not an active wave
+        # HACK: Disable the form if there's not an active wave  # noqa: FIX004
         if not application_models.Wave.objects.active_wave():
-            for field_name in self.fields.keys():
+            for field_name in self.fields:
                 self.fields[field_name].widget.attrs["disabled"] = "disabled"
 
     def is_valid(self) -> bool:

@@ -12,7 +12,6 @@ User = get_user_model()
 class GroupAdminForm(forms.ModelForm):
     class Meta:
         model = Group
-        exclude = []
 
     # Add the users field.
     users = forms.ModelMultipleChoiceField(
@@ -34,7 +33,7 @@ class GroupAdminForm(forms.ModelForm):
         # Add the users to the Group.
         self.instance.user_set.set(self.cleaned_data["users"])
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # noqa: ARG002
         # Default save
         instance = super().save()
         # Save many-to-many data

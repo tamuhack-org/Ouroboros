@@ -38,7 +38,7 @@ def export_team_emails(_model_admin, _request: HttpRequest, queryset: QuerySet) 
 class TeamAdminForm(forms.ModelForm):
     class Meta:
         model = Team
-        fields = "__all__"
+        fields = "__all__"  # noqa: DJ007
 
 
 class TeamAdmin(admin.ModelAdmin):
