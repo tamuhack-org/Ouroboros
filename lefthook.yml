@@ -1,11 +1,15 @@
 pre-commit:
+  parallel: true
   commands:
     pre-commit:
       interactive: true
       run: mise run pre-commit
     poetry-check:
       run: poetry check
+      glob: "pyproject.toml|poetry.lock"
     poetry-export:
       run: poetry export
+      glob: "pyproject.toml|poetry.lock"
     poetry-lock:
       run: poetry lock
+      glob: "pyproject.toml|poetry.lock"
