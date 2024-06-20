@@ -203,6 +203,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("status", ChoiceDropdownFilter),
         ("classification", ChoiceDropdownFilter),
         ("gender", ChoiceDropdownFilter),
+        ("major", ChoiceDropdownFilter),
         ("grad_year", ChoiceDropdownFilter),
         ("num_hackathons_attended", ChoiceDropdownFilter),
         ("wares", ChoiceDropdownFilter),
@@ -232,6 +233,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "first_name",
                     "last_name",
+                    "tamu_email",
                     "age",
                     "phone_number",
                     "country",
@@ -250,6 +252,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "school",
                     "school_other",
                     "major",
+                    "major_other",
                     "classification",
                     "gender",
                     "gender_other",
