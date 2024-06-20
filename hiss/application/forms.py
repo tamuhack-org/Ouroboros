@@ -23,12 +23,20 @@ class ApplicationModelForm(forms.ModelForm):
         label='If you chose "Prefer to self-describe", please elaborate.',
         required=False,
     )
+    major_other = forms.CharField(
+        label='If you chose "Other", please specify your major.',
+        required=False,
+    )
     school = forms.ModelChoiceField(
         School.objects.all(),
         label="What school do you go to?",
     )
     school_other = forms.CharField(
         label='If you chose "Other", please enter your school\'s name here.',
+        required=False,
+    )
+    tamu_email = forms.CharField(
+        label="What is your Texas A&M email address?",
         required=False,
     )
 
@@ -287,6 +295,14 @@ class ApplicationModelForm(forms.ModelForm):
                     "Please fill out this field with the appropriate information."
                 )
                 self.add_error("race_other", msg)
+        major = self.cleaned_data.get("major")
+        if major:
+            major_other = self.cleaned_data.get("major_other")
+            if not major_other:
+                msg = forms.ValidationError(
+                    'Please fill out this field or choose "Other".'
+                )
+                self.add_error("major_other", msg)
         return self.cleaned_data
 
     class Meta:
@@ -297,6 +313,7 @@ class ApplicationModelForm(forms.ModelForm):
             "agree_to_mlh_stuff": forms.CheckboxInput,
             "signup_to_mlh_newsletter": forms.CheckboxInput,
             "travel_reimbursement": forms.CheckboxInput,
+            'tamu_email': forms.EmailInput(attrs={'placeholder': 'netid@tamu.edu'}),
             "extra_links": forms.TextInput(
                 attrs={
                     "placeholder": "ex. GitHub, Devpost, personal website, LinkedIn, etc."
@@ -312,7 +329,9 @@ class ApplicationModelForm(forms.ModelForm):
             "country",
             "school",
             "school_other",
+            "tamu_email",
             "major",
+            "major_other",
             "classification",
             "grad_year",
             "level_of_study",
