@@ -236,13 +236,6 @@ QUESTION1_TEXT = "Tell us your best programming joke."
 # QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
 # QUESTION3_TEXT = "What's your hidden talent?"
 
-WOMENS_XXS = "WXXS"
-WOMENS_XS = "WXS"
-WOMENS_S = "WS"
-WOMENS_M = "WM"
-WOMENS_L = "WL"
-WOMENS_XL = "WXL"
-WOMENS_XXL = "WXXL"
 UNISEX_XXS = "XXS"
 UNISEX_XS = "XS"
 UNISEX_S = "S"
@@ -252,20 +245,13 @@ UNISEX_XL = "XL"
 UNISEX_XXL = "XXL"
 
 SHIRT_SIZES = [
-    (WOMENS_XXS, "Women's XXS"),
-    (WOMENS_XS, "Women's XS"),
-    (WOMENS_S, "Women's S"),
-    (WOMENS_M, "Women's M"),
-    (WOMENS_L, "Women's L"),
-    (WOMENS_XL, "Women's XL"),
-    (WOMENS_XXL, "Women's XXL"),
-    (UNISEX_XXS, "Unisex XXS"),
-    (UNISEX_XS, "Unisex XS"),
-    (UNISEX_S, "Unisex S"),
-    (UNISEX_M, "Unisex M"),
-    (UNISEX_L, "Unisex L"),
-    (UNISEX_XL, "Unisex XL"),
-    (UNISEX_XXL, "Unisex XXL"),
+    (UNISEX_XXS, "XXS"),
+    (UNISEX_XS, "XS"),
+    (UNISEX_S, "S"),
+    (UNISEX_M, "M"),
+    (UNISEX_L, "L"),
+    (UNISEX_XL, "XL"),
+    (UNISEX_XXL, "XXL"),
 ]
 
 STATUS_PENDING = "P"
@@ -305,6 +291,16 @@ HAS_NO_TEAM = "HNT"
 HAS_TEAM_OPTIONS = [
     (HAS_TEAM, "I do have a team"),
     (HAS_NO_TEAM, "I do not have a team"),
+]
+
+MAJORS = [
+    ("Computer Science", "Computer Science"),
+    ("Software Engineering", "Software Engineering"),
+    ("Computer Engineering", "Computer Engineering"),
+    ("Electrical Engineering", "Electrical Engineering"),
+    ("Information Technology", "Information Technology"),
+    ("Data Science", "Data Science"),
+    ("major_other", "Other"),
 ]
 
 WANTS_TEAM_OPTIONS = [
@@ -413,8 +409,18 @@ class Application(models.Model):
         on_delete=models.SET_NULL,
         verbose_name="What school do you go to?",
     )
-    school_other = models.CharField(null=True, blank=True, max_length=255)
-    major = models.CharField("What's your major?", max_length=255)
+    school_other = models.CharField(
+        null=True, blank=True, max_length=255
+    ) 
+    tamu_email = models.EmailField(
+        "TAMU Email if you are a Texas A&M student", null=True, blank=True
+    )
+    major = models.CharField(
+        "What's your major?", default=NO_ANSWER, choices= MAJORS
+    )
+    major_other = models.CharField(
+        "Other", max_length=255, null=True, blank=True
+    )
     classification = models.CharField(
         "What classification are you?", choices=CLASSIFICATIONS, max_length=3
     )
