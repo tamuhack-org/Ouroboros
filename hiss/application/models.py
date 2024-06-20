@@ -413,10 +413,10 @@ class Application(models.Model):
         null=True, blank=True, max_length=255
     ) 
     tamu_email = models.EmailField(
-        "TAMU Email if you are a Texas A&M student", null=True, blank=True
+        "TAMU Email if you are a Texas A&M student", null=True, blank=True, max_length = 75
     )
     major = models.CharField(
-        "What's your major?", default=NO_ANSWER, choices= MAJORS
+        "What's your major?", default=NO_ANSWER, choices= MAJORS, max_length = 100
     )
     major_other = models.CharField(
         "Other", max_length=255, null=True, blank=True
