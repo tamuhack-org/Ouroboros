@@ -52,9 +52,11 @@ $(document).ready(function() {
          }
          else if (selection === "Other"){
             $('#id_school_other').parent().show();
+            $('#id_tamu_email').parent().hide();
          }
          else{
              $('#id_school_other').parent().hide();
+             $('#id_tamu_email').parent().hide();
          }
     });
     // Custom styling for multi-select inputs.
