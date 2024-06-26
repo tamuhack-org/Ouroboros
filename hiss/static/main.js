@@ -26,14 +26,32 @@ $(document).ready(function() {
              $('#id_gender_other').parent().hide();
          }
     });
+    if ($('#id_major').val() !== "Other"){
+        $('#id_major_other').parent().hide();
+    }
+    $('#id_major').on('change', function(){
+         let selection = $('#id_major').val();
+         if (selection === "Other"){
+            $('#id_major_other').parent().show();
+         }
+         else{
+             $('#id_major_other').parent().hide();
+         }
+    });
 
     if ($('#id_school option:selected').text() !== "Other"){
         $('#id_school_other').parent().hide();
+    }
+    if ($('#id_school option:selected').text() !== "Texas A&M University"){
+        $('#id_tamu_email').parent().hide();
     }
     $('#id_school').on('change', function(){
          let selection = $('#id_school option:selected').text();
          if (selection === "Other"){
             $('#id_school_other').parent().show();
+         }
+         else if (selection == "Texas A&M University" ) {
+            $("#id_tamu_email").parent().show();
          }
          else{
              $('#id_school_other').parent().hide();
