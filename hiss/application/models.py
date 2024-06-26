@@ -293,14 +293,22 @@ HAS_TEAM_OPTIONS = [
     (HAS_NO_TEAM, "I do not have a team"),
 ]
 
+CS = "Computer Science"
+SWE = "Software Engineering"
+CE = "Computer Engineering"
+EE = "Electrical Engineering"
+IT = "Information Technology"
+DS = "Data Science"
+MAJOR_OTHER = "Other"
+
 MAJORS = [
-    ("Computer Science", "Computer Science"),
-    ("Software Engineering", "Software Engineering"),
-    ("Computer Engineering", "Computer Engineering"),
-    ("Electrical Engineering", "Electrical Engineering"),
-    ("Information Technology", "Information Technology"),
-    ("Data Science", "Data Science"),
-    ("major_other", "Other"),
+    (CS, "Computer Science"),
+    (SWE, "Software Engineering"),
+    (CE, "Computer Engineering"),
+    (EE, "Electrical Engineering"),
+    (IT, "Information Technology"),
+    (DS, "Data Science"),
+    (MAJOR_OTHER, "Other"),
 ]
 
 WANTS_TEAM_OPTIONS = [

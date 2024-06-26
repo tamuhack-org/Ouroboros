@@ -36,7 +36,7 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
     tamu_email = forms.CharField(
-        label="What is your Texas A&M email address?",
+        label="TAMU Email if you are a Texas A&M student",
         required=False,
     )
 
@@ -296,7 +296,7 @@ class ApplicationModelForm(forms.ModelForm):
                 )
                 self.add_error("race_other", msg)
         major = self.cleaned_data.get("major")
-        if major:
+        if major == application_models.MAJOR_OTHER:
             major_other = self.cleaned_data.get("major_other")
             if not major_other:
                 msg = forms.ValidationError(
