@@ -47,11 +47,11 @@ $(document).ready(function() {
     }
     $('#id_school').on('change', function(){
          let selection = $('#id_school option:selected').text();
-         if (selection === "Other"){
-            $('#id_school_other').parent().show();
-         }
-         else if (selection == "Texas A&M University" ) {
+         if (selection == "Texas A&M University" ) {
             $("#id_tamu_email").parent().show();
+         }
+         else if (selection === "Other"){
+            $('#id_school_other').parent().show();
          }
          else{
              $('#id_school_other').parent().hide();
