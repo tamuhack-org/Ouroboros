@@ -298,7 +298,7 @@ class ApplicationModelForm(forms.ModelForm):
         major = self.cleaned_data.get("major")
         if major == application_models.MAJOR_OTHER:
             major_other = self.cleaned_data.get("major_other")
-            if not major_other:
+            if application_models.MAJOR_OTHER in major and not major_other:
                 msg = forms.ValidationError(
                     'Please fill out this field or choose "Other".'
                 )
