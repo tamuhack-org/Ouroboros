@@ -295,6 +295,14 @@ class ApplicationModelForm(forms.ModelForm):
                     "Please fill out this field with the appropriate information."
                 )
                 self.add_error("race_other", msg)
+        major = self.cleaned_data.get("major")
+        if major:
+            major_other = self.cleaned_data.get("major_other")
+            if major == "Other" and not major_other:
+                msg = forms.ValidationError(
+                    'Please fill out this field or choose "Other".'
+                )
+                self.add_error("major_other", msg)
         return self.cleaned_data
 
     class Meta:
