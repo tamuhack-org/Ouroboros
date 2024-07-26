@@ -48,9 +48,10 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
             application.save()
             print("calling send_creation_email")
             send_creation_email(application)
-            print("done with form_valid; sending redirect")
+            print("done with form_valid; sending redirect", flush=True)
+            
         except Exception as e:
-            print(f"Exception: {e}")
+            print(f"Exception: {e}", flush=True)
             raise e
         return redirect(self.success_url)
 
