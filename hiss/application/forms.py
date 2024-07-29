@@ -1,5 +1,4 @@
 import ast
-import json
 
 from django import forms
 from django.conf import settings
@@ -8,11 +7,8 @@ from django.utils.safestring import mark_safe
 from application import models as application_models
 from application.models import School
 
-from address.forms import AddressField
-
 
 class ApplicationModelForm(forms.ModelForm):
-
     required_css_class = "required-form-input"
 
     gender_other = forms.CharField(
@@ -186,7 +182,7 @@ class ApplicationModelForm(forms.ModelForm):
         (TENSORFLOW, "Tensorflow"),
         (PYTORCH, "PyTorch"),
         (FLUTTER, "Flutter"),
-        (REACT_NATIVE, "React Native")
+        (REACT_NATIVE, "React Native"),
     )
     # SKILLS
     technology_experience = forms.MultipleChoiceField(
@@ -215,20 +211,15 @@ class ApplicationModelForm(forms.ModelForm):
         (KOSHER, "Kosher"),
         (GLUTEN_FREE, "Gluten-Free"),
         (FOOD_ALLERGY, "Food Allergy"),
-        (OTHER_DIETARY_RESTRICTION, "Other")
+        (OTHER_DIETARY_RESTRICTION, "Other"),
     )
-    
+
     dietary_restrictions = forms.MultipleChoiceField(
         label="Do you have any dietary restrictions?",
         help_text="Select all that apply",
         choices=DIETARY_RESTRICTIONS,
         required=False,
     )
-
-    # address = AddressField(
-    #     help_text="You will not receive swag and prizes without an address",
-    #     required=False,
-    # )
 
     def __init__(self, *args, **kwargs):
         if kwargs.get("instance"):
@@ -242,7 +233,7 @@ class ApplicationModelForm(forms.ModelForm):
             }
 
         super().__init__(*args, **kwargs)
-        self.fields["agree_to_coc"].label = mark_safe(
+        self.fields["agree_to_coc"].label = mark_safe(  # noqa: S308
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
 
@@ -255,22 +246,18 @@ class ApplicationModelForm(forms.ModelForm):
             ' and the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>'
         )
 
-        mlh_newsletter = (
-            "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
-        )
+        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
 
-        self.fields["agree_to_mlh_stuff"].label = mark_safe(mlh_stuff)
-        self.fields["signup_to_mlh_newsletter"].label = mark_safe(mlh_newsletter)
+        self.fields["agree_to_mlh_stuff"].label = mark_safe(mlh_stuff)  # noqa: S308
+        self.fields["signup_to_mlh_newsletter"].label = mark_safe(mlh_newsletter)  # noqa: S308
 
-        # HACK: Disable the form if there's not an active wave
+        # HACK: Disable the form if there's not an active wave  # noqa: FIX004
         if not application_models.Wave.objects.active_wave():
-            for field_name in self.fields.keys():
+            for field_name in self.fields:
                 self.fields[field_name].widget.attrs["disabled"] = "disabled"
 
     def is_valid(self) -> bool:
-        """
-        Checks to ensure that a wave is currently active.
-        """
+        """Check to ensure that a wave is currently active."""
         if not application_models.Wave.objects.active_wave():
             self.add_error(
                 None,

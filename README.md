@@ -13,6 +13,12 @@ If you have questions, we might've answered them already on the [wiki](https://g
 
 ### Local Development
 
+#### First time here?
+
+You should run `./setup.bash` to set up your local environment. This will ensure you have the correct versions of all tools now and as they're updated.
+
+#### Everyone else
+
 For local development, we highly encourage using [Docker Compose](https://docs.docker.com/compose/).
 
 After Docker Compose is installed, there are just a few steps left for first-time setup:
@@ -71,12 +77,16 @@ python3 manage.py migrate --run-syncdb
 
 # Contributing
 
-Install [Poetry](https://python-poetry.org/docs/#installation). Once installed, navigate to the root of the project and run the following:
+From the root of the project and run the following:
+```
+./setup.bash
+```
+After that script has set up your environment, run:
 ```
 poetry install
-poetry run autohooks activate
 ```
-This enables pre-commit hooks to make sure your code is formatted prooperly, so you won't get blocked in a PR.
+
+Now you're good to go!
 
 
 # Brought to you by

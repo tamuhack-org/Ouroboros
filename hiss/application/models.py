@@ -11,10 +11,8 @@ from django.utils import timezone
 from django_s3_storage.storage import S3Storage
 from multiselectfield import MultiSelectField
 
-from application.filesize_validation import FileSizeValidator
-from address.models import AddressField
-
 from application.countries import COUNTRIES_TUPLES
+from application.filesize_validation import FileSizeValidator
 
 s3_storage = S3Storage()
 
@@ -23,10 +21,7 @@ class WaveManager(models.Manager):
     def next_wave(
         self, start_dt: Optional[timezone.datetime] = None
     ) -> Optional["Wave"]:
-        """
-        Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
-        `active_wave`.
-        """
+        """Return the next INACTIVE wave, if one exists. For the CURRENT active wave, use `active_wave`."""
         if not start_dt:
             start_dt = timezone.now()
         qs = self.get_queryset().filter(start__gt=start_dt).order_by("start")
@@ -35,10 +30,7 @@ class WaveManager(models.Manager):
     def active_wave(
         self, start_dt: Optional[timezone.datetime] = None
     ) -> Optional["Wave"]:
-        """
-        Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
-        `next_wave`.
-        """
+        """Return the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use `next_wave`."""
         if not start_dt:
             start_dt = timezone.now()
         qs = (
@@ -49,11 +41,8 @@ class WaveManager(models.Manager):
         return qs.first()
 
 
-class Wave(models.Model):
-    """
-    Representation of a registration period. `Application`s must be created during
-    a `Wave`, and are automatically associated with a wave through the `Application`'s `pre_save` handler.
-    """
+class Wave(models.Model):  # noqa: DJ008
+    """Representation of a registration period. `Application`s must be created during a `Wave`, and are automatically associated with a wave through the `Application`'s `pre_save` handler."""
 
     start = models.DateTimeField()
     end = models.DateTimeField()
@@ -67,22 +56,19 @@ class Wave(models.Model):
     def clean(self):
         super().clean()
         if self.start >= self.end:
-            raise exceptions.ValidationError(
-                {"start": "Start date can't be after end date."}
-            )
+            raise exceptions.ValidationError({
+                "start": "Start date can't be after end date."
+            })
         for wave in Wave.objects.exclude(pk=self.pk).all():
             has_start_overlap = wave.start < self.start < wave.end
             has_end_overlap = wave.start < self.end < wave.end
             if has_start_overlap or has_end_overlap:
-                raise exceptions.ValidationError(
-                    "Cannot create wave; another wave with an overlapping time range exists."
-                )
+                msg = "Cannot create wave; another wave with an overlapping time range exists."
+                raise exceptions.ValidationError(msg)
 
 
 class School(models.Model):
-    """
-    A simple model for representing colleges/universities.
-    """
+    """A simple model for representing colleges/universities."""
 
     name = models.CharField("name", max_length=255)
 
@@ -154,7 +140,7 @@ CLASSIFICATIONS: List[Tuple[str, str]] = [
 ]
 
 
-class DietaryRestriction(models.Model):
+class DietaryRestriction(models.Model):  # noqa: DJ008
     name = models.CharField(max_length=255)
 
 
@@ -174,7 +160,9 @@ HACKATHON_TIMES: List[Tuple[str, str]] = [
 
 STUDY_LESS_THAN_SECONDARY = "Less than Secondary / High School"
 STUDY_SECONDARY = "Secondary / High School"
-STUDY_UNDERGRAD_2YEAR = "Undergraduate University (2 year - community college or similar)"
+STUDY_UNDERGRAD_2YEAR = (
+    "Undergraduate University (2 year - community college or similar)"
+)
 STUDY_UNDERGRAD_3YEAR = "Undergraduate University (3+ year)"
 STUDY_GRADUATE = "Graduate University (Masters, Professional, Doctoral, etc)"
 STUDY_CODE_SCHOOL = "Code School / Bootcamp"
@@ -197,7 +185,7 @@ LEVELS_OF_STUDY = [
     (STUDY_NOT_STUDENT, STUDY_NOT_STUDENT),
     (STUDY_NO_ANSWER, STUDY_NO_ANSWER),
 ]
-    
+
 
 GRAD_YEARS: List[Tuple[int, int]] = [
     (int(y), int(y))
@@ -233,8 +221,6 @@ TRANSPORT_MODES: List[Tuple[str, str]] = [
 ]
 
 QUESTION1_TEXT = "Tell us your best programming joke."
-# QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
-# QUESTION3_TEXT = "What's your hidden talent?"
 
 UNISEX_XXS = "XXS"
 UNISEX_XS = "XS"
@@ -320,7 +306,7 @@ WANTS_TEAM_OPTIONS = [
     ("TH Organizer", "From a TAMUhack organizer"),
     ("ENGR Newsletter", "From the TAMU Engineering Newsletter"),
     ("MLH", "Major League Hacking (MLH)"),
-    ("Attended Before", f"I've attended {settings.EVENT_NAME} before")
+    ("Attended Before", f"I've attended {settings.EVENT_NAME} before"),
 ]
 
 PURPOSE_WIN = "W"
@@ -349,22 +335,17 @@ PURPOSE_OPTIONS = [
     (PURPOSE_MESS_AROUND, "I want to have a fun weekend with my friends!"),
 ]
 
-WARECHOICE = [
-    ("SW", "Software"),
-    ("HW", "Hardware")
-]
+WARECHOICE = [("SW", "Software"), ("HW", "Hardware")]
 """HW - Hardware, SW - Software"""
+
 
 def uuid_generator(_instance, filename: str):
     ext = filename.split(".")[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return filename
+    return f"{uuid.uuid4()}.{ext}"
 
 
 class Application(models.Model):
-    """
-    Represents a `Hacker`'s application to this hackathon.
-    """
+    """Represents a `Hacker`'s application to this hackathon."""
 
     # META INFO
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -382,14 +363,16 @@ class Application(models.Model):
     last_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="last name"
     )
-    age = models.CharField(
-        max_length=5, blank=False, null=True, verbose_name="age"
-    )
+    age = models.CharField(max_length=5, blank=False, null=True, verbose_name="age")
     phone_number = models.CharField(
         max_length=13, blank=False, null=True, verbose_name="phone number"
     )
     country = models.CharField(
-        "What is your country of residence?", max_length=100, choices=COUNTRIES_TUPLES, blank=False, null=True
+        "What is your country of residence?",
+        max_length=100,
+        choices=COUNTRIES_TUPLES,
+        blank=False,
+        null=True,
     )
     extra_links = models.CharField(
         "Point us to anything you'd like us to look at while considering your application",
@@ -397,8 +380,6 @@ class Application(models.Model):
         blank=True,
     )
     question1 = models.TextField(QUESTION1_TEXT, max_length=500)
-    # question2 = models.TextField(QUESTION2_TEXT, max_length=500)
-    # question3 = models.TextField(QUESTION3_TEXT, max_length=500)
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
@@ -448,13 +429,21 @@ class Application(models.Model):
         "What is your anticipated graduation year?", choices=GRAD_YEARS
     )
     level_of_study = models.CharField(
-        "What is your current level of study?", max_length=100, choices=LEVELS_OF_STUDY, blank=False, null=True
+        "What is your current level of study?",
+        max_length=100,
+        choices=LEVELS_OF_STUDY,
+        blank=False,
+        null=True,
     )
     num_hackathons_attended = models.CharField(
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
     wares = models.CharField(
-        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track", choices=WARECHOICE, max_length=8, default=NO_ANSWER, blank=False
+        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track",
+        choices=WARECHOICE,
+        max_length=8,
+        default=NO_ANSWER,
+        blank=False,
     )
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
@@ -476,9 +465,8 @@ class Application(models.Model):
     shirt_size = models.CharField(
         "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
     )
-    # address = AddressField(on_delete=models.CASCADE, default=None, null=True)
     additional_accommodations = models.TextField(
-        "Do you require any special accommodations at the event? Please list dietary restrictions here if you selected \"food allergy\" or \"other\".",
+        'Do you require any special accommodations at the event? Please list dietary restrictions here if you selected "food allergy" or "other".',
         max_length=500,
         blank=True,
     )
@@ -523,7 +511,7 @@ class Application(models.Model):
     )
 
     def __str__(self):
-        return "%s, %s - Application" % (self.last_name, self.first_name)
+        return f"{self.last_name}, {self.first_name} - Application"
 
     def get_absolute_url(self):
         return reverse_lazy("application:update", args=[self.id])
@@ -531,11 +519,14 @@ class Application(models.Model):
     def clean(self):
         super().clean()
         if not self.is_adult:
-            raise exceptions.ValidationError(
+            msg = (
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
+            raise exceptions.ValidationError(msg)
         if not self.first_name.isalpha():
-            raise exceptions.ValidationError("First name can only contain letters.")
+            msg = "First name can only contain letters."
+            raise exceptions.ValidationError(msg)
         if not self.last_name.isalpha():
-            raise exceptions.ValidationError("Last name can only contain letters.")
+            msg = "Last name can only contain letters."
+            raise exceptions.ValidationError(msg)

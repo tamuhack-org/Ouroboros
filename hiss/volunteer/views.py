@@ -1,22 +1,24 @@
+from typing import Optional
+
 from django.contrib.auth import get_user_model
-from django.db.models import Value, F
+from django.db.models import F, Value
 from django.db.models.functions import Concat
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from rest_framework import status, response, permissions, authentication
+from rest_framework import authentication, permissions, response, status
 from rest_framework.authtoken import views
 from rest_framework.request import Request
 
-from application.models import Application, STATUS_CHECKED_IN, DietaryRestriction
+from application.models import STATUS_CHECKED_IN, Application, DietaryRestriction
 from volunteer.models import (
+    BREAKFAST,
+    BREAKFAST_2,
+    DINNER,
+    LUNCH,
+    LUNCH_2,
+    MIDNIGHT_SNACK,
     FoodEvent,
     WorkshopEvent,
-    BREAKFAST,
-    LUNCH,
-    DINNER,
-    MIDNIGHT_SNACK,
-    BREAKFAST_2,
-    LUNCH_2,
 )
 from volunteer.permissions import IsVolunteer
 from volunteer.serializers import EmailAuthTokenSerializer
@@ -27,9 +29,7 @@ USER_NOT_CHECKED_IN_MSG = (
 
 
 class EmailObtainAuthToken(views.ObtainAuthToken):
-    """
-    Given a request containing a user's "email" and "password", this view responds with the user's Token (which can
-    be used to authenticate consequent requests).
+    """Given a request containing a user's "email" and "password", this view responds with the user's Token (which can be used to authenticate consequent requests).
 
     More information on how `TokenAuthentication` works can be seen at the DRF documentation site:
     https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication
@@ -44,17 +44,17 @@ class VerifyAuthenticated(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def post(self, request: Request, format: str = None):
-        """
-        See if a user's token is valid and if they are authorized to use the API.
+    def post(self, _request: Request, _format: Optional[str] = None):
+        """See if a user's token is valid and if they are authorized to use the API.
+
         This is a certified workaround-because-i-need-auth-but-i-don't-want-to-learn-django moment.
-        Love, Naveen <3
+        Love, Naveen <3.
 
         This will return
             200 if the user is logged in and is authorized
             401 if the user is not logged in (i.e. the token is invalid or missing)
             403 if the user is logged in (token is valid) but is not authorized
-        
+
         BTW these requests expect the "Authorization" header to be set to "Token <token>"
         """
         return response.Response(status=status.HTTP_200_OK)
@@ -66,11 +66,12 @@ class CheckinHackerView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def post(self, request: Request, format: str = None):
-        """
-        Sets a specific user's Application status as STATUS_CHECKED_IN (indicating that a user has successfully
-        checked into the event). If the request is malformed (i.e. missing the user's email), returns a Django Rest
-        Framework Response with a 400 status code. if successful, returns a response with status 200.
+    def post(self, request: Request, _format: Optional[str] = None):
+        """Set a specific user's Application status as STATUS_CHECKED_IN (indicating that a user has successfully checked into the event).
+
+        If the request is malformed (i.e. missing the user's email), returns a Django Rest
+        Framework Response with a 400 status code. I
+        f successful, returns a response with status 200.
         """
         user_email = request.data.get("email", None)
         if not user_email:
@@ -86,24 +87,19 @@ class CheckinHackerView(views.APIView):
 
 
 class ListDietaryRestrictionsView(views.APIView):
-    """
-    Lists all of the available DietaryRestrictions
-    """
+    """Lists all of the available DietaryRestrictions."""
 
     permission_classes = [
         permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def get(self, request: Request):
-        return JsonResponse(
-            {
-                "dietary_restrictions": [
-                    {"id": r.pk, "name": r.name}
-                    for r in DietaryRestriction.objects.all()
-                ]
-            }
-        )
+    def get(self, _request: Request):
+        return JsonResponse({
+            "dietary_restrictions": [
+                {"id": r.pk, "name": r.name} for r in DietaryRestriction.objects.all()
+            ]
+        })
 
 
 class CreateFoodEventView(views.APIView):
@@ -112,11 +108,11 @@ class CreateFoodEventView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def post(self, request: Request, format: str = None):
-        """
-        Creates a new FoodEvent (indicating that a user has taken food for this meal). If the request is malformed (
-        i.e. missing the user's email, meal type, or restrictions), returns a Django Rest Framework Response with a
-        400 status code. if successful, returns a response with status 200.
+    def post(self, request: Request, _format: Optional[str] = None):
+        """Create a new FoodEvent (indicating that a user has taken food for this meal).
+
+        If the request is malformed (i.e. missing the user's email, meal type, or restrictions), returns a Django Rest Framework Response with a 400 status code.
+        If successful, returns a response with status 200.
         """
         user_email = request.data.get("email", None)
         meal = request.data.get("meal", None)
@@ -131,7 +127,7 @@ class CreateFoodEventView(views.APIView):
         )
 
         # Ensure that user has checked in
-        if not application.status == STATUS_CHECKED_IN:
+        if application.status != STATUS_CHECKED_IN:
             return response.Response(
                 data={"error": USER_NOT_CHECKED_IN_MSG},
                 status=status.HTTP_412_PRECONDITION_FAILED,
@@ -148,11 +144,11 @@ class CreateWorkshopEventView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def post(self, request: Request, format: str = None):
-        """
-        Creates a new WorkshopEvent (indicating that a user has attended a workshop). If the request is malformed (
-        i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status code. if
-        successful, returns a response with status 200.
+    def post(self, request: Request, _format: Optional[str] = None):
+        """Create a new WorkshopEvent (indicating that a user has attended a workshop).
+
+        If the request is malformed (i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status code.
+        If successful, returns a response with status 200.
         """
         user_email = request.data.get("email", None)
 
@@ -165,7 +161,7 @@ class CreateWorkshopEventView(views.APIView):
         )
 
         # Ensure that user has checked in
-        if not application.status == STATUS_CHECKED_IN:
+        if application.status != STATUS_CHECKED_IN:
             return response.Response(
                 data={"error": USER_NOT_CHECKED_IN_MSG},
                 status=status.HTTP_412_PRECONDITION_FAILED,
@@ -181,11 +177,12 @@ class SearchView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def get(self, request: Request, *args, **kwargs):
-        """
-        Performs a simple regex search for a matching application based on the user's first and last name. Creates a
-        new temporary column called "full_name" which is just "<FIRST_NAME> <LAST_NAME>", and then regex-searches the
-        query against the column, and returns all matches.
+    def get(self, request: Request, *args, **kwargs):  # noqa: ARG002
+        """Get a SearchView.
+
+        Perform a simple regex search for a matching application based on the user's first and last name.
+        Create a new temporary column called "full_name" which is just "<FIRST_NAME> <LAST_NAME>", and
+        then regex-searches the query against the column, and returns all matches.
         """
         query = request.GET.get("q")
         matches = list(
@@ -204,11 +201,12 @@ class UserSummaryView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def get(self, request: Request, *args, **kwargs):
-        """
-        Compiles a summary about a specific user, given their email, and returns that summary as JSON. If the request
-        is malformed (i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status
-        code. if successful, returns a response with status 200.
+    def get(self, request: Request, *args, **kwargs):  # noqa: ARG002
+        """Compiles a summary about a specific user, given their email, and returns that summary as JSON.
+
+        If the request is malformed (i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status
+        code.
+        If successful, returns a response with status 200.
         """
         user_email = request.GET.get("email")
 
@@ -221,17 +219,15 @@ class UserSummaryView(views.APIView):
         workshop_events = WorkshopEvent.objects.filter(user=user)
         checked_in = application.status == STATUS_CHECKED_IN
 
-        return JsonResponse(
-            {
-                "num_breakfast": food_events.filter(meal=BREAKFAST).count(),
-                "num_lunch": food_events.filter(meal=LUNCH).count(),
-                "num_dinner": food_events.filter(meal=DINNER).count(),
-                "num_midnight_snack": food_events.filter(meal=MIDNIGHT_SNACK).count(),
-                "num_breakfast_2": food_events.filter(meal=BREAKFAST_2).count(),
-                "num_lunch_2": food_events.filter(meal=LUNCH_2).count(),
-                "num_workshops": workshop_events.count(),
-                "checked_in": checked_in,
-                "status": application.status,
-                "dietary_restrictions": application.dietary_restrictions
-            }
-        )
+        return JsonResponse({
+            "num_breakfast": food_events.filter(meal=BREAKFAST).count(),
+            "num_lunch": food_events.filter(meal=LUNCH).count(),
+            "num_dinner": food_events.filter(meal=DINNER).count(),
+            "num_midnight_snack": food_events.filter(meal=MIDNIGHT_SNACK).count(),
+            "num_breakfast_2": food_events.filter(meal=BREAKFAST_2).count(),
+            "num_lunch_2": food_events.filter(meal=LUNCH_2).count(),
+            "num_workshops": workshop_events.count(),
+            "checked_in": checked_in,
+            "status": application.status,
+            "dietary_restrictions": application.dietary_restrictions,
+        })

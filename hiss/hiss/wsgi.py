@@ -1,5 +1,4 @@
-"""
-WSGI config for hiss project.
+"""WSGI config for hiss project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

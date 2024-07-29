@@ -136,8 +136,8 @@ class UpdateApplicationViewTestCase(test_case.SharedTestCase):
         )
 
         form: ApplicationModelForm = response.context["form"]
-        for field_name in form.fields.keys():
-            self.assertEquals(
+        for field_name in form.fields:
+            self.assertEqual(
                 form.fields[field_name].widget.attrs["disabled"], "disabled"
             )
 

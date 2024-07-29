@@ -2,10 +2,10 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy
 
 from application.models import (
-    Application,
     STATUS_ADMITTED,
-    STATUS_PENDING,
     STATUS_DECLINED,
+    STATUS_PENDING,
+    Application,
 )
 from shared import test_case
 

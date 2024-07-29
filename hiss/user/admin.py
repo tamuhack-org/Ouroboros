@@ -10,9 +10,7 @@ from user.models import User
 
 
 def export_user_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
-    """
-    Exports the emails related to the selected `User`s to a CSV file
-    """
+    """Export the emails related to the selected `User`s to a CSV file."""
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="emails.csv"'
 
@@ -27,14 +25,14 @@ class HasAppliedFilter(admin.SimpleListFilter):
     title = "has_applied"
     parameter_name = "has_applied"
 
-    def lookups(self, request, model_admin):
+    def lookups(self, _request, _model_admin):
         return (("Yes", "Yes"), ("No", "No"))
 
-    def queryset(self, request, queryset):
+    def queryset(self, _request, queryset):
         value = self.value()
         if value == "Yes":
             return queryset.filter(application__isnull=False)
-        elif value == "No":
+        if value == "No":
             return queryset.filter(application__isnull=True)
         return queryset
 
