@@ -314,6 +314,7 @@ MAJORS = [
 WANTS_TEAM_OPTIONS = [
     ("Friend", "From a friend"),
     ("Tabling", "Tabling outside Zachry"),
+    ("Howdy Week", "From Howdy Week"),
     ("Yard Sign", "Yard sign"),
     ("Social Media", "Social media"),
     ("Student Orgs", "Though another student org"),
