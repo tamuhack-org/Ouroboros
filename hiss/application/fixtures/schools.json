@@ -14516,5 +14516,12 @@
     "fields": {
       "name": "Other"
     }
+  },
+  {
+    "model": "application.school",
+    "pk": 2075,
+    "fields": {
+      "name": "Texas A&M University - San Antonio"
+    }
   }
 ]
