@@ -4,35 +4,47 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0018_auto_20231203_1708'),
+        ("application", "0018_auto_20231203_1708"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='application',
-            name='emergency_contact_email',
-            field=models.CharField(max_length=255, verbose_name='Emergency Contact Email'),
+            model_name="application",
+            name="emergency_contact_email",
+            field=models.CharField(
+                max_length=255, verbose_name="Emergency Contact Email"
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='emergency_contact_name',
-            field=models.CharField(max_length=255, verbose_name='Emergency Contact Name'),
+            model_name="application",
+            name="emergency_contact_name",
+            field=models.CharField(
+                max_length=255, verbose_name="Emergency Contact Name"
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='emergency_contact_phone',
-            field=models.CharField(max_length=255, verbose_name='Emergency Contact Phone Number'),
+            model_name="application",
+            name="emergency_contact_phone",
+            field=models.CharField(
+                max_length=255, verbose_name="Emergency Contact Phone Number"
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='emergency_contact_relationship',
-            field=models.CharField(max_length=255, verbose_name='Emergency Contact Relationship'),
+            model_name="application",
+            name="emergency_contact_relationship",
+            field=models.CharField(
+                max_length=255, verbose_name="Emergency Contact Relationship"
+            ),
         ),
         migrations.AddField(
-            model_name='application',
-            name='wares',
-            field=models.CharField(choices=[('SW', 'Software'), ('HW', 'Hardware')], default='NA', max_length=8, verbose_name='TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track'),
+            model_name="application",
+            name="wares",
+            field=models.CharField(
+                choices=[("SW", "Software"), ("HW", "Hardware")],
+                default="NA",
+                max_length=8,
+                verbose_name="TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track",
+            ),
         ),
     ]

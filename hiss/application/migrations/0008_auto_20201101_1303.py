@@ -9,7 +9,6 @@ import application.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("application", "0007_auto_20200809_1434"),
     ]

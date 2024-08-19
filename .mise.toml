@@ -1,0 +1,22 @@
+[tools]
+poetry = {version='1.8.2', pyproject='pyproject.toml'}
+python = "3.8.19"
+lefthook = "latest"
+
+[plugins]
+poetry="https://github.com/mise-plugins/mise-poetry.git"
+
+[tasks.lint]
+alias = "l"
+run = "ruff check . --force-exclude --preview --config ./pyproject.toml"
+
+[tasks.format]
+alias = "f"
+run = "ruff format . --force-exclude --preview --config ./pyproject.toml"
+
+[tasks.pre-commit]
+depends = ["lint", "format"]
+hide = true
+
+[settings]
+experimental = true

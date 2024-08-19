@@ -2,6 +2,8 @@
 import csv
 from typing import List, Tuple
 
+from address.forms import AddressWidget
+from address.models import AddressField
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -27,14 +29,11 @@ from application.models import (
 )
 from shared.admin_functions import send_mass_html_mail
 
-from address.forms import AddressWidget
-from address.models import AddressField
-
 
 class ApplicationAdminForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = "__all__"
+        fields = "__all__"  # noqa: DJ007
         widgets = {
             "gender": forms.RadioSelect,
             "classification": forms.RadioSelect,
@@ -46,11 +45,10 @@ class ApplicationAdminForm(forms.ModelForm):
 def build_approval_email(
     application: Application, confirmation_deadline: timezone.datetime
 ) -> Tuple[str, str, str, None, List[str]]:
-    """
-    Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
-    application has been approved.
-    """
-    subject = f"ACTION REQUIRED: One last step for your {settings.EVENT_NAME} application!"
+    """Create a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s application has been approved."""
+    subject = (
+        f"ACTION REQUIRED: One last step for your {settings.EVENT_NAME} application!"
+    )
 
     context = {
         "first_name": application.first_name,
@@ -66,10 +64,7 @@ def build_approval_email(
 
 
 def build_rejection_email(application: Application) -> Tuple[str, str, None, List[str]]:
-    """
-    Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
-    application has been rejected.
-    """
+    """Create a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s application has been rejected."""
     subject = f"Regarding your {settings.EVENT_NAME} application"
 
     context = {
@@ -85,8 +80,9 @@ def build_rejection_email(application: Application) -> Tuple[str, str, None, Lis
 
 
 def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
-    """
-    Sets the value of the `approved` field for the selected `Application`s to `True`, creates an RSVP deadline for
+    """Manually approve a registration application.
+
+    Set the value of the `approved` field for the selected `Application`s to `True`, creates an RSVP deadline for
     each user based on how many days each wave gives to RSVP, and then emails all of the users to inform them that
     their applications have been approved.
     """
@@ -106,9 +102,7 @@ def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
 
 
 def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
-    """
-    Sets the value of the `approved` field for the selected `Application`s to `False`
-    """
+    """Set the value of the `approved` field for the selected `Application`s to `False`."""
     email_tuples = []
     with transaction.atomic():
         for application in queryset:
@@ -119,35 +113,21 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
 
 
 def resend_confirmation(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
-    """
-    Resends the confirmation email to the selected applications.
-    """
+    """Resends the confirmation email to the selected applications."""
     for application in queryset:
         send_confirmation_email(application)
 
 
 def export_application_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
-    """
-    Exports the emails related to the selected `Application`s to a CSV file
-    """
+    """Export the emails related to the selected `Application`s to a CSV file."""
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="emails.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(
-        [
-            "email",
-            "shirt_size"
-        ]
-    )
+    writer.writerow(["email", "shirt_size"])
     for instance in queryset:
-        instance: Application = instance
-        writer.writerow(
-            [
-                instance.user.email,
-                instance.shirt_size
-            ]
-        )
+        instance: Application = instance  # noqa: PLW2901, PLW0127
+        writer.writerow([instance.user.email, instance.shirt_size])
 
     return response
 
@@ -166,10 +146,10 @@ class RaceFilter(admin.SimpleListFilter):
     title = "Race"
     parameter_name = "race"
 
-    def lookups(self, request: HttpRequest, model_admin) -> List[Tuple[str, str]]:
+    def lookups(self, _request: HttpRequest, _model_admin) -> List[Tuple[str, str]]:
         return RACES
 
-    def queryset(self, request: HttpRequest, queryset: QuerySet):
+    def queryset(self, _request: HttpRequest, queryset: QuerySet):
         if self.value():
             return queryset.filter(race__contains=self.value())
         return queryset
@@ -207,8 +187,8 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("grad_year", ChoiceDropdownFilter),
         ("num_hackathons_attended", ChoiceDropdownFilter),
         ("wares", ChoiceDropdownFilter),
-        # ("technology_experience", ChoiceDropdownFilter),
-        # ("dietary_restrictions", ChoiceDropdownFilter),
+        # ("technology_experience", ChoiceDropdownFilter),  # noqa: ERA001
+        # ("dietary_restrictions", ChoiceDropdownFilter),  # noqa: ERA001
         ("shirt_size", ChoiceDropdownFilter),
         ("datetime_submitted", DateRangeFilter),
         RaceFilter,
@@ -300,10 +280,10 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     actions = [approve, reject, export_application_emails, resend_confirmation]
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, _request):
         return True
 
-    def has_change_permission(self, request, obj=None):
+    def has_change_permission(self, _request, _obj=None):
         return True
 
     @staticmethod

@@ -4,7 +4,7 @@ from django.test import override_settings
 from django.utils import timezone
 
 from application import models as application_models
-from application.models import Wave, School
+from application.models import School, Wave
 from user.models import User
 
 TEST_RESUME_DIR = "test_resume_dir"
@@ -63,8 +63,6 @@ class SharedTestCase(test.TestCase):
             "address": "1600 Pennsylvania Avenue Northwest, Washington, DC, USA",
             "extra_links": "A",
             "question1": "B",
-            # "question2": "C",
-            # "question3": "D",
             "is_adult": True,
             "additional_accommodations": "E",
             "agree_to_coc": True,

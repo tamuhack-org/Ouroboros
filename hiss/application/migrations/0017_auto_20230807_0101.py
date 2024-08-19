@@ -4,52 +4,80 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0016_auto_20220130_1307'),
+        ("application", "0016_auto_20220130_1307"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='application',
-            name='address',
+            model_name="application",
+            name="address",
         ),
         migrations.RemoveField(
-            model_name='application',
-            name='question2',
+            model_name="application",
+            name="question2",
         ),
         migrations.RemoveField(
-            model_name='application',
-            name='question3',
+            model_name="application",
+            name="question3",
         ),
         migrations.AddField(
-            model_name='application',
-            name='dietary_restrictions',
+            model_name="application",
+            name="dietary_restrictions",
             field=models.CharField(default=None, max_length=5000),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='additional_accommodations',
-            field=models.TextField(blank=True, max_length=500, verbose_name='Do you require any special accommodations at the event? Please list dietary restrictions here if you selected "food allergy" or "other".'),
+            model_name="application",
+            name="additional_accommodations",
+            field=models.TextField(
+                blank=True,
+                max_length=500,
+                verbose_name='Do you require any special accommodations at the event? Please list dietary restrictions here if you selected "food allergy" or "other".',
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='grad_year',
-            field=models.IntegerField(choices=[(2023, 2023), (2024, 2024), (2025, 2025), (2026, 2026), (2027, 2027), (2028, 2028)], verbose_name='What is your anticipated graduation year?'),
+            model_name="application",
+            name="grad_year",
+            field=models.IntegerField(
+                choices=[
+                    (2023, 2023),
+                    (2024, 2024),
+                    (2025, 2025),
+                    (2026, 2026),
+                    (2027, 2027),
+                    (2028, 2028),
+                ],
+                verbose_name="What is your anticipated graduation year?",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='question1',
-            field=models.TextField(max_length=500, verbose_name='Tell us your best programming joke.'),
+            model_name="application",
+            name="question1",
+            field=models.TextField(
+                max_length=500, verbose_name="Tell us your best programming joke."
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='technology_experience',
+            model_name="application",
+            name="technology_experience",
             field=models.CharField(default=None, max_length=5000),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='wants_team',
-            field=models.CharField(choices=[('Friend', 'From a friend'), ('Yard Sign', 'Yard sign'), ('Social Media', 'Social media'), ('Student Orgs', 'Though another student org'), ('TH Organizer', 'From a TAMUhack organizer'), ('ENGR Newsletter', 'From the TAMU Engineering Newsletter'), ('MLH', 'Major League Hacking (MLH)'), ('Attended Before', "I've attended HowdyHack before")], max_length=16, verbose_name='How did you hear about HowdyHack?'),
+            model_name="application",
+            name="wants_team",
+            field=models.CharField(
+                choices=[
+                    ("Friend", "From a friend"),
+                    ("Yard Sign", "Yard sign"),
+                    ("Social Media", "Social media"),
+                    ("Student Orgs", "Though another student org"),
+                    ("TH Organizer", "From a TAMUhack organizer"),
+                    ("ENGR Newsletter", "From the TAMU Engineering Newsletter"),
+                    ("MLH", "Major League Hacking (MLH)"),
+                    ("Attended Before", "I've attended HowdyHack before"),
+                ],
+                max_length=16,
+                verbose_name="How did you hear about HowdyHack?",
+            ),
         ),
     ]

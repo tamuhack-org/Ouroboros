@@ -1,2 +1,2 @@
-from .user import *
 from .receivers import *
+from .user import *

@@ -1,19 +1,19 @@
 import random
 from datetime import timedelta
 
-from django.core.management import base, CommandParser
+from django.core.management import CommandParser, base
 from django.utils import timezone
 
 from application.models import (
-    Application,
-    RACES,
     CLASSIFICATIONS,
-    HACKATHON_TIMES,
-    GRAD_YEARS,
-    Wave,
     GENDERS,
-    STATUS_PENDING,
+    GRAD_YEARS,
+    HACKATHON_TIMES,
+    RACES,
     STATUS_ADMITTED,
+    STATUS_PENDING,
+    Application,
+    Wave,
 )
 from user.models import User
 
@@ -41,7 +41,7 @@ COMMON_NAMES = [
 ]
 
 LAST_NAME = "Seedoe"
-PASSWORD = "password"
+PASSWORD = "password"  # noqa: S105
 
 
 class Command(base.BaseCommand):
@@ -60,19 +60,25 @@ class Command(base.BaseCommand):
             help="The number of applications to create. Must be <= num_active",
         )
 
-    def handle(self, *args, **options):
-        """
-        Function that creates Users and Applications to make testing easier.
+    def handle(self, *args, **options):  # noqa: ARG002
+        """Create Users and Applications to make testing easier.
+
         To run use -- python manage.py shell < shared/seed.py
         WARNING - Will delete most of the Users and Applications when run.
-        DO not use in production
+        DO not use in production.
         """
         self.stdout.write("Starting the seeding process.")
         num_users = options["num_users"]
         num_active = options["num_active"]
         num_apps = options["num_applications"]
 
-        assert num_users >= num_active >= num_apps
+        if num_users < num_active:
+            msg = "more active users than plain users"
+            raise ValueError(msg)
+        if num_active < num_apps:
+            msg = "more applications than active users"
+            raise ValueError(msg)
+
         User.objects.filter(is_superuser=False).delete()
         Application.objects.filter(last_name=LAST_NAME).delete()
         Wave.objects.all().delete()
@@ -87,8 +93,8 @@ class Command(base.BaseCommand):
         for i in range(num_users):
             random_name = random.choice(COMMON_NAMES)
             email = random_name + str(i) + "@seed.com"
-            is_active = True if i < num_active else False
-            will_apply = True if i < num_apps else False
+            is_active = i < num_active
+            will_apply = i < num_apps
             user = User.objects.create_user(email, PASSWORD, is_active=is_active)
             seeds.append((user, will_apply, random_name))
         random.shuffle(seeds)
@@ -107,8 +113,6 @@ class Command(base.BaseCommand):
                     num_hackathons_attended=random.choice(HACKATHON_TIMES[1:])[0],
                     extra_links="a",
                     question1="b",
-                    # question2="c",
-                    # question3="d",
                     status=random.choice([STATUS_PENDING, STATUS_ADMITTED]),
                     agree_to_coc=True,
                     agree_to_mlh_stuff=True,

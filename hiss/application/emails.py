@@ -7,15 +7,15 @@ from django.core import mail
 from django.template.loader import render_to_string
 from django.utils import html
 
-from application.models import Application
 from application.apple_wallet import get_apple_wallet_pass_url
+from application.models import Application
 
 
 def send_creation_email(app: Application) -> None:
-    """
-    Sends an email to the user informing them of their newly-created app.
+    """Send an email to the user informing them of their newly-created app.
+
     :param app: The user's newly-created application
-    :return: None
+    :return: None.
     """
     subject = f"We've received your application for {settings.EVENT_NAME}!"
     template_name = "application/emails/created.html"
@@ -31,13 +31,13 @@ def send_creation_email(app: Application) -> None:
 
 
 def send_confirmation_email(app: Application) -> None:
-    """
-    Sends a confirmation email to a user, which contains their QR code as well as additional event information.
+    """Send a confirmation email to a user, which contains their QR code as well as additional event information.
+
     :param app: The user's application
     :type app: Application
-    :return: None
+    :return: None.
     """
-    subject = f"TAMUhack Waitlist: Important Day-Of Information"
+    subject = "TAMUhack Waitlist: Important Day-Of Information"
     email_template = "application/emails/confirmed.html"
     context = {
         "first_name": app.first_name,
@@ -54,14 +54,12 @@ def send_confirmation_email(app: Application) -> None:
     )
     email.attach_alternative(html_msg, "text/html")
 
-    qr_content = json.dumps(
-        {
-            "first_name": app.first_name,
-            "last_name": app.last_name,
-            "email": app.user.email,
-            "university": app.school.name,
-        }
-    )
+    qr_content = json.dumps({
+        "first_name": app.first_name,
+        "last_name": app.last_name,
+        "email": app.user.email,
+        "university": app.school.name,
+    })
     qr_code = pyqrcode.create(qr_content)
     qr_stream = BytesIO()
     qr_code.png(qr_stream, scale=5)

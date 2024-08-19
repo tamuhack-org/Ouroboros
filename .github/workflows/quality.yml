@@ -3,45 +3,42 @@ name: Code Quality Checks
 on: [push]
 
 jobs:
-  black:
-    name: 'Check code quality with black'
+  format:
+    name: 'Format code'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: 'Set up Python 3.7'
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.7
-      - name: Install dependencies
+      - uses: actions/checkout@v4
+      - name: Setup environment
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install black
-      - name: Check formatting
+          ./setup.bash
+          echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+
+      - name: Install python dependencies
+        run: |
+          poetry install --with dev
+          source $(poetry env info --path)/bin/activate
+      - name: Format
         run: |
           cd hiss
-          black . --check --exclude=".*/migrations,env"
-  flake:
-    name: 'Check code health with Flake8'
+          mise run format --check
+
+  lint:
+    name: 'Run python linter (ruff)'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: cclauss/GitHub-Action-for-Flake8@0.0.1
-        with:
-          args: "flake8 . --exclude=\"env,**/migrations,__init__.py,hiss/hiss/settings/**\" --max-line-length=120"
-  pylint:
-    name: 'Check code quality with pylint'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: 'Set up Python 3.7'
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.7
-      - name: Install dependencies
+      - uses: actions/checkout@v4
+      - name: Setup environment
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r hiss/requirements.txt
+          ./setup.bash
+          echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+  
+      - name: Install python dependencies
+        run: |
+          poetry install --with dev
+          source $(poetry env info --path)/bin/activate
       - name: Lint
         run: |
           cd hiss
-          pylint --exit-zero --rcfile=.pylintrc application rsvp shared status user volunteer
+          mise run lint --no-fix

@@ -1,11 +1,11 @@
 import csv
 
+from django import forms
 from django.contrib import admin
 
 # Register your models here.
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
-from django import forms
 
 from application.admin import approve, reject
 from team.models import Team
@@ -38,7 +38,7 @@ def export_team_emails(_model_admin, _request: HttpRequest, queryset: QuerySet) 
 class TeamAdminForm(forms.ModelForm):
     class Meta:
         model = Team
-        fields = "__all__"
+        fields = "__all__"  # noqa: DJ007
 
 
 class TeamAdmin(admin.ModelAdmin):
