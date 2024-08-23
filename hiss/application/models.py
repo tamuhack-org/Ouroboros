@@ -282,7 +282,7 @@ STATUS_OPTIONS = [
     (STATUS_CONFIRMED, "Confirmed"),
     (STATUS_DECLINED, "Declined"),
     (STATUS_CHECKED_IN, "Checked in"),
-    (STATUS_EXPIRED, "Expired"),
+    (STATUS_EXPIRED, "Waitlisted (Expired, internally)"),
 ]
 
 HAS_TEAM = "HT"
