@@ -499,6 +499,7 @@ class Application(models.Model):
     )
 
     dietary_restrictions = models.CharField(max_length=5000, default=None)
+    meal_group = models.CharField(max_length=255, null=True, blank=True, default=None)
 
     technology_experience = models.CharField(max_length=5000, default=None)
 

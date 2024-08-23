@@ -272,6 +272,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "wares",
                     "shirt_size",
                     "dietary_restrictions",
+                    "meal_group",
                     "additional_accommodations",
                     # "address",
                     "emergency_contact_name",
