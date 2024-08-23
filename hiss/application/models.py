@@ -294,20 +294,46 @@ HAS_TEAM_OPTIONS = [
 ]
 
 CS = "Computer Science"
-SWE = "Software Engineering"
 CE = "Computer Engineering"
+COMP = "Computing"
 EE = "Electrical Engineering"
-IT = "Information Technology"
-DS = "Data Science"
+MIS = "Management Information Systems"
+DS = "Data Science/Engineering"
+GENE = "General Engineering"
+BMEN = "Biomedical Engineering"
+CHEM = "Chemical Engineering"
+CIVIL = "Civil Engineering"
+INDU = "Industrial Engineering"
+MECH = "Mechanical Engineering"
+AERO = "Aerospace Engineering"
+ESET = "Electronic Systems Engineering Technology (ESET)"
+MATH = "Mathematics"
+PHYS = "Physics"
+STAT = "Statistics"
+BIO = "Biology"
+CHEMISTRY = "Chemistry"
 MAJOR_OTHER = "Other"
 
 MAJORS = [
     (CS, "Computer Science"),
-    (SWE, "Software Engineering"),
     (CE, "Computer Engineering"),
+    (COMP, "Computing"),
     (EE, "Electrical Engineering"),
-    (IT, "Information Technology"),
-    (DS, "Data Science"),
+    (MIS, "Management Information Systems"),
+    (DS, "Data Science/Engineering"),
+    (GENE, "General Engineering"),
+    (BMEN, "Biomedical Engineering"),
+    (CHEM, "Chemical Engineering"),
+    (CIVIL, "Civil Engineering"),
+    (INDU, "Industrial Engineering"),
+    (MECH, "Mechanical Engineering"),
+    (AERO, "Aerospace Engineering"),
+    (ESET, "Electronic Systems Engineering Technology (ESET)"),
+    (MATH, "Mathematics"),
+    (PHYS, "Physics"),
+    (STAT, "Statistics"),
+    (BIO, "Biology"),
+    (CHEMISTRY, "Chemistry"),    
     (MAJOR_OTHER, "Other"),
 ]
 
