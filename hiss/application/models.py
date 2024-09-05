@@ -174,7 +174,9 @@ HACKATHON_TIMES: List[Tuple[str, str]] = [
 
 STUDY_LESS_THAN_SECONDARY = "Less than Secondary / High School"
 STUDY_SECONDARY = "Secondary / High School"
-STUDY_UNDERGRAD_2YEAR = "Undergraduate University (2 year - community college or similar)"
+STUDY_UNDERGRAD_2YEAR = (
+    "Undergraduate University (2 year - community college or similar)"
+)
 STUDY_UNDERGRAD_3YEAR = "Undergraduate University (3+ year)"
 STUDY_GRADUATE = "Graduate University (Masters, Professional, Doctoral, etc)"
 STUDY_CODE_SCHOOL = "Code School / Bootcamp"
@@ -197,7 +199,7 @@ LEVELS_OF_STUDY = [
     (STUDY_NOT_STUDENT, STUDY_NOT_STUDENT),
     (STUDY_NO_ANSWER, STUDY_NO_ANSWER),
 ]
-    
+
 
 GRAD_YEARS: List[Tuple[int, int]] = [
     (int(y), int(y))
@@ -333,7 +335,7 @@ MAJORS = [
     (PHYS, "Physics"),
     (STAT, "Statistics"),
     (BIO, "Biology"),
-    (CHEMISTRY, "Chemistry"),    
+    (CHEMISTRY, "Chemistry"),
     (MAJOR_OTHER, "Other"),
 ]
 
@@ -347,7 +349,7 @@ WANTS_TEAM_OPTIONS = [
     ("TH Organizer", "From a TAMUhack organizer"),
     ("ENGR Newsletter", "From the TAMU Engineering Newsletter"),
     ("MLH", "Major League Hacking (MLH)"),
-    ("Attended Before", f"I've attended {settings.EVENT_NAME} before")
+    ("Attended Before", f"I've attended {settings.EVENT_NAME} before"),
 ]
 
 PURPOSE_WIN = "W"
@@ -376,11 +378,9 @@ PURPOSE_OPTIONS = [
     (PURPOSE_MESS_AROUND, "I want to have a fun weekend with my friends!"),
 ]
 
-WARECHOICE = [
-    ("SW", "Software"),
-    ("HW", "Hardware")
-]
+WARECHOICE = [("SW", "Software"), ("HW", "Hardware")]
 """HW - Hardware, SW - Software"""
+
 
 def uuid_generator(_instance, filename: str):
     ext = filename.split(".")[-1]
@@ -409,14 +409,16 @@ class Application(models.Model):
     last_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="last name"
     )
-    age = models.CharField(
-        max_length=5, blank=False, null=True, verbose_name="age"
-    )
+    age = models.CharField(max_length=5, blank=False, null=True, verbose_name="age")
     phone_number = models.CharField(
         max_length=13, blank=False, null=True, verbose_name="phone number"
     )
     country = models.CharField(
-        "What is your country of residence?", max_length=100, choices=COUNTRIES_TUPLES, blank=False, null=True
+        "What is your country of residence?",
+        max_length=100,
+        choices=COUNTRIES_TUPLES,
+        blank=False,
+        null=True,
     )
     extra_links = models.CharField(
         "Point us to anything you'd like us to look at while considering your application",
@@ -444,18 +446,17 @@ class Application(models.Model):
         on_delete=models.SET_NULL,
         verbose_name="What school do you go to?",
     )
-    school_other = models.CharField(
-        null=True, blank=True, max_length=255
-    ) 
+    school_other = models.CharField(null=True, blank=True, max_length=255)
     tamu_email = models.EmailField(
-        "TAMU Email if you are a Texas A&M student", null=True, blank=True, max_length = 75
+        "TAMU Email if you are a Texas A&M student",
+        null=True,
+        blank=True,
+        max_length=75,
     )
     major = models.CharField(
-        "What's your major?", default=NO_ANSWER, choices= MAJORS, max_length = 100
+        "What's your major?", default=NO_ANSWER, choices=MAJORS, max_length=100
     )
-    major_other = models.CharField(
-        "Other", max_length=255, null=True, blank=True
-    )
+    major_other = models.CharField("Other", max_length=255, null=True, blank=True)
     classification = models.CharField(
         "What classification are you?", choices=CLASSIFICATIONS, max_length=3
     )
@@ -475,13 +476,21 @@ class Application(models.Model):
         "What is your anticipated graduation year?", choices=GRAD_YEARS
     )
     level_of_study = models.CharField(
-        "What is your current level of study?", max_length=100, choices=LEVELS_OF_STUDY, blank=False, null=True
+        "What is your current level of study?",
+        max_length=100,
+        choices=LEVELS_OF_STUDY,
+        blank=False,
+        null=True,
     )
     num_hackathons_attended = models.CharField(
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
     wares = models.CharField(
-        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track", choices=WARECHOICE, max_length=8, default=NO_ANSWER, blank=True
+        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track",
+        choices=WARECHOICE,
+        max_length=8,
+        default=NO_ANSWER,
+        blank=True,
     )
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
@@ -505,7 +514,7 @@ class Application(models.Model):
     )
     # address = AddressField(on_delete=models.CASCADE, default=None, null=True)
     additional_accommodations = models.TextField(
-        "Do you require any special accommodations at the event? Please list dietary restrictions here if you selected \"food allergy\" or \"other\".",
+        'Do you require any special accommodations at the event? Please list dietary restrictions here if you selected "food allergy" or "other".',
         max_length=500,
         blank=True,
     )
@@ -563,7 +572,15 @@ class Application(models.Model):
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
-        if not self.first_name.isalpha():
-            raise exceptions.ValidationError("First name can only contain letters.")
-        if not self.last_name.isalpha():
-            raise exceptions.ValidationError("Last name can only contain letters.")
+
+        def is_valid_name(name):
+            return all(char.isalpha() or char in "-'" for char in name)
+
+        if not is_valid_name(self.first_name):
+            raise exceptions.ValidationError(
+                "First name can only contain letters, hyphens, and apostrophes."
+            )
+        if not is_valid_name(self.last_name):
+            raise exceptions.ValidationError(
+                "Last name can only contain letters, hyphens, and apostrophes."
+            )
