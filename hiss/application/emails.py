@@ -37,7 +37,7 @@ def send_confirmation_email(app: Application) -> None:
     :type app: Application
     :return: None
     """
-    subject = f"HowdyHack: Important Day-Of Information"
+    subject = f"HowdyHack: Thanks for RSVP'ing!"
     email_template = "application/emails/confirmed.html"
     context = {
         "first_name": app.first_name,
