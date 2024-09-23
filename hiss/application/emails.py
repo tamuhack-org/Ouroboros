@@ -66,6 +66,6 @@ def send_confirmation_email(app: Application) -> None:
     qr_code = pyqrcode.create(qr_content)
     qr_stream = BytesIO()
     qr_code.png(qr_stream, scale=5)
-    email.attach("code.png", qr_stream.getvalue(), "text/png")
+    # email.attach("code.png", qr_stream.getvalue(), "text/png")
     print(f"sending confirmation email to {app.user.email}")
     email.send()
