@@ -7,7 +7,7 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils import html
 from rest_framework.authtoken.models import Token
-
+import threading
 
 class EmailUserManager(auth_models.UserManager):
     """
@@ -36,6 +36,22 @@ class EmailUserManager(auth_models.UserManager):
         extra_fields.setdefault("is_active", True)
         return self._create_user(email, password, **extra_fields)
 
+class EmailThread(threading.Thread):
+    def __init__(self, subject, plain_message, recipient_email, html_message):
+        self.subject = subject
+        self.plain_message = plain_message
+        self.recipient_email = recipient_email
+        self.html_message = html_message
+        threading.Thread.__init__(self)
+
+    def run(self):
+        mail.send_mail(
+            subject=self.subject,
+            message=self.plain_message,
+            from_email= settings.ORGANIZER_EMAIL, 
+            recipient_list=[self.recipient_email],
+            html_message=self.html_message,
+        )
 
 class User(auth_models.AbstractUser):
     """
@@ -74,8 +90,9 @@ class User(auth_models.AbstractUser):
     def send_html_email(self, template_name, context, subject):
         """Send an HTML email to the user."""
         html_msg = render_to_string(template_name, context)
-        msg = html.strip_tags(html_msg)
-        self.email_user(subject, msg, None, html_message=html_msg)
+        plain_msg = html.strip_tags(html_msg)
+        email_thread = EmailThread(subject, plain_msg, self.email, html_msg)
+        email_thread.start()
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

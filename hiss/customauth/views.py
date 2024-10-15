@@ -15,7 +15,6 @@ from customauth import forms as customauth_forms
 from customauth.tokens import email_confirmation_generator
 from user.models import User
 
-
 def send_confirmation_email(curr_domain: RequestSite, user: User) -> None:
     subject = "Confirm your email address!"
     template_name = "registration/emails/activate.html"

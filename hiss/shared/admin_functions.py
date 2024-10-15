@@ -1,5 +1,27 @@
 from django.core.mail import get_connection, EmailMultiAlternatives
+import threading
 
+#create separate Threading class for mass emails
+class MassEmailThread(threading.Thread):
+    def __init__(self, subject, text_content, html_content, from_email, recipient_list, connection):
+        threading.Thread.__init__(self)
+        self.subject = subject
+        self.text_content = text_content
+        self.html_content = html_content
+        self.from_email = from_email
+        self.recipient_list = recipient_list
+        self.connection = connection
+
+    def run(self):
+        email = EmailMultiAlternatives(self.subject, self.text_content, self.from_email, self.recipient_list)
+        email.attach_alternative(self.html_content, "text/html")
+        email.send(fail_silently=False, connection=self.connection)
+        #store results of threading for testing mass emails
+        try:
+            self.result = email.send(fail_silently=False, connection=self.connection)
+        except Exception as e:
+            print("Error: ", e)
+            self.result = 0
 
 def send_mass_html_mail(
     datatuple, fail_silently=False, user=None, password=None, connection=None
@@ -19,9 +41,18 @@ def send_mass_html_mail(
     connection = connection or get_connection(
         username=user, password=password, fail_silently=fail_silently
     )
-    messages = []
+
+    threads = []
+    
     for subject, text, html, from_email, recipient in datatuple:
-        message = EmailMultiAlternatives(subject, text, from_email, recipient)
-        message.attach_alternative(html, "text/html")
-        messages.append(message)
-    return connection.send_messages(messages)
+        email_thread = MassEmailThread(subject, text, html, from_email, recipient, connection)
+        email_thread.start()
+        threads.append(email_thread)
+
+    for thread in threads:
+        thread.join()
+    
+    total = sum(thread.result for thread in threads)
+    
+    # see how many emails sent successfully
+    return total
