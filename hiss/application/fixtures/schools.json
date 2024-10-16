@@ -10984,6 +10984,13 @@
   },
   {
     "model": "application.school",
+    "pk": 2075,
+    "fields": {
+      "name": "Texas A&M University - San Antonio"
+    }
+  },
+  {
+    "model": "application.school",
     "pk": 1570,
     "fields": {
       "name": "Texas A&M University - Texarkana"
@@ -14515,13 +14522,6 @@
     "pk": 2074,
     "fields": {
       "name": "Other"
-    }
-  },
-  {
-    "model": "application.school",
-    "pk": 2075,
-    "fields": {
-      "name": "Texas A&M University - San Antonio"
     }
   }
 ]
