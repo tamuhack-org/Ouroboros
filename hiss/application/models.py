@@ -1,6 +1,7 @@
 # pylint: disable=C0330
 import uuid
 from typing import List, Optional, Tuple
+import re
 
 from django.conf import settings
 from django.core import exceptions
@@ -558,12 +559,20 @@ class Application(models.Model):
 
     def clean(self):
         super().clean()
+
+        def is_valid_name(name):
+            pattern = r"^(?=.{1,40}$)[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$"
+            
+            match = re.match(pattern, name)
+            
+            return bool(match)
+
         if not self.is_adult:
             raise exceptions.ValidationError(
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
-        if not self.first_name.isalpha():
+        if not is_valid_name(self.first_name):
             raise exceptions.ValidationError("First name can only contain letters.")
-        if not self.last_name.isalpha():
+        if not is_valid_name(self.last_name):
             raise exceptions.ValidationError("Last name can only contain letters.")
