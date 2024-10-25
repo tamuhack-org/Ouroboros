@@ -573,6 +573,6 @@ class Application(models.Model):
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
         if not is_valid_name(self.first_name):
-            raise exceptions.ValidationError("First name can only contain letters.")
+            raise exceptions.ValidationError("First name can only contain letters, spaces, hyphens, and apostrophes.")
         if not is_valid_name(self.last_name):
-            raise exceptions.ValidationError("Last name can only contain letters.")
+            raise exceptions.ValidationError("Last name can only contain letters, spaces, hyphens, and apostrophes.")
