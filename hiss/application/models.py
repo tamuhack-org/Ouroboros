@@ -567,7 +567,15 @@ class Application(models.Model):
             
             return bool(match)
 
-        if not self.is_adult:
+
+        if not self.age.isnumeric():
+            raise exceptions.ValidationError("Age must be a number.")
+        if not self.is_adult and int(self.age) > 18 or self.is_adult and int(self.age) < 18:
+            raise exceptions.ValidationError(
+                "Age and adult status do not match. Please confirm you are 18 or older."
+            )
+        #Fixes the obos admin panel bug, idk why the checkbox doesn't show up
+        if not int(self.age) >= 18 or not self.is_adult:
             raise exceptions.ValidationError(
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
