@@ -1,6 +1,7 @@
 # pylint: disable=C0330
 import uuid
 from typing import List, Optional, Tuple
+import re
 
 from django.conf import settings
 from django.core import exceptions
@@ -558,12 +559,28 @@ class Application(models.Model):
 
     def clean(self):
         super().clean()
-        if not self.is_adult:
+
+        def is_valid_name(name):
+            pattern = r"^(?=.{1,40}$)[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$"
+            
+            match = re.match(pattern, name)
+            
+            return bool(match)
+
+
+        if not self.age.isnumeric():
+            raise exceptions.ValidationError("Age must be a number.")
+        if not self.is_adult and int(self.age) > 18 or self.is_adult and int(self.age) < 18:
+            raise exceptions.ValidationError(
+                "Age and adult status do not match. Please confirm you are 18 or older."
+            )
+        #Fixes the obos admin panel bug, idk why the checkbox doesn't show up
+        if not int(self.age) >= 18 or not self.is_adult:
             raise exceptions.ValidationError(
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
-        if not self.first_name.isalpha():
-            raise exceptions.ValidationError("First name can only contain letters.")
-        if not self.last_name.isalpha():
-            raise exceptions.ValidationError("Last name can only contain letters.")
+        if not is_valid_name(self.first_name):
+            raise exceptions.ValidationError("First name can only contain letters, spaces, hyphens, and apostrophes.")
+        if not is_valid_name(self.last_name):
+            raise exceptions.ValidationError("Last name can only contain letters, spaces, hyphens, and apostrophes.")

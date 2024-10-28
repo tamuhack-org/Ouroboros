@@ -180,7 +180,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     readonly_fields = [
         "datetime_submitted",
         "user",
-        "is_adult",
+        # "is_adult",
         "gender",
         "race",
         "major",
@@ -283,7 +283,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             },
         ),
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
-        ("Miscellaneous", {"fields": ["notes"]}),
+        ("Miscellaneous", {"fields": ["notes", "is_adult"]}),
     ]
     formfield_overrides = {
         AddressField: {"widget": AddressWidget(attrs={"style": "width: 300px;"})}
