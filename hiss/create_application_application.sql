@@ -251,3 +251,14 @@ ALTER TABLE "application_application" ADD COLUMN "wares" varchar(255) DEFAULT ''
 ALTER TABLE "application_application" ALTER COLUMN "wares" DROP DEFAULT;
 COMMIT;
 
+-- 0020
+BEGIN;
+--
+-- Alter field agree_to_photography on application
+--
+-- Alter field accessibility_requirements on application
+--
+ALTER TABLE "application_application" ADD COLUMN "agree_to_photography" BOOLEAN NOT NULL DEFAULT FALSE;
+ALTER TABLE "application_application" ADD COLUMN "accessibility_requirements" BOOLEAN NOT NULL DEFAULT FALSE;
+COMMIT;
+

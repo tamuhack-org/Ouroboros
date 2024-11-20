@@ -211,6 +211,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         # ("dietary_restrictions", ChoiceDropdownFilter),
         ("shirt_size", ChoiceDropdownFilter),
         ("datetime_submitted", DateRangeFilter),
+        ("accessibility_requirements", ChoiceDropdownFilter),
         RaceFilter,
     )
     list_display = (
@@ -283,7 +284,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             },
         ),
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
-        ("Miscellaneous", {"fields": ["notes", "is_adult"]}),
+        ("Miscellaneous", {"fields": ["notes", "is_adult", "accessibility_requirements"]}),
     ]
     formfield_overrides = {
         AddressField: {"widget": AddressWidget(attrs={"style": "width: 300px;"})}
