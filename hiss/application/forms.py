@@ -186,7 +186,7 @@ class ApplicationModelForm(forms.ModelForm):
         (TENSORFLOW, "Tensorflow"),
         (PYTORCH, "PyTorch"),
         (FLUTTER, "Flutter"),
-        (REACT_NATIVE, "React Native")
+        (REACT_NATIVE, "React Native"),
     )
     # SKILLS
     technology_experience = forms.MultipleChoiceField(
@@ -215,9 +215,9 @@ class ApplicationModelForm(forms.ModelForm):
         (KOSHER, "Kosher"),
         (GLUTEN_FREE, "Gluten-Free"),
         (FOOD_ALLERGY, "Food Allergy"),
-        (OTHER_DIETARY_RESTRICTION, "Other")
+        (OTHER_DIETARY_RESTRICTION, "Other"),
     )
-    
+
     dietary_restrictions = forms.MultipleChoiceField(
         label="Do you have any dietary restrictions?",
         help_text="Select all that apply",
@@ -242,6 +242,13 @@ class ApplicationModelForm(forms.ModelForm):
             }
 
         super().__init__(*args, **kwargs)
+
+        photo_agreement = "Do you grant permission for TAMUhack to use your name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event 'TAMUhack 2025' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases?"
+        accessibilities = "Please check this box if you require any accommodations to ensure accessibility during this event. Our team will follow up to discuss your needs."
+
+        self.fields["agree_to_photos"].label = mark_safe(photo_agreement)
+        self.fields["accessibility_requirements"].label = mark_safe(accessibilities)
+
         self.fields["agree_to_coc"].label = mark_safe(
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
@@ -255,10 +262,7 @@ class ApplicationModelForm(forms.ModelForm):
             ' and the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>'
         )
 
-        mlh_newsletter = (
-            "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
-        )
-
+        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
         self.fields["agree_to_mlh_stuff"].label = mark_safe(mlh_stuff)
         self.fields["signup_to_mlh_newsletter"].label = mark_safe(mlh_newsletter)
 
@@ -312,8 +316,10 @@ class ApplicationModelForm(forms.ModelForm):
             "agree_to_coc": forms.CheckboxInput,
             "agree_to_mlh_stuff": forms.CheckboxInput,
             "signup_to_mlh_newsletter": forms.CheckboxInput,
+            "agree_to_photos": forms.CheckboxInput,
+            "accessibility_requirements": forms.CheckboxInput,
             "travel_reimbursement": forms.CheckboxInput,
-            'tamu_email': forms.EmailInput(attrs={'placeholder': 'netid@tamu.edu'}),
+            "tamu_email": forms.EmailInput(attrs={"placeholder": "netid@tamu.edu"}),
             "extra_links": forms.TextInput(
                 attrs={
                     "placeholder": "ex. GitHub, Devpost, personal website, LinkedIn, etc."
@@ -358,6 +364,8 @@ class ApplicationModelForm(forms.ModelForm):
             "emergency_contact_phone",
             "emergency_contact_email",
             "notes",
+            "agree_to_photos",
+            "accessibility_requirements",
             "agree_to_coc",
             "agree_to_mlh_stuff",
             "signup_to_mlh_newsletter",

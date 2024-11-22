@@ -662,6 +662,8 @@ label[for="id_agree_to_mlh_stuff"],
 label[for="id_signup_to_mlh_newsletter"],
 label[for="id_is_adult"],
 label[for="id_travel_reimbursement"],
+label[for="id_agree_to_photos"],
+label[for="id_accessibility_requirements"],
 #id_travel_reimbursement ~ .helptext  {
     margin-left: 45px;
 }
@@ -670,12 +672,15 @@ label[for=id_is_adult] {
     margin-top: -20px;
 }
 
-#id_agree_to_mlh_stuff {
+#id_agree_to_mlh_stuff, #id_agree_to_photos {
     top: -100px;
 }
 
+#id_signup_to_mlh_newsletter, #id_accessibility_requirements {
+    top: -50px;
+}
+
 #id_agree_to_coc,
-#id_signup_to_mlh_newsletter,
 #id_is_adult,
 #id_travel_reimbursement {
     top: -30px;
