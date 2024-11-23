@@ -1,77 +1,46 @@
+from django.core.mail import get_connection, EmailMultiAlternatives
+import threading
 
-import json
-from io import BytesIO
+#create separate Threading class for mass emails
+class MassEmailThread(threading.Thread):
+    def __init__(self, subject, text_content, html_content, from_email, recipient_list, connection):
+        threading.Thread.__init__(self)
+        self.subject = subject
+        self.text_content = text_content
+        self.html_content = html_content
+        self.from_email = from_email
+        self.recipient_list = recipient_list
+        self.connection = connection
+        self.result = 0  
 
-import pyqrcode
-from django.conf import settings
-from django.core import mail
-from django.template.loader import render_to_string
-from django.utils import html
+    def run(self):
+        email = EmailMultiAlternatives(self.subject, self.text_content, self.from_email, self.recipient_list)
+        email.attach_alternative(self.html_content, "text/html")
+        try:
+            self.result = email.send(fail_silently=False, connection=self.connection)
+        except Exception as e:
+            print("Error sending email: ", e)
+            self.result = 0
 
-from application.models import Application
-from application.apple_wallet import get_apple_wallet_pass_url
-
-def send_creation_email(app: Application) -> None:
+def send_mass_html_mail(datatuple, fail_silently=False, user=None, password=None, connection=None):
     """
-    Sends an email to the user informing them of their newly-created app.
-    :param app: The user's newly-created application
-    :return: None
+    Sends each message in datatuple (subject, text_content, html_content, from_email, recipient_list).
+    Returns the number of emails sent.
     """
-    subject = f"We've received your application for {settings.EVENT_NAME}!"
-    template_name = "application/emails/created.html"
-    context = {
-        "first_name": app.first_name,
-        "event_name": settings.EVENT_NAME,
-        "organizer_name": settings.ORGANIZER_NAME,
-        "event_year": settings.EVENT_YEAR,
-        "organizer_email": settings.ORGANIZER_EMAIL,
-    }
-    app.user.send_html_email(template_name, context, subject)
-
-def send_confirmation_email(app: Application) -> None:
-    """
-    Sends a confirmation email to a user, which contains their QR code as well as additional event information.
-    :param app: The user's application
-    :type app: Application
-    :return: None
-    """
-    subject = f"HowdyHack: Important Day-of Information!"
-    email_template = "application/emails/confirmed.html"
-
-    if app.status == "E":
-        subject = f"HowdyHack Waitlist: Important Day-of Information!"
-        email_template = "application/emails/confirmed-waitlist.html"
-
-    context = {
-        "first_name": app.first_name,
-        "event_name": settings.EVENT_NAME,
-        "organizer_name": settings.ORGANIZER_NAME,
-        "event_year": settings.EVENT_YEAR,
-        "organizer_email": settings.ORGANIZER_EMAIL,
-        "apple_wallet_url": get_apple_wallet_pass_url(app.user.email),
-        "meal_group": app.meal_group,
-    }
-
-    html_msg = render_to_string(email_template, context)
-    msg = html.strip_tags(html_msg)
-    email = mail.EmailMultiAlternatives(
-        subject, msg, from_email=None, to=[app.user.email]
+    connection = connection or get_connection(
+        username=user, password=password, fail_silently=fail_silently
     )
 
-    email.attach_alternative(html_msg, "text/html")
-    qr_content = json.dumps(
-        {
-            "first_name": app.first_name,
-            "last_name": app.last_name,
-            "email": app.user.email,
-            "university": app.school.name,
-        }
-    )
+    threads = []
 
-    qr_code = pyqrcode.create(qr_content)
-    qr_stream = BytesIO()
-    qr_code.png(qr_stream, scale=5)
-    email.attach("code.png", qr_stream.getvalue(), "text/png")
-    
-    print(f"sending confirmation email to {app.user.email}")
-    email.send()
+    for subject, text, html, from_email, recipient in datatuple:
+        email_thread = MassEmailThread(subject, text, html, from_email, recipient, connection)
+        email_thread.start()
+        threads.append(email_thread)
+
+    for thread in threads:
+        thread.join()
+
+    total_sent = sum(thread.result for thread in threads if thread.result)
+
+    return total_sent
