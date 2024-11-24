@@ -1,6 +1,20 @@
 <html>
-	<div style="max-width:800px; background-color: #ADD8E6; z-index: -1; position: absolute; top: 0; left: 0; padding: 20px">
+	<header>
+		<div id='created-banner'>
+				<img src='/resources/img/tamuhack-header.jpg' alt='tamuhack banner'>
+		</div>
+	</header>
 
+    <div style="font-family: Questrial, sans-serif;
+				background: #fff;
+				box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+				border-radius: 3px;
+				padding: 50px!important;
+				max-width: 500px;
+				display: block;
+				margin: 20px auto;
+				margin-top: 0px">
+        <h2 style="margin-bottom: 20px; font-size: 14px; color: #777777">Hi {{ first_name }}!</h2>
 		<div style="font-family: Questrial, sans-serif;
 					background: #fff;
 					box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
@@ -20,20 +34,11 @@
 				{{EVENT_NAME}} {{EVENT_YEAR}} We'll be carefully reviewing your application
 				and will get back to you soon!
 			</p>
+        <strong style=" color: #ADD8E6;
+						font-size: 14px;">
+            The {{ORGANIZER_NAME}} Team
+        </strong>
 
-			<h3 style=" margin-bottom: 5px;
-						font-size: 14px;
-						line-height: 30px;
-						-webkit-font-smoothing: antialiased;
-						font-weight: normal;">
-				Thanks!
-			</h3>
-
-			<strong style=" color: #ADD8E6;
-							font-size: 14px;">
-				The {{ORGANIZER_NAME}} Team
-			</strong>
-
-		</div>
-	</div>
+    </div>
+</div>
 </html>
