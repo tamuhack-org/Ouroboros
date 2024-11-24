@@ -107,7 +107,7 @@
                 <div class="app-status">ACCEPTED</div>
 
                 <p class="status-subtitle pt-2">
-                    Please RSVP below by <strong><strong>January 21st, 2024, at 11:59PM</strong></strong> or you risk losing your spot.
+                    Please RSVP below by <strong><strong>September 27th, 2024, at 11:59PM</strong></strong> or you risk losing your spot.
                 </p>
             
                 <div class="row login-alt-options" id="no-toggle-click">
@@ -135,7 +135,7 @@
                 </p>
 
                 <p class="status-subtitle pt-2">
-                    You will receive an email shortly containing more information about the event, as well the QR code necessary for checking in.
+                    You will receive an email in the coming days containing more information about the event, as well the QR code necessary for checking in.
                 </p>
 
                 <!--
@@ -183,12 +183,24 @@
                     <p>Sorry, we are currently not accepting applications.</p>
                 </div>
             {% elif EXPIRED %}
-                <p>Your confirmation deadline has</p>
-                <div class="app-status">EXPIRED</div>
-                <p class="status-subtitle pt-2">
-                    You did not confirm your attendance by the deadline provided, so we have given your spot to other
-                    applicants.
-                </p>
+            <p>Your application is</p>
+            <div class="app-status">WAITLISTED</div>
+
+            <p class="status-subtitle pt-2">
+                Your admittance to the hackathon is not guaranteed, but you still may be able to attend if we have capacity. We will have a waitlist line for students who are not accepted. Starting at 11AM, we will admit people from the waitlist line until the MSC capacity has been reached. You can read our full waitlist policy on the {{ event_name }} live site.
+            </p>
+
+            <p class="status-subtitle pt-2">
+                In the event that you do choose to attend, prepare for the event by visiting our FAQ for tips and info. See you soon!
+            </p>
+
+            <p class="status-subtitle pt-2">
+                You will receive an email shortly containing more information about the event, as well the QR code necessary for checking in.
+            </p>
+
+            <p class="status-subtitle">
+                Have additional questions? Email us at <a href="mailto:{{ organizer_email }}" style="color: #007bff!important; padding: 0px;">{{ organizer_email }}</a>.
+            </p>
             {% endif %}
         </div>
     </div>

@@ -180,7 +180,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     readonly_fields = [
         "datetime_submitted",
         "user",
-        "is_adult",
+        # "is_adult",
         "gender",
         "race",
         "major",
@@ -203,13 +203,15 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("status", ChoiceDropdownFilter),
         ("classification", ChoiceDropdownFilter),
         ("gender", ChoiceDropdownFilter),
+        ("major", ChoiceDropdownFilter),
         ("grad_year", ChoiceDropdownFilter),
         ("num_hackathons_attended", ChoiceDropdownFilter),
-        ("wares", ChoiceDropdownFilter),
+        # ("wares", ChoiceDropdownFilter),
         # ("technology_experience", ChoiceDropdownFilter),
         # ("dietary_restrictions", ChoiceDropdownFilter),
         ("shirt_size", ChoiceDropdownFilter),
         ("datetime_submitted", DateRangeFilter),
+        ("accessibility_requirements", ChoiceDropdownFilter),
         RaceFilter,
     )
     list_display = (
@@ -232,6 +234,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 "fields": [
                     "first_name",
                     "last_name",
+                    "tamu_email",
                     "age",
                     "phone_number",
                     "country",
@@ -250,6 +253,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "school",
                     "school_other",
                     "major",
+                    "major_other",
                     "classification",
                     "gender",
                     "gender_other",
@@ -266,9 +270,10 @@ class ApplicationAdmin(admin.ModelAdmin):
             "Logistical Information",
             {
                 "fields": [
-                    "wares",
+                    # "wares",
                     "shirt_size",
                     "dietary_restrictions",
+                    "meal_group",
                     "additional_accommodations",
                     # "address",
                     "emergency_contact_name",
@@ -279,7 +284,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             },
         ),
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
-        ("Miscellaneous", {"fields": ["notes"]}),
+        ("Miscellaneous", {"fields": ["notes", "is_adult", "accessibility_requirements"]}),
     ]
     formfield_overrides = {
         AddressField: {"widget": AddressWidget(attrs={"style": "width: 300px;"})}

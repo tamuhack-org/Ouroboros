@@ -2,7 +2,8 @@ $(document).ready(function() {
     const optionalQuestionsStyle = "color:#4286f3; padding: 2em 0em 1em 0em;";
     const optionalQuestionsText = "The following questions are optional. Scroll down to submit your application, or continue to help us improve the event!"
     const optionalQuestionsNode = `<h6 style="${optionalQuestionsStyle}">${optionalQuestionsText}</br></h6>`
-    if (!$('#id_race input[value="O"]')[0].checked) {
+ 
+    if ($('#id_race input[value="O"]').length > 0 && !$('#id_race input[value="O"]')[0].checked) {
         $('#id_race_other').parent().hide();
     }
     $('#id_race input[value="O"]').click(function() {
@@ -26,17 +27,38 @@ $(document).ready(function() {
              $('#id_gender_other').parent().hide();
          }
     });
-
+  
+    if ($('#id_major').val() !== "Other"){
+        $('#id_major_other').parent().hide();
+    }
+    $('#id_major').on('change', function(){
+         let selection = $('#id_major').val();
+         if (selection === "Other"){
+            $('#id_major_other').parent().show();
+         }
+         else{
+             $('#id_major_other').parent().hide();
+         }
+    });
+  
     if ($('#id_school option:selected').text() !== "Other"){
         $('#id_school_other').parent().hide();
     }
+    if ($('#id_school option:selected').text() !== "Texas A&M University"){
+        $('#id_tamu_email').parent().hide();
+    }
     $('#id_school').on('change', function(){
          let selection = $('#id_school option:selected').text();
-         if (selection === "Other"){
+         if (selection == "Texas A&M University" ) {
+            $("#id_tamu_email").parent().show();
+         }
+         else if (selection === "Other"){
             $('#id_school_other').parent().show();
+            $('#id_tamu_email').parent().hide();
          }
          else{
              $('#id_school_other').parent().hide();
+             $('#id_tamu_email').parent().hide();
          }
     });
     // Custom styling for multi-select inputs.

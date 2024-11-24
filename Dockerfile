@@ -8,4 +8,4 @@ RUN python3 -m pip install -r requirements.txt
 
 RUN python3 manage.py collectstatic --no-input
 
-CMD gunicorn -b :$PORT hiss.wsgi:application --capture-output
+CMD gunicorn -b :$PORT hiss.wsgi:application  --log-file=- --capture-output --log-level=debug

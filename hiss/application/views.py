@@ -29,19 +29,30 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
     success_url = reverse_lazy("status")
 
     def get_context_data(self, **kwargs):
+        print("Calling get_context_data")
         context = super().get_context_data(**kwargs)
         context["active_wave"] = Wave.objects.active_wave()
         return context
 
     def form_valid(self, form: ApplicationModelForm):
-        if Application.objects.filter(user=self.request.user).exists():
-            form.add_error(None, "You can only submit one application to this event.")
-            return self.form_invalid(form)
-        application: Application = form.save(commit=False)
-        application.user = self.request.user
-        application.wave = Wave.objects.active_wave()
-        application.save()
-        send_creation_email(application)
+        print("Appliction submitted: calling form_valid")
+        try:
+            if Application.objects.filter(user=self.request.user).exists():
+                form.add_error(None, "You can only submit one application to this event.")
+                return self.form_invalid(form)
+            print("calling form.save")
+            application: Application = form.save(commit=False)
+            application.user = self.request.user
+            application.wave = Wave.objects.active_wave()
+            print("calling application.save")
+            application.save()
+            print("calling send_creation_email")
+            send_creation_email(application)
+            print("done with form_valid; sending redirect", flush=True)
+            
+        except Exception as e:
+            print(f"Exception: {e}", flush=True)
+            raise e
         return redirect(self.success_url)
 
 

@@ -1,6 +1,7 @@
 # pylint: disable=C0330
 import uuid
 from typing import List, Optional, Tuple
+import re
 
 from django.conf import settings
 from django.core import exceptions
@@ -240,13 +241,6 @@ QUESTION1_TEXT = "Tell us your best programming joke."
 # QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
 # QUESTION3_TEXT = "What's your hidden talent?"
 
-WOMENS_XXS = "WXXS"
-WOMENS_XS = "WXS"
-WOMENS_S = "WS"
-WOMENS_M = "WM"
-WOMENS_L = "WL"
-WOMENS_XL = "WXL"
-WOMENS_XXL = "WXXL"
 UNISEX_XXS = "XXS"
 UNISEX_XS = "XS"
 UNISEX_S = "S"
@@ -256,20 +250,13 @@ UNISEX_XL = "XL"
 UNISEX_XXL = "XXL"
 
 SHIRT_SIZES = [
-    (WOMENS_XXS, "Women's XXS"),
-    (WOMENS_XS, "Women's XS"),
-    (WOMENS_S, "Women's S"),
-    (WOMENS_M, "Women's M"),
-    (WOMENS_L, "Women's L"),
-    (WOMENS_XL, "Women's XL"),
-    (WOMENS_XXL, "Women's XXL"),
-    (UNISEX_XXS, "Unisex XXS"),
-    (UNISEX_XS, "Unisex XS"),
-    (UNISEX_S, "Unisex S"),
-    (UNISEX_M, "Unisex M"),
-    (UNISEX_L, "Unisex L"),
-    (UNISEX_XL, "Unisex XL"),
-    (UNISEX_XXL, "Unisex XXL"),
+    (UNISEX_XXS, "XXS"),
+    (UNISEX_XS, "XS"),
+    (UNISEX_S, "S"),
+    (UNISEX_M, "M"),
+    (UNISEX_L, "L"),
+    (UNISEX_XL, "XL"),
+    (UNISEX_XXL, "XXL"),
 ]
 
 STATUS_PENDING = "P"
@@ -300,7 +287,7 @@ STATUS_OPTIONS = [
     (STATUS_CONFIRMED, "Confirmed"),
     (STATUS_DECLINED, "Declined"),
     (STATUS_CHECKED_IN, "Checked in"),
-    (STATUS_EXPIRED, "Expired"),
+    (STATUS_EXPIRED, "Waitlisted (Expired, internally)"),
 ]
 
 HAS_TEAM = "HT"
@@ -311,9 +298,54 @@ HAS_TEAM_OPTIONS = [
     (HAS_NO_TEAM, "I do not have a team"),
 ]
 
+CS = "Computer Science"
+CE = "Computer Engineering"
+COMP = "Computing"
+EE = "Electrical Engineering"
+MIS = "Management Information Systems"
+DS = "Data Science/Engineering"
+GENE = "General Engineering"
+BMEN = "Biomedical Engineering"
+CHEM = "Chemical Engineering"
+CIVIL = "Civil Engineering"
+INDU = "Industrial Engineering"
+MECH = "Mechanical Engineering"
+AERO = "Aerospace Engineering"
+ESET = "Electronic Systems Engineering Technology (ESET)"
+MATH = "Mathematics"
+PHYS = "Physics"
+STAT = "Statistics"
+BIO = "Biology"
+CHEMISTRY = "Chemistry"
+MAJOR_OTHER = "Other"
+
+MAJORS = [
+    (CS, "Computer Science"),
+    (CE, "Computer Engineering"),
+    (COMP, "Computing"),
+    (EE, "Electrical Engineering"),
+    (MIS, "Management Information Systems"),
+    (DS, "Data Science/Engineering"),
+    (GENE, "General Engineering"),
+    (BMEN, "Biomedical Engineering"),
+    (CHEM, "Chemical Engineering"),
+    (CIVIL, "Civil Engineering"),
+    (INDU, "Industrial Engineering"),
+    (MECH, "Mechanical Engineering"),
+    (AERO, "Aerospace Engineering"),
+    (ESET, "Electronic Systems Engineering Technology (ESET)"),
+    (MATH, "Mathematics"),
+    (PHYS, "Physics"),
+    (STAT, "Statistics"),
+    (BIO, "Biology"),
+    (CHEMISTRY, "Chemistry"),    
+    (MAJOR_OTHER, "Other"),
+]
+
 WANTS_TEAM_OPTIONS = [
     ("Friend", "From a friend"),
     ("Tabling", "Tabling outside Zachry"),
+    ("Howdy Week", "From Howdy Week"),
     ("Yard Sign", "Yard sign"),
     ("Social Media", "Social media"),
     ("Student Orgs", "Though another student org"),
@@ -417,8 +449,18 @@ class Application(models.Model):
         on_delete=models.SET_NULL,
         verbose_name="What school do you go to?",
     )
-    school_other = models.CharField(null=True, blank=True, max_length=255)
-    major = models.CharField("What's your major?", max_length=255)
+    school_other = models.CharField(
+        null=True, blank=True, max_length=255
+    ) 
+    tamu_email = models.EmailField(
+        "TAMU Email if you are a Texas A&M student", null=True, blank=True, max_length = 75
+    )
+    major = models.CharField(
+        "What's your major?", default=NO_ANSWER, choices= MAJORS, max_length = 100
+    )
+    major_other = models.CharField(
+        "Other", max_length=255, null=True, blank=True
+    )
     classification = models.CharField(
         "What classification are you?", choices=CLASSIFICATIONS, max_length=3
     )
@@ -444,7 +486,7 @@ class Application(models.Model):
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
     wares = models.CharField(
-        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track", choices=WARECHOICE, max_length=8, default=NO_ANSWER, blank=False
+        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track", choices=WARECHOICE, max_length=8, default=NO_ANSWER, blank=True
     )
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
@@ -460,6 +502,13 @@ class Application(models.Model):
         default=None,
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
         "A&M.",
+    )
+    
+    agree_to_photos = models.BooleanField(
+        choices=AGREE, null=True, default=None
+    )
+    accessibility_requirements = models.BooleanField(
+        choices=AGREE_DISAGREE, null=True, default=None, blank=True
     )
 
     # LOGISTICAL INFO
@@ -488,6 +537,7 @@ class Application(models.Model):
     )
 
     dietary_restrictions = models.CharField(max_length=5000, default=None)
+    meal_group = models.CharField(max_length=255, null=True, blank=True, default=None)
 
     technology_experience = models.CharField(max_length=5000, default=None)
 
@@ -520,12 +570,28 @@ class Application(models.Model):
 
     def clean(self):
         super().clean()
-        if not self.is_adult:
+
+        def is_valid_name(name):
+            pattern = r"^(?=.{1,40}$)[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$"
+            
+            match = re.match(pattern, name)
+            
+            return bool(match)
+
+
+        if not self.age.isnumeric():
+            raise exceptions.ValidationError("Age must be a number.")
+        if not self.is_adult and int(self.age) > 18 or self.is_adult and int(self.age) < 18:
+            raise exceptions.ValidationError(
+                "Age and adult status do not match. Please confirm you are 18 or older."
+            )
+        #Fixes the obos admin panel bug, idk why the checkbox doesn't show up
+        if not int(self.age) >= 18 or not self.is_adult:
             raise exceptions.ValidationError(
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
-        if not self.first_name.isalpha():
-            raise exceptions.ValidationError("First name can only contain letters.")
-        if not self.last_name.isalpha():
-            raise exceptions.ValidationError("Last name can only contain letters.")
+        if not is_valid_name(self.first_name):
+            raise exceptions.ValidationError("First name can only contain letters, spaces, hyphens, and apostrophes.")
+        if not is_valid_name(self.last_name):
+            raise exceptions.ValidationError("Last name can only contain letters, spaces, hyphens, and apostrophes.")
