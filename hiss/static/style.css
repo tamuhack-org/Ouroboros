@@ -1,3 +1,5 @@
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
 html, body {
     overflow-x: hidden;
 }
@@ -724,8 +726,6 @@ button {
     background: #325270;
     color: white;
 }
-
-@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
 .errorlist > li {
     color: #721c24;
