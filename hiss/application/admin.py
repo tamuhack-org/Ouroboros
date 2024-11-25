@@ -59,6 +59,7 @@ def build_approval_email(
         "event_year": settings.EVENT_YEAR,
         "confirmation_deadline": confirmation_deadline,
         "organizer_email": settings.ORGANIZER_EMAIL,
+        "event_date_text": settings.EVENT_DATE_TEXT,
     }
     html_message = render_to_string("application/emails/approved.html", context)
     message = strip_tags(html_message)
@@ -78,6 +79,7 @@ def build_rejection_email(application: Application) -> Tuple[str, str, None, Lis
         "organizer_name": settings.ORGANIZER_NAME,
         "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
+        "event_date_text": settings.EVENT_DATE_TEXT,
     }
     html_message = render_to_string("application/emails/rejected.html", context)
     message = strip_tags(html_message)
