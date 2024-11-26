@@ -7,7 +7,7 @@ from django.contrib.sites.requests import RequestSite
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import generic
 
@@ -26,7 +26,7 @@ def send_confirmation_email(curr_domain: RequestSite, user: User) -> None:
         "event_name": settings.EVENT_NAME,
         "organizer_name": settings.ORGANIZER_NAME,
     }
-    user.send_html_email(template_name, context, subject)
+    user.send_html_email.delay(template_name, context, subject)
 
 
 # Create your views here.
@@ -58,7 +58,7 @@ class ActivateView(views.View):
     def get(self, request, *_args, **kwargs):
         user = None
         try:
-            uid = force_text(urlsafe_base64_decode(kwargs["uidb64"]))
+            uid = force_str(urlsafe_base64_decode(kwargs["uidb64"]))
             user = get_user_model().objects.get(id=int(uid))
         except (
             TypeError,
