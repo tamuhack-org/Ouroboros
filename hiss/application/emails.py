@@ -8,7 +8,7 @@ from django.utils import html
 from application.models import Application
 from application.apple_wallet import get_apple_wallet_pass_url
 from django.conf import settings
-#create separate threading class for confirmation email since it has a QR code
+from django.core.mail import EmailMultiAlternatives
 
 def send_creation_email(app: Application) -> None:
     """
@@ -39,25 +39,32 @@ def send_confirmation_email(app_id: int) -> None:
     :type app_id: int
     :return: None
     """
-    app = Application.objects.get(id=app_id)
-    subject = f"TAMUhack: Important Day-Of Information"
-    email_template = "application/emails/confirmed.html"
-    if app.status == "E":
-            subject = f"HowdyHack Waitlist: Important Day-of Information!"
-            email_template = "application/emails/confirmed-waitlist.html"
-    context = {
-        "first_name": app.first_name,
-        "event_name": settings.EVENT_NAME,
-        "organizer_name": settings.ORGANIZER_NAME,
-        "event_year": settings.EVENT_YEAR,
-        "organizer_email": settings.ORGANIZER_EMAIL,
-        "apple_wallet_url": get_apple_wallet_pass_url(app.user.email),
-        "event_date_text": settings.EVENT_DATE_TEXT,
-    }
-    html_msg = render_to_string(email_template, context)
-    plain_msg = html.strip_tags(html_msg)
     try:
-
+        app = Application.objects.get(id=app_id)
+        subject = f"TAMUhack: Important Day-Of Information"
+        email_template = "application/emails/confirmed.html"
+        
+        if app.status == "E":
+                subject = f"TAMUhack Waitlist: Important Day-of Information!"
+                email_template = "application/emails/confirmed-waitlist.html"
+                
+        context = {
+            "first_name": app.first_name,
+            "event_name": settings.EVENT_NAME,
+            "organizer_name": settings.ORGANIZER_NAME,
+            "event_year": settings.EVENT_YEAR,
+            "organizer_email": settings.ORGANIZER_EMAIL,
+            "apple_wallet_url": get_apple_wallet_pass_url(app.user.email),
+            "event_date_text": settings.EVENT_DATE_TEXT,
+        }
+        
+        html_msg = render_to_string(email_template, context)
+        plain_msg = html.strip_tags(html_msg)
+        email = mail.EmailMultiAlternatives(
+            subject, plain_msg, from_email=None, to=[app.user.email]
+        )
+        
+        email.attach_alternative(html_msg, "text/html")
         qr_content = json.dumps(
             {
                 "first_name": app.first_name,
@@ -66,10 +73,11 @@ def send_confirmation_email(app_id: int) -> None:
                 "university": app.school.name,
             }
         )
+        
         qr_code = pyqrcode.create(qr_content)
         qr_stream = BytesIO()
         qr_code.png(qr_stream, scale=5)
-        email.attach("code.png", qr_stream.getvalue(), "text/png")
+        email.attach("code.png", qr_stream.getvalue(), "image/png")
         print(f"sending confirmation email to {app.user.email}")
         email.send()
     except Exception as e:
