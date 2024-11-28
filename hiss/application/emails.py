@@ -39,31 +39,24 @@ def send_confirmation_email(app_id: int) -> None:
     :type app_id: int
     :return: None
     """
-    try:
-        app = Application.objects.get(id=app_id)
-
-        subject = f"HowdyHack: Important Day-of Information!"
-        email_template = "application/emails/confirmed.html"
-
-        if app.status == "E":
+    app = Application.objects.get(id=app_id)
+    subject = f"TAMUhack: Important Day-Of Information"
+    email_template = "application/emails/confirmed.html"
+    if app.status == "E":
             subject = f"HowdyHack Waitlist: Important Day-of Information!"
             email_template = "application/emails/confirmed-waitlist.html"
-
-        context = {
-            "first_name": app.first_name,
-            "event_name": settings.EVENT_NAME,
-            "organizer_name": settings.ORGANIZER_NAME,
-            "event_year": settings.EVENT_YEAR,
-            "organizer_email": settings.ORGANIZER_EMAIL,
-            "apple_wallet_url": get_apple_wallet_pass_url(app.user.email),
-            "meal_group": app.meal_group,
-        }
-        html_msg = render_to_string(email_template, context)
-        msg = html.strip_tags(html_msg)
-        email = mail.EmailMultiAlternatives(
-            subject, msg, from_email=None, to=[app.user.email]
-        )
-        email.attach_alternative(html_msg, "text/html")
+    context = {
+        "first_name": app.first_name,
+        "event_name": settings.EVENT_NAME,
+        "organizer_name": settings.ORGANIZER_NAME,
+        "event_year": settings.EVENT_YEAR,
+        "organizer_email": settings.ORGANIZER_EMAIL,
+        "apple_wallet_url": get_apple_wallet_pass_url(app.user.email),
+        "event_date_text": settings.EVENT_DATE_TEXT,
+    }
+    html_msg = render_to_string(email_template, context)
+    plain_msg = html.strip_tags(html_msg)
+    try:
 
         qr_content = json.dumps(
             {
