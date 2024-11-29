@@ -1,2 +1,2 @@
-web: gunicorn hiss.wsgi --log-file -
-worker: celery -A hiss worker.celery --loglevel=info
+web: gunicorn hiss.wsgi:application --log-file -
+worker: celery -A hiss.celery worker --loglevel=info
