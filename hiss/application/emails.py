@@ -29,7 +29,7 @@ def send_creation_email(app: Application) -> None:
     # send_html_email is threaded from the User class
     # see user/models.py
 
-    app.user.send_html_email.delay(template_name, context, subject)
+    app.user.send_html_email.delay(template_name, context, subject, app.user.email)
     
 @shared_task
 def send_confirmation_email(app_id: int) -> None:
