@@ -8,10 +8,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hiss.settings.dev')
 
 app = Celery('hiss',
             broker_use_ssl={
-                'ssl_cert_reqs': ssl.CERT_REQUIRED,
+                'ssl_cert_reqs': ssl.CERT_NONE,
             },
             redis_backend_use_ssl = {
-                'ssl_cert_reqs': ssl.CERT_REQUIRED,
+                'ssl_cert_reqs': ssl.CERT_NONE,
             }
         )
 
