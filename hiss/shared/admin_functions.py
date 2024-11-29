@@ -2,7 +2,7 @@ from celery import shared_task
 from django.core.mail import get_connection, EmailMultiAlternatives
 
 @shared_task
-def send_mass_html_mail_task(datatuple, fail_silently=False, user=None, password=None):
+def send_mass_html_mail(datatuple, fail_silently=False, user=None, password=None):
     """
     Celery task to send multiple HTML emails given a datatuple of 
     (subject, text_content, html_content, from_email, recipient_list).
