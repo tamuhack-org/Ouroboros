@@ -7,7 +7,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ["register.tamuhack.com", 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*',"https://register.tamuhack.com/","http://register.tamuhack.com/","register.tamuhack.com/","register.tamuhack.com", 'localhost', '127.0.0.1']
 SESSION_COOKIE_SECURE = False
 SECURE_BROWSER_XSS_FILTER = False
 CSRF_COOKIE_SECURE = False

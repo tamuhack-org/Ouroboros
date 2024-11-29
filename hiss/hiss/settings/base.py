@@ -118,7 +118,7 @@ AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_S3_BUCKET_NAME = "2025-th-resumes" 
 AWS_S3_KEY_PREFIX = "prod"
-
+ALLOWED_HOSTS = ['*',"https://register.tamuhack.com/","http://register.tamuhack.com/","register.tamuhack.com/","register.tamuhack.com", 'localhost', '127.0.0.1']
 STATIC_URL = "/" + BASE_PATHNAME + "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
 STATIC_ROOT = "public/"

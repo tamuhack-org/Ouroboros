@@ -6,7 +6,7 @@ from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.db import transaction
+
 from application.emails import send_confirmation_email, send_creation_email
 from application.forms import ApplicationModelForm
 from application.models import (
@@ -103,10 +103,9 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
             raise PermissionDenied(
                 "You can't confirm your application if it hasn't been approved."
             )
-        with transaction.atomic():
-            app.status = STATUS_CONFIRMED
-            app.save()
-            send_confirmation_email(app)
+        app.status = STATUS_CONFIRMED
+        app.save()
+        send_confirmation_email(app)
         return redirect(reverse_lazy("status"))
 
 

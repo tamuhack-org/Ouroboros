@@ -74,18 +74,11 @@ class User(auth_models.AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    @shared_task
-    def send_html_email(template_name, context, subject, recipient_email):
-        """Celery task to send an HTML email."""
+    def send_html_email(self, template_name, context, subject):
+        """Send an HTML email to the user."""
         html_msg = render_to_string(template_name, context)
         plain_msg = strip_tags(html_msg)
-        send_mail(
-            subject=subject,
-            message=plain_msg,
-            from_email=settings.ORGANIZER_EMAIL,
-            recipient_list=[recipient_email],
-            html_message=html_msg,
-        )
+        self.email_user(subject, plain_msg, from_email=None, html_message=html_msg)
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
