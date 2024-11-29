@@ -4,8 +4,6 @@ from .base import *
 # noinspection PyUnresolvedReferences
 from .customization import *
 
-import os 
-
 SECRET_KEY = "development"
 DEBUG = True
 # Database
@@ -27,11 +25,3 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 MEDIA_ROOT = "resumes"
 
 AWS_S3_KEY_PREFIX = "dev-resumes"
-
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
-CELERY_ENABLE_UTC = True
-CELERY_BROKER_URL = os.environ.get('REDIS_URL')
-CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL')
