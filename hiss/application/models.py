@@ -401,7 +401,92 @@ class Application(models.Model):
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
     status = models.CharField(
         choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
-    )
+    )  
+
+    # def get_next_meal_group(self):
+    #     """
+    #     Determines the next meal group considering frontloading for restricted groups
+    #     using the RESTRICTED_FRONTLOAD_FACTOR.
+    #     """
+    #     RESTRICTED_FRONTLOAD_FACTOR = 1.3
+
+    #     meal_groups = ['A', 'B', 'C', 'D']
+    #     group_distribution = {group: 0 for group in meal_groups}
+    #     restricted_distribution = {group: 0 for group in meal_groups}
+    #     total_confirmed = Application.objects.filter(status='C').exclude(meal_group__isnull=True)
+        
+    #     for group in meal_groups:
+    #         group_distribution[group] = total_confirmed.filter(meal_group=group).count()
+    #         restricted_distribution[group] = total_confirmed.filter(
+    #             meal_group=group,
+    #             dietary_restrictions__icontains="Vegetarian"
+    #         ).count() + total_confirmed.filter(
+    #             meal_group=group,
+    #             dietary_restrictions__icontains="No-Beef"
+    #         ).count() + total_confirmed.filter(
+    #             meal_group=group,
+    #             dietary_restrictions__icontains="No-Pork"
+    #         ).count() + total_confirmed.filter(
+    #             meal_group=group,
+    #             dietary_restrictions__icontains="Food-Allergy"
+    #         ).count()
+
+    #     total_apps = sum(group_distribution.values())
+    #     total_restricted = sum(restricted_distribution.values())
+    #     if total_apps == 0:  
+    #         return meal_groups[0]
+
+    #     base_restricted_percent = total_restricted / total_apps if total_apps else 0
+    #     target_restricted_percent = {
+    #         group: base_restricted_percent * (RESTRICTED_FRONTLOAD_FACTOR if i < len(meal_groups) // 2 else 1.0)
+    #         for i, group in enumerate(meal_groups)
+    #     }
+    #     target_restricted_count = {
+    #         group: target_restricted_percent[group] * group_distribution[group] if group_distribution[group] > 0 else 0
+    #         for group in meal_groups
+    #     }
+
+    #     restricted_gap = {
+    #         group: target_restricted_count[group] - restricted_distribution[group]
+    #         for group in meal_groups
+    #     }
+    #     prioritized_group = max(restricted_gap, key=restricted_gap.get) 
+
+    #     last_assigned_group = (
+    #         total_confirmed.order_by('-datetime_submitted')
+    #         .values_list('meal_group', flat=True)
+    #         .first()
+    #     )
+    #     if last_assigned_group:
+    #         next_index = (meal_groups.index(last_assigned_group) + 1) % len(meal_groups)
+    #     else:
+    #         next_index = 0  
+
+    #     # use frontloaded group if it aligns with round-robin or is significantly better
+    #     if prioritized_group == meal_groups[next_index]:
+    #         return meal_groups[next_index]
+    #     elif restricted_gap[prioritized_group] > restricted_gap[meal_groups[next_index]]:
+    #         return prioritized_group
+    #     else:
+    #         return meal_groups[next_index]
+
+    # def assign_meal_group(self):
+    #     """
+    #     Assigns a meal group based on the current status and dietary restrictions.
+    #     """
+    #     if self.status == 'C':  # Confirmed
+    #         self.meal_group = self.get_next_meal_group()
+    #     elif self.status == 'E':  # Waitlisted
+    #         self.meal_group = 'E'
+    #     else:
+    #         self.meal_group = None
+
+    # def save(self, *args, **kwargs):
+    #     """
+    #     Overrides save to ensure meal group assignment logic is applied.
+    #     """
+    #     self.assign_meal_group()
+    #     super().save(*args, **kwargs)
 
     # ABOUT YOU
     first_name = models.CharField(

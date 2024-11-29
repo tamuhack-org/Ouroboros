@@ -7,7 +7,11 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils import html
 from rest_framework.authtoken.models import Token
-import threading
+
+from celery import shared_task
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 class EmailUserManager(auth_models.UserManager):
     """
@@ -35,23 +39,6 @@ class EmailUserManager(auth_models.UserManager):
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
         return self._create_user(email, password, **extra_fields)
-
-class EmailThread(threading.Thread):
-    def __init__(self, subject, plain_message, recipient_email, html_message):
-        self.subject = subject
-        self.plain_message = plain_message
-        self.recipient_email = recipient_email
-        self.html_message = html_message
-        threading.Thread.__init__(self)
-
-    def run(self):
-        mail.send_mail(
-            subject=self.subject,
-            message=self.plain_message,
-            from_email= settings.ORGANIZER_EMAIL, 
-            recipient_list=[self.recipient_email],
-            html_message=self.html_message,
-        )
 
 class User(auth_models.AbstractUser):
     """
@@ -87,12 +74,18 @@ class User(auth_models.AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    def send_html_email(self, template_name, context, subject):
-        """Send an HTML email to the user."""
+    @shared_task
+    def send_html_email(template_name, context, subject, recipient_email):
+        """Celery task to send an HTML email."""
         html_msg = render_to_string(template_name, context)
-        plain_msg = html.strip_tags(html_msg)
-        email_thread = EmailThread(subject, plain_msg, self.email, html_msg)
-        email_thread.start()
+        plain_msg = strip_tags(html_msg)
+        send_mail(
+            subject=subject,
+            message=plain_msg,
+            from_email=settings.ORGANIZER_EMAIL,
+            recipient_list=[recipient_email],
+            html_message=html_msg,
+        )
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

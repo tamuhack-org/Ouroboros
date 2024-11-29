@@ -104,7 +104,7 @@ def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
             print(f"approval email built for {approval_email[-1:]}")
             email_tuples.append(approval_email)
             application.save()
-    send_mass_html_mail(email_tuples)
+    send_mass_html_mail.delay(email_tuples)
 
 
 def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
@@ -117,7 +117,7 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
             application.status = STATUS_REJECTED
             email_tuples.append(build_rejection_email(application))
             application.save()
-    send_mass_html_mail(email_tuples)
+    send_mass_html_mail.delay(email_tuples)
 
 
 def resend_confirmation(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
