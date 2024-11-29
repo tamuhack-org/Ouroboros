@@ -26,10 +26,7 @@ def send_creation_email(app: Application) -> None:
         "organizer_email": settings.ORGANIZER_EMAIL,
     }
 
-    # send_html_email is threaded from the User class
-    # see user/models.py
-
-    app.user.send_html_email.delay(template_name, context, subject, app.user.email)
+    app.user.send_html_email(template_name, context, subject)
     
 @shared_task
 def send_confirmation_email(app_id: int) -> None:
