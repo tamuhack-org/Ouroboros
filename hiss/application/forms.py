@@ -243,7 +243,7 @@ class ApplicationModelForm(forms.ModelForm):
 
         super().__init__(*args, **kwargs)
 
-        photo_agreement = "Do you grant permission for TAMUhack to use your name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event 'TAMUhack 2025' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases?"
+        photo_agreement = "I grant permission for TAMUhack to use my name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event 'TAMUhack 2025' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases."
         accessibilities = "Please check this box if you require any accommodations to ensure accessibility during this event. Our team will follow up to discuss your needs."
 
         self.fields["agree_to_photos"].label = mark_safe(photo_agreement)
