@@ -208,7 +208,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("major", ChoiceDropdownFilter),
         ("grad_year", ChoiceDropdownFilter),
         ("num_hackathons_attended", ChoiceDropdownFilter),
-        # ("wares", ChoiceDropdownFilter),
+        ("wares", ChoiceDropdownFilter),
         # ("technology_experience", ChoiceDropdownFilter),
         # ("dietary_restrictions", ChoiceDropdownFilter),
         ("shirt_size", ChoiceDropdownFilter),
@@ -272,7 +272,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             "Logistical Information",
             {
                 "fields": [
-                    # "wares",
+                    "wares",
                     "shirt_size",
                     "dietary_restrictions",
                     "meal_group",

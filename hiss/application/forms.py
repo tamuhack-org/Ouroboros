@@ -347,7 +347,7 @@ class ApplicationModelForm(forms.ModelForm):
             "race_other",
             "num_hackathons_attended",
             "technology_experience",
-            # "wares",
+            "wares",
             "dietary_restrictions",
             "has_team",
             "wants_team",
