@@ -4,6 +4,7 @@ import json
 from django import forms
 from django.conf import settings
 from django.utils.safestring import mark_safe
+from django.db.models import Case, When, IntegerField
 
 from application import models as application_models
 from application.models import School
@@ -27,10 +28,19 @@ class ApplicationModelForm(forms.ModelForm):
         label='If you chose "Other", please specify your major.',
         required=False,
     )
+
+    # 1565 is the ID for Texas A&M University
     school = forms.ModelChoiceField(
-        School.objects.all(),
-        label="What school do you go to?",
+        queryset=School.objects.annotate(
+            priority=Case(
+                When(pk=1565, then=0),
+                default=1,
+                output_field=IntegerField(),
+            )
+        ).order_by('priority', 'id'),
+        label="What school do you go to?"
     )
+
     school_other = forms.CharField(
         label='If you chose "Other", please enter your school\'s name here.',
         required=False,
