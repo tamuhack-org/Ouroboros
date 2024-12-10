@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - howdy
+      - dev
 
 env:
   HEROKU_APP_NAME: tamuhack-registration
@@ -15,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - name: Download and install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
       - name: Login to Heroku Container registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
