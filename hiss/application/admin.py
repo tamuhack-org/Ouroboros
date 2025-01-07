@@ -125,6 +125,7 @@ def resend_confirmation(_modeladmin, _request: HttpRequest, queryset: QuerySet) 
     Resends the confirmation email to the selected applications.
     """
     for application in queryset:
+        application.save()
         send_confirmation_email(application)
 
 

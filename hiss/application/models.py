@@ -403,6 +403,46 @@ class Application(models.Model):
         choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
     )
 
+    def get_next_meal_group(self):
+        """
+        Determines the next meal group considering frontloading for restricted groups
+        using the RESTRICTED_FRONTLOAD_FACTOR.
+        """
+        meal_groups = ['A', 'B', 'C', 'D']
+
+        last_assigned_group = (
+            Application.objects.filter(status=STATUS_CONFIRMED)
+            .exclude(meal_group__isnull=True)
+            .order_by('-datetime_submitted')
+            .values_list('meal_group', flat=True)
+            .first()
+        )
+        if last_assigned_group:
+            next_index = (meal_groups.index(last_assigned_group) + 1) % len(meal_groups)
+            return meal_groups[next_index]
+        else:
+            return 'A'
+
+    def assign_meal_group(self):
+        """
+        Assigns a meal group based on the current status and dietary restrictions.
+        """
+        print("Status:", self.status)
+        if self.status == STATUS_CONFIRMED:  # Confirmed
+            self.meal_group = self.get_next_meal_group()
+        elif self.status == 'E':  # Waitlisted
+            self.meal_group = 'E'
+        else:
+            self.meal_group = None
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides save to ensure meal group assignment logic is applied.
+        """
+        print("Saving")
+        self.assign_meal_group()
+        super(Application,self).save(*args, **kwargs)
+
     # ABOUT YOU
     first_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="first name"
