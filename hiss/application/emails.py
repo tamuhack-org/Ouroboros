@@ -51,9 +51,9 @@ def send_confirmation_email(app: Application) -> None:
         "organizer_name": settings.ORGANIZER_NAME,
         "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
-        # "apple_wallet_url": get_apple_wallet_pass_url(app.user.email),
-        "apple_wallet_url": "ASDFASDF",
+        "apple_wallet_url": get_apple_wallet_pass_url(app.user.email),
         "meal_group": app.meal_group,
+        "event_date_text": settings.EVENT_DATE_TEXT,
     }
     html_msg = render_to_string(email_template, context)
     msg = html.strip_tags(html_msg)
