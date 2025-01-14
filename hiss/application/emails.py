@@ -38,7 +38,8 @@ def send_confirmation_email(app: Application) -> None:
     :return: None
     """
 
-    subject = f"{settings.EVENT_NAME}: Important Day-of Information!"
+    # subject = f"{settings.EVENT_NAME}: Important Day-of Information!"
+    subject = f"{settings.EVENT_NAME}: Thanks for RSVP'ing!"
     email_template = "application/emails/confirmed.html"
 
     if app.status == "E":
