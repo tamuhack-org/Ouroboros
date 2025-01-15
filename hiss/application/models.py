@@ -405,23 +405,18 @@ class Application(models.Model):
 
     def get_next_meal_group(self):
         """
-        Determines the next meal group considering frontloading for restricted groups
-        using the RESTRICTED_FRONTLOAD_FACTOR.
+        Determines the next meal group by counting all non-null meal group values
+        modulo 4, using a dictionary to assign meal groups.
         """
-        meal_groups = ['A', 'B', 'C', 'D']
-
-        last_assigned_group = (
+        meal_group_map = {0: 'A', 1: 'B', 2: 'C', 3: 'D'}
+        non_null_count = (
             Application.objects.filter(status=STATUS_CONFIRMED)
             .exclude(meal_group__isnull=True)
-            .order_by('-datetime_submitted')
-            .values_list('meal_group', flat=True)
-            .first()
+            .count()
         )
-        if last_assigned_group:
-            next_index = (meal_groups.index(last_assigned_group) + 1) % len(meal_groups)
-            return meal_groups[next_index]
-        else:
-            return 'A'
+        next_group_num = non_null_count % 4
+        return meal_group_map[next_group_num]
+
 
     def assign_meal_group(self):
         """
