@@ -42,16 +42,14 @@ def send_confirmation_email(app: Application) -> None:
     :return: None
     """
 
-    # subject = f"{settings.EVENT_NAME}: Important Day-of Information!"
-    subject = f"{settings.EVENT_NAME}: Thanks for RSVP'ing!"
+    subject = f"{settings.EVENT_NAME}: Important Day-of Information!"
+    # subject = f"{settings.EVENT_NAME}: Thanks for RSVP'ing!"
     email_template = "application/emails/confirmed.html"
 
     if app.status == "E":
         subject = f"{settings.EVENT_NAME} Waitlist: Important Day-of Information!"
         email_template = "application/emails/confirmed-waitlist.html"
-    
-    # TODO REMOVE THIS!!!!
-    NO_QR_CODE = True
+
 
     # Generate apple wallet
     apple_wallet_pass_url = ""
@@ -78,19 +76,18 @@ def send_confirmation_email(app: Application) -> None:
     )
     email.attach_alternative(html_msg, "text/html")
 
-    if not NO_QR_CODE:
-        qr_content = json.dumps(
-            {
-                "first_name": app.first_name,
-                "last_name": app.last_name,
-                "email": app.user.email,
-                "university": app.school.name,
-            }
-        )
-        qr_code = pyqrcode.create(qr_content)
-        qr_stream = BytesIO()
-        qr_code.png(qr_stream, scale=5)
-        email.attach("code.png", qr_stream.getvalue(), "text/png")
+    qr_content = json.dumps(
+        {
+            "first_name": app.first_name,
+            "last_name": app.last_name,
+            "email": app.user.email,
+            "university": app.school.name,
+        }
+    )
+    qr_code = pyqrcode.create(qr_content)
+    qr_stream = BytesIO()
+    qr_code.png(qr_stream, scale=5)
+    email.attach("code.png", qr_stream.getvalue(), "text/png")
     email.attach_file("static/th25invite.ics", mimetype="text/calendar")
     print(f"sending confirmation email to {app.user.email}")
     email.send()
