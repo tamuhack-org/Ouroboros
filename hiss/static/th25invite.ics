@@ -30,7 +30,7 @@ DTSTART;TZID=America/Chicago:20250125T090000
 DTEND;TZID=America/Chicago:20250126T170000
 SUMMARY:See You @ TAMUhack 2025!
 URL:https://th25.tamuhack.org/
-DESCRIPTION:Hey Hackers!\n\nWe're beyond excited to have you at TAMUhack! 🚀 Get ready for an incredible weekend of building\, learning\, and pushing the limits of innovation. We can't wait to see the amazing projects you create and the creative energy you bring. Let's make this an unforgettable experience!\n\nHappy hacking! 💻✨\n— The TAMUhack Team
+DESCRIPTION:We're excited to have you at TAMUhack! 🚀
 LOCATION:275 Joe Routt Blvd\, College Station\, TX 77843
 BEGIN:VALARM
 ACTION:DISPLAY
