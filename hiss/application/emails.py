@@ -1,5 +1,6 @@
 import json
 from io import BytesIO
+import os
 
 import pyqrcode
 from django.conf import settings
@@ -9,6 +10,9 @@ from django.utils import html
 
 from application.models import Application
 from application.apple_wallet import get_apple_wallet_pass_url
+
+
+import requests
 
 
 def send_creation_email(app: Application) -> None:
@@ -49,13 +53,21 @@ def send_confirmation_email(app: Application) -> None:
     # TODO REMOVE THIS!!!!
     NO_QR_CODE = True
 
+    # Generate apple wallet
+    apple_wallet_pass_url = ""
+    try:
+        r = requests.post(os.environ.get("APPLE_WALLET_GEN_URL"), json={"email": app.user.email, "meal_group": app.meal_group})
+        apple_wallet_pass_url = r.json().get("s3_path")
+    except requests.exceptions.RequestException as e:
+        print(f"Error generating apple wallet pass: {e}")
+
     context = {
         "first_name": app.first_name,
         "event_name": settings.EVENT_NAME,
         "organizer_name": settings.ORGANIZER_NAME,
         "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
-        "apple_wallet_url": get_apple_wallet_pass_url(app.user.email),
+        "apple_wallet_url": apple_wallet_pass_url,
         "meal_group": app.meal_group,
         "event_date_text": settings.EVENT_DATE_TEXT,
     }
