@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import ChoiceDropdownFilter
-from rangefilter.filter import DateTimeRangeFilter
+from rangefilter.filters import DateTimeRangeFilter
 
 from volunteer.models import FoodEvent, WorkshopEvent
 

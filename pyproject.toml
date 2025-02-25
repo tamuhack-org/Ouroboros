@@ -1,66 +1,80 @@
-[tool.poetry]
+[project]
 name = "hiss"
 version = "0.1.0"
 description = "open source hackathon registration system"
-authors = ["Gabriel Britain", "Cameron Brill <tamuhack@cameronbrill.me>", "Adil Rasiyani"]
+authors = [
+    { name = "Gabriel Britain" },
+    { name = "Cameron Brill", email = "tamuhack@cameronbrill.me" },
+    { name = "Adil Rasiyani" },
+]
+requires-python = "~=3.7"
 license = "GPL-3.0"
+dependencies = [
+    "astroid>=2.2.5",
+    "babel>=2.14.0",
+    "bcrypt>=4.2.1",
+    "cachetools>=5.5.2",
+    "certifi>=2025.1.31",
+    "chardet>=5.2.0",
+    "colorama>=0.4.6",
+    "coverage>=7.2.7",
+    "dj-database-url>=2.2.0",
+    "django>=3.2.25",
+    "django-address>=0.2.8",
+    "django-admin-list-filter-dropdown>=1.0.3",
+    "django-admin-rangefilter>=0.13.2",
+    "django-anymail>=11.1",
+    "django-cors-headers>=4.1.0",
+    "django-multiselectfield>=0.1.13",
+    "django-phonenumber-field>=7.1.0",
+    "django-s3-storage>=0.15.0",
+    "django-storages>=1.14.5",
+    "djangorestframework>=3.15.1",
+    "entrypoints>=0.4",
+    "flake8>=5.0.4",
+    "google-api-core>=2.24.1",
+    "google-auth>=2.38.0",
+    "google-cloud-core>=2.4.2",
+    "google-cloud-storage>=3.0.0",
+    "google-resumable-media>=2.7.2",
+    "googleapis-common-protos>=1.68.0",
+    "gunicorn>=23.0.0",
+    "idna>=3.10",
+    "isort>=5.11.5",
+    "lazy-object-proxy>=1.4.2",
+    "mccabe>=0.7.0",
+    "phonenumbers>=8.13.55",
+    "protobuf>=4.24.4",
+    "psycopg2-binary>=2.9.9",
+    "pyasn1>=0.5.1",
+    "pyasn1-modules>=0.3.0",
+    "pycodestyle>=2.9.1",
+    "pyflakes>=2.5.0",
+    "pylint>=2.13.9",
+    "pylint-django>=2.5.5",
+    "pylint-plugin-utils>=0.8.2",
+    "pypng>=0.20220715.0",
+    "pyqrcode>=1.2.1",
+    "pytz>=2025.1",
+    "qrtools>=0.0.2",
+    "requests>=2.31.0",
+    "rsa>=4.9",
+    "six>=1.12.0",
+    "sqlparse>=0.4.4",
+    "tblib>=2.0.0",
+    "typed-ast>=1.4.0",
+    "urllib3>=2.0.7",
+    "whitenoise>=6.5.0",
+    "wrapt>=1.11.2",
+]
 
-[tool.poetry.dependencies]
-python = "^3.7"
-astroid = "2.2.5"
-babel = "2.7.0"
-cachetools = "3.1.1"
-certifi = "2019.9.11"
-chardet = "3.0.4"
-colorama = "0.4.1"
-coverage = "5.1"
-dj-database-url = "0.5.0"
-django = "2.2.13"
-django-admin-list-filter-dropdown = "1.0.2"
-django-admin-rangefilter = "0.5.0"
-django-anymail = "7.0.0"
-django-cors-headers = "3.2.0"
-django-multiselectfield = "0.1.11"
-django-phonenumber-field = "3.0.1"
-django-s3-storage = "0.13.2"
-django-storages = "1.7.2"
-djangorestframework = "3.10.2"
-entrypoints = "0.3"
-gunicorn = "19.9.0"
-idna = "2.8"
-isort = "4.3.21"
-lazy-object-proxy = "1.4.2"
-mccabe = "0.6.1"
-phonenumbers = "8.10.15"
-pypng = "0.0.20"
-pyqrcode = "1.2.1"
-pytz = "2019.2"
-qrtools = "0.0.2"
-requests = "2.22.0"
-rsa = "4.0"
-six = "1.12.0"
-sqlparse = "0.3.0"
-tblib = "1.5.0"
-typed-ast = "1.4.0"
-urllib3 = "1.25.6"
-whitenoise = "5.2.0"
-wrapt = "1.11.2"
-
-[tool.poetry.dev-dependencies]
-autohooks = "^2.2.0"
-autohooks-plugin-black = "^1.2.0"
-autohooks-plugin-pylint = "^1.2.0"
-autohooks-plugin-isort = "^1.0.0"
-flake8 = "3.7.8"
-pycodestyle = "2.5.0"
-pyflakes = "2.1.1"
-pylint = "2.3.1"
-pylint-django = "2.0.11"
-pylint-plugin-utils = "0.5"
+[dependency-groups]
+dev = [
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.autohooks]
 mode = "poetry"

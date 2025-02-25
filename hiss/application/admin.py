@@ -15,7 +15,7 @@ from django.utils.html import strip_tags
 from django_admin_listfilter_dropdown.filters import (
     ChoiceDropdownFilter,
 )
-from rangefilter.filter import DateRangeFilter
+from rangefilter.filters import DateRangeFilter
 
 from application.emails import send_confirmation_email
 from application.models import (
@@ -50,7 +50,9 @@ def build_approval_email(
     Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
     application has been approved.
     """
-    subject = f"ACTION REQUIRED: One last step for your {settings.EVENT_NAME} application!"
+    subject = (
+        f"ACTION REQUIRED: One last step for your {settings.EVENT_NAME} application!"
+    )
 
     context = {
         "first_name": application.first_name,
@@ -137,20 +139,10 @@ def export_application_emails(_modeladmin, _request: HttpRequest, queryset: Quer
     response["Content-Disposition"] = 'attachment; filename="emails.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(
-        [
-            "email",
-            "shirt_size"
-        ]
-    )
+    writer.writerow(["email", "shirt_size"])
     for instance in queryset:
         instance: Application = instance
-        writer.writerow(
-            [
-                instance.user.email,
-                instance.shirt_size
-            ]
-        )
+        writer.writerow([instance.user.email, instance.shirt_size])
 
     return response
 
@@ -287,7 +279,10 @@ class ApplicationAdmin(admin.ModelAdmin):
             },
         ),
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
-        ("Miscellaneous", {"fields": ["notes", "is_adult", "accessibility_requirements"]}),
+        (
+            "Miscellaneous",
+            {"fields": ["notes", "is_adult", "accessibility_requirements"]},
+        ),
     ]
     formfield_overrides = {
         AddressField: {"widget": AddressWidget(attrs={"style": "width: 300px;"})}

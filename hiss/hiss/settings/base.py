@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_s3_storage",
     "address",
+    "rangefilter",
 ]
 
 MIDDLEWARE = [
@@ -116,7 +117,7 @@ LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 AWS_REGION = "us-east-2"
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_S3_BUCKET_NAME = "2025-th-resumes" 
+AWS_S3_BUCKET_NAME = "2025-th-resumes"
 AWS_S3_KEY_PREFIX = "prod"
 
 STATIC_URL = "/" + BASE_PATHNAME + "static/"
