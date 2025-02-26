@@ -7,10 +7,9 @@ authors = [
     { name = "Cameron Brill", email = "tamuhack@cameronbrill.me" },
     { name = "Adil Rasiyani" },
 ]
-requires-python = "~=3.12"
+requires-python = ">=3.12"
 license = "GPL-3.0"
 dependencies = [
-    "astroid>=3.3.8",
     "babel>=2.17.0",
     "bcrypt>=4.2.1",
     "cachetools>=5.5.2",
@@ -31,7 +30,6 @@ dependencies = [
     "django-storages>=1.14.5",
     "djangorestframework>=3.15.2",
     "entrypoints>=0.4",
-    "flake8>=7.1.2",
     "google-api-core>=2.24.1",
     "google-auth>=2.38.0",
     "google-cloud-core>=2.4.2",
@@ -40,19 +38,11 @@ dependencies = [
     "googleapis-common-protos>=1.68.0",
     "gunicorn>=23.0.0",
     "idna>=3.10",
-    "isort>=6.0.0",
-    "lazy-object-proxy>=1.10.0",
-    "mccabe>=0.7.0",
     "phonenumbers>=8.13.55",
     "protobuf>=5.29.3",
     "psycopg2-binary>=2.9.10",
     "pyasn1>=0.6.1",
     "pyasn1-modules>=0.4.1",
-    "pycodestyle>=2.12.1",
-    "pyflakes>=3.2.0",
-    "pylint>=3.3.4",
-    "pylint-django>=2.6.1",
-    "pylint-plugin-utils>=0.8.2",
     "pypng>=0.20220715.0",
     "pyqrcode>=1.2.1",
     "pytz>=2025.1",
@@ -62,10 +52,8 @@ dependencies = [
     "six>=1.17.0",
     "sqlparse>=0.5.3",
     "tblib>=3.0.0",
-    "typed-ast>=1.5.5",
     "urllib3>=2.3.0",
     "whitenoise>=6.9.0",
-    "wrapt>=1.17.2",
 ]
 
 [dependency-groups]
