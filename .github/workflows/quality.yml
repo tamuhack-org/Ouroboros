@@ -10,11 +10,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Ruff
+      - name: Install and run Ruff
         uses: astral-sh/ruff-action@v3
 
-      - name: Run Ruff Linter (auto-fix)
-        run: ruff check
-
-      - name: Run Ruff Formatter
-        run: ruff format
+      # - name: Run Ruff Linter
+      #   run: ruff check
+      #
+      # - name: Run Ruff Formatter
+      #   run: ruff format
