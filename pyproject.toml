@@ -62,37 +62,111 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv"]
+build-backend = "uv.pypa"
 
-[tool.autohooks]
-mode = "poetry"
-pre-commit = ["autohooks.plugins.black", "autohooks.plugins.pylint", "autohooks.plugins.isort"]
+[tool.ruff]
+src=["hiss"]
 
-[tool.autohooks.plugins.pylint]
-arguments = ["--exit-zero", "--rcfile=./hiss/.pylintrc"]
+# Maximum line length (matches PEP8 / black)
+line-length = 88
 
-[tool.black]
-exclude = '''
-/(
-   \.git
-  | \.hg
-  | \.venv
-  | \.circleci
-  | \.github
-  | \.vscode
-  | _build
-  | build
-  | dist
-  | docs
-  | \./*/migrations
-  | env
-)/
-'''
+# Target Python version
+target-version = "py312"
 
-[tool.isort]
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-line_length = 80
+# Allow autofixing for common issues
+fix = true
+
+unfixable = ["F401"]  # Prevents autofixing of unused imports
+
+[tool.ruff.lint]
+select = [
+  "F", # pyflakes
+  "E", # pycodestyle error rules
+  "W", # pydocstyle warn rules
+  "I", # isort (import sorting)
+  "N", # pep8-naming
+  "D", # pydocstyle
+  "UP", # pyupgrade (make upgrading python version easier by automating syntax changes)
+  "ASYNC", # flake8-async
+  "TRIO", # flake8-trio
+  "S", # flake8-bandit
+  "B", # flake8-bugbear
+  "A", # flake8-builtins
+  "C4", # flake8-comprehensions
+  "DTZ", # flake8-datetimez
+  "T10", # flake8-debugger
+  "DJ", # flake8-django
+  "EM", # flake8-errmsg
+  "ISC", # flake8-implicit-str-concat
+  "PIE", # flake8-pie 
+  # TODO: enable the following after installing structlog
+  # "T20", # flake8-print
+  "RSE", # flake8-raise
+  "RET", # flake8-return
+  "SLF", # flake8-self
+  "SLOT", # flake8-slots
+  "SIM", # flake8-simplify
+  "TID", # flake8-tidy-imports
+  "ARG", # flake8-unused-arguments
+  "PTH", # flake8-use-pathlib
+  "TD", # flake8-todos
+  "FIX", # flake8-fixme
+  "ERA", # eradicate (no commented code)
+  "PD", # pandas-vet
+  "PGH", # pygrep-hooks
+  "PL", # pylint
+  "TRY", # tryceratops
+  "FLY", # flynt
+  "NPY", # NumPy-specific rules
+  "AIR", # Airflow
+  "PERF", # Perflint
+  "FURB", # refurb
+  "RUF", # Ruff-specific rules
+]
+ignore = [
+  "E501", # ignoring line-length lint rules as ruff's formatter should be sufficient
+  "C90", # mccabe (cyclomatic) complexity measures how technically testable a function is - this is not a good measure of complexity. when ruff supports it, enable a cognitive complexity rule
+  "D100", # Missing docstring in public module. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D101", # Missing docstring in public class. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D102", # Missing docstring in public method. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D103", # Missing docstring in public function. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D104", # Missing docstring in public package. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D105", # Missing docstring in magic method. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D106", # Missing docstring in public nested class. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D107", # Missing docstring in __init__. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D203", # one blank line before class. this is incompatible with formatter
+  "D211", # no blank line before class. This is incompatible with formatter
+  "D213", # multi line summary second lint. This is incompatible with D212
+  "YTT", # flake8-2020. this is a weird ruleset... kinda has 2012 movie vibes, these rules are handled by UP.
+  "ANN", # flake8-annotations. These rules should be handled by a type checker, not linter.
+  "COM", # flake8-commas. This ruleset is handled by formatting rules.
+  "CPY", # flake8-copyright... who cares?
+  "DJ001", # django-nullable-model-string-field: consider re-enabling and fixing offenders in the future, disabled because I am lazy and don't want to fix rn.
+  "EXE", # flake8-executable: not relevant for this codebase.
+  "FA", # flake8-future-annotations: has a bunch of false positives for some reason
+  "ICN", # flake8-import-conventions: these rules are covered by other rulesets.
+  "LOG", # flake8-logging: I don't like the standard python logger... use structlog!
+  "G", # flake8-logging-format: these rules are handled by other rulesets.
+  "INP", # flake8-no-pep420: too opinionated... follow the peps!
+  "PYI", # flake8-pyi: these rules should be handled by a typechecker
+  "PT", # flake8-pytest-style: this codebase is not using pytest
+  "Q", # flake8-quotes: this ruleset is handled by formatter.
+  "TCH", # flake8-type-checking: this ruleset is handled by a typechecker.
+  "INT", # flake8-gettext: this ruleset is handled by other rulesets.
+  "PLR6301", # pylint-refactor[no-self-use]
+  "RUF012", # this one is kind of a pain and not a huge a risk
+  "ISC001", # this conflicts with the formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F403"]
+"**/tests/*" = ["S105"]
+"**/test*" = ["S105"]
+"hiss/hiss/settings/dev.py" = ["S105"]
+"hiss/shared/management/commands/seeddb.py" = [
+  "S311", # this file isn't using the pseudo-random generator for cryptographic purposes.
+]
+
+[tool.ruff.lint.pylint]
+max-branches = 13
