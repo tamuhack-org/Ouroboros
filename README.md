@@ -3,7 +3,7 @@
 # Steps for us!
 
 ```
-uv venv --python 3.8
+uv venv --python 3.12
 uv sync
 
 source .venv/bin/activate
