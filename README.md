@@ -1,5 +1,13 @@
 [![codecov](https://codecov.io/gh/tamuhack-org/Ouroboros/branch/main/graph/badge.svg)](https://codecov.io/gh/tamuhack-org/Ouroboros)
 
+# Steps for us!
+
+```
+uv venv --python 3.8
+uv sync
+
+source .venv/bin/activate
+```
 
 # :snake: Hiss
 
