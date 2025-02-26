@@ -2,11 +2,17 @@
 
 # Steps for us!
 
-```
+```sh
 uv venv --python 3.12
 uv sync
 
 source .venv/bin/activate
+python ./hiss/manage.py migrate #Apply all migrations
+
+python ./hiss/manage.py createsuperuser
+
+
+python ./hiss/manage.py runserver
 ```
 
 # :snake: Hiss
