@@ -3,45 +3,18 @@ name: Code Quality Checks
 on: [push]
 
 jobs:
-  black:
-    name: 'Check code quality with black'
+  ruff:
+    name: 'Check code quality and health with ruff'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: 'Set up Python 3.7'
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.7
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install black
-      - name: Check formatting
-        run: |
-          cd hiss
-          black . --check --exclude=".*/migrations,env"
-  flake:
-    name: 'Check code health with Flake8'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: cclauss/GitHub-Action-for-Flake8@0.0.1
-        with:
-          args: "flake8 . --exclude=\"env,**/migrations,__init__.py,hiss/hiss/settings/**\" --max-line-length=120"
-  pylint:
-    name: 'Check code quality with pylint'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: 'Set up Python 3.7'
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.7
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r hiss/requirements.txt
-      - name: Lint
-        run: |
-          cd hiss
-          pylint --exit-zero --rcfile=.pylintrc application rsvp shared status user volunteer
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Ruff
+        uses: astral-sh/ruff-action@v3
+
+      - name: Run Ruff Linter (auto-fix)
+        run: ruff check
+
+      - name: Run Ruff Formatter
+        run: ruff format
