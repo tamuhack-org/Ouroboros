@@ -15,9 +15,11 @@ import os
 from django.urls import reverse_lazy
 import dj_database_url
 
+from pathlib import Path
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 # Base Pathname for Obos (when not being hosted at root)
 BASE_PATHNAME = (
     os.environ.get("BASE_PATHNAME") if os.environ.get("BASE_PATHNAME") else ""
@@ -128,7 +130,14 @@ AUTH_USER_MODEL = "user.User"
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
+# DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
 CORS_ORIGIN_WHITELIST = [
     "https://volunteer.tamuhack.com",
