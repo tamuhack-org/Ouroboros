@@ -70,6 +70,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "ruff>=0.9.7",
 ]
 
 [build-system]
