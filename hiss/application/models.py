@@ -1,8 +1,8 @@
-# pylint: disable=C0330
-import uuid
-from typing import List, Optional, Tuple
 import re
+import uuid
+from typing import Optional
 
+from address.models import AddressField
 from django.conf import settings
 from django.core import exceptions
 from django.core.validators import FileExtensionValidator
@@ -12,20 +12,15 @@ from django.utils import timezone
 from django_s3_storage.storage import S3Storage
 from multiselectfield import MultiSelectField
 
-from application.filesize_validation import FileSizeValidator
-from address.models import AddressField
-
 from application.countries import COUNTRIES_TUPLES
+from application.filesize_validation import FileSizeValidator
 
 s3_storage = S3Storage()
 
 
 class WaveManager(models.Manager):
-    def next_wave(
-        self, start_dt: Optional[timezone.datetime] = None
-    ) -> Optional["Wave"]:
-        """
-        Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
+    def next_wave(self, start_dt: timezone.datetime | None = None) -> Optional["Wave"]:
+        """Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
         `active_wave`.
         """
         if not start_dt:
@@ -34,10 +29,9 @@ class WaveManager(models.Manager):
         return qs.first()
 
     def active_wave(
-        self, start_dt: Optional[timezone.datetime] = None
+        self, start_dt: timezone.datetime | None = None
     ) -> Optional["Wave"]:
-        """
-        Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
+        """Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
         `next_wave`.
         """
         if not start_dt:
@@ -51,8 +45,7 @@ class WaveManager(models.Manager):
 
 
 class Wave(models.Model):
-    """
-    Representation of a registration period. `Application`s must be created during
+    """Representation of a registration period. `Application`s must be created during
     a `Wave`, and are automatically associated with a wave through the `Application`'s `pre_save` handler.
     """
 
@@ -81,9 +74,7 @@ class Wave(models.Model):
 
 
 class School(models.Model):
-    """
-    A simple model for representing colleges/universities.
-    """
+    """A simple model for representing colleges/universities."""
 
     name = models.CharField("name", max_length=255)
 
@@ -91,6 +82,7 @@ class School(models.Model):
         return self.name
 
 
+MAX_AGE = 18
 AGREE = ((True, "Agree"),)
 AGREE_DISAGREE = ((True, "Agree"), (False, "Disagree"))
 
@@ -103,7 +95,7 @@ FEMALE = "F"
 NON_BINARY = "NB"
 GENDER_OTHER = "X"
 
-GENDERS: List[Tuple[str, str]] = [
+GENDERS: list[tuple[str, str]] = [
     (NO_ANSWER, "Prefer not to answer"),
     (MALE, "Male"),
     (FEMALE, "Female"),
@@ -122,7 +114,7 @@ NATIVE_HAWAIIAN = "NH"
 WHITE = "WH"
 RACE_OTHER = "O"
 
-RACES: List[Tuple[str, str]] = [
+RACES: list[tuple[str, str]] = [
     (AMERICAN_INDIAN, "American Indian or Alaskan Native"),
     (ASIAN_INDIAN_SUB, "Asian (Indian Subcontinent)"),
     (ASIAN_EAST, "Asian (East Asia)"),
@@ -144,7 +136,7 @@ MASTERS = "Ma"
 PHD = "PhD"
 CLASSIFICATION_OTHER = "O"
 
-CLASSIFICATIONS: List[Tuple[str, str]] = [
+CLASSIFICATIONS: list[tuple[str, str]] = [
     (FRESHMAN, "Freshman"),
     (SOPHOMORE, "Sophomore"),
     (JUNIOR, "Junior"),
@@ -165,7 +157,7 @@ HACKATHONS_2_TO_3 = "2-3"
 HACKATHONS_4_TO_5 = "4-5"
 HACKATHONS_6 = "6+"
 
-HACKATHON_TIMES: List[Tuple[str, str]] = [
+HACKATHON_TIMES: list[tuple[str, str]] = [
     (HACKATHONS_0, "This will be my first!"),
     (HACKATHONS_1, "1"),
     (HACKATHONS_2_TO_3, "2-3"),
@@ -175,7 +167,9 @@ HACKATHON_TIMES: List[Tuple[str, str]] = [
 
 STUDY_LESS_THAN_SECONDARY = "Less than Secondary / High School"
 STUDY_SECONDARY = "Secondary / High School"
-STUDY_UNDERGRAD_2YEAR = "Undergraduate University (2 year - community college or similar)"
+STUDY_UNDERGRAD_2YEAR = (
+    "Undergraduate University (2 year - community college or similar)"
+)
 STUDY_UNDERGRAD_3YEAR = "Undergraduate University (3+ year)"
 STUDY_GRADUATE = "Graduate University (Masters, Professional, Doctoral, etc)"
 STUDY_CODE_SCHOOL = "Code School / Bootcamp"
@@ -198,9 +192,9 @@ LEVELS_OF_STUDY = [
     (STUDY_NOT_STUDENT, STUDY_NOT_STUDENT),
     (STUDY_NO_ANSWER, STUDY_NO_ANSWER),
 ]
-    
 
-GRAD_YEARS: List[Tuple[int, int]] = [
+
+GRAD_YEARS: list[tuple[int, int]] = [
     (int(y), int(y))
     for y in range(
         timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION
@@ -219,7 +213,7 @@ FLYING = "F"
 PUBLIC_TRANSPORTATION = "P"
 MANUAL_POWER = "M"
 
-TRANSPORT_MODES: List[Tuple[str, str]] = [
+TRANSPORT_MODES: list[tuple[str, str]] = [
     (DRIVING, "Driving"),
     (EVENT_PROVIDED_BUS, f"{settings.EVENT_NAME} Bus"),
     (EVENT_PROVIDED_BUS_UT, f"{settings.EVENT_NAME} Bus - UT Austin"),
@@ -334,7 +328,7 @@ MAJORS = [
     (PHYS, "Physics"),
     (STAT, "Statistics"),
     (BIO, "Biology"),
-    (CHEMISTRY, "Chemistry"),    
+    (CHEMISTRY, "Chemistry"),
     (MAJOR_OTHER, "Other"),
 ]
 
@@ -348,7 +342,7 @@ WANTS_TEAM_OPTIONS = [
     ("TH Organizer", "From a TAMUhack organizer"),
     ("ENGR Newsletter", "From the TAMU Engineering Newsletter"),
     ("MLH", "Major League Hacking (MLH)"),
-    ("Attended Before", f"I've attended {settings.EVENT_NAME} before")
+    ("Attended Before", f"I've attended {settings.EVENT_NAME} before"),
 ]
 
 PURPOSE_WIN = "W"
@@ -377,11 +371,9 @@ PURPOSE_OPTIONS = [
     (PURPOSE_MESS_AROUND, "I want to have a fun weekend with my friends!"),
 ]
 
-WARECHOICE = [
-    ("SW", "Software"),
-    ("HW", "Hardware")
-]
+WARECHOICE = [("SW", "Software"), ("HW", "Hardware")]
 """HW - Hardware, SW - Software"""
+
 
 def uuid_generator(_instance, filename: str):
     ext = filename.split(".")[-1]
@@ -390,9 +382,7 @@ def uuid_generator(_instance, filename: str):
 
 
 class Application(models.Model):
-    """
-    Represents a `Hacker`'s application to this hackathon.
-    """
+    """Represents a `Hacker`'s application to this hackathon."""
 
     # META INFO
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -403,12 +393,19 @@ class Application(models.Model):
         choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
     )
 
+    def __str__(self):
+        return "%s, %s - Application" % (self.last_name, self.first_name)
+
+    def save(self, *args, **kwargs):
+        """Override save to ensure meal group assignment logic is applied."""
+        self.assign_meal_group()
+        super().save(*args, **kwargs)
+
     def get_next_meal_group(self):
+        """Determine the next meal group by counting all non-null meal group
+        values modulo 4, using a dictionary to assign meal groups.
         """
-        Determines the next meal group by counting all non-null meal group values
-        modulo 4, using a dictionary to assign meal groups.
-        """
-        meal_group_map = {0: 'A', 1: 'B', 2: 'C', 3: 'D'}
+        meal_group_map = {0: "A", 1: "B", 2: "C", 3: "D"}
         non_null_count = (
             Application.objects.filter(status=STATUS_CONFIRMED)
             .exclude(meal_group__isnull=True)
@@ -418,24 +415,13 @@ class Application(models.Model):
         return meal_group_map[next_group_num]
 
     def assign_meal_group(self):
-        """
-        Assigns a meal group based on the current status and dietary restrictions.
-        """
-        print("Status:", self.status)
+        """Assign a meal group based on the current status."""
         if self.status == STATUS_CONFIRMED:  # Confirmed
             self.meal_group = self.get_next_meal_group()
-        elif self.status == 'E':  # Waitlisted
-            self.meal_group = 'E'
+        elif self.status == "E":  # Waitlisted
+            self.meal_group = "E"
         else:
             self.meal_group = None
-
-    def save(self, *args, **kwargs):
-        """
-        Overrides save to ensure meal group assignment logic is applied.
-        """
-        print("Saving")
-        self.assign_meal_group()
-        super(Application,self).save(*args, **kwargs)
 
     # ABOUT YOU
     first_name = models.CharField(
@@ -444,14 +430,18 @@ class Application(models.Model):
     last_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="last name"
     )
-    age = models.CharField(
+    age = models.PositiveIntegerField(
         max_length=5, blank=False, null=True, verbose_name="age"
     )
     phone_number = models.CharField(
         max_length=13, blank=False, null=True, verbose_name="phone number"
     )
     country = models.CharField(
-        "What is your country of residence?", max_length=100, choices=COUNTRIES_TUPLES, blank=False, null=True
+        "What is your country of residence?",
+        max_length=100,
+        choices=COUNTRIES_TUPLES,
+        blank=False,
+        null=True,
     )
     extra_links = models.CharField(
         "Point us to anything you'd like us to look at while considering your application",
@@ -469,7 +459,8 @@ class Application(models.Model):
             FileSizeValidator(max_filesize=2.5),
         ],
         upload_to=uuid_generator,
-        storage=s3_storage,
+        # storage=s3_storage,
+        storage=None,
     )
 
     # DEMOGRAPHIC INFORMATION
@@ -479,18 +470,17 @@ class Application(models.Model):
         on_delete=models.SET_NULL,
         verbose_name="What school do you go to?",
     )
-    school_other = models.CharField(
-        null=True, blank=True, max_length=255
-    ) 
+    school_other = models.CharField(null=True, blank=True, max_length=255)
     tamu_email = models.EmailField(
-        "TAMU Email if you are a Texas A&M student", null=True, blank=True, max_length = 75
+        "TAMU Email if you are a Texas A&M student",
+        null=True,
+        blank=True,
+        max_length=75,
     )
     major = models.CharField(
-        "What's your major?", default=NO_ANSWER, choices= MAJORS, max_length = 100
+        "What's your major?", default=NO_ANSWER, choices=MAJORS, max_length=100
     )
-    major_other = models.CharField(
-        "Other", max_length=255, null=True, blank=True
-    )
+    major_other = models.CharField("Other", max_length=255, null=True, blank=True)
     classification = models.CharField(
         "What classification are you?", choices=CLASSIFICATIONS, max_length=3
     )
@@ -510,13 +500,22 @@ class Application(models.Model):
         "What is your anticipated graduation year?", choices=GRAD_YEARS
     )
     level_of_study = models.CharField(
-        "What is your current level of study?", max_length=100, choices=LEVELS_OF_STUDY, blank=False, null=True
+        "What is your current level of study?",
+        max_length=100,
+        choices=LEVELS_OF_STUDY,
+        blank=False,
+        null=True,
     )
     num_hackathons_attended = models.CharField(
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
     wares = models.CharField(
-        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track", choices=WARECHOICE, max_length=8, default=NO_ANSWER, blank=False, null=True
+        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track",
+        choices=WARECHOICE,
+        max_length=8,
+        default=NO_ANSWER,
+        blank=False,
+        null=True,
     )
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
@@ -533,10 +532,8 @@ class Application(models.Model):
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
         "A&M.",
     )
-    
-    agree_to_photos = models.BooleanField(
-        choices=AGREE, null=True, default=None
-    )
+
+    agree_to_photos = models.BooleanField(choices=AGREE, null=True, default=None)
     accessibility_requirements = models.BooleanField(
         choices=AGREE_DISAGREE, null=True, default=None, blank=True
     )
@@ -547,7 +544,7 @@ class Application(models.Model):
     )
     # address = AddressField(on_delete=models.CASCADE, default=None, null=True)
     additional_accommodations = models.TextField(
-        "Do you require any special accommodations at the event? Please list dietary restrictions here if you selected \"food allergy\" or \"other\".",
+        'Do you require any special accommodations at the event? Please list dietary restrictions here if you selected "food allergy" or "other".',
         max_length=500,
         blank=True,
     )
@@ -566,7 +563,7 @@ class Application(models.Model):
         "Emergency Contact Email", max_length=255, blank=False
     )
 
-    dietary_restrictions = models.CharField(max_length=5000, default=None)
+    dietary_restrictions = models.CharField(max_length=5000, null=True, default=None)
     meal_group = models.CharField(max_length=255, null=True, blank=True, default=None)
 
     technology_experience = models.CharField(max_length=5000, default=None)
@@ -592,9 +589,6 @@ class Application(models.Model):
         "Anything else you would like us to know?", max_length=300, blank=True
     )
 
-    def __str__(self):
-        return "%s, %s - Application" % (self.last_name, self.first_name)
-
     def get_absolute_url(self):
         return reverse_lazy("application:update", args=[self.id])
 
@@ -603,25 +597,29 @@ class Application(models.Model):
 
         def is_valid_name(name):
             pattern = r"^(?=.{1,40}$)[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$"
-            
+
             match = re.match(pattern, name)
-            
+
             return bool(match)
 
-
-        if not self.age.isnumeric():
-            raise exceptions.ValidationError("Age must be a number.")
-        if not self.is_adult and int(self.age) > 18 or self.is_adult and int(self.age) < 18:
+        if (not self.is_adult and self.age > MAX_AGE) or (
+            self.is_adult and self.age < MAX_AGE
+        ):
             raise exceptions.ValidationError(
                 "Age and adult status do not match. Please confirm you are 18 or older."
             )
-        #Fixes the obos admin panel bug, idk why the checkbox doesn't show up
-        if not int(self.age) >= 18 or not self.is_adult:
+        # Fixes the obos admin panel bug, idk why the checkbox doesn't show up
+        if not self.age >= MAX_AGE or not self.is_adult:
             raise exceptions.ValidationError(
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
+
         if not is_valid_name(self.first_name):
-            raise exceptions.ValidationError("First name can only contain letters, spaces, hyphens, and apostrophes.")
+            raise exceptions.ValidationError(
+                "First name can only contain letters, spaces, hyphens, and apostrophes."
+            )
         if not is_valid_name(self.last_name):
-            raise exceptions.ValidationError("Last name can only contain letters, spaces, hyphens, and apostrophes.")
+            raise exceptions.ValidationError(
+                "Last name can only contain letters, spaces, hyphens, and apostrophes."
+            )
