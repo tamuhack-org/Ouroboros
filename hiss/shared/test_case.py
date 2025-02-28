@@ -48,7 +48,7 @@ class SharedTestCase(test.TestCase):
         self.application_fields = {
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "shirt_size": application_models.WOMENS_XXS,
+            "shirt_size": application_models.UNISEX_XXS,
             "major": "Computer Science",
             "school": self.first_school,
             "gender": application_models.FEMALE,
@@ -58,7 +58,6 @@ class SharedTestCase(test.TestCase):
             "user": self.user,
             "race": [application_models.NO_ANSWER],
             "has_team": application_models.HAS_TEAM,
-            "wants_team": application_models.WANTS_TEAM,
             "technology_experience": [],
             "address": "1600 Pennsylvania Avenue Northwest, Washington, DC, USA",
             "extra_links": "A",
