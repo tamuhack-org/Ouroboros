@@ -1,11 +1,35 @@
-FROM python:3.6
+FROM python:3.12
+# currently pinned to uv 0.6, new members will have to update
+COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /uvx /bin/ 
 
 WORKDIR /app
 
-COPY hiss /app
+# Enable bytecode compilation
+ENV UV_COMPILE_BYTECODE=1
 
-RUN python3 -m pip install -r requirements.txt
+# Copy from the cache instead of linking since it's a mounted volume ENV UV_LINK_MODE=copy
 
-RUN python3 manage.py collectstatic --no-input
+# Install the project's dependencies using the lockfile and settings
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-dev
 
-CMD gunicorn -b :$PORT hiss.wsgi:application  --log-file=- --capture-output --log-level=debug
+ADD . /app
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
+
+# Place executables in the environment at the front of the path
+ENV PATH="/app/.venv/bin:$PATH"
+
+WORKDIR "hiss"
+
+RUN python manage.py collectstatic --no-input
+
+RUN python manage.py migrate
+
+ENTRYPOINT []
+
+# CMD ["gunicorn", "-b", ":8000", "hiss.wsgi:application", "--log-file=-", "--capture-output", "--log-level=debug"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "hiss.wsgi:application"]
