@@ -77,7 +77,7 @@ target-version = "py312"
 # Allow autofixing for common issues
 fix = true
 
-unfixable = ["F401"]  # Prevents autofixing of unused imports
+lint.unfixable = ["F401"]  # Prevents autofixing of unused imports
 
 [tool.ruff.lint]
 select = [
@@ -89,7 +89,7 @@ select = [
   "D", # pydocstyle
   "UP", # pyupgrade (make upgrading python version easier by automating syntax changes)
   "ASYNC", # flake8-async
-  "TRIO", # flake8-trio
+  "AYNC1", # flake8-trio
   "S", # flake8-bandit
   "B", # flake8-bugbear
   "A", # flake8-builtins
