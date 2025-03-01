@@ -6,7 +6,6 @@ from django.urls import reverse_lazy
 from shared import test_case
 from user.models import User
 
-
 URL_REGEX = r"(?P<url>https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))"
 
 

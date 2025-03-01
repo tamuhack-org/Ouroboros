@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.core.management import call_command
 from django.utils import timezone
 
-from application.models import Application, STATUS_EXPIRED, STATUS_ADMITTED
+from application.models import STATUS_ADMITTED, STATUS_EXPIRED, Application
 from shared import test_case
 
 

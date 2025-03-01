@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.sites import shortcuts as site_shortcuts
 from django.contrib.sites.requests import RequestSite
 from django.http import HttpResponse
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
@@ -75,13 +75,11 @@ class ActivateView(views.View):
             user.save()
             login(request, user)
             return redirect(reverse_lazy("status"))
-        else:
-            return HttpResponse("Activation link is invalid.")
+        return HttpResponse("Activation link is invalid.")
 
 
 class PlaceholderPasswordResetView(auth_views.PasswordResetView):
-    """
-    Uses PlaceholderPasswordResetForm instead of default PasswordResetForm.
+    """Uses PlaceholderPasswordResetForm instead of default PasswordResetForm.
     """
 
     form_class = customauth_forms.PlaceholderPasswordResetForm
@@ -96,8 +94,7 @@ class PlaceholderPasswordResetView(auth_views.PasswordResetView):
 
 
 class PlaceholderPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
-    """
-    Uses PlaceholderSetPasswordForm instead of default SetPasswordForm.
+    """Uses PlaceholderSetPasswordForm instead of default SetPasswordForm.
     """
 
     template_name = "registration/password_reset_confirm.html"

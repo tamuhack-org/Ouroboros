@@ -10,8 +10,7 @@ from rest_framework.authtoken.models import Token
 
 
 class EmailUserManager(auth_models.UserManager):
-    """
-    An implementation of the UserManager that looks up based on email instead of based on username.
+    """An implementation of the UserManager that looks up based on email instead of based on username.
     """
 
     def _create_user(self, email, password, **extra_fields):  # pylint: disable=W0221
@@ -38,8 +37,7 @@ class EmailUserManager(auth_models.UserManager):
 
 
 class User(auth_models.AbstractUser):
-    """
-    A representation of a user within the registration system. Users are uniquely identified by their email,
+    """A representation of a user within the registration system. Users are uniquely identified by their email,
     and are inactive until they confirm their email.
     """
 
@@ -82,8 +80,7 @@ class User(auth_models.AbstractUser):
 def create_auth_token(
     sender, instance: User = None, created: bool = False, **kwargs
 ) -> None:
-    """
-    Using Django's model signals (https://docs.djangoproject.com/en/2.2/topics/signals/), creates a new Django Rest
+    """Using Django's model signals (https://docs.djangoproject.com/en/2.2/topics/signals/), creates a new Django Rest
     Framework Token for a newly-created user, for later use with Django Rest Framework's TokenAuthentication.
     See https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication for more details.
     :param sender: The class that triggered this receiver (in this case, our User class)

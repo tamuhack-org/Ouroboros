@@ -1,23 +1,20 @@
 import json
-from io import BytesIO
 import os
+from io import BytesIO
 
 import pyqrcode
+import requests
 from django.conf import settings
 from django.core import mail
 from django.template.loader import render_to_string
 from django.utils import html
 
-from application.models import Application
 from application.apple_wallet import get_apple_wallet_pass_url
-
-
-import requests
+from application.models import Application
 
 
 def send_creation_email(app: Application) -> None:
-    """
-    Sends an email to the user informing them of their newly-created app.
+    """Sends an email to the user informing them of their newly-created app.
     :param app: The user's newly-created application
     :return: None
     """
@@ -35,13 +32,11 @@ def send_creation_email(app: Application) -> None:
 
 
 def send_confirmation_email(app: Application) -> None:
-    """
-    Sends a confirmation email to a user, which contains their QR code as well as additional event information.
+    """Sends a confirmation email to a user, which contains their QR code as well as additional event information.
     :param app: The user's application
     :type app: Application
     :return: None
     """
-
     subject = f"{settings.EVENT_NAME}: Important Day-of Information!"
     # subject = f"{settings.EVENT_NAME}: Thanks for RSVP'ing!"
     email_template = "application/emails/confirmed.html"

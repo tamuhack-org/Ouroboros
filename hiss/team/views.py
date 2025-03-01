@@ -6,17 +6,15 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
+from application.models import Application
 from shared import mixins as shared_mixins
-
 from team.forms import CreateTeamForm, JoinTeamForm
 from team.models import Team
 from user.models import User
-from application.models import Application
 
 
 class CreateTeamView(shared_mixins.UserHasNoTeamMixin, generic.CreateView):
-    """
-    If the user has applied, creates a Team and adds the User to it.
+    """If the user has applied, creates a Team and adds the User to it.
     """
 
     form_class = CreateTeamForm
@@ -45,8 +43,7 @@ class CreateTeamView(shared_mixins.UserHasNoTeamMixin, generic.CreateView):
 
 
 class JoinTeamView(shared_mixins.UserHasNoTeamMixin, generic.FormView):
-    """
-    Adds the user to a team (if the team isn't already at capacity).
+    """Adds the user to a team (if the team isn't already at capacity).
     """
 
     form_class = JoinTeamForm
@@ -63,7 +60,7 @@ class JoinTeamView(shared_mixins.UserHasNoTeamMixin, generic.FormView):
         return self.request.user.team.get_absolute_url()
 
     def form_valid(self, form: JoinTeamForm):
-        team: Optional[Team] = Team.objects.filter(id=form.cleaned_data["id"]).first()
+        team: Team | None = Team.objects.filter(id=form.cleaned_data["id"]).first()
         if not team:
             form.add_error(None, "No such team exists.")
             return self.form_invalid(form)
@@ -83,8 +80,7 @@ class JoinTeamView(shared_mixins.UserHasNoTeamMixin, generic.FormView):
 
 
 class DetailTeamView(shared_mixins.UserHasTeamMixin, generic.DetailView):
-    """
-    Renders a Team if the User is a member.
+    """Renders a Team if the User is a member.
     """
 
     model = Team
@@ -121,8 +117,7 @@ class DetailTeamView(shared_mixins.UserHasTeamMixin, generic.DetailView):
 
 
 class LeaveTeamView(shared_mixins.LoginRequiredAndAppliedMixin, generic.base.View):
-    """
-    Removes a User from a Team. If the Team no longer has members, deletes the Team.
+    """Removes a User from a Team. If the Team no longer has members, deletes the Team.
     """
 
     def post(self, request: HttpRequest, *_args, **_kwargs):

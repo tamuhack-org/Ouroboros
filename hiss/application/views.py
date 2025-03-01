@@ -10,17 +10,16 @@ from django.views import generic
 from application.emails import send_confirmation_email, send_creation_email
 from application.forms import ApplicationModelForm
 from application.models import (
-    Application,
-    Wave,
+    STATUS_ADMITTED,
     STATUS_CONFIRMED,
     STATUS_DECLINED,
-    STATUS_ADMITTED,
+    Application,
+    Wave,
 )
 
 
 class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
-    """
-    Creates a new Application and links it to a User if one doesn't already exist and the User's not already
+    """Creates a new Application and links it to a User if one doesn't already exist and the User's not already
     applied to be a volunteer.
     """
 
@@ -49,7 +48,7 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
             print("calling send_creation_email")
             send_creation_email(application)
             print("done with form_valid; sending redirect", flush=True)
-            
+
         except Exception as e:
             print(f"Exception: {e}", flush=True)
             raise e
@@ -57,8 +56,7 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
 
 
 class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
-    """
-    Updates a linked Application. Updating an Application does not change the Wave it was originally submitted
+    """Updates a linked Application. Updating an Application does not change the Wave it was originally submitted
     during.
     """
 
@@ -73,8 +71,7 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
         return context
 
     def get_object(self, queryset: QuerySet = None) -> Application:
-        """
-        Checks to make sure that the user actually owns the application requested.
+        """Checks to make sure that the user actually owns the application requested.
         """
         app: Application = super().get_object()
         if self.request.user.is_superuser:
@@ -85,8 +82,7 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
 
 
 class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
-    """
-    Changes an application's status from STATUS_ADMITTED to STATUS_CONFIRMED
+    """Changes an application's status from STATUS_ADMITTED to STATUS_CONFIRMED
     """
 
     def post(self, request: HttpRequest, *args, **kwargs):
@@ -110,8 +106,7 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
 
 
 class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
-    """
-    Changes an application's status from STATUS_ADMITTED to STATUS_DECLINED
+    """Changes an application's status from STATUS_ADMITTED to STATUS_DECLINED
     """
 
     def post(self, request: HttpRequest, *args, **kwargs):

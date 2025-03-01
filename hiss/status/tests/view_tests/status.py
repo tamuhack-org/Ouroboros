@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 
 from application import models as application_models
-from application.models import Wave, Application
+from application.models import Application, Wave
 from shared import test_case
 from team.models import Team
 

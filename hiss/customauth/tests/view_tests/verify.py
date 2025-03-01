@@ -48,8 +48,7 @@ class EmailVerificationTestCase(test_case.SharedTestCase):
         self.assertTrue(user.is_active)
 
     def test_signout_removes_user(self):
-        """
-        Verify if user is removed during logout.
+        """Verify if user is removed during logout.
         """
         request = self.client.post(reverse_lazy("customauth:signup"), self.fields)
         user = User.objects.get(email=self.email)

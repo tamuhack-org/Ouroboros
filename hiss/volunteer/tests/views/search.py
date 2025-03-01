@@ -13,7 +13,7 @@ class UserSearchViewTestCase(TokenAuthTestCase):
 
     def create_application(self):
         self.assertIsNotNone(
-            getattr(self, "wave1"),
+            self.wave1,
             "A wave must be created before calling create_application",
         )
         Application.objects.create(**self.application_fields, wave=self.wave1)

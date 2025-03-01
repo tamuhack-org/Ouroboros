@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 
 from application.models import STATUS_CHECKED_IN, Application, DietaryRestriction
-from volunteer.models import FoodEvent, BREAKFAST
+from volunteer.models import BREAKFAST, FoodEvent
 from volunteer.tests.test_case import TokenAuthTestCase
 from volunteer.views import USER_NOT_CHECKED_IN_MSG
 

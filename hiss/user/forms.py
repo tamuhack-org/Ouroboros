@@ -1,6 +1,6 @@
 from django import forms
-from django.contrib.auth import get_user_model
 from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 
 # The following code is taken from https://stackoverflow.com/a/39648244

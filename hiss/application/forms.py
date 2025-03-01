@@ -1,15 +1,14 @@
 import ast
 import json
 
+from address.forms import AddressField
 from django import forms
 from django.conf import settings
+from django.db.models import Case, IntegerField, When
 from django.utils.safestring import mark_safe
-from django.db.models import Case, When, IntegerField
 
 from application import models as application_models
 from application.models import School
-
-from address.forms import AddressField
 
 
 class ApplicationModelForm(forms.ModelForm):
@@ -282,8 +281,7 @@ class ApplicationModelForm(forms.ModelForm):
                 self.fields[field_name].widget.attrs["disabled"] = "disabled"
 
     def is_valid(self) -> bool:
-        """
-        Checks to ensure that a wave is currently active.
+        """Checks to ensure that a wave is currently active.
         """
         if not application_models.Wave.objects.active_wave():
             self.add_error(
