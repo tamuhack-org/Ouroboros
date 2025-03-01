@@ -77,9 +77,9 @@ target-version = "py312"
 # Allow autofixing for common issues
 fix = true
 
-lint.unfixable = ["F401"]  # Prevents autofixing of unused imports
 
 [tool.ruff.lint]
+unfixable = ["F401"]  # Prevents autofixing of unused imports
 select = [
   "F", # pyflakes
   "E", # pycodestyle error rules
