@@ -89,7 +89,7 @@ select = [
   "D", # pydocstyle
   "UP", # pyupgrade (make upgrading python version easier by automating syntax changes)
   "ASYNC", # flake8-async
-  "AYNC1", # flake8-trio
+  "ASYNC1", # flake8-trio
   "S", # flake8-bandit
   "B", # flake8-bugbear
   "A", # flake8-builtins
