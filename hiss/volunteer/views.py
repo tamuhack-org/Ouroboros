@@ -101,26 +101,6 @@ class CheckinHackerView(views.APIView):
         return response.Response(status=status.HTTP_200_OK)
 
 
-class ListDietaryRestrictionsView(views.APIView):
-    """Lists all of the available DietaryRestrictions
-    """
-
-    permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
-    ]
-    authentication_classes = [authentication.TokenAuthentication]
-
-    def get(self, request: Request):
-        return JsonResponse(
-            {
-                "dietary_restrictions": [
-                    {"id": r.pk, "name": r.name}
-                    for r in DietaryRestriction.objects.all()
-                ]
-            }
-        )
-
-
 class CreateFoodEventView(views.APIView):
     permission_classes = [
         permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
@@ -226,62 +206,3 @@ class CreateWorkshopEventView(views.APIView):
         WorkshopEvent.objects.create(user=application.user)
         return response.Response(status=status.HTTP_200_OK)
 
-
-class SearchView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
-    ]
-    authentication_classes = [authentication.TokenAuthentication]
-
-    def get(self, request: Request, *args, **kwargs):
-        """Performs a simple regex search for a matching application based on the user's first and last name. Creates a
-        new temporary column called "full_name" which is just "<FIRST_NAME> <LAST_NAME>", and then regex-searches the
-        query against the column, and returns all matches.
-        """
-        query = request.GET.get("q")
-        matches = list(
-            Application.objects.annotate(
-                full_name=Concat("first_name", Value(" "), "last_name")
-            )
-            .filter(full_name__icontains=query)
-            .values("first_name", "last_name", email=F("user__email"))
-        )
-        return JsonResponse({"results": matches})
-
-
-class UserSummaryView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
-    ]
-    authentication_classes = [authentication.TokenAuthentication]
-
-    def get(self, request: Request, *args, **kwargs):
-        """Compiles a summary about a specific user, given their email, and returns that summary as JSON. If the request
-        is malformed (i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status
-        code. if successful, returns a response with status 200.
-        """
-        user_email = request.GET.get("email")
-
-        user = get_object_or_404(get_user_model(), email=user_email)
-        application: Application = get_object_or_404(
-            Application, user__email=user_email
-        )
-
-        food_events = FoodEvent.objects.filter(user=user)
-        workshop_events = WorkshopEvent.objects.filter(user=user)
-        checked_in = application.status == STATUS_CHECKED_IN
-
-        return JsonResponse(
-            {
-                "num_breakfast": food_events.filter(meal=BREAKFAST).count(),
-                "num_lunch": food_events.filter(meal=LUNCH).count(),
-                "num_dinner": food_events.filter(meal=DINNER).count(),
-                "num_midnight_snack": food_events.filter(meal=MIDNIGHT_SNACK).count(),
-                "num_breakfast_2": food_events.filter(meal=BREAKFAST_2).count(),
-                "num_lunch_2": food_events.filter(meal=LUNCH_2).count(),
-                "num_workshops": workshop_events.count(),
-                "checked_in": checked_in,
-                "status": application.status,
-                "dietary_restrictions": application.dietary_restrictions
-            }
-        )
