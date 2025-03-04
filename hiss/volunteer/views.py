@@ -25,13 +25,13 @@ class EmailObtainAuthToken(views.ObtainAuthToken):
     serializer_class = EmailAuthTokenSerializer
 
 
-class VerifyAuthenticated(views.APIView):
+class VerifyAuthenticatedView(views.APIView):
     permission_classes = [
         permissions.IsAuthenticated & permissions.IsAdminUser
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def post(self, request: Request, format: str = None):
+    def get(self, request: Request, format: str = None):
         """See if a user's token is valid and if they are authorized to use the API.
         This is a certified workaround-because-i-need-auth-but-i-don't-want-to-learn-django moment.
         Love, Naveen <3
@@ -124,10 +124,9 @@ class CreateFoodEventView(views.APIView):
         """
         user_email = request.data.get("email", None)
         meal = request.data.get("meal", None)
-        restrictions = request.data.get("restrictions", None)
 
         # Ensure that all required parameters are present
-        if not (user_email and meal and restrictions):
+        if not (user_email and meal):
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
         application: Application = get_object_or_404(
