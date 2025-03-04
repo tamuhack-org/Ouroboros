@@ -7,7 +7,7 @@ from rest_framework import authentication, permissions, response, status
 from rest_framework.authtoken import views
 from rest_framework.request import Request
 
-from application.models import STATUS_CHECKED_IN, Application, DietaryRestriction
+from application.models import STATUS_CHECKED_IN, Application
 from volunteer.models import (
     BREAKFAST,
     BREAKFAST_2,
