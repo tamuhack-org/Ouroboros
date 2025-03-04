@@ -1,6 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.db.models import F, Value
-from django.db.models.functions import Concat
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import authentication, permissions, response, status
@@ -8,16 +6,7 @@ from rest_framework.authtoken import views
 from rest_framework.request import Request
 
 from application.models import STATUS_CHECKED_IN, Application
-from volunteer.models import (
-    BREAKFAST,
-    BREAKFAST_2,
-    DINNER,
-    LUNCH,
-    LUNCH_2,
-    MIDNIGHT_SNACK,
-    FoodEvent,
-    WorkshopEvent,
-)
+from volunteer.models import FoodEvent, WorkshopEvent
 from volunteer.serializers import EmailAuthTokenSerializer
 
 USER_NOT_CHECKED_IN_MSG = (
