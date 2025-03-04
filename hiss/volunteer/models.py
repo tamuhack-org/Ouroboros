@@ -1,4 +1,4 @@
-from django.conf import settings
+from django.conf import settings  # noqa: I001
 from django.db import models
 
 

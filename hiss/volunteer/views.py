@@ -26,9 +26,7 @@ class EmailObtainAuthToken(views.ObtainAuthToken):
 
 
 class VerifyAuthenticatedView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & permissions.IsAdminUser
-    ]
+    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
 
     def get(self, request: Request, format: str = None):
@@ -40,16 +38,14 @@ class VerifyAuthenticatedView(views.APIView):
             200 if the user is logged in and is authorized
             401 if the user is not logged in (i.e. the token is invalid or missing)
             403 if the user is logged in (token is valid) but is not authorized
-        
+
         BTW these requests expect the "Authorization" header to be set to "Token <token>"
         """
         return response.Response(status=status.HTTP_200_OK)
 
 
 class CheckinHackerView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & permissions.IsAdminUser
-    ]
+    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
 
     def get(self, request: Request, format: str = None):
@@ -64,12 +60,14 @@ class CheckinHackerView(views.APIView):
         application: Application = get_object_or_404(
             Application, user__email=user_email
         )
-        return JsonResponse({
-            "checkinStatus": application.status,
-            "wares": application.wares if application.wares else "None",
-            "first_name": application.first_name,
-            "last_name": application.last_name,
-        })
+        return JsonResponse(
+            {
+                "checkinStatus": application.status,
+                "wares": application.wares if application.wares else "None",
+                "first_name": application.first_name,
+                "last_name": application.last_name,
+            }
+        )
 
     def post(self, request: Request, format: str = None):
         """Sets a specific user's Application status as STATUS_CHECKED_IN (indicating that a user has successfully
@@ -90,9 +88,7 @@ class CheckinHackerView(views.APIView):
 
 
 class CreateFoodEventView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & permissions.IsAdminUser
-    ]
+    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
 
     def get(self, request: Request, format: str = None):
@@ -111,11 +107,13 @@ class CreateFoodEventView(views.APIView):
         # Just a list of the "meal" fields for all FoodEvents
         meal_codes = [event.meal for event in food_events]
 
-        return JsonResponse({
-            "mealScans": meal_codes,
-            "dietaryRestrictions": application.dietary_restrictions,
-            "mealGroup": application.meal_group,
-            })
+        return JsonResponse(
+            {
+                "mealScans": meal_codes,
+                "dietaryRestrictions": application.dietary_restrictions,
+                "mealGroup": application.meal_group,
+            }
+        )
 
     def post(self, request: Request, format: str = None):
         """Creates a new FoodEvent (indicating that a user has taken food for this meal). If the request is malformed (
@@ -146,9 +144,7 @@ class CreateFoodEventView(views.APIView):
 
 
 class CreateWorkshopEventView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & permissions.IsAdminUser
-    ]
+    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
 
     def get(self, request: Request, format: str = None):
@@ -166,7 +162,6 @@ class CreateWorkshopEventView(views.APIView):
             last_workshop_event = workshop_events.latest("timestamp")
             return JsonResponse({"lastWorkshopScan": last_workshop_event.timestamp})
         return JsonResponse({"lastWorkshopScan": None})
-        
 
     def post(self, request: Request, format: str = None):
         """Creates a new WorkshopEvent (indicating that a user has attended a workshop). If the request is malformed (
@@ -192,4 +187,3 @@ class CreateWorkshopEventView(views.APIView):
 
         WorkshopEvent.objects.create(user=application.user)
         return response.Response(status=status.HTTP_200_OK)
-
