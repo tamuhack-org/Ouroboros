@@ -18,7 +18,6 @@ from volunteer.models import (
     FoodEvent,
     WorkshopEvent,
 )
-from volunteer.permissions import IsVolunteer
 from volunteer.serializers import EmailAuthTokenSerializer
 
 USER_NOT_CHECKED_IN_MSG = (
@@ -39,7 +38,7 @@ class EmailObtainAuthToken(views.ObtainAuthToken):
 
 class VerifyAuthenticated(views.APIView):
     permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
+        permissions.IsAuthenticated & permissions.IsAdminUser
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
@@ -60,7 +59,7 @@ class VerifyAuthenticated(views.APIView):
 
 class CheckinHackerView(views.APIView):
     permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
+        permissions.IsAuthenticated & permissions.IsAdminUser
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
@@ -103,7 +102,7 @@ class CheckinHackerView(views.APIView):
 
 class CreateFoodEventView(views.APIView):
     permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
+        permissions.IsAuthenticated & permissions.IsAdminUser
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
@@ -160,7 +159,7 @@ class CreateFoodEventView(views.APIView):
 
 class CreateWorkshopEventView(views.APIView):
     permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
+        permissions.IsAuthenticated & permissions.IsAdminUser
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
