@@ -12,9 +12,54 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
         super().setUp()
         self.data_dict = {
             "email": self.email,
-            "restrictions": [DietaryRestriction.objects.first().pk],
             "meal": BREAKFAST,
         }
+
+    ### GET tests ###
+
+    def test_get_fails_for_regular_user(self):
+        self.create_active_wave()
+        regular_user_token = self.get_token(self.email, self.password)
+
+        response = self.client.get(
+            reverse_lazy("volunteer:workshops"), data=self.data_dict, HTTP_AUTHORIZATION=regular_user_token
+        )
+
+        self.assertEqual(response.status_code, 403)
+    
+    def test_get_succeeds_for_volunteer(self):
+        self.create_active_wave()
+        app = Application.objects.create(**self.application_fields, wave=self.wave1, status=STATUS_CHECKED_IN)
+        volunteer_token = self.get_volunteer_token()
+
+        expected_output = {
+            "dietary_restrictions": "[Vegan, Vegetarian]",
+            "mealGroup": "B",
+            "mealScans": [BREAKFAST],
+        }
+
+        app.dietary_restrictions = expected_output["dietary_restrictions"]
+        app.meal_group = expected_output["mealGroup"]
+        app.save()
+
+
+        self.client.post(
+            reverse_lazy("volunteer:food"),
+            data=self.data_dict,
+            HTTP_AUTHORIZATION=volunteer_token,
+        )
+
+
+        response = self.client.get(
+            reverse_lazy("volunteer:food"), data=self.data_dict, HTTP_AUTHORIZATION=volunteer_token
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), expected_output)
+    
+    
+
+    ### POST tests ###
 
     def test_post_fails_for_regular_user(self):
         self.create_active_wave()
