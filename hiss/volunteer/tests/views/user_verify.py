@@ -1,9 +1,6 @@
 from django.urls import reverse_lazy
 
-from application.models import STATUS_CHECKED_IN, Application
-from volunteer.models import WorkshopEvent
 from volunteer.tests.test_case import TokenAuthTestCase
-from volunteer.views import USER_NOT_CHECKED_IN_MSG
 
 
 class VerifyAuthenticatedViewTestCase(TokenAuthTestCase):
