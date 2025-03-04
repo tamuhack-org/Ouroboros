@@ -64,6 +64,25 @@ class CheckinHackerView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
+    def get(self, request: Request, format: str = None):
+        """Returns the checkin status of a specific user. If the request is malformed (i.e. missing the user's email),
+        returns a Django Rest Framework Response with a 400 status code. if successful, returns a response with status
+        200.
+        """
+        user_email = request.GET.get("email", None)
+        if not user_email:
+            # The hacker's email was not provided in the request body, we can't do anything.
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        application: Application = get_object_or_404(
+            Application, user__email=user_email
+        )
+        return JsonResponse({
+            "checkinStatus": application.status,
+            "wares": application.wares if application.wares else "None",
+            "first_name": application.first_name,
+            "last_name": application.last_name,
+        })
+
     def post(self, request: Request, format: str = None):
         """Sets a specific user's Application status as STATUS_CHECKED_IN (indicating that a user has successfully
         checked into the event). If the request is malformed (i.e. missing the user's email), returns a Django Rest
@@ -108,6 +127,28 @@ class CreateFoodEventView(views.APIView):
     ]
     authentication_classes = [authentication.TokenAuthentication]
 
+    def get(self, request: Request, format: str = None):
+        """Returns a list of all FoodEvents belonging to a specific user. If the request is malformed (i.e. missing the
+        user's email), returns a Django Rest Framework Response with a 400 status code. if successful, returns a response
+        with status 200.
+        """
+        user_email = request.GET.get("email", None)
+        if not user_email:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
+        user = get_object_or_404(get_user_model(), email=user_email)
+        application = get_object_or_404(Application, user__email=user_email)
+
+        food_events = FoodEvent.objects.filter(user=user)
+        # Just a list of the "meal" fields for all FoodEvents
+        meal_codes = [event.meal for event in food_events]
+
+        return JsonResponse({
+            "mealScans": meal_codes,
+            "dietaryRestrictions": application.dietary_restrictions,
+            "mealGroup": application.meal_group,
+            })
+
     def post(self, request: Request, format: str = None):
         """Creates a new FoodEvent (indicating that a user has taken food for this meal). If the request is malformed (
         i.e. missing the user's email, meal type, or restrictions), returns a Django Rest Framework Response with a
@@ -142,6 +183,23 @@ class CreateWorkshopEventView(views.APIView):
         permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
     ]
     authentication_classes = [authentication.TokenAuthentication]
+
+    def get(self, request: Request, format: str = None):
+        """Returns the time of most recent workshop event for a specific user. If the request is malformed (i.e. missing
+        the user's email), returns a Django Rest Framework Response with a 400 status code. if successful, returns a
+        response with status 200.
+        """
+        user_email = request.GET.get("email", None)
+        if not user_email:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
+        user = get_object_or_404(get_user_model(), email=user_email)
+        workshop_events = WorkshopEvent.objects.filter(user=user)
+        if workshop_events:
+            last_workshop_event = workshop_events.latest("timestamp")
+            return JsonResponse({"lastWorkshopScan": last_workshop_event.timestamp})
+        return JsonResponse({"lastWorkshopScan": None})
+        
 
     def post(self, request: Request, format: str = None):
         """Creates a new WorkshopEvent (indicating that a user has attended a workshop). If the request is malformed (

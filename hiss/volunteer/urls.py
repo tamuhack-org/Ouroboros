@@ -2,6 +2,8 @@ from django.urls import path
 
 from volunteer import views
 
+# https://register.tamuhack.com/api/volunteer/<urlpath>
+
 app_name = "volunteer"
 urlpatterns = [
     path("login", views.EmailObtainAuthToken.as_view(), name="login"),
