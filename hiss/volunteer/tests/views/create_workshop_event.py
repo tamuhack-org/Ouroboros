@@ -15,7 +15,7 @@ class CreateWorkshopEventViewTestCase(TokenAuthTestCase):
     
     ### GET tests ###
 
-    POSTGRES_TIMESTAMPTZ_REGEX = re.compile(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{6}\+00")
+    POSTGRES_TIMESTAMPTZ_REGEX = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$")
 
     def test_get_fails_for_regular_user(self):
         self.create_active_wave()
