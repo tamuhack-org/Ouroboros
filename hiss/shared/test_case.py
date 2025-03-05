@@ -67,7 +67,6 @@ class SharedTestCase(test.TestCase):
             "race_other": "",  # Defaults to empty if no self-description is given
             "has_team": application_models.HAS_TEAM,
             "wants_team": "Friend",  # Default value for how the user heard about the event
-            # "technology_experience": constants.TECHNOLOGY_EXPERIENCE[0][0],
             "extra_links": "A",
             "question1": "B",
             "is_adult": True,
@@ -81,8 +80,6 @@ class SharedTestCase(test.TestCase):
             "tamu_email": "",  # Default empty unless provided
             "major_other": "",  # Default empty unless provided
             "meal_group": "E",  # Defaults to None unless assigned
-            # "dietary_restrictions": constants.DIETARY_RESTRICTIONS[0][0],  # Default to "None"
-            "status": application_models.STATUS_PENDING,
             "wares": application_models.WARECHOICE[0][0],  # Default to "Software"
             "notes": "",  # Defaults to empty unless set
             "emergency_contact_name": "John Doe",  # Placeholder

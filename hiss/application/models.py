@@ -558,11 +558,12 @@ class Application(models.Model):
         "Emergency Contact Email", max_length=255, blank=False
     )
 
-    dietary_restrictions = MultiSelectField(choices=constants.DIETARY_RESTRICTIONS, blank=True)
+    dietary_restrictions = models.CharField(
+        "Do you have any dietary restrictions?", max_length=255, blank=True)
     meal_group = models.CharField(max_length=255, null=True, blank=True, default=None)
 
 
-    technology_experience = MultiSelectField(choices=constants.TECHNOLOGY_EXPERIENCE, blank=True)
+    technology_experience = models.CharField("What technology do you have experience with?", max_length=255, blank=True)
 
     # TEAM MATCHING INFO
     has_team = models.CharField(
