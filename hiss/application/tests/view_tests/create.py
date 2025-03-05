@@ -4,10 +4,10 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy
 
 from application.models import Application
-from shared import test_case
+from shared.test_case import SharedTestCase
 
 
-class CreateApplicationViewTestCase(test_case.SharedTestCase):
+class CreateApplicationViewTestCase(SharedTestCase):
     def test_requires_login(self) -> None:
         response: HttpResponse = self.client.get(reverse_lazy("application:create"))
 
