@@ -147,10 +147,6 @@ CLASSIFICATIONS: list[tuple[str, str]] = [
 ]
 
 
-class DietaryRestriction(models.Model):
-    name = models.CharField(max_length=255)
-
-
 HACKATHONS_0 = "0"
 HACKATHONS_1 = "1"
 HACKATHONS_2_TO_3 = "2-3"

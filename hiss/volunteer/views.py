@@ -1,24 +1,12 @@
 from django.contrib.auth import get_user_model
-from django.db.models import F, Value
-from django.db.models.functions import Concat
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import authentication, permissions, response, status
 from rest_framework.authtoken import views
 from rest_framework.request import Request
 
-from application.models import STATUS_CHECKED_IN, Application, DietaryRestriction
-from volunteer.models import (
-    BREAKFAST,
-    BREAKFAST_2,
-    DINNER,
-    LUNCH,
-    LUNCH_2,
-    MIDNIGHT_SNACK,
-    FoodEvent,
-    WorkshopEvent,
-)
-from volunteer.permissions import IsVolunteer
+from application.models import STATUS_CHECKED_IN, Application
+from volunteer.models import FoodEvent, WorkshopEvent
 from volunteer.serializers import EmailAuthTokenSerializer
 
 USER_NOT_CHECKED_IN_MSG = (
@@ -37,13 +25,11 @@ class EmailObtainAuthToken(views.ObtainAuthToken):
     serializer_class = EmailAuthTokenSerializer
 
 
-class VerifyAuthenticated(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
-    ]
+class VerifyAuthenticatedView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def post(self, request: Request, format: str = None):
+    def get(self, request: Request, format: str = None):
         """See if a user's token is valid and if they are authorized to use the API.
         This is a certified workaround-because-i-need-auth-but-i-don't-want-to-learn-django moment.
         Love, Naveen <3
@@ -52,17 +38,36 @@ class VerifyAuthenticated(views.APIView):
             200 if the user is logged in and is authorized
             401 if the user is not logged in (i.e. the token is invalid or missing)
             403 if the user is logged in (token is valid) but is not authorized
-        
+
         BTW these requests expect the "Authorization" header to be set to "Token <token>"
         """
         return response.Response(status=status.HTTP_200_OK)
 
 
 class CheckinHackerView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
-    ]
+    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
+
+    def get(self, request: Request, format: str = None):
+        """Returns the checkin status of a specific user. If the request is malformed (i.e. missing the user's email),
+        returns a Django Rest Framework Response with a 400 status code. if successful, returns a response with status
+        200.
+        """
+        user_email = request.GET.get("email", None)
+        if not user_email:
+            # The hacker's email was not provided in the request body, we can't do anything.
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        application: Application = get_object_or_404(
+            Application, user__email=user_email
+        )
+        return JsonResponse(
+            {
+                "checkinStatus": application.status,
+                "wares": application.wares if application.wares else "None",
+                "first_name": application.first_name,
+                "last_name": application.last_name,
+            }
+        )
 
     def post(self, request: Request, format: str = None):
         """Sets a specific user's Application status as STATUS_CHECKED_IN (indicating that a user has successfully
@@ -82,31 +87,33 @@ class CheckinHackerView(views.APIView):
         return response.Response(status=status.HTTP_200_OK)
 
 
-class ListDietaryRestrictionsView(views.APIView):
-    """Lists all of the available DietaryRestrictions
-    """
-
-    permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
-    ]
+class CreateFoodEventView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def get(self, request: Request):
+    def get(self, request: Request, format: str = None):
+        """Returns a list of all FoodEvents belonging to a specific user. If the request is malformed (i.e. missing the
+        user's email), returns a Django Rest Framework Response with a 400 status code. if successful, returns a response
+        with status 200.
+        """
+        user_email = request.GET.get("email", None)
+        if not user_email:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
+        user = get_object_or_404(get_user_model(), email=user_email)
+        application = get_object_or_404(Application, user__email=user_email)
+
+        food_events = FoodEvent.objects.filter(user=user)
+        # Just a list of the "meal" fields for all FoodEvents
+        meal_codes = [event.meal for event in food_events]
+
         return JsonResponse(
             {
-                "dietary_restrictions": [
-                    {"id": r.pk, "name": r.name}
-                    for r in DietaryRestriction.objects.all()
-                ]
+                "mealScans": meal_codes,
+                "dietaryRestrictions": application.dietary_restrictions,
+                "mealGroup": application.meal_group,
             }
         )
-
-
-class CreateFoodEventView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
-    ]
-    authentication_classes = [authentication.TokenAuthentication]
 
     def post(self, request: Request, format: str = None):
         """Creates a new FoodEvent (indicating that a user has taken food for this meal). If the request is malformed (
@@ -115,10 +122,9 @@ class CreateFoodEventView(views.APIView):
         """
         user_email = request.data.get("email", None)
         meal = request.data.get("meal", None)
-        restrictions = request.data.get("restrictions", None)
 
         # Ensure that all required parameters are present
-        if not (user_email and meal and restrictions):
+        if not (user_email and meal):
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
         application: Application = get_object_or_404(
@@ -138,10 +144,24 @@ class CreateFoodEventView(views.APIView):
 
 
 class CreateWorkshopEventView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
-    ]
+    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
+
+    def get(self, request: Request, format: str = None):
+        """Returns the time of most recent workshop event for a specific user. If the request is malformed (i.e. missing
+        the user's email), returns a Django Rest Framework Response with a 400 status code. if successful, returns a
+        response with status 200.
+        """
+        user_email = request.GET.get("email", None)
+        if not user_email:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
+        user = get_object_or_404(get_user_model(), email=user_email)
+        workshop_events = WorkshopEvent.objects.filter(user=user)
+        if workshop_events:
+            last_workshop_event = workshop_events.latest("timestamp")
+            return JsonResponse({"lastWorkshopScan": last_workshop_event.timestamp})
+        return JsonResponse({"lastWorkshopScan": None})
 
     def post(self, request: Request, format: str = None):
         """Creates a new WorkshopEvent (indicating that a user has attended a workshop). If the request is malformed (
@@ -167,63 +187,3 @@ class CreateWorkshopEventView(views.APIView):
 
         WorkshopEvent.objects.create(user=application.user)
         return response.Response(status=status.HTTP_200_OK)
-
-
-class SearchView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
-    ]
-    authentication_classes = [authentication.TokenAuthentication]
-
-    def get(self, request: Request, *args, **kwargs):
-        """Performs a simple regex search for a matching application based on the user's first and last name. Creates a
-        new temporary column called "full_name" which is just "<FIRST_NAME> <LAST_NAME>", and then regex-searches the
-        query against the column, and returns all matches.
-        """
-        query = request.GET.get("q")
-        matches = list(
-            Application.objects.annotate(
-                full_name=Concat("first_name", Value(" "), "last_name")
-            )
-            .filter(full_name__icontains=query)
-            .values("first_name", "last_name", email=F("user__email"))
-        )
-        return JsonResponse({"results": matches})
-
-
-class UserSummaryView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated & (IsVolunteer | permissions.IsAdminUser)
-    ]
-    authentication_classes = [authentication.TokenAuthentication]
-
-    def get(self, request: Request, *args, **kwargs):
-        """Compiles a summary about a specific user, given their email, and returns that summary as JSON. If the request
-        is malformed (i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status
-        code. if successful, returns a response with status 200.
-        """
-        user_email = request.GET.get("email")
-
-        user = get_object_or_404(get_user_model(), email=user_email)
-        application: Application = get_object_or_404(
-            Application, user__email=user_email
-        )
-
-        food_events = FoodEvent.objects.filter(user=user)
-        workshop_events = WorkshopEvent.objects.filter(user=user)
-        checked_in = application.status == STATUS_CHECKED_IN
-
-        return JsonResponse(
-            {
-                "num_breakfast": food_events.filter(meal=BREAKFAST).count(),
-                "num_lunch": food_events.filter(meal=LUNCH).count(),
-                "num_dinner": food_events.filter(meal=DINNER).count(),
-                "num_midnight_snack": food_events.filter(meal=MIDNIGHT_SNACK).count(),
-                "num_breakfast_2": food_events.filter(meal=BREAKFAST_2).count(),
-                "num_lunch_2": food_events.filter(meal=LUNCH_2).count(),
-                "num_workshops": workshop_events.count(),
-                "checked_in": checked_in,
-                "status": application.status,
-                "dietary_restrictions": application.dietary_restrictions
-            }
-        )

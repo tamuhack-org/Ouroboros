@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 
-from application.models import STATUS_CHECKED_IN, Application, DietaryRestriction
+from application.models import STATUS_CHECKED_IN, Application
 from volunteer.models import BREAKFAST, FoodEvent
 from volunteer.tests.test_case import TokenAuthTestCase
 from volunteer.views import USER_NOT_CHECKED_IN_MSG
@@ -8,13 +8,58 @@ from volunteer.views import USER_NOT_CHECKED_IN_MSG
 
 class CreateFoodEventViewTestCase(TokenAuthTestCase):
     def setUp(self):
-        self.dietary_restriction = DietaryRestriction.objects.create(name="dummy")
         super().setUp()
         self.data_dict = {
             "email": self.email,
-            "restrictions": [DietaryRestriction.objects.first().pk],
             "meal": BREAKFAST,
         }
+
+    ### GET tests ###
+
+    def test_get_fails_for_regular_user(self):
+        self.create_active_wave()
+        regular_user_token = self.get_token(self.email, self.password)
+
+        response = self.client.get(
+            reverse_lazy("volunteer:workshops"), data=self.data_dict, HTTP_AUTHORIZATION=regular_user_token
+        )
+
+        self.assertEqual(response.status_code, 403)
+    
+    def test_get_succeeds_for_volunteer(self):
+        self.create_active_wave()
+
+        app = Application.objects.create(**self.application_fields, wave=self.wave1, status=STATUS_CHECKED_IN)
+        volunteer_token = self.get_volunteer_token()
+
+        expected_output = {
+            "dietaryRestrictions": "[Vegan, Vegetarian]",
+            # app.save() has some logic that affects mealGroup, so we won't test it here
+            "mealScans": [BREAKFAST],
+        }
+
+        app.dietary_restrictions = expected_output["dietaryRestrictions"]
+        app.save() 
+        app.refresh_from_db()
+
+
+        self.client.post(
+            reverse_lazy("volunteer:food"),
+            data=self.data_dict,
+            HTTP_AUTHORIZATION=volunteer_token,
+        )
+
+        response = self.client.get(
+            reverse_lazy("volunteer:food"), data=self.data_dict, HTTP_AUTHORIZATION=volunteer_token
+        )
+
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertEqual(response_json["dietaryRestrictions"], expected_output["dietaryRestrictions"])
+        self.assertEqual(response_json["mealScans"], expected_output["mealScans"])
+    
+
+    ### POST tests ###
 
     def test_post_fails_for_regular_user(self):
         self.create_active_wave()
