@@ -7,10 +7,10 @@ from django.utils import timezone
 
 from application.forms import ApplicationModelForm
 from application.models import Application, Wave
-from shared import test_case
+from shared.test_case import SharedTestCase
 
 
-class UpdateApplicationViewTestCase(test_case.SharedTestCase):
+class UpdateApplicationViewTestCase(SharedTestCase):
     def test_requires_login(self) -> None:
         self.create_active_wave()
         application = Application(**self.application_fields, wave=self.wave1)
@@ -82,7 +82,7 @@ class UpdateApplicationViewTestCase(test_case.SharedTestCase):
         self.application_fields["resume"] = SimpleUploadedFile("resume2.pdf", b"dummy")
         self.application_fields["school"] = self.first_school.pk
 
-        self.client.post(
+        response = self.client.post(
             reverse_lazy("application:update", args=(application.id,)),
             data=self.application_fields,
         )

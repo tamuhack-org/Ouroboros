@@ -14,6 +14,7 @@ from multiselectfield import MultiSelectField
 
 from application.countries import COUNTRIES_TUPLES
 from application.filesize_validation import FileSizeValidator
+from application import constants
 
 s3_storage = S3Storage()
 
@@ -426,9 +427,7 @@ class Application(models.Model):
     last_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="last name"
     )
-    age = models.PositiveIntegerField(
-        max_length=5, blank=False, null=True, verbose_name="age"
-    )
+    age = models.PositiveIntegerField(blank=False, null=True, verbose_name="age")
     phone_number = models.CharField(
         max_length=13, blank=False, null=True, verbose_name="phone number"
     )
@@ -559,10 +558,11 @@ class Application(models.Model):
         "Emergency Contact Email", max_length=255, blank=False
     )
 
-    dietary_restrictions = models.CharField(max_length=5000, null=True, default=None)
+    dietary_restrictions = MultiSelectField(choices=constants.DIETARY_RESTRICTIONS, blank=True)
     meal_group = models.CharField(max_length=255, null=True, blank=True, default=None)
 
-    technology_experience = models.CharField(max_length=5000, default=None)
+
+    technology_experience = MultiSelectField(choices=constants.TECHNOLOGY_EXPERIENCE, blank=True)
 
     # TEAM MATCHING INFO
     has_team = models.CharField(
