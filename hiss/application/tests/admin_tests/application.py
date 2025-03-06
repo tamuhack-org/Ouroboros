@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib import admin
 from django.core import mail
 from django.urls import reverse_lazy
@@ -49,7 +48,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
 
         self.client.post(
             change_url,
-            {"action": "approve", admin.ACTION_CHECKBOX_NAME: [self.app.pk]},
+            {"action": "approve", "action_checkbox": [self.app.pk]},
             follow=True,
         )
 
@@ -61,7 +60,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         change_url = reverse_lazy("admin:application_application_changelist")
 
         self.client.post(
-            change_url, {"action": "approve", admin.ACTION_CHECKBOX_NAME: [self.app.pk]}
+            change_url, {"action": "approve", "action_checkbox": [self.app.pk]}
         )
 
         self.assertEqual(len(mail.outbox), 1)
@@ -72,7 +71,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
 
         self.client.post(
             change_url,
-            {"action": "reject", admin.ACTION_CHECKBOX_NAME: [self.app.pk]},
+            {"action": "reject", "action_checkbox": [self.app.pk]},
             follow=True,
         )
 
@@ -83,7 +82,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         change_url = reverse_lazy("admin:application_application_changelist")
         self.client.post(
             change_url,
-            {"action": "reject", admin.ACTION_CHECKBOX_NAME: [self.app.pk]},
+            {"action": "reject", "action_checkbox": [self.app.pk]},
             follow=True,
         )
         self.app.refresh_from_db()
@@ -96,7 +95,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
             change_url,
             {
                 "action": "export_application_emails",
-                admin.ACTION_CHECKBOX_NAME: [self.app.pk],
+                "action_checkbox": [self.app.pk],
             },
             follow=True,
         )
@@ -109,7 +108,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
             change_url,
             {
                 "action": "resend_confirmation",
-                admin.ACTION_CHECKBOX_NAME: [self.app.pk],
+                "action_checkbox": [self.app.pk],
             },
             follow=True,
         )
