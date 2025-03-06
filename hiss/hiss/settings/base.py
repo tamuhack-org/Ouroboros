@@ -126,7 +126,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
 STATIC_ROOT = "public/"
 APPEND_SLASH = True
 AUTH_USER_MODEL = "user.User"
-
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 # DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
