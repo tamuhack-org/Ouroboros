@@ -100,7 +100,8 @@ UNFOLD = {
     "SITE_TITLE": "TAMUhack",
     "SITE_HEADER": "TAMUhack",
     "SITE_SUBHEADER": "Administrator Portal",
-    "SITE_ICON": lambda request: static("th_logo.svg")
+    "SITE_ICON": lambda request: static("th_logo.svg"),
+    "BORDER_RADIUS": "6px",
 }
 
 TIME_ZONE = "America/Chicago"
