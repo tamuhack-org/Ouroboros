@@ -54,6 +54,7 @@ dependencies = [
     "tblib>=3.0.0",
     "urllib3>=2.3.0",
     "whitenoise>=6.9.0",
+    "django-unfold>=0.50.0",
 ]
 
 [dependency-groups]

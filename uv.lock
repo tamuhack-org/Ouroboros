@@ -1,5 +1,4 @@
 version = 1
-revision = 1
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -224,7 +223,7 @@ name = "django-address"
 version = "0.2.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django" },
+    { name = "setuptools" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/4f/5a/488ff3c27477da39cc469aa81b52773169f166dcdc450678913c05aece11/django-address-0.2.8.tar.gz", hash = "sha256:aa0c5b90524d4dee43162929cceb1c546f859c4a16a3fc0497a4896b7ace4236", size = 25152 }
 
@@ -320,6 +319,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d7/eb/4ec2b551a6769cb8112497c9fe5c773717622cec0862a8225bda2dfedb66/django_storages-1.14.5.tar.gz", hash = "sha256:ace80dbee311258453e30cd5cfd91096b834180ccf09bc1f4d2cb6d38d68571a", size = 85867 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a3/61/00e4bcbf55337c2633c6cddc77a15d4ea16cbe74c01c1f745ecde8feff47/django_storages-1.14.5-py3-none-any.whl", hash = "sha256:5ce9c69426f24f379821fd688442314e4aa03de87ae43183c4e16915f4c165d4", size = 32636 },
+]
+
+[[package]]
+name = "django-unfold"
+version = "0.50.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/44/7d/562150b96d7576ce58002b93d35f6d90b7e43855bab44410002e92764d07/django_unfold-0.50.0.tar.gz", hash = "sha256:a1bae37aa876d0b93aa62785b68fd34c886170fdfe9099f529fe8bd777fca3fa", size = 1019833 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/75/57/3cf842e17dec60496fcdd2bc80e23581ba74d2c24a7a7c3b7532be9a2ddd/django_unfold-0.50.0-py3-none-any.whl", hash = "sha256:b0ff65d1b1f776bd7f9be302dfa026ad4d350469eae847a5888d1db55fdce0df", size = 1106759 },
 ]
 
 [[package]]
@@ -475,6 +486,7 @@ dependencies = [
     { name = "django-phonenumber-field" },
     { name = "django-s3-storage" },
     { name = "django-storages" },
+    { name = "django-unfold" },
     { name = "djangorestframework" },
     { name = "entrypoints" },
     { name = "google-api-core" },
@@ -528,6 +540,7 @@ requires-dist = [
     { name = "django-phonenumber-field", specifier = ">=8.0.0" },
     { name = "django-s3-storage", specifier = ">=0.15.0" },
     { name = "django-storages", specifier = ">=1.14.5" },
+    { name = "django-unfold", specifier = ">=0.50.0" },
     { name = "djangorestframework", specifier = ">=3.15.2" },
     { name = "entrypoints", specifier = ">=0.4" },
     { name = "google-api-core", specifier = ">=2.24.1" },
@@ -777,6 +790,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/62/45/2323b5928f86fd29f9afdcef4659f68fa73eaa5356912b774227f5cf46b5/s3transfer-0.11.2.tar.gz", hash = "sha256:3b39185cb72f5acc77db1a58b6e25b977f28d20496b6e58d6813d75f464d632f", size = 147885 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1b/ac/e7dc469e49048dc57f62e0c555d2ee3117fa30813d2a1a2962cce3a2a82a/s3transfer-0.11.2-py3-none-any.whl", hash = "sha256:be6ecb39fadd986ef1701097771f87e4d2f821f27f6071c872143884d2950fbc", size = 84151 },
+]
+
+[[package]]
+name = "setuptools"
+version = "76.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/32/d2/7b171caf085ba0d40d8391f54e1c75a1cda9255f542becf84575cfd8a732/setuptools-76.0.0.tar.gz", hash = "sha256:43b4ee60e10b0d0ee98ad11918e114c70701bc6051662a9a675a0496c1a158f4", size = 1349387 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/37/66/d2d7e6ad554f3a7c7297c3f8ef6e22643ad3d35ef5c63bf488bc89f32f31/setuptools-76.0.0-py3-none-any.whl", hash = "sha256:199466a166ff664970d0ee145839f5582cb9bca7a0a3a2e795b6a9cb2308e9c6", size = 1236106 },
 ]
 
 [[package]]

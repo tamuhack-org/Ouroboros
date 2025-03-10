@@ -1,7 +1,7 @@
 # pylint: disable=C0330
 import csv
 from typing import List, Tuple
-
+from unfold.admin import ModelAdmin
 from address.forms import AddressWidget
 from address.models import AddressField
 from django import forms
@@ -163,7 +163,7 @@ class RaceFilter(admin.SimpleListFilter):
         return queryset
 
 
-class ApplicationAdmin(admin.ModelAdmin):
+class ApplicationAdmin(ModelAdmin):
     form = ApplicationAdminForm
     readonly_fields = [
         "datetime_submitted",
@@ -308,7 +308,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         return obj.wave.is_walk_in_wave
 
 
-class WaveAdmin(admin.ModelAdmin):
+class WaveAdmin(ModelAdmin):
     list_display = ("start", "end", "is_walk_in_wave")
 
 

@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from pathlib import Path
-
+from . import customization
 import dj_database_url
 from django.urls import reverse_lazy
+from django.templatetags.static import static
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,6 +33,7 @@ GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 
 # Application definition
 INSTALLED_APPS = [
+    "unfold",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -93,6 +95,14 @@ WSGI_APPLICATION = "hiss.wsgi.application"
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
+
+UNFOLD = {
+    "SITE_TITLE": "TAMUhack",
+    "SITE_HEADER": "TAMUhack",
+    "SITE_SUBHEADER": "Administrator Portal",
+    "SITE_ICON": lambda request: static("th_logo.svg"),
+    "SITE_LOGO": lambda request: static("th_logo.svg"),
+}
 
 TIME_ZONE = "America/Chicago"
 

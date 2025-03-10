@@ -1,5 +1,5 @@
 import csv
-
+from unfold.admin import ModelAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.db.models.query import QuerySet
@@ -38,8 +38,8 @@ class HasAppliedFilter(admin.SimpleListFilter):
         return queryset
 
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ("email", "is_active", "is_staff", "has_applied", "last_login")
+class UserAdmin(ModelAdmin):
+    list_display = ("email", "first_name", "last_name", "is_active", "is_staff", "has_applied")
     list_filter = ("is_active", "is_staff", HasAppliedFilter)
     search_fields = ("email",)
     readonly_fields = ("email", "password")
@@ -63,7 +63,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 # Create a new Group admin.
-class GroupAdmin(admin.ModelAdmin):
+class GroupAdmin(ModelAdmin):
     # Use our custom form.
     form = GroupAdminForm
     # Filter permissions horizontal as well.
