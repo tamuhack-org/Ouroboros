@@ -111,6 +111,7 @@ ASIAN_OTHER = "AS"
 BLACK = "BL"
 HISPANIC = "HI"
 NATIVE_HAWAIIAN = "NH"
+MIDDLE_EASTERN_NORTH_AFRICAN = "MENA"
 WHITE = "WH"
 RACE_OTHER = "O"
 
@@ -123,6 +124,7 @@ RACES: list[tuple[str, str]] = [
     (BLACK, "Black or African-American"),
     (HISPANIC, "Hispanic or Latino"),
     (NATIVE_HAWAIIAN, "Native Hawaiian or other Pacific Islander"),
+    (MIDDLE_EASTERN_NORTH_AFRICAN, "Middle Eastern or North African"),
     (WHITE, "White"),
     (NO_ANSWER, "Prefer not to answer"),
     (RACE_OTHER, "Prefer to self-describe"),
