@@ -131,51 +131,76 @@ UNFOLD = {
         }
     },
     "SIDEBAR": {
-        "show_search": False,  # Disable search in applications and models
-        "show_all_applications": False,  # Disable dropdown with all applications and models
+        "show_search": True,
+        "show_all_applications": True,
         "navigation": [
             {
                 "title": _("Application"),
-                "separator": True,  # Adds a top border
-                "collapsible": True,  # Allows collapsing this section
+                "separator": True,
+                "collapsible": False,
                 "items": [
                     {
                         "title": _("Applications"),
                         "icon": "apps",
-                        "link": reverse_lazy("admin:index"),  # Links to the main admin dashboard
+                        "link": reverse_lazy("admin:application_application_changelist"),
                     },
                     {
                         "title": _("Waves"),
                         "icon": "waves",
-                        "link": reverse_lazy("admin:your_app_model_changelist"),  # Replace with actual model
+                        "link": reverse_lazy("admin:application_wave_changelist"),
                     },
                 ],
             },
             {
                 "title": _("User"),
                 "separator": True,
-                "collapsible": True,
+                "collapsible": False,
                 "items": [
                     {
-                        "title": _("User"),
+                        "title": _("Users"),
                         "icon": "person",
-                        "link": reverse_lazy("admin:auth_user_changelist"),
+                        "link": reverse_lazy("admin:user_user_changelist"),
                     },
                     {
                         "title": _("Tokens"),
                         "icon": "vpn_key",
-                        "link": reverse_lazy("admin:authtoken_token_changelist"),  # Django Rest Framework Tokens
+                        "link": reverse_lazy("admin:authtoken_tokenproxy_changelist"),
                     },
                     {
                         "title": _("Groups"),
                         "icon": "group",
                         "link": reverse_lazy("admin:auth_group_changelist"),
-                    },
+                    }
                 ],
             },
-        ],
-    },
+            {
+                "title": _("Event"),
+                "separator": True,
+                "collapsible": False,
+                "items": [
+                    {
+                        "title": _("Food"),
+                        "icon": "restaurant",
+                        "link": reverse_lazy("admin:volunteer_foodevent_changelist"),
+                    },
+                    {
+                        "title": _("Workshops"),
+                        "icon": "build",
+                        "link": reverse_lazy("admin:volunteer_workshopevent_changelist"),
+                    },
+                    {
+                        "title": _("Teams"),
+                        "icon": "groups",
+                        "link": reverse_lazy("admin:team_team_changelist"),
+                    },
+                ],
+            }
 
+
+        ],
+        
+    },
+    
 
 }
 
