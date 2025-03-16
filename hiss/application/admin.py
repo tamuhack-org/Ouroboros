@@ -44,8 +44,18 @@ class ApplicationAdminForm(forms.ModelForm):
 def build_approval_email(
     application: Application, confirmation_deadline: timezone.datetime
 ) -> tuple[str, str, str, None, list[str]]:
-    """Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
-    application has been approved.
+    """Create an email data tuple indicating that a user's application has been approved.
+
+    Args:
+        application (Application): The application object containing user
+        details.
+        confirmation_deadline (timezone.datetime): The deadline for
+        the user to confirm their application.
+
+
+    Returns: tuple: A tuple containing the email subject, plain text message,
+    HTML message, from email (None), and a list of recipient email addresses.
+
     """
     subject = (
         f"ACTION REQUIRED: One last step for your {settings.EVENT_NAME} application!"
