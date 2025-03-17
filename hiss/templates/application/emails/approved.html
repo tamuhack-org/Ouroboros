@@ -1,13 +1,11 @@
 <html>
-  <div
-    style="
+<div style="
       max-width: 800px;
       background-color: #ADD8E6;
       z-index: -1;
       padding: 20px;
-    "
-  >
-  <!-- <header style='
+    ">
+    <!-- <header style='
       max-width: 500px;
       display: block;
       margin-right: auto;
@@ -18,8 +16,7 @@
       </div>
   </header> -->
 
-    <div
-      style="
+    <div style="
         font-family: Questrial, sans-serif;
         background: #fff;
         box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
@@ -29,49 +26,43 @@
         display: block;
         margin: 20px auto;
         margin-top: 0px;
-      "
-    >
+      ">
 
-      <h2 style="margin-bottom: 20px; font-size: 16px; color: #777777">
-        Congratulations, {{ first_name }}!
-      </h2>
+        <h2 style="margin-bottom: 20px; font-size: 16px; color: #777777">
+            Congratulations, {{ first_name }}!
+        </h2>
 
-      <p
-        style="
+        <p style="
           line-height: 20px;
           -webkit-font-smoothing: antialiased;
           font-weight: normal;
           color: #777777;
           margin-bottom: 20px;
-        "
-      >
-        You have been accepted to {{event_name}} {{event_year}}! We were impressed by your application and we're excited to see you  
-        <span style="color: #ADD8E6; font-weight: 700"
-        >{{ event_date_text }}.</span>
-      </p>
+        ">
+            You have been accepted to {{event_name}} {{event_year}}! We were impressed by your application and we're
+            excited to see you
+            <span style="color: #ADD8E6; font-weight: 700">{{ event_date_text }}.</span>
+        </p>
 
-      <p
-        style="
+        <p style="
           line-height: 20px;
           color: #777777;
           margin-bottom: 20px;
           
-        "
-      >
-        There's just <strong>one final step</strong> before you're good to go!
-      </p>
+        ">
+            There's just <strong>one final step</strong> before you're good to go!
+        </p>
 
-      <p
-        style="
+        <p style="
           line-height: 20px;
           color: #777777;
           margin-bottom: 20px;
-        "
-      >
-        We have some important information to share before we get started, so please use the link below to RSVP for the event if you're still intending to attend!
-      </p>
+        ">
+            We have some important information to share before we get started, so please use the link below to RSVP for
+            the event if you're still intending to attend!
+        </p>
 
-      <!--<p
+        <!--<p
       style="
         line-height: 20px;
         color: #777777;
@@ -84,31 +75,27 @@
     </p>
   -->
 
-      <a href="https://register.tamuhack.com/status/" style="cursor: pointer;">
-        <button style="cursor: pointer; padding: 15px 10px; width: 250px; background-color: #ADD8E6; border-radius: .25em; border:none; color: white; font-size: 16px;">
-          Login to RSVP
-        </button>
-      </a>
-      
-      <br />
-      <br />
+        <a href="https://register.tamuhack.com/status/" style="cursor: pointer;">
+            <button
+                style="cursor: pointer; padding: 15px 10px; width: 250px; background-color: #ADD8E6; border-radius: .25em; border:none; color: white; font-size: 16px;">
+                Login to RSVP
+            </button>
+        </a>
 
-      <p
-        style="
+        <br />
+        <br />
+
+        <p style="
           line-height: 20px;
           color: #777777;
-        "
-      >
-        In the meantime, feel free to email
-        <a href="mailto:hello@tamuhack.com" style="color: #00add8"
-          >{{ ORGANIZER_EMAIL }}</a
-        >
-        if you have any questions.
-      </p>
+        ">
+            In the meantime, feel free to email
+            <a href="mailto:hello@tamuhack.com" style="color: #00add8">{{organizer_email}}</a>
+            if you have any questions.
+        </p>
 
 
-      <h3
-        style="
+        <h3 style="
           margin-bottom: 5px;
           font-size: 16px;
           line-height: 30px;
@@ -116,14 +103,14 @@
           color: #777777;
           padding-top: 20px;
           margin-top: 20px;
-        "
-      >
-        Thanks!
-      </h3>
+        ">
+            Thanks!
+        </h3>
 
-      <strong style="color: #ADD8E6; font-size: 16px">
-        The {{ organizer_name }} Team
-      </strong>
+        <strong style="color: #ADD8E6; font-size: 16px">
+            The {{ organizer_name }} Team
+        </strong>
     </div>
-  </div>
+</div>
+
 </html>
