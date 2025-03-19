@@ -103,6 +103,7 @@ UNFOLD = {
     "SITE_SUBHEADER": "Administrator Portal",
     "SITE_ICON": lambda request: static("th_logo.svg"),
     "BORDER_RADIUS": "6px",
+    'DASHBOARD_CALLBACK': 'application.utils.dashboard_callback',
     "COLORS": {
         "base": {
             "50": "249 250 251",
