@@ -199,6 +199,9 @@ UNFOLD = {
 
 
         ],
+        'STYLES': [
+            lambda request: static('admin.css'),
+        ],
         
     },
     

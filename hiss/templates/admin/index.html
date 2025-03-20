@@ -17,7 +17,24 @@
 {% endblock %}
 
 {% block content %}
-<div>
-    <h1>{{ custom_data }}</h1>  
+
+<div class="admininfo">
+    <head>
+        <h1>
+            Application Information
+        </h1>
+    </head>
+    <body>
+        <div class="card">
+            <h2>Total Confirmed: {{ total_confirmed }}</h2>
+        </div>
+        <div class="card">
+            <h2>Total Male: {{ gender_male }}</h2>
+        </div>
+        <div class="card">
+            <h2>Total Female: {{ gender_female }}</h2ß>
+        </div>
+    </body>
 </div>
+
 {% endblock %}
