@@ -1,5 +1,4 @@
 {% extends 'unfold/layouts/base_simple.html' %}
-
 {% load i18n unfold %}
 
 {% block breadcrumbs %}{% endblock %}
@@ -7,13 +6,17 @@
 {% block title %}
     {% trans 'Dashboard' %} | {{ site_title|default:_('Django site admin') }}
 {% endblock %}
-
 {% block branding %}
+
+<head>
+    <link rel="stylesheet" href="../static/admin.css">
     <h1 id="site-name">
         <a href="{% url 'admin:index' %}">
             {{ site_header }}
         </a>
     </h1>
+</head>
+
 {% endblock %}
 
 {% block content %}
