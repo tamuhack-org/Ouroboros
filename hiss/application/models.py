@@ -561,7 +561,7 @@ class Application(models.Model):
     )
 
     dietary_restrictions = models.CharField(
-        "Do you have any dietary restrictions?", max_length=255, blank=True)
+        "Do you have any dietary restrictions?", max_length=255, blank=True, default="")
     meal_group = models.CharField(max_length=255, null=True, blank=True, default=None)
 
 
@@ -573,6 +573,7 @@ class Application(models.Model):
         choices=HAS_TEAM_OPTIONS,
         max_length=16,
     )
+    # FIXME we should name this field for what it actually is lol
     wants_team = models.CharField(
         f"How did you hear about {settings.EVENT_NAME}?",
         choices=WANTS_TEAM_OPTIONS,
