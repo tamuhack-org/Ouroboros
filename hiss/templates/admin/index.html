@@ -1,43 +1,41 @@
 {% extends 'unfold/layouts/base_simple.html' %}
-{% load i18n unfold %}
+{% load i18n unfold static %}
 
 {% block breadcrumbs %}{% endblock %}
 
 {% block title %}
     {% trans 'Dashboard' %} | {{ site_title|default:_('Django site admin') }}
 {% endblock %}
-{% block branding %}
 
-<head>
-    <link rel="stylesheet" href="../static/admin.css">
+{% block branding %}
     <h1 id="site-name">
         <a href="{% url 'admin:index' %}">
             {{ site_header }}
         </a>
     </h1>
-</head>
-
 {% endblock %}
 
 {% block content %}
-
-<div class="admininfo">
     <head>
-        <h1>
-            Application Information
-        </h1>
+        <link rel="stylesheet" href="{% static 'admin.css' %}">
     </head>
-    <body>
-        <div class="card">
-            <h2>Total Confirmed: {{ total_confirmed }}</h2>
+    <div>
+        <div class="application_title">
+            Application Information
         </div>
-        <div class="card">
-            <h2>Total Male: {{ gender_male }}</h2>
+        <div class="admininfo">
+            <div class="card">
+                <h2>Total Confirmed</h2>
+                <div class="info_numbers" id="total_confirmed">{{ total_confirmed }}</div>
+            </div>
+            <div class="card">
+                <h2>Total Male</h2>
+                <div class="info_numbers" id="gender_male">{{ gender_male }}</div>
+            </div>
+            <div class="card">
+                <h2>Total Female</h2>
+                <div class="info_numbers" id="gender_female">{{ gender_female }}</div>
+            </div>            
         </div>
-        <div class="card">
-            <h2>Total Female: {{ gender_female }}</h2ß>
-        </div>
-    </body>
-</div>
-
+    </div>
 {% endblock %}

@@ -8,18 +8,46 @@
 }
 
 .card {
-    flex: 1;
-    margin: 10px;
-    padding: 20px;
-    background-color: #ffffff; 
-    border: 1px solid #dee2e6;
-    border-radius: 8px; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    padding: 1rem;
+    border-radius: 8px;
+    backdrop-filter: blur(5px); 
 }
 
-.card h1 {
-    font-size: 1.5em;
-    color: #333333;
-    margin: 0;
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: inherit;
+}
+
+.info_numbers {
+    font-size: 3rem;
+    font-weight: bold;
+    display: block;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+#total_confirmed {
+    color: #F27B93;
+}
+
+#gender_male {
+    color: #3E688C;
+}
+
+#gender_female {
+    color: #F27B93;
+}
+
+@media (prefers-color-scheme: dark) {
+    .card {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    h2, .info_numbers {
+        color: rgba(255, 255, 255, 0.9);
+    }
 }
