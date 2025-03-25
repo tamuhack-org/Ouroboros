@@ -1,18 +1,21 @@
 .admininfo {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
+    gap: 20px;
     width: 100%;
     padding: 20px;
-    background-color: #f8f9fa; 
+    background-color: #f8f9fa;
 }
 
 .card {
+    flex: 1 1 calc(33.333% - 20px); /* Three per row */
     background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2); 
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 1rem;
     border-radius: 8px;
-    backdrop-filter: blur(5px); 
+    backdrop-filter: blur(5px);
+    text-align: center;
 }
 
 h2 {
@@ -23,22 +26,26 @@ h2 {
 }
 
 .info_numbers {
+    margin-top: 4vh;
     font-size: 3rem;
     font-weight: bold;
     display: block;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-#total_confirmed {
-    color: #F27B93;
+#total_confirmed { color: #F27B93; }
+#gender_male { color: #3E688C; }
+#gender_female { color: #F27B93; }
+
+@media (max-width: 1024px) {
+    .card {
+        flex: 1 1 calc(50% - 20px);
+    }
 }
 
-#gender_male {
-    color: #3E688C;
-}
-
-#gender_female {
-    color: #F27B93;
+@media (max-width: 768px) {
+    .card {
+        flex: 1 1 100%;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -46,7 +53,6 @@ h2 {
         background-color: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
-
     h2, .info_numbers {
         color: rgba(255, 255, 255, 0.9);
     }
