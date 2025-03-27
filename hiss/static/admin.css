@@ -17,8 +17,8 @@
 }
 
 h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1.25rem;
+    font-weight:600;
     margin-bottom: 0.5rem;
     color: inherit;
 }
@@ -70,13 +70,14 @@ h2 {
 .btn {
     display: inline-block !important;
     padding: 1.25rem 6rem;
-    font-size: 1rem;
+    font-size: 1.25rem;
     color: #fff;
     background-color: #F27B93;
     text-decoration: none;
     border-radius: 0.3125rem;
     transition: background-color 0.3s ease;
     margin-top: 1rem;
+    font-weight:500;
 }
 
 .btn:hover {
@@ -97,7 +98,7 @@ h2 {
     font-weight: bold;
     padding: 20px 0;
     margin-bottom: 2.75rem;
-    color:#3E688C;
+    color: black;
 }
 
 @media (max-width: 768px) {
