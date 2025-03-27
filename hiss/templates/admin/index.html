@@ -1,3 +1,5 @@
+<!-- this template is for the admin portal register.tamuhack.com/admin -->
+
 {% extends 'unfold/layouts/base_simple.html' %}
 {% load i18n unfold static %}
 
@@ -15,11 +17,15 @@
     </h1>
 {% endblock %}
 
-{% block content %}
+{% block content %} 
+    <!-- application data from hiss/application/utils.py, context[something] defines a query for the respective data-->
     <head>
         <link rel="stylesheet" href="{% static 'admin.css' %}">
     </head>
-    <div>
+    <div class="border-wrapper">
+        <div class="admintitle">
+            Registration Info
+        </div>
         <div class="admininfo">
             <div class="card">
                 <h2>Total Applications</h2>
@@ -39,13 +45,16 @@
             </div>
             <div class="card">
                 <h2>Hardware Hackers</h2>
-                <div class="info_numbers" id="hardware_hackers"> {{ total_hardware }} </div>
+                <div class="info_numbers" id="hardware_hackers">{{ total_hardware }}</div>
             </div>
             <div class="card">
                 <h2>Approved Applications</h2>
-                <div class="info_numbers" id="approved_applications"> {{ total_admitted}} </div>
+                <div class="info_numbers" id="approved_applications">{{ total_admitted }}</div>
             </div>
-        </div>        
+        </div>  
+        <div class="button-container">
+            <a href="application/application" class="btn">View Applications</a>
+        </div>      
     </div>    
-        
+
 {% endblock %}
