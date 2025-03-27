@@ -31,11 +31,11 @@ h2 {
     margin-bottom: 2vh;
 }
 
-.card:nth-child(odd) .info_numbers {
+.card:nth-child(even) .info_numbers {
     color: #3E688C; 
 }
 
-.card:nth-child(even) .info_numbers {
+.card:nth-child(odd) .info_numbers {
     color: #F27B93;
 }
 
@@ -55,6 +55,11 @@ h2 {
     h2, .info_numbers {
         color: rgba(255, 255, 255, 0.9);
     }
+
+    .border-wrapper {
+        border-color: #FFFF;
+    }
+
 }
 
 .button-container {
@@ -79,7 +84,7 @@ h2 {
 }
 
 .border-wrapper {
-    border: 0.1rem solid black; 
+    border: 0.1rem solid #3E688C; 
     padding: 2rem; 
     display: inline-block; 
     width: 100%;
@@ -92,6 +97,7 @@ h2 {
     font-weight: bold;
     padding: 20px 0;
     margin-bottom: 2.75rem;
+    color:#3E688C;
 }
 
 @media (max-width: 768px) {
