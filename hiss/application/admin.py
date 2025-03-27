@@ -14,10 +14,10 @@ from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import strip_tags
-from django_admin_listfilter_dropdown.filters import (
-    ChoiceDropdownFilter,
+from unfold.contrib.filters.admin import (
+    ChoicesDropdownFilter,
+    RangeDateFilter
 )
-from rangefilter.filters import DateRangeFilter
 
 from application.emails import send_confirmation_email
 from application.models import (
@@ -162,6 +162,23 @@ class RaceFilter(admin.SimpleListFilter):
             return queryset.filter(race__contains=self.value())
         return queryset
 
+class submitFilters(admin.ModelAdmin):
+    list_filter_submit = True
+    list_filter = (
+        ("status", ChoicesDropdownFilter),
+        ("classification", ChoicesDropdownFilter),
+        ("school", RelatedOnlyFieldListFilter),
+        ("gender", ChoicesDropdownFilter),
+        ("major", ChoicesDropdownFilter),
+        ("grad_year", ChoicesDropdownFilter),
+        ("num_hackathons_attended", ChoicesDropdownFilter),
+        ("wares", ChoicesDropdownFilter),
+        # ("technology_experience", ChoiceDropdownFilter),
+        # ("dietary_restrictions", ChoiceDropdownFilter),
+        ("shirt_size", ChoicesDropdownFilter),
+        ("datetime_submitted", RangeDateFilter),
+        ("accessibility_requirements", ChoicesDropdownFilter)
+    )
 
 class ApplicationAdmin(ModelAdmin):
     form = ApplicationAdminForm
@@ -187,20 +204,20 @@ class ApplicationAdmin(ModelAdmin):
         "is_a_walk_in",
     ]
     list_filter = (
+        ("status", ChoicesDropdownFilter),
+        ("classification", ChoicesDropdownFilter),
         ("school", RelatedOnlyFieldListFilter),
-        ("status", ChoiceDropdownFilter),
-        ("classification", ChoiceDropdownFilter),
-        ("gender", ChoiceDropdownFilter),
-        ("major", ChoiceDropdownFilter),
-        ("grad_year", ChoiceDropdownFilter),
-        ("num_hackathons_attended", ChoiceDropdownFilter),
-        ("wares", ChoiceDropdownFilter),
+        ("gender", ChoicesDropdownFilter),
+        ("major", ChoicesDropdownFilter),
+        ("grad_year", ChoicesDropdownFilter),
+        ("num_hackathons_attended", ChoicesDropdownFilter),
+        ("wares", ChoicesDropdownFilter),
         # ("technology_experience", ChoiceDropdownFilter),
         # ("dietary_restrictions", ChoiceDropdownFilter),
-        ("shirt_size", ChoiceDropdownFilter),
-        ("datetime_submitted", DateRangeFilter),
-        ("accessibility_requirements", ChoiceDropdownFilter),
-        RaceFilter,
+        ("shirt_size", ChoicesDropdownFilter),
+        ("datetime_submitted", RangeDateFilter),
+        ("accessibility_requirements", ChoicesDropdownFilter),
+        RaceFilter
     )
     list_display = (
         "first_name",
@@ -211,7 +228,7 @@ class ApplicationAdmin(ModelAdmin):
         "classification",
         "grad_year",
         "status",
-        "additional_accommodations",
+        "additional_accommodations"
     )
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),
