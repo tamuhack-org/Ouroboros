@@ -9,8 +9,7 @@
 }
 
 .card {
-    flex: 1 1 calc(33.333% - 20px); /* Three per row */
-    background-color: rgba(255, 255, 255, 0.1);
+    flex: 1 1 calc(33.333% - 20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 1rem;
     border-radius: 8px;
@@ -28,13 +27,18 @@ h2 {
 .info_numbers {
     margin-top: 4vh;
     font-size: 3rem;
-    font-weight: bold;
+    font-weight: bolder;
     display: block;
+    margin-bottom: 2vh;
 }
 
-#total_confirmed { color: #F27B93; }
-#gender_male { color: #3E688C; }
-#gender_female { color: #F27B93; }
+.card:nth-child(odd) .info_numbers {
+    color: #3E688C; 
+}
+
+.card:nth-child(even) .info_numbers {
+    color: #F27B93;
+}
 
 @media (max-width: 1024px) {
     .card {
@@ -44,15 +48,11 @@ h2 {
 
 @media (max-width: 768px) {
     .card {
-        flex: 1 1 100%;
+        flex: 1 1 100%; 
     }
 }
 
 @media (prefers-color-scheme: dark) {
-    .card {
-        background-color: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
     h2, .info_numbers {
         color: rgba(255, 255, 255, 0.9);
     }
