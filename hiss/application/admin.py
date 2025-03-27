@@ -151,6 +151,7 @@ def custom_titled_filter(title):
 
 
 class RaceFilter(admin.SimpleListFilter):
+    """Race filter works different from the other filters, so custom filter defined"""
     title = "Race"
     parameter_name = "race"
 
@@ -162,25 +163,8 @@ class RaceFilter(admin.SimpleListFilter):
             return queryset.filter(race__contains=self.value())
         return queryset
 
-class submitFilters(admin.ModelAdmin):
-    list_filter_submit = True
-    list_filter = (
-        ("status", ChoicesDropdownFilter),
-        ("classification", ChoicesDropdownFilter),
-        ("school", RelatedOnlyFieldListFilter),
-        ("gender", ChoicesDropdownFilter),
-        ("major", ChoicesDropdownFilter),
-        ("grad_year", ChoicesDropdownFilter),
-        ("num_hackathons_attended", ChoicesDropdownFilter),
-        ("wares", ChoicesDropdownFilter),
-        # ("technology_experience", ChoiceDropdownFilter),
-        # ("dietary_restrictions", ChoiceDropdownFilter),
-        ("shirt_size", ChoicesDropdownFilter),
-        ("datetime_submitted", RangeDateFilter),
-        ("accessibility_requirements", ChoicesDropdownFilter)
-    )
-
 class ApplicationAdmin(ModelAdmin):
+    """Defines the applications section of the admin portal"""
     form = ApplicationAdminForm
     readonly_fields = [
         "datetime_submitted",
@@ -326,8 +310,8 @@ class ApplicationAdmin(ModelAdmin):
 
 
 class WaveAdmin(ModelAdmin):
+    """Defines the display of wave section in admin portal"""
     list_display = ("start", "end", "is_walk_in_wave")
-
 
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Wave, WaveAdmin)
