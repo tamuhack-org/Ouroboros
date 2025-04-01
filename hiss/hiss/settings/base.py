@@ -149,4 +149,6 @@ CORS_ORIGIN_WHITELIST = [
     "http://tamuhack.org",
 ]
 
+CSRF_TRUSTED_ORIGINS = ["https://register.ericwli.xyz"]
+
 CORS_URLS_REGEX = r"^/api/.*$"
