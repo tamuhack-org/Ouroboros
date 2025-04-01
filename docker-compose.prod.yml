@@ -1,5 +1,13 @@
 version: '3'
 services:
+  db:
+    image: postgres
+    volumes:
+      - /tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: dev_password
+    ports:
+     - "5432:5432"
   web:
     build:
       context: .
