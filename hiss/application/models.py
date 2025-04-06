@@ -14,6 +14,7 @@ from multiselectfield import MultiSelectField
 
 from application.countries import COUNTRIES_TUPLES
 from application.filesize_validation import FileSizeValidator
+from application import constants
 
 s3_storage = S3Storage()
 
@@ -111,6 +112,7 @@ ASIAN_OTHER = "AS"
 BLACK = "BL"
 HISPANIC = "HI"
 NATIVE_HAWAIIAN = "NH"
+MIDDLE_EASTERN_NORTH_AFRICAN = "MENA"
 WHITE = "WH"
 RACE_OTHER = "O"
 
@@ -123,6 +125,7 @@ RACES: list[tuple[str, str]] = [
     (BLACK, "Black or African-American"),
     (HISPANIC, "Hispanic or Latino"),
     (NATIVE_HAWAIIAN, "Native Hawaiian or other Pacific Islander"),
+    (MIDDLE_EASTERN_NORTH_AFRICAN, "Middle Eastern or North African"),
     (WHITE, "White"),
     (NO_ANSWER, "Prefer not to answer"),
     (RACE_OTHER, "Prefer to self-describe"),
@@ -426,9 +429,7 @@ class Application(models.Model):
     last_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="last name"
     )
-    age = models.PositiveIntegerField(
-        max_length=5, blank=False, null=True, verbose_name="age"
-    )
+    age = models.PositiveIntegerField(blank=False, null=True, verbose_name="age")
     phone_number = models.CharField(
         max_length=13, blank=False, null=True, verbose_name="phone number"
     )
@@ -559,10 +560,12 @@ class Application(models.Model):
         "Emergency Contact Email", max_length=255, blank=False
     )
 
-    dietary_restrictions = models.CharField(max_length=5000, null=True, default=None)
+    dietary_restrictions = models.CharField(
+        "Do you have any dietary restrictions?", max_length=255, blank=True)
     meal_group = models.CharField(max_length=255, null=True, blank=True, default=None)
 
-    technology_experience = models.CharField(max_length=5000, default=None)
+
+    technology_experience = models.CharField("What technology do you have experience with?", max_length=255, blank=True)
 
     # TEAM MATCHING INFO
     has_team = models.CharField(

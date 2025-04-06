@@ -331,6 +331,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/44/7d/562150b96d7576ce58002b93d35f6d90b7e43855bab44410002e92764d07/django_unfold-0.50.0.tar.gz", hash = "sha256:a1bae37aa876d0b93aa62785b68fd34c886170fdfe9099f529fe8bd777fca3fa", size = 1019833 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/75/57/3cf842e17dec60496fcdd2bc80e23581ba74d2c24a7a7c3b7532be9a2ddd/django_unfold-0.50.0-py3-none-any.whl", hash = "sha256:b0ff65d1b1f776bd7f9be302dfa026ad4d350469eae847a5888d1db55fdce0df", size = 1106759 },
+
+[[package]]
+name = "django-stubs-ext"
+version = "5.1.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9f/06/7b210e0073c6cb8824bde82afc25f268e8c410a99d3621297f44fa3f6a6c/django_stubs_ext-5.1.3.tar.gz", hash = "sha256:3e60f82337f0d40a362f349bf15539144b96e4ceb4dbd0239be1cd71f6a74ad0", size = 9613 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cc/52/50125afcf29382b7f9d88a992e44835108dd2f1694d6d17d6d3d6fe06c81/django_stubs_ext-5.1.3-py3-none-any.whl", hash = "sha256:64561fbc53e963cc1eed2c8eb27e18b8e48dcb90771205180fe29fc8a59e55fd", size = 9034 },
 ]
 
 [[package]]
@@ -487,6 +499,7 @@ dependencies = [
     { name = "django-s3-storage" },
     { name = "django-storages" },
     { name = "django-unfold" },
+    { name = "django-stubs" },
     { name = "djangorestframework" },
     { name = "entrypoints" },
     { name = "google-api-core" },
@@ -541,6 +554,7 @@ requires-dist = [
     { name = "django-s3-storage", specifier = ">=0.15.0" },
     { name = "django-storages", specifier = ">=1.14.5" },
     { name = "django-unfold", specifier = ">=0.50.0" },
+    { name = "django-stubs", specifier = ">=5.1.3" },
     { name = "djangorestframework", specifier = ">=3.15.2" },
     { name = "entrypoints", specifier = ">=0.4" },
     { name = "google-api-core", specifier = ">=2.24.1" },
@@ -826,6 +840,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/1a/df/4f2cd7eaa6d41a7994d46527349569d46e34d9cdd07590b5c5b0dcf53de3/tblib-3.0.0.tar.gz", hash = "sha256:93622790a0a29e04f0346458face1e144dc4d32f493714c6c3dff82a4adb77e6", size = 30616 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9b/87/ce70db7cae60e67851eb94e1a2127d4abb573d3866d2efd302ceb0d4d2a5/tblib-3.0.0-py3-none-any.whl", hash = "sha256:80a6c77e59b55e83911e1e607c649836a69c103963c5f28a46cbeef44acf8129", size = 12478 },
+]
+
+[[package]]
+name = "types-pyyaml"
+version = "6.0.12.20241230"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/9a/f9/4d566925bcf9396136c0a2e5dc7e230ff08d86fa011a69888dd184469d80/types_pyyaml-6.0.12.20241230.tar.gz", hash = "sha256:7f07622dbd34bb9c8b264fe860a17e0efcad00d50b5f27e93984909d9363498c", size = 17078 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e8/c1/48474fbead512b70ccdb4f81ba5eb4a58f69d100ba19f17c92c0c4f50ae6/types_PyYAML-6.0.12.20241230-py3-none-any.whl", hash = "sha256:fa4d32565219b68e6dee5f67534c722e53c00d1cfc09c435ef04d7353e1e96e6", size = 20029 },
 ]
 
 [[package]]

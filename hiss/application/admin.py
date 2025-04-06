@@ -45,8 +45,18 @@ class ApplicationAdminForm(forms.ModelForm):
 def build_approval_email(
     application: Application, confirmation_deadline: timezone.datetime
 ) -> tuple[str, str, str, None, list[str]]:
-    """Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
-    application has been approved.
+    """Create an email data tuple indicating that a user's application has been approved.
+
+    Args:
+        application (Application): The application object containing user
+        details.
+        confirmation_deadline (timezone.datetime): The deadline for
+        the user to confirm their application.
+
+
+    Returns: tuple: A tuple containing the email subject, plain text message,
+    HTML message, from email (None), and a list of recipient email addresses.
+
     """
     subject = (
         f"ACTION REQUIRED: One last step for your {settings.EVENT_NAME} application!"
@@ -106,8 +116,7 @@ def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
 
 
 def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
-    """Sets the value of the `approved` field for the selected `Application`s to `False`
-    """
+    """Sets the value of the `approved` field for the selected `Application`s to `False`"""
     email_tuples = []
     with transaction.atomic():
         for application in queryset:
@@ -118,16 +127,14 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
 
 
 def resend_confirmation(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
-    """Resends the confirmation email to the selected applications.
-    """
+    """Resends the confirmation email to the selected applications."""
     for application in queryset:
         application.save()
         send_confirmation_email(application)
 
 
 def export_application_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
-    """Exports the emails related to the selected `Application`s to a CSV file
-    """
+    """Exports the emails related to the selected `Application`s to a CSV file"""
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="emails.csv"'
 
