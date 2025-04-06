@@ -15,14 +15,7 @@ def dashboard_callback(request, context):
     context['total_application'] = Application.objects.count()
     context['total_checked'] = Application.objects.filter(status=STATUS_CHECKED_IN).count()
     context['total_admitted'] = Application.objects.filter(status=STATUS_ADMITTED).count()
-
-    context['gender_male'] = Application.objects.filter(gender=MALE).count()
-    context['gender_female'] = Application.objects.filter(gender=FEMALE).count()
-
-    context['male_checked_in'] = Application.objects.filter(gender=MALE,status=STATUS_CHECKED_IN).count()
-    context['female_checked_in'] = Application.objects.filter(gender=FEMALE,status=STATUS_CHECKED_IN).count()
-
     context['total_hardware'] = Application.objects.filter(wares="H").count()
-
+    
 
     return context
