@@ -1,5 +1,5 @@
 from application.models import (
-    MALE, FEMALE, STATUS_CONFIRMED, STATUS_ADMITTED, STATUS_CHECKED_IN,
+    STATUS_CONFIRMED, STATUS_ADMITTED, STATUS_CHECKED_IN, STATUS_EXPIRED,
     Application
     )
 
@@ -16,6 +16,6 @@ def dashboard_callback(request, context):
     context['total_checked'] = Application.objects.filter(status=STATUS_CHECKED_IN).count()
     context['total_admitted'] = Application.objects.filter(status=STATUS_ADMITTED).count()
     context['total_hardware'] = Application.objects.filter(wares="H").count()
-    
+    context['total_waitlisted'] = Application.objects.filter(status=STATUS_EXPIRED).count()
 
     return context
