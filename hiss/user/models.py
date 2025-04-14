@@ -57,14 +57,6 @@ class User(auth_models.AbstractUser):
     first_name = None
     last_name = None
 
-    # Day-of
-    team = models.ForeignKey(
-        "team.Team",
-        null=True,
-        blank=True,
-        on_delete=models.CASCADE,
-        related_name="members",
-    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
