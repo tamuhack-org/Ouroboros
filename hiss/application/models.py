@@ -1,43 +1,45 @@
+from __future__ import annotations
+
 import re
 import uuid
-from typing import Optional
+from datetime import datetime
+from typing import (
+    override,
+)
 
 from address.models import AddressField
 from django.conf import settings
 from django.core import exceptions
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.db.models import QuerySet
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django_s3_storage.storage import S3Storage
 from multiselectfield import MultiSelectField
 
+from application import constants
 from application.countries import COUNTRIES_TUPLES
 from application.filesize_validation import FileSizeValidator
-from application import constants
 
 s3_storage = S3Storage()
 
 
-class WaveManager(models.Manager):
-    def next_wave(self, start_dt: timezone.datetime | None = None) -> Optional["Wave"]:
-        """Returns the next INACTIVE wave, if one exists. For the CURRENT active wave, use
-        `active_wave`.
-        """
-        if not start_dt:
+class WaveManager(models.Manager["Wave"]):
+    def next_wave(self, start_dt: datetime | None = None) -> Wave | None:
+        """Return the next INACTIVE wave, if one exists."""
+        if start_dt is None:
             start_dt = timezone.now()
-        qs = self.get_queryset().filter(start__gt=start_dt).order_by("start")
+        qs: QuerySet[Wave] = (
+            self.get_queryset().filter(start__gt=start_dt).order_by("start")
+        )
         return qs.first()
 
-    def active_wave(
-        self, start_dt: timezone.datetime | None = None
-    ) -> Optional["Wave"]:
-        """Returns the CURRENTLY active wave, if one exists. For the next INACTIVE wave, use
-        `next_wave`.
-        """
-        if not start_dt:
+    def active_wave(self, start_dt: datetime | None = None) -> Wave | None:
+        """Return the currently active wave, if one exists."""
+        if start_dt is None:
             start_dt = timezone.now()
-        qs = (
+        qs: QuerySet[Wave] = (
             self.get_queryset()
             .filter(start__lte=start_dt, end__gt=start_dt)
             .order_by("start")
@@ -46,32 +48,51 @@ class WaveManager(models.Manager):
 
 
 class Wave(models.Model):
-    """Representation of a registration period. `Application`s must be created during
-    a `Wave`, and are automatically associated with a wave through the `Application`'s `pre_save` handler.
-    """
-
-    start = models.DateTimeField()
-    end = models.DateTimeField()
-    num_days_to_rsvp = models.IntegerField()
-    is_walk_in_wave = models.BooleanField(
-        default=False, verbose_name="Is this wave for walk-ins?"
-    )
+    """Representation of a registration period."""
 
     objects = WaveManager()
 
-    def clean(self):
+    class Meta:
+        ordering = ["start"]
+
+    @override
+    def __str__(self) -> str:
+        return f"Wave from {self.start} to {self.end}"
+
+    start: models.DateTimeField[datetime, datetime] = models.DateTimeField()
+    end: models.DateTimeField[datetime, datetime] = models.DateTimeField()
+    num_days_to_rsvp: models.IntegerField[int, int] = models.IntegerField()
+    is_walk_in_wave: models.BooleanField[bool, bool] = models.BooleanField(
+        default=False, verbose_name="Is this wave for walk-ins?"
+    )
+
+    @override
+    def clean(self) -> None:
         super().clean()
-        if self.start >= self.end:
+        if self.start and self.end and self.start >= self.end:
             raise exceptions.ValidationError(
                 {"start": "Start date can't be after end date."}
             )
-        for wave in Wave.objects.exclude(pk=self.pk).all():
-            has_start_overlap = wave.start < self.start < wave.end
-            has_end_overlap = wave.start < self.end < wave.end
-            if has_start_overlap or has_end_overlap:
-                raise exceptions.ValidationError(
-                    "Cannot create wave; another wave with an overlapping time range exists."
+
+        if self.pk:
+            all_other: QuerySet[Wave] = Wave.objects.exclude(pk=self.pk)
+        else:
+            all_other: QuerySet[Wave] = Wave.objects.all()
+
+        if not self.start or not self.end:
+            return
+
+        for wave in all_other:
+            if not wave.start or not wave.end:
+                continue
+            has_overlap = (self.start < wave.end) and (self.end > wave.start)
+
+            if has_overlap:
+                msg = (
+                    f"Cannot save wave; it overlaps with another wave (ID: {wave.pk}) "
+                    f"which runs from {wave.start} to {wave.end}."
                 )
+                raise exceptions.ValidationError(msg)
 
 
 class School(models.Model):
@@ -79,6 +100,7 @@ class School(models.Model):
 
     name = models.CharField("name", max_length=255)
 
+    @override
     def __str__(self):
         return self.name
 
@@ -561,11 +583,13 @@ class Application(models.Model):
     )
 
     dietary_restrictions = models.CharField(
-        "Do you have any dietary restrictions?", max_length=255, blank=True, default="")
+        "Do you have any dietary restrictions?", max_length=255, blank=True, default=""
+    )
     meal_group = models.CharField(max_length=255, null=True, blank=True, default=None)
 
-
-    technology_experience = models.CharField("What technology do you have experience with?", max_length=255, blank=True)
+    technology_experience = models.CharField(
+        "What technology do you have experience with?", max_length=255, blank=True
+    )
 
     # TEAM MATCHING INFO
     has_team = models.CharField(
