@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 import uuid
 from datetime import datetime
+from pathlib import Path
 from typing import (
     override,
 )
@@ -125,9 +126,9 @@ class School(models.Model):
 
 
 def uuid_generator(_instance, filename: str):
-    ext = filename.split(".")[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return filename
+    path = Path(filename)
+    ext = path.suffix.lower()
+    return f"{uuid.uuid4()}{ext}"
 
 
 class Application(models.Model):
