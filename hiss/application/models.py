@@ -144,7 +144,7 @@ class Application(models.Model):
     )
 
     def __str__(self):
-        return "%s, %s - Application" % (self.last_name, self.first_name)
+        return f"{self.last_name}, {self.first_name} - Application"
 
     def save(self, *args, **kwargs):
         """Override save to ensure meal group assignment logic is applied."""
