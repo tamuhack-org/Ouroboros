@@ -3,6 +3,7 @@ from datetime import timedelta
 from django.urls import reverse_lazy
 from django.utils import timezone
 
+import application.constants
 from application import models as application_models
 from application.models import Application, Wave
 from shared import test_case
@@ -87,7 +88,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
         Application.objects.create(
             **self.application_fields,
             wave=self.wave1,
-            status=application_models.STATUS_EXPIRED,
+            status=application.constants.STATUS_EXPIRED,
         )
         self.user.confirmation_deadline = timezone.now() - timedelta(days=10000)
         self.user.save()
@@ -102,7 +103,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
         Application.objects.create(
             **self.application_fields,
             wave=self.wave1,
-            status=application_models.STATUS_ADMITTED,
+            status=application.constants.STATUS_ADMITTED,
         )
         self.user.confirmation_deadline = timezone.now() + timedelta(days=10000)
         self.user.save()
@@ -118,7 +119,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
         Application.objects.create(
             **self.application_fields,
             wave=self.wave1,
-            status=application_models.STATUS_CONFIRMED,
+            status=application.constants.STATUS_CONFIRMED,
         )
         self.user.confirmation_deadline = timezone.now() + timedelta(days=10000)
         self.user.save()
@@ -133,7 +134,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
         Application.objects.create(
             **self.application_fields,
             wave=self.wave1,
-            status=application_models.STATUS_REJECTED,
+            status=application.constants.STATUS_REJECTED,
         )
 
         response = self.client.get(reverse_lazy("status"))
@@ -146,7 +147,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
         Application.objects.create(
             **self.application_fields,
             wave=self.wave1,
-            status=application_models.STATUS_DECLINED,
+            status=application.constants.STATUS_DECLINED,
         )
 
         response = self.client.get(reverse_lazy("status"))

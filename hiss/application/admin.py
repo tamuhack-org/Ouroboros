@@ -20,12 +20,10 @@ from rangefilter.filters import DateRangeFilter
 
 from application.emails import send_confirmation_email
 from application.models import (
-    RACES,
-    STATUS_ADMITTED,
-    STATUS_REJECTED,
     Application,
     Wave,
 )
+from application.constants import RACES, STATUS_REJECTED, STATUS_ADMITTED
 from shared.admin_functions import send_mass_html_mail
 
 

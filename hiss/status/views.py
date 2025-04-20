@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth import mixins
 from django.views import generic
 
+import application.constants
 from application import models as application_models
 from application.models import Application, Wave
 from user.models import User
@@ -31,21 +32,21 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
                 return context
             app: Application = user.application_set.first()
             app_status = app.status
-            if app_status == application_models.STATUS_PENDING:
+            if app_status == application.constants.STATUS_PENDING:
                 context["PENDING"] = True
                 context["application"] = app
-            elif app_status == application_models.STATUS_REJECTED:
+            elif app_status == application.constants.STATUS_REJECTED:
                 context["REJECTED"] = True
-            elif app_status == application_models.STATUS_ADMITTED:
+            elif app_status == application.constants.STATUS_ADMITTED:
                 context["NEEDS_TO_CONFIRM"] = True
                 context["application"] = app
                 context["confirmation_deadline"] = app.confirmation_deadline
-            elif app_status == application_models.STATUS_CONFIRMED:
+            elif app_status == application.constants.STATUS_CONFIRMED:
                 context["CONFIRMED"] = True
-            elif app_status == application_models.STATUS_DECLINED:
+            elif app_status == application.constants.STATUS_DECLINED:
                 context["DECLINED"] = True
-            elif app_status == application_models.STATUS_CHECKED_IN:
+            elif app_status == application.constants.STATUS_CHECKED_IN:
                 context["CHECKED_IN"] = True
-            elif app_status == application_models.STATUS_EXPIRED:
+            elif app_status == application.constants.STATUS_EXPIRED:
                 context["EXPIRED"] = True
         return context

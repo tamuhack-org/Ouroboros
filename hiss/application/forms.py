@@ -7,6 +7,7 @@ from django.conf import settings
 from django.db.models import Case, IntegerField, When
 from django.utils.safestring import mark_safe
 
+import application.constants
 from application import models as application_models
 from application.models import School
 from application import constants
@@ -124,7 +125,7 @@ class ApplicationModelForm(forms.ModelForm):
 
     def clean(self):
         gender = self.cleaned_data.get("gender")
-        if gender == application_models.GENDER_OTHER:
+        if gender == application.constants.GENDER_OTHER:
             gender_other = self.cleaned_data.get("gender_other")
             if not gender_other:
                 msg = forms.ValidationError(
@@ -134,7 +135,7 @@ class ApplicationModelForm(forms.ModelForm):
         races = self.cleaned_data.get("race")
         if races:
             race_other = self.cleaned_data.get("race_other")
-            if application_models.RACE_OTHER in races and not race_other:
+            if application.constants.RACE_OTHER in races and not race_other:
                 msg = forms.ValidationError(
                     "Please fill out this field with the appropriate information."
                 )

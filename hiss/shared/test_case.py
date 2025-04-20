@@ -3,6 +3,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import override_settings
 from django.utils import timezone
 
+import application.constants
 from application import constants
 from application import models as application_models
 from application.countries import COUNTRIES_TUPLES
@@ -50,22 +51,22 @@ class SharedTestCase(test.TestCase):
         self.application_fields = {
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "shirt_size": application_models.UNISEX_XXS,
+            "shirt_size": application.constants.UNISEX_XXS,
             "major": "Computer Science",
             "school": self.first_school,
             "school_other": "",  # Defaults to empty if no other school is provided
-            "gender": application_models.FEMALE,
+            "gender": application.constants.FEMALE,
             "gender_other": "",  # Defaults to empty if no self-description is given
-            "classification": application_models.FRESHMAN,
+            "classification": application.constants.FRESHMAN,
             "grad_year": timezone.now().year + 1,
-            "level_of_study": application_models.STUDY_UNDERGRAD_3YEAR,  # Assuming a 4-year undergrad program
-            "num_hackathons_attended": application_models.HACKATHONS_0,
+            "level_of_study": application.constants.STUDY_UNDERGRAD_3YEAR,  # Assuming a 4-year undergrad program
+            "num_hackathons_attended": application.constants.HACKATHONS_0,
             "age": 19,
             "phone_number": "000-000-0000",
             "user": self.user,
-            "race": [application_models.NO_ANSWER],
+            "race": [application.constants.NO_ANSWER],
             "race_other": "",  # Defaults to empty if no self-description is given
-            "has_team": application_models.HAS_TEAM,
+            "has_team": application.constants.HAS_TEAM,
             "wants_team": "Friend",  # Default value for how the user heard about the event
             "extra_links": "A",
             "question1": "B",
@@ -80,7 +81,7 @@ class SharedTestCase(test.TestCase):
             "tamu_email": "",  # Default empty unless provided
             "major_other": "",  # Default empty unless provided
             "meal_group": "E",  # Defaults to None unless assigned
-            "wares": application_models.WARECHOICE[0][0],  # Default to "Software"
+            "wares": application.constants.WARECHOICE[0][0],  # Default to "Software"
             "notes": "",  # Defaults to empty unless set
             "emergency_contact_name": "John Doe",  # Placeholder
             "emergency_contact_relationship": "Parent",  # Placeholder

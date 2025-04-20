@@ -21,7 +21,23 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# settings.py
+
+# Use Django’s SMTP backend (not the console or file backends)
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+# Point to Mailpit’s SMTP server
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 1025
+
+# Mailpit doesn’t need auth by default
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False
+
+# A sensible default from-address
+DEFAULT_FROM_EMAIL = "webmaster@localhost"
 MEDIA_ROOT = "resumes"
 
 AWS_S3_KEY_PREFIX = "dev-resumes"

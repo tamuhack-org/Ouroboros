@@ -5,16 +5,11 @@ from django.core.management import CommandParser, base
 from django.utils import timezone
 
 from application.models import (
-    CLASSIFICATIONS,
-    GENDERS,
-    GRAD_YEARS,
-    HACKATHON_TIMES,
-    RACES,
-    STATUS_ADMITTED,
-    STATUS_PENDING,
     Application,
     Wave,
 )
+from application.constants import GENDERS, RACES, CLASSIFICATIONS, HACKATHON_TIMES, GRAD_YEARS, STATUS_PENDING, \
+    STATUS_ADMITTED
 from user.models import User
 
 COMMON_NAMES = [

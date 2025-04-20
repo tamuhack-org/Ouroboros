@@ -10,12 +10,10 @@ from django.views import generic
 from application.emails import send_confirmation_email, send_creation_email
 from application.forms import ApplicationModelForm
 from application.models import (
-    STATUS_ADMITTED,
-    STATUS_CONFIRMED,
-    STATUS_DECLINED,
     Application,
     Wave,
 )
+from application.constants import STATUS_ADMITTED, STATUS_CONFIRMED, STATUS_DECLINED
 
 
 class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):

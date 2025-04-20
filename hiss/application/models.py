@@ -7,7 +7,6 @@ from typing import (
     override,
 )
 
-from address.models import AddressField
 from django.conf import settings
 from django.core import exceptions
 from django.core.validators import FileExtensionValidator
@@ -18,7 +17,27 @@ from django.utils import timezone
 from django_s3_storage.storage import S3Storage
 from multiselectfield import MultiSelectField
 
-from application import constants
+from application.constants import (
+    AGREE,
+    AGREE_DISAGREE,
+    CLASSIFICATIONS,
+    GENDERS,
+    GRAD_YEARS,
+    HACKATHON_TIMES,
+    HAS_TEAM_OPTIONS,
+    LEVELS_OF_STUDY,
+    MAJORS,
+    MAX_AGE,
+    NO_ANSWER,
+    QUESTION1_TEXT,
+    RACES,
+    SHIRT_SIZES,
+    STATUS_CONFIRMED,
+    STATUS_OPTIONS,
+    STATUS_PENDING,
+    WANTS_TEAM_OPTIONS,
+    WARECHOICE,
+)
 from application.countries import COUNTRIES_TUPLES
 from application.filesize_validation import FileSizeValidator
 
@@ -103,297 +122,6 @@ class School(models.Model):
     @override
     def __str__(self):
         return self.name
-
-
-MAX_AGE = 18
-AGREE = ((True, "Agree"),)
-AGREE_DISAGREE = ((True, "Agree"), (False, "Disagree"))
-
-TRUE_FALSE_CHOICES = ((True, "Yes"), (False, "No"))
-
-NO_ANSWER = "NA"
-
-MALE = "M"
-FEMALE = "F"
-NON_BINARY = "NB"
-GENDER_OTHER = "X"
-
-GENDERS: list[tuple[str, str]] = [
-    (NO_ANSWER, "Prefer not to answer"),
-    (MALE, "Male"),
-    (FEMALE, "Female"),
-    (NON_BINARY, "Non-binary"),
-    (GENDER_OTHER, "Prefer to self-describe"),
-]
-
-AMERICAN_INDIAN = "AI"
-ASIAN_INDIAN_SUB = "ASI"
-ASIAN_EAST = "ASE"
-ASIAN_SOUTHEAST = "ASSE"
-ASIAN_OTHER = "AS"
-BLACK = "BL"
-HISPANIC = "HI"
-NATIVE_HAWAIIAN = "NH"
-MIDDLE_EASTERN_NORTH_AFRICAN = "MENA"
-WHITE = "WH"
-RACE_OTHER = "O"
-
-RACES: list[tuple[str, str]] = [
-    (AMERICAN_INDIAN, "American Indian or Alaskan Native"),
-    (ASIAN_INDIAN_SUB, "Asian (Indian Subcontinent)"),
-    (ASIAN_EAST, "Asian (East Asia)"),
-    (ASIAN_SOUTHEAST, "Asian (Southeast Asia)"),
-    (ASIAN_OTHER, "Asian (Other)"),
-    (BLACK, "Black or African-American"),
-    (HISPANIC, "Hispanic or Latino"),
-    (NATIVE_HAWAIIAN, "Native Hawaiian or other Pacific Islander"),
-    (MIDDLE_EASTERN_NORTH_AFRICAN, "Middle Eastern or North African"),
-    (WHITE, "White"),
-    (NO_ANSWER, "Prefer not to answer"),
-    (RACE_OTHER, "Prefer to self-describe"),
-]
-
-FRESHMAN = "Fr"
-SOPHOMORE = "So"
-JUNIOR = "Jr"
-SENIOR = "Sr"
-MASTERS = "Ma"
-PHD = "PhD"
-CLASSIFICATION_OTHER = "O"
-
-CLASSIFICATIONS: list[tuple[str, str]] = [
-    (FRESHMAN, "Freshman"),
-    (SOPHOMORE, "Sophomore"),
-    (JUNIOR, "Junior"),
-    (SENIOR, "Senior"),
-    (MASTERS, "Master's Student"),
-    (PHD, "PhD Student"),
-    (CLASSIFICATION_OTHER, "Other"),
-]
-
-
-HACKATHONS_0 = "0"
-HACKATHONS_1 = "1"
-HACKATHONS_2_TO_3 = "2-3"
-HACKATHONS_4_TO_5 = "4-5"
-HACKATHONS_6 = "6+"
-
-HACKATHON_TIMES: list[tuple[str, str]] = [
-    (HACKATHONS_0, "This will be my first!"),
-    (HACKATHONS_1, "1"),
-    (HACKATHONS_2_TO_3, "2-3"),
-    (HACKATHONS_4_TO_5, "4-5"),
-    (HACKATHONS_6, "6+"),
-]
-
-STUDY_LESS_THAN_SECONDARY = "Less than Secondary / High School"
-STUDY_SECONDARY = "Secondary / High School"
-STUDY_UNDERGRAD_2YEAR = (
-    "Undergraduate University (2 year - community college or similar)"
-)
-STUDY_UNDERGRAD_3YEAR = "Undergraduate University (3+ year)"
-STUDY_GRADUATE = "Graduate University (Masters, Professional, Doctoral, etc)"
-STUDY_CODE_SCHOOL = "Code School / Bootcamp"
-STUDY_OTHER_VOCATIONAL = "Other Vocational / Trade Program or Apprenticeship"
-STUDY_POSTDOC = "Post Doctorate"
-STUDY_OTHER = "Other"
-STUDY_NOT_STUDENT = "I'm not currently a student"
-STUDY_NO_ANSWER = "Prefer not to answer"
-
-LEVELS_OF_STUDY = [
-    (STUDY_LESS_THAN_SECONDARY, STUDY_LESS_THAN_SECONDARY),
-    (STUDY_SECONDARY, STUDY_SECONDARY),
-    (STUDY_UNDERGRAD_2YEAR, STUDY_UNDERGRAD_2YEAR),
-    (STUDY_UNDERGRAD_3YEAR, STUDY_UNDERGRAD_3YEAR),
-    (STUDY_GRADUATE, STUDY_GRADUATE),
-    (STUDY_CODE_SCHOOL, STUDY_CODE_SCHOOL),
-    (STUDY_OTHER_VOCATIONAL, STUDY_OTHER_VOCATIONAL),
-    (STUDY_POSTDOC, STUDY_POSTDOC),
-    (STUDY_OTHER, STUDY_OTHER),
-    (STUDY_NOT_STUDENT, STUDY_NOT_STUDENT),
-    (STUDY_NO_ANSWER, STUDY_NO_ANSWER),
-]
-
-
-GRAD_YEARS: list[tuple[int, int]] = [
-    (int(y), int(y))
-    for y in range(
-        timezone.now().year, timezone.now().year + settings.MAX_YEARS_ADMISSION
-    )
-]
-
-DRIVING = "D"
-EVENT_PROVIDED_BUS = "B"
-EVENT_PROVIDED_BUS_UT = "BUT"
-EVENT_PROVIDED_BUS_UTD = "BUTD"
-EVENT_PROVIDED_BUS_UTA = "BUTA"
-EVENT_PROVIDED_BUS_UTSA = "BUTSA"
-EVENT_PROVIDED_BUS_UTRGV = "BUTRGV"
-OTHER_BUS = "OB"
-FLYING = "F"
-PUBLIC_TRANSPORTATION = "P"
-MANUAL_POWER = "M"
-
-TRANSPORT_MODES: list[tuple[str, str]] = [
-    (DRIVING, "Driving"),
-    (EVENT_PROVIDED_BUS, f"{settings.EVENT_NAME} Bus"),
-    (EVENT_PROVIDED_BUS_UT, f"{settings.EVENT_NAME} Bus - UT Austin"),
-    (EVENT_PROVIDED_BUS_UTD, f"{settings.EVENT_NAME} Bus - UT Dallas"),
-    (EVENT_PROVIDED_BUS_UTA, f"{settings.EVENT_NAME} Bus - UT Arlington"),
-    (EVENT_PROVIDED_BUS_UTSA, f"{settings.EVENT_NAME} Bus - UTSA"),
-    (EVENT_PROVIDED_BUS_UTRGV, f"{settings.EVENT_NAME} Bus - UTRGV"),
-    (OTHER_BUS, "Other Bus (Greyhound, Megabus, etc.)"),
-    (FLYING, "Flying"),
-    (PUBLIC_TRANSPORTATION, "Public Transportation"),
-    (MANUAL_POWER, "Walking/Biking"),
-]
-
-QUESTION1_TEXT = "Tell us your best programming joke."
-# QUESTION2_TEXT = "What is the one thing you'd build if you had unlimited resources?"
-# QUESTION3_TEXT = "What's your hidden talent?"
-
-UNISEX_XXS = "XXS"
-UNISEX_XS = "XS"
-UNISEX_S = "S"
-UNISEX_M = "M"
-UNISEX_L = "L"
-UNISEX_XL = "XL"
-UNISEX_XXL = "XXL"
-
-SHIRT_SIZES = [
-    (UNISEX_XXS, "XXS"),
-    (UNISEX_XS, "XS"),
-    (UNISEX_S, "S"),
-    (UNISEX_M, "M"),
-    (UNISEX_L, "L"),
-    (UNISEX_XL, "XL"),
-    (UNISEX_XXL, "XXL"),
-]
-
-STATUS_PENDING = "P"
-"""Status given to a submitted (but unreviewed) application.."""
-
-STATUS_REJECTED = "R"
-"""Status given to a rejected application."""
-
-STATUS_ADMITTED = "A"
-"""Status given to an approved application."""
-
-STATUS_CONFIRMED = "C"
-"""Status given to an admitted application where the user has confirmed their attendance."""
-
-STATUS_DECLINED = "X"
-"""Status given to an admitted application where the user has declined their admission."""
-
-STATUS_CHECKED_IN = "I"
-"""Status given to an application where the user has checked in to the event."""
-
-STATUS_EXPIRED = "E"
-"""The user missed the application's confirmation_deadline."""
-
-STATUS_OPTIONS = [
-    (STATUS_PENDING, "Under Review"),
-    (STATUS_REJECTED, "Rejected"),
-    (STATUS_ADMITTED, "Admitted"),
-    (STATUS_CONFIRMED, "Confirmed"),
-    (STATUS_DECLINED, "Declined"),
-    (STATUS_CHECKED_IN, "Checked in"),
-    (STATUS_EXPIRED, "Waitlisted (Expired, internally)"),
-]
-
-HAS_TEAM = "HT"
-HAS_NO_TEAM = "HNT"
-
-HAS_TEAM_OPTIONS = [
-    (HAS_TEAM, "I do have a team"),
-    (HAS_NO_TEAM, "I do not have a team"),
-]
-
-CS = "Computer Science"
-CE = "Computer Engineering"
-COMP = "Computing"
-EE = "Electrical Engineering"
-MIS = "Management Information Systems"
-DS = "Data Science/Engineering"
-GENE = "General Engineering"
-BMEN = "Biomedical Engineering"
-CHEM = "Chemical Engineering"
-CIVIL = "Civil Engineering"
-INDU = "Industrial Engineering"
-MECH = "Mechanical Engineering"
-AERO = "Aerospace Engineering"
-ESET = "Electronic Systems Engineering Technology (ESET)"
-MATH = "Mathematics"
-PHYS = "Physics"
-STAT = "Statistics"
-BIO = "Biology"
-CHEMISTRY = "Chemistry"
-MAJOR_OTHER = "Other"
-
-MAJORS = [
-    (CS, "Computer Science"),
-    (CE, "Computer Engineering"),
-    (COMP, "Computing"),
-    (EE, "Electrical Engineering"),
-    (MIS, "Management Information Systems"),
-    (DS, "Data Science/Engineering"),
-    (GENE, "General Engineering"),
-    (BMEN, "Biomedical Engineering"),
-    (CHEM, "Chemical Engineering"),
-    (CIVIL, "Civil Engineering"),
-    (INDU, "Industrial Engineering"),
-    (MECH, "Mechanical Engineering"),
-    (AERO, "Aerospace Engineering"),
-    (ESET, "Electronic Systems Engineering Technology (ESET)"),
-    (MATH, "Mathematics"),
-    (PHYS, "Physics"),
-    (STAT, "Statistics"),
-    (BIO, "Biology"),
-    (CHEMISTRY, "Chemistry"),
-    (MAJOR_OTHER, "Other"),
-]
-
-WANTS_TEAM_OPTIONS = [
-    ("Friend", "From a friend"),
-    ("Tabling", "Tabling outside Zachry"),
-    ("Howdy Week", "From Howdy Week"),
-    ("Yard Sign", "Yard sign"),
-    ("Social Media", "Social media"),
-    ("Student Orgs", "Though another student org"),
-    ("TH Organizer", "From a TAMUhack organizer"),
-    ("ENGR Newsletter", "From the TAMU Engineering Newsletter"),
-    ("MLH", "Major League Hacking (MLH)"),
-    ("Attended Before", f"I've attended {settings.EVENT_NAME} before"),
-]
-
-PURPOSE_WIN = "W"
-"""The user wants to win this freaking hackathon"""
-
-PURPOSE_LEARN = "L"
-"""The user wants to use this hackathon to learn something"""
-
-PURPOSE_WORKSHOP = "WR"
-"""The user wants to use this hackathon for all it's great workshops"""
-
-PURPOSE_RECRUITING = "R"
-"""The user wants to use this hackathon to get a job or internship"""
-
-PURPOSE_MESS_AROUND = "M"
-"""The user wants to use this hackathon as an excuse to mess around and get some swag"""
-
-PURPOSE_OPTIONS = [
-    (PURPOSE_WIN, "I want to win!"),
-    (PURPOSE_LEARN, "I want to learn something new!"),
-    (PURPOSE_WORKSHOP, "I just want to attend all the workshops"),
-    (
-        PURPOSE_RECRUITING,
-        "I just want to talk to the sponsors and get a job",
-    ),
-    (PURPOSE_MESS_AROUND, "I want to have a fun weekend with my friends!"),
-]
-
-WARECHOICE = [("SW", "Software"), ("HW", "Hardware")]
-"""HW - Hardware, SW - Software"""
 
 
 def uuid_generator(_instance, filename: str):
@@ -627,7 +355,7 @@ class Application(models.Model):
             return bool(match)
 
         if (not self.is_adult and self.age > MAX_AGE) or (
-            self.is_adult and self.age < MAX_AGE
+                self.is_adult and self.age < MAX_AGE
         ):
             raise exceptions.ValidationError(
                 "Age and adult status do not match. Please confirm you are 18 or older."

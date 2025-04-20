@@ -6,7 +6,8 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 
 from application.admin import build_approval_email, build_rejection_email
-from application.models import STATUS_ADMITTED, STATUS_REJECTED, Application
+from application.models import Application
+from application.constants import STATUS_REJECTED, STATUS_ADMITTED
 from shared import test_case
 
 

@@ -5,7 +5,8 @@ from rest_framework import authentication, permissions, response, status
 from rest_framework.authtoken import views
 from rest_framework.request import Request
 
-from application.models import STATUS_CHECKED_IN, Application
+from application.models import Application
+from application.constants import STATUS_CHECKED_IN
 from volunteer.models import FoodEvent, WorkshopEvent
 from volunteer.serializers import EmailAuthTokenSerializer
 

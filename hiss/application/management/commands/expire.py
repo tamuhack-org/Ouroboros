@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-from application.models import STATUS_ADMITTED, STATUS_EXPIRED, Application
+from application.models import Application
+from application.constants import STATUS_ADMITTED, STATUS_EXPIRED
 
 
 class Command(BaseCommand):

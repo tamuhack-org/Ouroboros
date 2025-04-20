@@ -10,8 +10,7 @@ from user.models import User
 
 
 def export_user_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
-    """Exports the emails related to the selected `User`s to a CSV file
-    """
+    """Exports the emails related to the selected `User`s to a CSV file"""
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="emails.csv"'
 

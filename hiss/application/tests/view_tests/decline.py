@@ -2,11 +2,9 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy
 
 from application.models import (
-    STATUS_ADMITTED,
-    STATUS_DECLINED,
-    STATUS_PENDING,
     Application,
 )
+from application.constants import STATUS_PENDING, STATUS_ADMITTED, STATUS_DECLINED
 from shared import test_case
 
 
