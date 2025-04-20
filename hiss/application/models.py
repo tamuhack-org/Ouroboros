@@ -36,7 +36,7 @@ from application.constants import (
     STATUS_CONFIRMED,
     STATUS_OPTIONS,
     STATUS_PENDING,
-    WANTS_TEAM_OPTIONS,
+    DISCOVERY_METHOD_OPTIONS,
     WARECHOICE,
 )
 from application.countries import COUNTRIES_TUPLES
@@ -143,6 +143,7 @@ class Application(models.Model):
         choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
     )
 
+    @override
     def __str__(self):
         return f"{self.last_name}, {self.first_name} - Application"
 
@@ -152,8 +153,9 @@ class Application(models.Model):
         super().save(*args, **kwargs)
 
     def get_next_meal_group(self):
-        """Determine the next meal group by counting all non-null meal group
-        values modulo 4, using a dictionary to assign meal groups.
+        """Determine the next meal group.
+
+        Counts all meal group values modulo 4, using a dictionary to assign meal groups.
         """
         meal_group_map = {0: "A", 1: "B", 2: "C", 3: "D"}
         non_null_count = (
@@ -265,6 +267,7 @@ class Application(models.Model):
         blank=False,
         null=True,
     )
+
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
     agree_to_mlh_stuff = models.BooleanField(
@@ -280,7 +283,6 @@ class Application(models.Model):
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
         "A&M.",
     )
-
     agree_to_photos = models.BooleanField(choices=AGREE, null=True, default=None)
     accessibility_requirements = models.BooleanField(
         choices=AGREE_DISAGREE, null=True, default=None, blank=True
@@ -326,10 +328,9 @@ class Application(models.Model):
         choices=HAS_TEAM_OPTIONS,
         max_length=16,
     )
-    # FIXME we should name this field for what it actually is lol
-    wants_team = models.CharField(
+    discovery_method = models.CharField(
         f"How did you hear about {settings.EVENT_NAME}?",
-        choices=WANTS_TEAM_OPTIONS,
+        choices=DISCOVERY_METHOD_OPTIONS,
         help_text="",
         max_length=16,
     )
@@ -356,7 +357,7 @@ class Application(models.Model):
             return bool(match)
 
         if (not self.is_adult and self.age > MAX_AGE) or (
-                self.is_adult and self.age < MAX_AGE
+            self.is_adult and self.age < MAX_AGE
         ):
             raise exceptions.ValidationError(
                 "Age and adult status do not match. Please confirm you are 18 or older."

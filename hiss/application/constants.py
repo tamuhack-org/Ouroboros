@@ -380,7 +380,7 @@ MAJORS = [
     (CHEMISTRY, "Chemistry"),
     (MAJOR_OTHER, "Other"),
 ]
-WANTS_TEAM_OPTIONS = [
+DISCOVERY_METHOD_OPTIONS = [
     ("Friend", "From a friend"),
     ("Tabling", "Tabling outside Zachry"),
     ("Howdy Week", "From Howdy Week"),

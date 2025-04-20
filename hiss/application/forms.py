@@ -191,7 +191,7 @@ class ApplicationModelForm(forms.ModelForm):
             "wares",
             "dietary_restrictions",
             "has_team",
-            "wants_team",
+            "discovery_method",
             "shirt_size",
             # "address",
             "resume",
