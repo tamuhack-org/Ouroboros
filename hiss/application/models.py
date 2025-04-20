@@ -22,6 +22,7 @@ from application.constants import (
     AGREE,
     AGREE_DISAGREE,
     CLASSIFICATIONS,
+    DISCOVERY_METHOD_OPTIONS,
     GENDERS,
     GRAD_YEARS,
     HACKATHON_TIMES,
@@ -36,7 +37,6 @@ from application.constants import (
     STATUS_CONFIRMED,
     STATUS_OPTIONS,
     STATUS_PENDING,
-    DISCOVERY_METHOD_OPTIONS,
     WARECHOICE,
 )
 from application.countries import COUNTRIES_TUPLES
@@ -359,21 +359,27 @@ class Application(models.Model):
         if (not self.is_adult and self.age > MAX_AGE) or (
             self.is_adult and self.age < MAX_AGE
         ):
+            msg = "Age and adult status do not match. Please confirm you are 18 or older."
             raise exceptions.ValidationError(
-                "Age and adult status do not match. Please confirm you are 18 or older."
+                msg
             )
         # Fixes the obos admin panel bug, idk why the checkbox doesn't show up
         if not self.age >= MAX_AGE or not self.is_adult:
-            raise exceptions.ValidationError(
+            msg = (
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
+            raise exceptions.ValidationError(
+                msg
+            )
 
         if not is_valid_name(self.first_name):
+            msg = "First name can only contain letters, spaces, hyphens, and apostrophes."
             raise exceptions.ValidationError(
-                "First name can only contain letters, spaces, hyphens, and apostrophes."
+                msg
             )
         if not is_valid_name(self.last_name):
+            msg = "Last name can only contain letters, spaces, hyphens, and apostrophes."
             raise exceptions.ValidationError(
-                "Last name can only contain letters, spaces, hyphens, and apostrophes."
+                msg
             )
