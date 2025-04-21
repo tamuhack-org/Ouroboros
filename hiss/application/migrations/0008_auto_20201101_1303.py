@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
             field=models.FileField(
                 help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
                 storage=django_s3_storage.storage.S3Storage(),
-                upload_to=application.models.uuid_generator,
+                upload_to=application.models.filename_generator,
                 validators=[
                     django.core.validators.FileExtensionValidator(
                         allowed_extensions=["pdf"]

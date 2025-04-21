@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='application',
             name='resume',
-            field=models.FileField(help_text='Companies will use this resume to offer interviews for internships and full-time positions.', upload_to=application.models.uuid_generator, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['pdf']), application.filesize_validation.FileSizeValidator(max_filesize=2.5)], verbose_name='Upload your resume (PDF only)'),
+            field=models.FileField(help_text='Companies will use this resume to offer interviews for internships and full-time positions.', upload_to=application.models.filename_generator, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['pdf']), application.filesize_validation.FileSizeValidator(max_filesize=2.5)], verbose_name='Upload your resume (PDF only)'),
         ),
         migrations.AlterField(
             model_name='application',
