@@ -18,19 +18,19 @@ from django_admin_listfilter_dropdown.filters import (
 )
 from rangefilter.filters import DateRangeFilter
 
+from application.constants import RACES, STATUS_ADMITTED, STATUS_REJECTED
 from application.emails import send_confirmation_email
 from application.models import (
     Application,
     Wave,
 )
-from application.constants import RACES, STATUS_REJECTED, STATUS_ADMITTED
 from shared.admin_functions import send_mass_html_mail
 
 
 class ApplicationAdminForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = "__all__"
+        fields = "__all__"  # noqa: DJ007
         widgets = {
             "gender": forms.RadioSelect,
             "classification": forms.RadioSelect,
@@ -74,8 +74,9 @@ def build_approval_email(
 
 
 def build_rejection_email(application: Application) -> tuple[str, str, None, list[str]]:
-    """Creates a datatuple of (subject, message, html_message, from_email, [to_email]) indicating that a `User`'s
-    application has been rejected.
+    """Create email indicating a `User` is rejected.
+
+    Return type is (subject, message, html_message, from_email, [to_email])
     """
     subject = f"Regarding your {settings.EVENT_NAME} application"
 
@@ -92,28 +93,35 @@ def build_rejection_email(application: Application) -> tuple[str, str, None, lis
     return subject, message, html_message, None, [application.user.email]
 
 
-def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
-    """Sets the value of the `approved` field for the selected `Application`s to `True`, creates an RSVP deadline for
+def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) -> None:
+    """Approve selected Applications.
+
+    Sets the value of the `approved` field for the selected `Application`s to `True`, creates an RSVP deadline for
     each user based on how many days each wave gives to RSVP, and then emails all of the users to inform them that
     their applications have been approved.
     """
+    today_end = timezone.now().replace(hour=23, minute=59, second=59, microsecond=0)
+    apps = queryset.select_related("wave")
+
+    to_update = []
     email_tuples = []
+
+    for app in apps:
+        deadline = today_end + timezone.timedelta(days=app.wave.num_days_to_rsvp)
+        app.status = STATUS_ADMITTED
+        app.confirmation_deadline = deadline
+
+        to_update.append(app)
+        email_tuples.append(build_approval_email(app, deadline))
+
     with transaction.atomic():
-        for application in queryset:
-            deadline = timezone.now().replace(
-                hour=23, minute=59, second=59, microsecond=0
-            ) + timezone.timedelta(application.wave.num_days_to_rsvp)
-            application.status = STATUS_ADMITTED
-            application.confirmation_deadline = deadline
-            approval_email = build_approval_email(application, deadline)
-            print(f"approval email built for {approval_email[-1:]}")
-            email_tuples.append(approval_email)
-            application.save()
+        Application.objects.bulk_update(to_update, ["status", "confirmation_deadline"])
+
     send_mass_html_mail(email_tuples)
 
 
-def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
-    """Sets the value of the `approved` field for the selected `Application`s to `False`"""
+def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) -> None:
+    """Set the value of the `approved` field for the selected `Application`s to `False`."""
     email_tuples = []
     with transaction.atomic():
         for application in queryset:
@@ -123,22 +131,25 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
     send_mass_html_mail(email_tuples)
 
 
-def resend_confirmation(_modeladmin, _request: HttpRequest, queryset: QuerySet) -> None:
+def resend_confirmation(
+    _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
+) -> None:
     """Resends the confirmation email to the selected applications."""
     for application in queryset:
         application.save()
         send_confirmation_email(application)
 
 
-def export_application_emails(_modeladmin, _request: HttpRequest, queryset: QuerySet):
-    """Exports the emails related to the selected `Application`s to a CSV file"""
+def export_application_emails(
+    _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
+):
+    """Export the emails related to the selected `Application`s to a CSV file."""
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="emails.csv"'
 
     writer = csv.writer(response)
     writer.writerow(["email", "shirt_size"])
     for instance in queryset:
-        instance: Application = instance
         writer.writerow([instance.user.email, instance.shirt_size])
 
     return response
@@ -158,10 +169,10 @@ class RaceFilter(admin.SimpleListFilter):
     title = "Race"
     parameter_name = "race"
 
-    def lookups(self, request: HttpRequest, model_admin) -> list[tuple[str, str]]:
+    def lookups(self, _request: HttpRequest, _model_admin) -> list[tuple[str, str]]:
         return RACES
 
-    def queryset(self, request: HttpRequest, queryset: QuerySet):
+    def queryset(self, _request: HttpRequest, queryset: QuerySet):
         if self.value():
             return queryset.filter(race__contains=self.value())
         return queryset
@@ -199,8 +210,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("grad_year", ChoiceDropdownFilter),
         ("num_hackathons_attended", ChoiceDropdownFilter),
         ("wares", ChoiceDropdownFilter),
-        # ("technology_experience", ChoiceDropdownFilter),
-        # ("dietary_restrictions", ChoiceDropdownFilter),
         ("shirt_size", ChoiceDropdownFilter),
         ("datetime_submitted", DateRangeFilter),
         ("accessibility_requirements", ChoiceDropdownFilter),
@@ -297,10 +306,10 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     actions = [approve, reject, export_application_emails, resend_confirmation]
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, _request):
         return True
 
-    def has_change_permission(self, request, obj=None):
+    def has_change_permission(self, _request, _obj=None):
         return True
 
     @staticmethod

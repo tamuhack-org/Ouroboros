@@ -87,7 +87,7 @@ select = [
   "W", # pydocstyle warn rules
   "I", # isort (import sorting)
   "N", # pep8-naming
-  "D", # pydocstyle
+  # "D", # pydocstyle
   "UP", # pyupgrade (make upgrading python version easier by automating syntax changes)
   "ASYNC", # flake8-async
   "ASYNC1", # flake8-trio
@@ -109,19 +109,11 @@ select = [
   "SLOT", # flake8-slots
   "SIM", # flake8-simplify
   "TID", # flake8-tidy-imports
-  "ARG", # flake8-unused-arguments
   "PTH", # flake8-use-pathlib
-  "TD", # flake8-todos
-  "FIX", # flake8-fixme
-  "ERA", # eradicate (no commented code)
-  "PD", # pandas-vet
   "PGH", # pygrep-hooks
   "PL", # pylint
   "TRY", # tryceratops
   "FLY", # flynt
-  "NPY", # NumPy-specific rules
-  "AIR", # Airflow
-  "PERF", # Perflint
   "FURB", # refurb
   "RUF", # Ruff-specific rules
 ]
@@ -168,6 +160,9 @@ ignore = [
 "hiss/shared/management/commands/seeddb.py" = [
   "S311", # this file isn't using the pseudo-random generator for cryptographic purposes.
 ]
+[tool.ruff.lint.flake8-builtins]
+ignorelist=["format"]
+
 
 [tool.ruff.lint.pylint]
 max-branches = 13

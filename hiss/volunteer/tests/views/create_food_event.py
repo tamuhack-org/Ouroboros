@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 
-from application.models import Application
 from application.constants import STATUS_CHECKED_IN
+from application.models import Application
 from volunteer.models import BREAKFAST, FoodEvent
 from volunteer.tests.test_case import TokenAuthTestCase
 from volunteer.views import USER_NOT_CHECKED_IN_MSG
@@ -26,7 +26,7 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
         )
 
         self.assertEqual(response.status_code, 403)
-    
+
     def test_get_succeeds_for_volunteer(self):
         self.create_active_wave()
 
@@ -40,7 +40,7 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
         }
 
         app.dietary_restrictions = expected_output["dietaryRestrictions"]
-        app.save() 
+        app.save()
         app.refresh_from_db()
 
 
@@ -58,7 +58,7 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
         response_json = response.json()
         self.assertEqual(response_json["dietaryRestrictions"], expected_output["dietaryRestrictions"])
         self.assertEqual(response_json["mealScans"], expected_output["mealScans"])
-    
+
 
     ### POST tests ###
 

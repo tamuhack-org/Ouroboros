@@ -4,9 +4,7 @@ from django.test import override_settings
 from django.utils import timezone
 
 import application.constants
-from application import constants
-from application import models as application_models
-from application.countries import COUNTRIES_TUPLES
+from application.constants import COUNTRIES_TUPLES
 from application.models import School, Wave
 from user.models import User
 

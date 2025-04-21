@@ -22,6 +22,7 @@ from application.constants import (
     AGREE,
     AGREE_DISAGREE,
     CLASSIFICATIONS,
+    COUNTRIES_TUPLES,
     DISCOVERY_METHOD_OPTIONS,
     GENDERS,
     GRAD_YEARS,
@@ -39,7 +40,6 @@ from application.constants import (
     STATUS_PENDING,
     WARECHOICE,
 )
-from application.countries import COUNTRIES_TUPLES
 from application.filesize_validation import FileSizeValidator
 
 s3_storage = S3Storage()
@@ -125,7 +125,7 @@ class School(models.Model):
         return self.name
 
 
-def uuid_generator(_instance, filename: str):
+def filename_generator(_instance, filename: str):
     path = Path(filename)
     ext = path.suffix.lower()
     return f"{uuid.uuid4()}{ext}"
@@ -133,47 +133,6 @@ def uuid_generator(_instance, filename: str):
 
 class Application(models.Model):
     """Represents a `Hacker`'s application to this hackathon."""
-
-    # META INFO
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    datetime_submitted = models.DateTimeField(auto_now_add=True)
-    wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
-    user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
-    status = models.CharField(
-        choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
-    )
-
-    @override
-    def __str__(self):
-        return f"{self.last_name}, {self.first_name} - Application"
-
-    def save(self, *args, **kwargs):
-        """Override save to ensure meal group assignment logic is applied."""
-        self.assign_meal_group()
-        super().save(*args, **kwargs)
-
-    def get_next_meal_group(self):
-        """Determine the next meal group.
-
-        Counts all meal group values modulo 4, using a dictionary to assign meal groups.
-        """
-        meal_group_map = {0: "A", 1: "B", 2: "C", 3: "D"}
-        non_null_count = (
-            Application.objects.filter(status=STATUS_CONFIRMED)
-            .exclude(meal_group__isnull=True)
-            .count()
-        )
-        next_group_num = non_null_count % 4
-        return meal_group_map[next_group_num]
-
-    def assign_meal_group(self):
-        """Assign a meal group based on the current status."""
-        if self.status == STATUS_CONFIRMED:  # Confirmed
-            self.meal_group = self.get_next_meal_group()
-        elif self.status == "E":  # Waitlisted
-            self.meal_group = "E"
-        else:
-            self.meal_group = None
 
     # ABOUT YOU
     first_name = models.CharField(
@@ -199,8 +158,6 @@ class Application(models.Model):
         blank=True,
     )
     question1 = models.TextField(QUESTION1_TEXT, max_length=500)
-    # question2 = models.TextField(QUESTION2_TEXT, max_length=500)
-    # question3 = models.TextField(QUESTION3_TEXT, max_length=500)
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
@@ -208,9 +165,7 @@ class Application(models.Model):
             FileExtensionValidator(allowed_extensions=["pdf"]),
             FileSizeValidator(max_filesize=2.5),
         ],
-        upload_to=uuid_generator,
-        # storage=s3_storage,
-        storage=None,
+        upload_to=filename_generator,
     )
 
     # DEMOGRAPHIC INFORMATION
@@ -292,7 +247,7 @@ class Application(models.Model):
     shirt_size = models.CharField(
         "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
     )
-    # address = AddressField(on_delete=models.CASCADE, default=None, null=True)
+
     additional_accommodations = models.TextField(
         'Do you require any special accommodations at the event? Please list dietary restrictions here if you selected "food allergy" or "other".',
         max_length=500,
@@ -342,9 +297,50 @@ class Application(models.Model):
     notes = models.TextField(
         "Anything else you would like us to know?", max_length=300, blank=True
     )
+    # META INFO
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    datetime_submitted = models.DateTimeField(auto_now_add=True)
+    wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
+    user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
+    status = models.CharField(
+        choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
+    )
+
+    @override
+    def __str__(self):
+        return f"{self.last_name}, {self.first_name} - Application"
+
+    @override
+    def save(self, *args, **kwargs):
+        """Override save to ensure meal group assignment logic is applied."""
+        self.assign_meal_group()
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse_lazy("application:update", args=[self.id])
+
+    def get_next_meal_group(self):
+        """Determine the next meal group.
+
+        Counts all meal group values modulo 4, using a dictionary to assign meal groups.
+        """
+        meal_group_map = {0: "A", 1: "B", 2: "C", 3: "D"}
+        non_null_count = (
+            Application.objects.filter(status=STATUS_CONFIRMED)
+            .exclude(meal_group__isnull=True)
+            .count()
+        )
+        next_group_num = non_null_count % 4
+        return meal_group_map[next_group_num]
+
+    def assign_meal_group(self):
+        """Assign a meal group based on the current status."""
+        if self.status == STATUS_CONFIRMED:  # Confirmed
+            self.meal_group = self.get_next_meal_group()
+        elif self.status == "E":  # Waitlisted
+            self.meal_group = "E"
+        else:
+            self.meal_group = None
 
     def clean(self):
         super().clean()
@@ -359,27 +355,25 @@ class Application(models.Model):
         if (not self.is_adult and self.age > MAX_AGE) or (
             self.is_adult and self.age < MAX_AGE
         ):
-            msg = "Age and adult status do not match. Please confirm you are 18 or older."
-            raise exceptions.ValidationError(
-                msg
+            msg = (
+                "Age and adult status do not match. Please confirm you are 18 or older."
             )
+            raise exceptions.ValidationError(msg)
         # Fixes the obos admin panel bug, idk why the checkbox doesn't show up
         if not self.age >= MAX_AGE or not self.is_adult:
             msg = (
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
-            raise exceptions.ValidationError(
-                msg
-            )
+            raise exceptions.ValidationError(msg)
 
         if not is_valid_name(self.first_name):
-            msg = "First name can only contain letters, spaces, hyphens, and apostrophes."
-            raise exceptions.ValidationError(
-                msg
+            msg = (
+                "First name can only contain letters, spaces, hyphens, and apostrophes."
             )
+            raise exceptions.ValidationError(msg)
         if not is_valid_name(self.last_name):
-            msg = "Last name can only contain letters, spaces, hyphens, and apostrophes."
-            raise exceptions.ValidationError(
-                msg
+            msg = (
+                "Last name can only contain letters, spaces, hyphens, and apostrophes."
             )
+            raise exceptions.ValidationError(msg)

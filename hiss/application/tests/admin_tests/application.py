@@ -6,8 +6,8 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 
 from application.admin import build_approval_email, build_rejection_email
+from application.constants import STATUS_ADMITTED, STATUS_REJECTED
 from application.models import Application
-from application.constants import STATUS_REJECTED, STATUS_ADMITTED
 from shared import test_case
 
 
@@ -61,7 +61,6 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
     def test_approval_action_sends_approval_email(self):
         self.client.force_login(self.admin)
         change_url = reverse_lazy("admin:application_application_changelist")
-        print("Change url:", change_url)
 
         self.client.post(
             change_url, {"action": "approve", "_selected_action": [self.app.pk]}

@@ -12,7 +12,7 @@ User = get_user_model()
 class GroupAdminForm(forms.ModelForm):
     class Meta:
         model = Group
-        exclude = []
+        fields = ["name", "permissions"]
 
     # Add the users field.
     users = forms.ModelMultipleChoiceField(
@@ -24,7 +24,7 @@ class GroupAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         # Do the normal form initialisation.
-        super(GroupAdminForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # If it is an existing group (saved objects have a pk).
         if self.instance.pk:
             # Populate the users field with the current Group users.
@@ -36,7 +36,7 @@ class GroupAdminForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         # Default save
-        instance = super(GroupAdminForm, self).save()
+        instance = super().save()
         # Save many-to-many data
         self.save_m2m()
         return instance

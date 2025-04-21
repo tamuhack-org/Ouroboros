@@ -1,6 +1,5 @@
 import json
 
-from django.contrib.auth.models import Group
 from django.urls import reverse_lazy
 
 from shared import test_case

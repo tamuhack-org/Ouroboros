@@ -1,6 +1,6 @@
-# noinspection PyUnresolvedReferences
-from .base import *
-from .customization import *
+import os
+
+from .customization import ORGANIZER_EMAIL, ORGANIZER_NAME
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -34,4 +34,6 @@ ANYMAIL = {
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = f"The {ORGANIZER_NAME} Team <{ORGANIZER_EMAIL}>"
 
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
 MEDIA_ROOT = "/resumes"

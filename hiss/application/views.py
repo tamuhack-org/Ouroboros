@@ -7,18 +7,19 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
+from application.constants import STATUS_ADMITTED, STATUS_CONFIRMED, STATUS_DECLINED
 from application.emails import send_confirmation_email, send_creation_email
 from application.forms import ApplicationModelForm
 from application.models import (
     Application,
     Wave,
 )
-from application.constants import STATUS_ADMITTED, STATUS_CONFIRMED, STATUS_DECLINED
 
 
 class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
-    """Creates a new Application and links it to a User if one doesn't already exist and the User's not already
-    applied to be a volunteer.
+    """Create a new Application and link it to a User.
+
+    Checks if an Application doesn't already exist and the User's not already applied to be a volunteer.
     """
 
     form_class = ApplicationModelForm
@@ -26,13 +27,11 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
     success_url = reverse_lazy("status")
 
     def get_context_data(self, **kwargs):
-        print("Calling get_context_data")
         context = super().get_context_data(**kwargs)
         context["active_wave"] = Wave.objects.active_wave()
         return context
 
     def form_valid(self, form: ApplicationModelForm):
-        print("Appliction submitted: calling form_valid")
         try:
             if Application.objects.filter(user=self.request.user).exists():
                 form.add_error(
@@ -47,13 +46,14 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
 
         except Exception as e:
             print(f"Exception: {e}", flush=True)
-            raise e
+            raise
         return redirect(self.success_url)
 
 
 class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
-    """Updates a linked Application. Updating an Application does not change the Wave it was originally submitted
-    during.
+    """Update a linked Application.
+
+    Updating an Application does not change the Wave it was originally submittedduring.
     """
 
     queryset = Application.objects.all()
@@ -66,32 +66,35 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
         context["active_wave"] = Wave.objects.active_wave()
         return context
 
-    def get_object(self, queryset: QuerySet = None) -> Application:
-        """Checks to make sure that the user actually owns the application requested."""
+    def get_object(self, _queryset: QuerySet = None) -> Application:
+        """Check to make sure that the user actually owns the application requested."""
         app: Application = super().get_object()
         if self.request.user.is_superuser:
             return app
         if app.user != self.request.user:
-            raise PermissionDenied("You don't have permission to view this application")
+            msg = "You don't have permission to view this application"
+            raise PermissionDenied(msg)
         return app
 
 
 class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
-    """Changes an application's status from STATUS_ADMITTED to STATUS_CONFIRMED"""
+    """Change an application's status from STATUS_ADMITTED to STATUS_CONFIRMED."""
 
-    def post(self, request: HttpRequest, *args, **kwargs):
+    def post(self, request: HttpRequest, *_args, **_kwargs):
         pk = self.kwargs["pk"]
         app: Application = Application.objects.get(pk=pk)
         if app.status == STATUS_CONFIRMED:
             # Do nothing, they already confirmed.
             return redirect(reverse_lazy("status"))
         if app.user != request.user:
+            msg = "You don't have permission to view this application."
             raise PermissionDenied(
-                "You don't have permission to view this application."
+                msg
             )
         if app.status != STATUS_ADMITTED:
+            msg = "You can't confirm your application if it hasn't been approved."
             raise PermissionDenied(
-                "You can't confirm your application if it hasn't been approved."
+                msg
             )
         app.status = STATUS_CONFIRMED
         app.save()
@@ -100,21 +103,23 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
 
 
 class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
-    """Changes an application's status from STATUS_ADMITTED to STATUS_DECLINED"""
+    """Changes an application's status from STATUS_ADMITTED to STATUS_DECLINED."""
 
-    def post(self, request: HttpRequest, *args, **kwargs):
+    def post(self, request: HttpRequest, *_args, **_kwargs):
         pk = self.kwargs["pk"]
         app: Application = Application.objects.get(pk=pk)
         if app.status == STATUS_DECLINED:
             # Do nothing, they already declined
             return redirect(reverse_lazy("status"))
         if app.user != request.user:
+            msg = "You don't have permission to view this application."
             raise PermissionDenied(
-                "You don't have permission to view this application."
+                msg
             )
-        if not (app.status == STATUS_ADMITTED or app.status == STATUS_CONFIRMED):
+        if app.status not in (STATUS_ADMITTED, STATUS_CONFIRMED):
+            msg = "You can't decline your spot if it hasn't been approved."
             raise PermissionDenied(
-                "You can't decline your spot if it hasn't been approved."
+                msg
             )
         app.status = STATUS_DECLINED
         app.save()

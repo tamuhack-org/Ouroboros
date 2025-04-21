@@ -125,7 +125,7 @@ class Migration(migrations.Migration):
                     "resume",
                     models.FileField(
                         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
-                        upload_to=application.models.uuid_generator,
+                        upload_to=application.models.filename_generator,
                         validators=[
                             django.core.validators.FileExtensionValidator(
                                 allowed_extensions=["pdf"]

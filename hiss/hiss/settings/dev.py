@@ -1,8 +1,5 @@
-# noinspection PyUnresolvedReferences
-from .base import *
-
-# noinspection PyUnresolvedReferences
-from .customization import *
+from .base import *  # noqa: F403
+from .customization import *  # noqa: F403
 
 SECRET_KEY = "development"
 DEBUG = True
@@ -23,14 +20,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # settings.py
 
-# Use Django’s SMTP backend (not the console or file backends)
+# Use Django's SMTP backend
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-# Point to Mailpit’s SMTP server
 EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
-
-# Mailpit doesn’t need auth by default
 EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = False
@@ -41,3 +34,4 @@ DEFAULT_FROM_EMAIL = "webmaster@localhost"
 MEDIA_ROOT = "resumes"
 
 AWS_S3_KEY_PREFIX = "dev-resumes"
+DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"

@@ -5,8 +5,8 @@ from rest_framework import authentication, permissions, response, status
 from rest_framework.authtoken import views
 from rest_framework.request import Request
 
-from application.models import Application
 from application.constants import STATUS_CHECKED_IN
+from application.models import Application
 from volunteer.models import FoodEvent, WorkshopEvent
 from volunteer.serializers import EmailAuthTokenSerializer
 
@@ -30,10 +30,10 @@ class VerifyAuthenticatedView(views.APIView):
     permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def get(self, request: Request, format: str = None):
+    def get(self, request: Request, format: str | None = None):
         """See if a user's token is valid and if they are authorized to use the API.
         This is a certified workaround-because-i-need-auth-but-i-don't-want-to-learn-django moment.
-        Love, Naveen <3
+        Love, Naveen <3.
 
         This will return
             200 if the user is logged in and is authorized
@@ -49,7 +49,7 @@ class CheckinHackerView(views.APIView):
     permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def get(self, request: Request, format: str = None):
+    def get(self, request: Request, format: str | None = None):
         """Returns the checkin status of a specific user. If the request is malformed (i.e. missing the user's email),
         returns a Django Rest Framework Response with a 400 status code. if successful, returns a response with status
         200.
@@ -70,7 +70,7 @@ class CheckinHackerView(views.APIView):
             }
         )
 
-    def post(self, request: Request, format: str = None):
+    def post(self, request: Request, format: str | None = None):
         """Sets a specific user's Application status as STATUS_CHECKED_IN (indicating that a user has successfully
         checked into the event). If the request is malformed (i.e. missing the user's email), returns a Django Rest
         Framework Response with a 400 status code. if successful, returns a response with status 200.
@@ -92,7 +92,7 @@ class CreateFoodEventView(views.APIView):
     permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def get(self, request: Request, format: str = None):
+    def get(self, request: Request, format: str | None = None):
         """Returns a list of all FoodEvents belonging to a specific user. If the request is malformed (i.e. missing the
         user's email), returns a Django Rest Framework Response with a 400 status code. if successful, returns a response
         with status 200.
@@ -116,7 +116,7 @@ class CreateFoodEventView(views.APIView):
             }
         )
 
-    def post(self, request: Request, format: str = None):
+    def post(self, request: Request, format: str | None = None):
         """Creates a new FoodEvent (indicating that a user has taken food for this meal). If the request is malformed (
         i.e. missing the user's email, meal type, or restrictions), returns a Django Rest Framework Response with a
         400 status code. if successful, returns a response with status 200.
@@ -133,7 +133,7 @@ class CreateFoodEventView(views.APIView):
         )
 
         # Ensure that user has checked in
-        if not application.status == STATUS_CHECKED_IN:
+        if application.status != STATUS_CHECKED_IN:
             return response.Response(
                 data={"error": USER_NOT_CHECKED_IN_MSG},
                 status=status.HTTP_412_PRECONDITION_FAILED,
@@ -148,7 +148,7 @@ class CreateWorkshopEventView(views.APIView):
     permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
     authentication_classes = [authentication.TokenAuthentication]
 
-    def get(self, request: Request, format: str = None):
+    def get(self, request: Request, format: str | None = None):
         """Returns the time of most recent workshop event for a specific user. If the request is malformed (i.e. missing
         the user's email), returns a Django Rest Framework Response with a 400 status code. if successful, returns a
         response with status 200.
@@ -164,7 +164,7 @@ class CreateWorkshopEventView(views.APIView):
             return JsonResponse({"lastWorkshopScan": last_workshop_event.timestamp})
         return JsonResponse({"lastWorkshopScan": None})
 
-    def post(self, request: Request, format: str = None):
+    def post(self, request: Request, format: str | None = None):
         """Creates a new WorkshopEvent (indicating that a user has attended a workshop). If the request is malformed (
         i.e. missing the user's email), returns a Django Rest Framework Response with a 400 status code. if
         successful, returns a response with status 200.
@@ -180,7 +180,7 @@ class CreateWorkshopEventView(views.APIView):
         )
 
         # Ensure that user has checked in
-        if not application.status == STATUS_CHECKED_IN:
+        if application.status != STATUS_CHECKED_IN:
             return response.Response(
                 data={"error": USER_NOT_CHECKED_IN_MSG},
                 status=status.HTTP_412_PRECONDITION_FAILED,

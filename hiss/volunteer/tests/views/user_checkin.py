@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 
-from application.models import Application
 from application.constants import STATUS_CHECKED_IN
+from application.models import Application
 from volunteer.tests.test_case import TokenAuthTestCase
 
 
@@ -23,7 +23,7 @@ class CheckinUserViewTestCase(TokenAuthTestCase):
         )
 
         self.assertEqual(response.status_code, 403)
-    
+
     def test_get_succeeds_for_volunteer(self):
         self.create_active_wave()
         app = Application.objects.create(**self.application_fields, wave=self.wave1)
@@ -50,7 +50,7 @@ class CheckinUserViewTestCase(TokenAuthTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), expected_output)
-    
+
     def test_get_succeeds_for_admin(self):
         self.create_active_wave()
         app = Application.objects.create(**self.application_fields, wave=self.wave1)
