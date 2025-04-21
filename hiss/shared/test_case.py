@@ -67,7 +67,7 @@ class SharedTestCase(test.TestCase):
             "race": [application.constants.NO_ANSWER],
             "race_other": "",  # Defaults to empty if no self-description is given
             "has_team": application.constants.HAS_TEAM,
-            "wants_team": "Friend",  # Default value for how the user heard about the event
+            "discovery_method": "Friend",  # Default value for how the user heard about the event
             "extra_links": "A",
             "question1": "B",
             "is_adult": True,
