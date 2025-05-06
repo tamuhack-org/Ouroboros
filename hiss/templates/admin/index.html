@@ -1,0 +1,60 @@
+<!-- this template is for the admin portal register.tamuhack.com/admin -->
+
+{% extends 'unfold/layouts/base_simple.html' %}
+{% load i18n unfold static %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}
+    {% trans 'TAMUhack Dashboard' %}
+{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            {{ site_header }}
+        </a>
+    </h1>
+{% endblock %}
+
+{% block content %} 
+    <!-- application data from hiss/application/utils.py, context[something] defines a query for the respective data-->
+    <head>
+        <link rel="stylesheet" href="{% static 'admin.css' %}">
+    </head>
+    <div class="border-wrapper">
+        <div class="admintitle">
+            Registration Info
+        </div>
+        <div class="admininfo">
+            <div class="card">
+                <h2>Total Applications</h2>
+                <div class="info_numbers" id="total_applications">{{ total_application }}</div>
+            </div>
+            <div class="card">
+                <h2>Confirmed applications</h2>
+                <div class="info_numbers" id="total_confirmed">{{ total_confirmed }}</div>
+            </div>
+            <div class="card">
+                <h2>Hardware Hackers</h2>
+                <div class="info_numbers" id="hardware_hackers">{{ total_hardware }}</div>
+            </div>
+            <div class="card">
+                <h2>Approved Applications</h2>
+                <div class="info_numbers" id="approved_applications">{{ total_admitted }}</div>
+            </div>
+            <div class="card">
+                <h2>Checked-in Hackers</h2>
+                <div class="info_numbers" id="approved_applications">{{ total_checked }}</div>
+            </div>
+            <div class="card">
+                <h2>Waitlisted Hackers</h2>
+                <div class="info_numbers" id="approved_applications">{{ total_waitlisted }}</div>
+            </div>
+        </div>  
+        <div class="button-container">
+            <a href="application/application" class="btn">View Applications</a>
+        </div>      
+    </div>    
+
+{% endblock %}

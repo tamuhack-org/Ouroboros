@@ -1,6 +1,7 @@
 # pylint: disable=C0330
 import csv
-
+from typing import List, Tuple
+from unfold.admin import ModelAdmin
 from address.forms import AddressWidget
 from address.models import AddressField
 from django import forms
@@ -13,10 +14,10 @@ from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import strip_tags
-from django_admin_listfilter_dropdown.filters import (
-    ChoiceDropdownFilter,
+from unfold.contrib.filters.admin import (
+    ChoicesDropdownFilter,
+    RangeDateFilter
 )
-from rangefilter.filters import DateRangeFilter
 
 from application.emails import send_confirmation_email
 from application.models import (
@@ -155,6 +156,7 @@ def custom_titled_filter(title):
 
 
 class RaceFilter(admin.SimpleListFilter):
+    """Race filter works different from the other filters, so custom filter defined"""
     title = "Race"
     parameter_name = "race"
 
@@ -166,8 +168,8 @@ class RaceFilter(admin.SimpleListFilter):
             return queryset.filter(race__contains=self.value())
         return queryset
 
-
-class ApplicationAdmin(admin.ModelAdmin):
+class ApplicationAdmin(ModelAdmin):
+    """Defines the applications section of the admin portal"""
     form = ApplicationAdminForm
     readonly_fields = [
         "datetime_submitted",
@@ -191,20 +193,20 @@ class ApplicationAdmin(admin.ModelAdmin):
         "is_a_walk_in",
     ]
     list_filter = (
+        ("status", ChoicesDropdownFilter),
+        ("classification", ChoicesDropdownFilter),
         ("school", RelatedOnlyFieldListFilter),
-        ("status", ChoiceDropdownFilter),
-        ("classification", ChoiceDropdownFilter),
-        ("gender", ChoiceDropdownFilter),
-        ("major", ChoiceDropdownFilter),
-        ("grad_year", ChoiceDropdownFilter),
-        ("num_hackathons_attended", ChoiceDropdownFilter),
-        ("wares", ChoiceDropdownFilter),
+        ("gender", ChoicesDropdownFilter),
+        ("major", ChoicesDropdownFilter),
+        ("grad_year", ChoicesDropdownFilter),
+        ("num_hackathons_attended", ChoicesDropdownFilter),
+        ("wares", ChoicesDropdownFilter),
         # ("technology_experience", ChoiceDropdownFilter),
         # ("dietary_restrictions", ChoiceDropdownFilter),
-        ("shirt_size", ChoiceDropdownFilter),
-        ("datetime_submitted", DateRangeFilter),
-        ("accessibility_requirements", ChoiceDropdownFilter),
-        RaceFilter,
+        ("shirt_size", ChoicesDropdownFilter),
+        ("datetime_submitted", RangeDateFilter),
+        ("accessibility_requirements", ChoicesDropdownFilter),
+        RaceFilter
     )
     list_display = (
         "first_name",
@@ -215,7 +217,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "classification",
         "grad_year",
         "status",
-        "additional_accommodations",
+        "additional_accommodations"
     )
     fieldsets = [
         ("Related Objects", {"fields": ["user"]}),
@@ -312,9 +314,9 @@ class ApplicationAdmin(admin.ModelAdmin):
         return obj.wave.is_walk_in_wave
 
 
-class WaveAdmin(admin.ModelAdmin):
+class WaveAdmin(ModelAdmin):
+    """Defines the display of wave section in admin portal"""
     list_display = ("start", "end", "is_walk_in_wave")
-
 
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Wave, WaveAdmin)
