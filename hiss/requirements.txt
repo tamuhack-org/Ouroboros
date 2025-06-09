@@ -45,7 +45,7 @@ pypng==0.0.20
 PyQRCode==1.2.1
 pytz==2019.2
 qrtools==0.0.2
-requests==2.22.0
+requests==2.32.4
 rsa==4.0
 six==1.12.0
 sqlparse==0.3.0
