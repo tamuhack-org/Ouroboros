@@ -5,7 +5,7 @@ from address.forms import AddressWidget
 from address.models import AddressField
 from django import forms
 from django.conf import settings
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin.filters import RelatedOnlyFieldListFilter
 from django.db import transaction
 from django.db.models.query import QuerySet
@@ -25,9 +25,22 @@ from application.models import (
 )
 from application.constants import RACES, STATUS_REJECTED, STATUS_ADMITTED
 from shared.admin_functions import send_mass_html_mail
-
+from django.contrib.auth import get_user_model
+from django.contrib.admin.filters import RelatedOnlyFieldListFilter
+from django.utils.crypto import get_random_string
+from application.models import Application, Wave
+from django.db import transaction
+from django.core.files.base import ContentFile
 
 class ApplicationAdminForm(forms.ModelForm):
+    
+    num_to_create = forms.IntegerField(
+        label="Number of users to create",
+        help_text="If > 1, this will create multiple test users based on the data entered above.",
+        min_value=1,
+        initial=1,
+        required=False
+    )
     class Meta:
         model = Application
         fields = "__all__"
@@ -280,6 +293,13 @@ class ApplicationAdmin(admin.ModelAdmin):
             "Miscellaneous",
             {"fields": ["notes", "is_adult", "accessibility_requirements"]},
         ),
+        (
+            "Bulk Creation (For Testing)",
+            {
+                "classes": ("collapse",),
+                "fields": ["num_to_create"],
+            },
+        ),
     ]
     formfield_overrides = {
         AddressField: {"widget": AddressWidget(attrs={"style": "width: 300px;"})}
@@ -310,6 +330,69 @@ class ApplicationAdmin(admin.ModelAdmin):
     @staticmethod
     def is_a_walk_in(obj: Application) -> bool:
         return obj.wave.is_walk_in_wave
+    
+    def save_model(self, request, obj, form, change):
+        if not change:
+            num_to_create = form.cleaned_data.get('num_to_create', 1)
+            created_count = 0
+            template_data = form.cleaned_data.copy()
+
+            template_data.pop('num_to_create', None)
+            original_resume = template_data.pop('resume', None)
+            
+            if num_to_create > 1:
+                # for bulk creation, create lightweight dummy file
+                resume_to_use = ContentFile(b"This is a dummy resume for bulk creation.", name="dummy_resume.txt")
+            else:
+                # for a single creation, use uploaded file
+                resume_to_use = original_resume
+
+            # use database transaction because sqlite database gets locked otherwise
+            with transaction.atomic():
+                for i in range(num_to_create):
+                    User = get_user_model()
+                    
+                    email_prefix, domain = template_data['tamu_email'].split('@')
+                    random_suffix = get_random_string(6)
+                    email_to_use = f"{email_prefix}+{random_suffix}@{domain}"
+
+                    user, user_created = User.objects.get_or_create(email=email_to_use)
+                    if user_created:
+                        user.set_password(get_random_string(12))
+                        user.save()
+
+                    now = timezone.now()
+                    instant_wave = Wave.objects.create(
+                        start=now,
+                        end=now + timezone.timedelta(seconds=1),
+                        num_days_to_rsvp=0,
+                        is_walk_in_wave=True
+                    )
+
+                    new_app = Application(
+                        **template_data
+                    )
+                    
+                    new_app.user = user
+                    new_app.wave = instant_wave
+                    new_app.tamu_email = email_to_use
+                    new_app.agree_to_coc = True
+                    new_app.status = 'P' 
+                    
+                    if resume_to_use:
+                        new_app.resume = resume_to_use
+
+                    new_app.save()
+
+                    instant_wave.end = instant_wave.start
+                    instant_wave.save()
+                    
+                    created_count += 1
+                
+            self.message_user(request, f"Successfully created {created_count} application(s).", messages.SUCCESS)
+
+        else:
+            super().save_model(request, obj, form, change)
 
 
 class WaveAdmin(admin.ModelAdmin):
