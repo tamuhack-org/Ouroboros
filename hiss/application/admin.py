@@ -331,7 +331,16 @@ class ApplicationAdmin(admin.ModelAdmin):
     def is_a_walk_in(obj: Application) -> bool:
         return obj.wave.is_walk_in_wave
     
+    # save model called automatically when creating new test user
     def save_model(self, request, obj, form, change):
+        """
+        overrides admin save function to allow for creating many users at once
+        
+        it loops that num_to_create times (if num_to_create > 1), creating a unique user and a temporary wave for each application
+        if creating many, it uses dummy resume to save time
+        
+        if just editing an application, it saves it normally
+        """
         if not change:
             num_to_create = form.cleaned_data.get('num_to_create', 1)
             created_count = 0
@@ -378,7 +387,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     new_app.tamu_email = email_to_use
                     new_app.agree_to_coc = True
                     new_app.status = 'P' 
-                    
+
                     if resume_to_use:
                         new_app.resume = resume_to_use
 
