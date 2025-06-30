@@ -1,0 +1,164 @@
+{% extends "admin/base_site.html" %}
+{% load admin_urls static admin_list %}
+
+{% block title %}{{ title }} | {{ site_title|default:"Django site admin" }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">Home</a>
+&rsaquo; {{ title }}
+</div>
+{% endblock %}
+
+{% block content %}
+<div style="padding: 20px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;">
+    <h1>{{ title }}</h1>
+    
+    
+    <form style="display: none;">
+        {% csrf_token %}
+    </form>
+    
+    <div style="display: flex; gap: 40px;">
+        
+        <div style="flex: 1;">
+            <h3 style="margin-top: 0; color: #333; font-weight: normal;">Upload {{ type|title }} CSV</h3>
+            <p style="color: #666; margin-bottom: 20px;">Upload a CSV file to process {{ type }} data in memory.</p>
+            
+            <div style="border: 2px solid #417690; padding: 15px; border-radius: 8px; background: #f9f9f9;">
+                <div style="margin-bottom: 15px;">
+                    <label for="csv_file" style="display: block; margin-bottom: 5px; font-weight: bold; color: #333;">Choose CSV file:</label>
+                    <input type="file" name="csv_file" id="csv_file" accept=".csv" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 300px; font-size: 13px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <small style="color: #666;">Expected columns: name, email, phone, tshirt_size, is_tamu_faculty, track, additional_info</small>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div style="flex: 1;">
+            <h3 style="margin-top: 0; color: #333; font-weight: normal;">Send {{ type|title }} Emails</h3>
+            <p style="color: #666; margin-bottom: 20px;">Send emails to {{ type }} from uploaded CSV data.</p>
+            
+            <div style="margin: 20px 0;">
+                {% if type == 'judges' %}
+                
+                <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                    <div style="margin-bottom: 15px;">
+                        <p style="font-weight: bold; color: #333;">Interest Email:</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>Subject:</strong> Would you like to judge {{ event_name }} {{ event_year }}?</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>Recipients:</strong> CSV uploads (potential judges)</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <small style="color: #666;">This will send an invitation email to potential judges asking if they're interested in judging.</small>
+                    </div>
+                    <div>
+                        <button type="button" onclick="uploadCSVFile('interest')" style="background: #28a745; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-transform: uppercase;">Send Judge Interest Email</button>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                    <div style="margin-bottom: 15px;">
+                        <p style="font-weight: bold; color: #333;">Confirmation Email:</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>Subject:</strong> Thank you for signing up to judge {{ event_name }} {{ event_year }}!</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>Recipients:</strong> CSV uploads (confirmed judges)</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <small style="color: #666;">This will send a welcome email with event details and judge information to confirmed judges.</small>
+                    </div>
+                    <div>
+                        <button type="button" onclick="uploadCSVFile('confirmation')" style="background: #28a745; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-transform: uppercase;">Send Judge Confirmation Email</button>
+                    </div>
+                </div>
+                {% else %}
+                
+                <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                    <div style="margin-bottom: 15px;">
+                        <p style="font-weight: bold; color: #333;">Interest Email:</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>Subject:</strong> Would you like to mentor at {{ event_name }} {{ event_year }}?</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>Recipients:</strong> CSV uploads (potential mentors)</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <small style="color: #666;">This will send an invitation email to potential mentors asking if they're interested in mentoring.</small>
+                    </div>
+                    <div>
+                        <button type="button" onclick="uploadCSVFile('interest')" style="background: #28a745; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-transform: uppercase;">Send Mentor Interest Email</button>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                    <div style="margin-bottom: 15px;">
+                        <p style="font-weight: bold; color: #333;">Confirmation Email:</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>Subject:</strong> Thank you for signing up to mentor at {{ event_name }} {{ event_year }}!</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>Recipients:</strong> CSV uploads (confirmed mentors)</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <small style="color: #666;">This will send a welcome email with event details and mentor information to confirmed mentors.</small>
+                    </div>
+                    <div>
+                        <button type="button" onclick="uploadCSVFile('confirmation')" style="background: #28a745; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-transform: uppercase;">Send Mentor Confirmation Email</button>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function uploadCSVFile(emailType) {
+    const fileInput = document.getElementById('csv_file');
+    
+    console.log('=== CSV UPLOAD WITH EMAILS ===');
+    console.log('Email type:', emailType);
+    
+    if (!fileInput.files || fileInput.files.length === 0) {
+        alert('Please select a CSV file before uploading.');
+        return;
+    }
+    
+    const file = fileInput.files[0];
+    console.log('Uploading file:', file.name);
+    
+    const formData = new FormData();
+    formData.append('csv_file', file);
+    formData.append('email_type', emailType);
+    
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
+      
+    const processUrl = '/admin/csv-emails/{{ type }}/process/';
+    
+    fetch(processUrl, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+        } else {
+            alert('Error: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Upload error:', error);
+        alert('Upload error: ' + error.message);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('csv_file');
+    
+    if (fileInput) {
+        fileInput.addEventListener('change', function() {
+            console.log('File selected:', this.files);
+        });
+    }
+});
+</script>
+{% endblock %}

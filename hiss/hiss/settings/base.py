@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "django_s3_storage",
     "address",
     "rangefilter",
+    "judgesmentors.apps.JudgesmentorsConfig",
 ]
 
 MIDDLEWARE = [
@@ -194,6 +195,16 @@ UNFOLD = {
                         "title": _("Teams"),
                         "icon": "groups",
                         "link": reverse_lazy("admin:team_team_changelist"),
+                    },
+                    {
+                        "title": _("Judge Emails"),
+                        "icon": "gavel", 
+                        "link": "/admin/csv-emails/judges/",
+                    },
+                    {
+                        "title": _("Mentor Emails"),
+                        "icon": "school",
+                        "link": "/admin/csv-emails/mentors/",
                     },
                 ],
             }

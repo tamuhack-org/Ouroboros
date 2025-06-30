@@ -22,13 +22,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic.base import RedirectView
-
+from judgesmentors.csv_email_admin import csv_email_admin
 
 def healthcheck(request):
     return http.HttpResponse("")
 
-
 urlpatterns = [
+    path("admin/csv-emails/", include(csv_email_admin.get_urls())),
     path("admin/", admin.site.urls),
     path("accounts/", include("customauth.urls")),
     path("application/", include("application.urls", namespace="application")),
