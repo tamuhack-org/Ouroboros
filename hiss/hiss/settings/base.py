@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "django_s3_storage",
     "address",
     "rangefilter",
+    "judgesmentors.apps.JudgesmentorsConfig",
 ]
 
 MIDDLEWARE = [
