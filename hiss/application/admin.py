@@ -387,6 +387,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     new_app.tamu_email = email_to_use
                     new_app.agree_to_coc = True
                     new_app.status = 'P' 
+                    new_app.grad_year = 2027
 
                     if resume_to_use:
                         new_app.resume = resume_to_use
