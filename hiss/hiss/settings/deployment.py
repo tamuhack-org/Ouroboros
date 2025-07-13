@@ -14,7 +14,7 @@ SECURE_BROWSER_XSS_FILTER = True
 CSRF_COOKIE_SECURE = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False # Let cloudflare handle this for us
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
