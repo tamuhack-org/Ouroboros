@@ -15,6 +15,11 @@ python ./hiss/manage.py createsuperuser
 python ./hiss/manage.py runserver
 ```
 
+```
+/admin/csv-emails/judges/
+/admin/csv-emails/mentors/
+```
+
 Be careful, you need internet so that you can get the bootstrap file - we might want to switch from this for future use because it's super annoying
 
 # :snake: Hiss
