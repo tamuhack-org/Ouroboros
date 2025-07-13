@@ -1,20 +1,20 @@
 import os
+import sys
 
 from .base import *  # noqa: F403
 from .customization import *  # noqa: F403
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
-
+SECRET_KEY = os.getenv("SECRET_KEY") or sys.exit("SECRET_KEY is not set")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 ALLOWED_HOSTS = ["*"]
-SESSION_COOKIE_SECURE = False
-SECURE_BROWSER_XSS_FILTER = False
-CSRF_COOKIE_SECURE = False
-SECURE_CONTENT_TYPE_NOSNIFF = False
+SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+CSRF_COOKIE_SECURE = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
-
+SECURE_SSL_REDIRECT = True
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
