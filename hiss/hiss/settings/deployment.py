@@ -1,7 +1,7 @@
 import os
 
 from .base import *  # noqa: F403
-from .customization import ORGANIZER_EMAIL, ORGANIZER_NAME
+from .customization import *  # noqa: F403
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
