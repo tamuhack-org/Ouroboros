@@ -343,64 +343,56 @@ class ApplicationAdmin(admin.ModelAdmin):
         """
         if not change:
             num_to_create = form.cleaned_data.get('num_to_create', 1)
-            created_count = 0
             template_data = form.cleaned_data.copy()
 
             template_data.pop('num_to_create', None)
             original_resume = template_data.pop('resume', None)
             
-            if num_to_create > 1:
-                # for bulk creation, create lightweight dummy file
-                resume_to_use = ContentFile(b"This is a dummy resume for bulk creation.", name="dummy_resume.txt")
-            else:
-                # for a single creation, use uploaded file
-                resume_to_use = original_resume
+            resume_to_use = (
+                ContentFile(b"dummy resume", name="dummy.txt")
+                if num_to_create > 1
+                else original_resume
+            )
+            
+            users_to_process = []
+            apps_to_create = []
 
-            # use database transaction because sqlite database gets locked otherwise
+            User = get_user_model()
+            email_prefix, domain = template_data['tamu_email'].split('@')
+
+            for _ in range(num_to_create):
+                email_to_use = f"{email_prefix}+{get_random_string(6)}@{domain}"
+                user, created = User.objects.get_or_create(email=email_to_use)
+                if created:
+                    user.set_password(get_random_string(12))
+                    user.save()
+                users_to_process.append(user)
+            
             with transaction.atomic():
-                for i in range(num_to_create):
-                    User = get_user_model()
-                    
-                    email_prefix, domain = template_data['tamu_email'].split('@')
-                    random_suffix = get_random_string(6)
-                    email_to_use = f"{email_prefix}+{random_suffix}@{domain}"
+                now = timezone.now()
+                instant_wave = Wave.objects.create(
+                    start=now,
+                    end=now,
+                    num_days_to_rsvp=0,
+                    is_walk_in_wave=True
+                )
 
-                    user, user_created = User.objects.get_or_create(email=email_to_use)
-                    if user_created:
-                        user.set_password(get_random_string(12))
-                        user.save()
-
-                    now = timezone.now()
-                    instant_wave = Wave.objects.create(
-                        start=now,
-                        end=now + timezone.timedelta(seconds=1),
-                        num_days_to_rsvp=0,
-                        is_walk_in_wave=True
-                    )
-
-                    new_app = Application(
-                        **template_data
-                    )
-                    
-                    new_app.user = user
-                    new_app.wave = instant_wave
-                    new_app.tamu_email = email_to_use
-                    new_app.agree_to_coc = True
-                    new_app.status = 'P' 
-                    new_app.grad_year = 2027
-
-                    if resume_to_use:
-                        new_app.resume = resume_to_use
-
-                    new_app.save()
-
-                    instant_wave.end = instant_wave.start
-                    instant_wave.save()
-                    
-                    created_count += 1
+                for user in users_to_process:
+                    app_data = template_data.copy()
+                    app_data.update({
+                        'user': user,
+                        'wave': instant_wave,
+                        'tamu_email': user.email,
+                        'resume': resume_to_use,
+                        'agree_to_coc': True,
+                        'status': 'P',
+                        'grad_year': 2027,
+                    })
+                    apps_to_create.append(Application(**app_data))
                 
-            self.message_user(request, f"Successfully created {created_count} application(s).", messages.SUCCESS)
+                Application.objects.bulk_create(apps_to_create)
 
+            self.message_user(request, f"Successfully created {len(apps_to_create)} application(s).", messages.SUCCESS)
         else:
             super().save_model(request, obj, form, change)
 
