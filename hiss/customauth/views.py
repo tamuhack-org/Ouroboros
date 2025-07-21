@@ -79,8 +79,7 @@ class ActivateView(views.View):
 
 
 class PlaceholderPasswordResetView(auth_views.PasswordResetView):
-    """Uses PlaceholderPasswordResetForm instead of default PasswordResetForm.
-    """
+    """Uses PlaceholderPasswordResetForm instead of default PasswordResetForm."""
 
     form_class = customauth_forms.PlaceholderPasswordResetForm
     html_email_template_name = "registration/emails/password_reset.html"
@@ -94,8 +93,7 @@ class PlaceholderPasswordResetView(auth_views.PasswordResetView):
 
 
 class PlaceholderPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
-    """Uses PlaceholderSetPasswordForm instead of default SetPasswordForm.
-    """
+    """Uses PlaceholderSetPasswordForm instead of default SetPasswordForm."""
 
     template_name = "registration/password_reset_confirm.html"
     form_class = customauth_forms.PlaceholderSetPasswordForm

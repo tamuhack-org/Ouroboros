@@ -10,3 +10,4 @@ EVENT_END_DATETIME = timezone.datetime(2025, 1, 26, hour=12, minute=0, second=0)
 EVENT_DATE_TEXT = "January 25-26, 2025"
 
 APPLE_WALLET_S3_BUCKET_URL = "https://th25-apple-wallet-passes.s3.amazonaws.com"
+AWS_S3_BUCKET_NAME = "2025-th-resumes"

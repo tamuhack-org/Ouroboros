@@ -7,7 +7,7 @@ class EmailAuthTokenSerializer(serializers.Serializer):
     """This class is essentially a clone of the `AuthTokenSerializer` class implemented by Django Rest Framework,
     but instead of looking for "username", it looks for "email" (see
     https://github.com/encode/django-rest-framework/blob/8988afa0827a139efeeb72afb21da08670fb4775/rest_framework
-    /authtoken/serializers.py#L7 for more context)
+    /authtoken/serializers.py#L7 for more context).
     """
 
     email = serializers.CharField(label=_("Email"))

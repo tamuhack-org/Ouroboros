@@ -1,8 +1,5 @@
-# noinspection PyUnresolvedReferences
-from .base import *
-
-# noinspection PyUnresolvedReferences
-from .customization import *
+from .base import *  # noqa: F403
+from .customization import *  # noqa: F403
 
 SECRET_KEY = "development"
 DEBUG = True

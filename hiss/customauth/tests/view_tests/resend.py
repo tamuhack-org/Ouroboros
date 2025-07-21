@@ -13,7 +13,7 @@ class ResendActivationEmailView(test_case.SharedTestCase):
     def setUp(self):
         self.email = "hacker@tamu.edu"
         self.password = "dummypassword"
-        self.inactive_user = User.objects._create_user(
+        self.inactive_user = User.objects.create(
             email=self.email, password=self.password
         )
 

@@ -4,8 +4,10 @@ from django.core.mail import EmailMultiAlternatives, get_connection
 def send_mass_html_mail(
     datatuple, fail_silently=False, user=None, password=None, connection=None
 ):
-    """Given a datatuple of (subject, text_content, html_content, from_email,
-    recipient_list), sends each message to each recipient list. Returns the
+    """Send email to every recipient in datatuple.
+
+    Given a datatuple of (subject, text_content, html_content, from_email,
+    recipient_list), sends each message to each recipient  in the recipient list. Returns the
     number of emails sent.
 
     If from_email is None, the DEFAULT_FROM_EMAIL setting is used.

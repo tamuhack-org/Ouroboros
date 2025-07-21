@@ -82,7 +82,7 @@ class UpdateApplicationViewTestCase(SharedTestCase):
         self.application_fields["resume"] = SimpleUploadedFile("resume2.pdf", b"dummy")
         self.application_fields["school"] = self.first_school.pk
 
-        response = self.client.post(
+        _response = self.client.post(
             reverse_lazy("application:update", args=(application.id,)),
             data=self.application_fields,
         )
@@ -136,7 +136,7 @@ class UpdateApplicationViewTestCase(SharedTestCase):
         )
 
         form: ApplicationModelForm = response.context["form"]
-        for field_name in form.fields.keys():
+        for field_name in form.fields:
             self.assertEqual(
                 form.fields[field_name].widget.attrs["disabled"], "disabled"
             )

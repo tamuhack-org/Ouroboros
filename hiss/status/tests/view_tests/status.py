@@ -4,7 +4,6 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 
 import application.constants
-from application import models as application_models
 from application.models import Application, Wave
 from shared import test_case
 
@@ -141,7 +140,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
 
         self.assertTrue("REJECTED" in response.context)
 
-    def test_rejected_RSVP_context(self):
+    def test_rejected_rsvp_context(self):
         self.create_active_wave()
         self.client.force_login(self.user)
         Application.objects.create(

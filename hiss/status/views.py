@@ -3,7 +3,6 @@ from django.contrib.auth import mixins
 from django.views import generic
 
 import application.constants
-from application import models as application_models
 from application.models import Application, Wave
 from user.models import User
 

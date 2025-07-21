@@ -6,7 +6,7 @@ from volunteer.tests.test_case import TokenAuthTestCase
 class VerifyAuthenticatedViewTestCase(TokenAuthTestCase):
     def setUp(self):
         super().setUp()
-    
+
 
     def test_get_not_logged_in_401(self):
         self.create_active_wave()
@@ -22,7 +22,7 @@ class VerifyAuthenticatedViewTestCase(TokenAuthTestCase):
         )
 
         self.assertEqual(response.status_code, 403)
-    
+
     def test_get_succeeds_for_volunteer(self):
         self.create_active_wave()
         volunteer_token = self.get_volunteer_token()

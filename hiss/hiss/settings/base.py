@@ -12,11 +12,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from pathlib import Path
 
-import dj_database_url
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Ex: BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 # Base Pathname for Obos (when not being hosted at root)
@@ -70,6 +69,7 @@ INSTALLED_APPS = [
     # "django_huey",
     # "bx_django_utils",
     # "huey_monitor",
+    "judgesmentors.apps.JudgesmentorsConfig",
 ]
 
 DJANGO_HUEY_MONITOR = {
@@ -96,7 +96,7 @@ ROOT_URLCONF = "hiss.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "..", "templates")],
+        "DIRS": [BASE_DIR / ".." / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -125,7 +125,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-MEDIA_ROOT = "resumes/"
+MEDIA_ROOT = "resumes"
 MEDIA_URL = "/" + BASE_PATHNAME + "resumes/"
 MAX_UPLOAD_SIZE = "10485760"
 
@@ -141,11 +141,10 @@ LOGOUT_REDIRECT_URL = reverse_lazy("customauth:login")
 AWS_REGION = "us-east-2"
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_S3_BUCKET_NAME = "2025-th-resumes"
 AWS_S3_KEY_PREFIX = "prod"
 
 STATIC_URL = "/" + BASE_PATHNAME + "static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "..", "static/")]
+STATICFILES_DIRS = [BASE_DIR / ".." / "static/"]
 STATIC_ROOT = "public/"
 APPEND_SLASH = True
 AUTH_USER_MODEL = "user.User"
@@ -165,6 +164,7 @@ CORS_ORIGIN_WHITELIST = [
     "https://volunteer.tamuhack.com",
     "https://volunteer.tamuhack.org",
     "https://tamuhack-org.github.io",
+    "https://ericwli.xyz",
     "https://tamuhack.com",
     "https://tamuhack.org",
     "http://localhost:3000",
@@ -173,3 +173,10 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 CORS_URLS_REGEX = r"^/api/.*$"
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.ericwli.xyz",   # matches any sub-domain on HTTPS
+    "https://*.tamuhack.com",
+    "https://*.tamuhack.org"
+]

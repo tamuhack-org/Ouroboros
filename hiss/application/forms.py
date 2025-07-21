@@ -1,16 +1,14 @@
 import ast
-import json
 
-from address.forms import AddressField
 from django import forms
 from django.conf import settings
 from django.db.models import Case, IntegerField, When
 from django.utils.safestring import mark_safe
 
 import application.constants
+from application import constants
 from application import models as application_models
 from application.models import School
-from application import constants
 
 
 class ApplicationModelForm(forms.ModelForm):
@@ -67,11 +65,6 @@ class ApplicationModelForm(forms.ModelForm):
         required=False,
     )
 
-    # address = AddressField(
-    #     help_text="You will not receive swag and prizes without an address",
-    #     required=False,
-    # )
-
     def __init__(self, *args, **kwargs):
         if kwargs.get("instance"):
             kwargs["initial"] = {
@@ -88,8 +81,8 @@ class ApplicationModelForm(forms.ModelForm):
         photo_agreement = "I grant permission for TAMUhack to use my name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event 'TAMUhack 2025' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases."
         accessibilities = "Please check this box you would like our team to follow up with you personally to discuss your accessibility accommodations during this event."
 
-        self.fields["agree_to_photos"].label = mark_safe(photo_agreement)
-        self.fields["accessibility_requirements"].label = mark_safe(accessibilities)
+        self.fields["agree_to_photos"].label = photo_agreement
+        self.fields["accessibility_requirements"].label = accessibilities
 
         self.fields["agree_to_coc"].label = mark_safe(
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
@@ -105,17 +98,16 @@ class ApplicationModelForm(forms.ModelForm):
         )
 
         mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
-        self.fields["agree_to_mlh_stuff"].label = mark_safe(mlh_stuff)
-        self.fields["signup_to_mlh_newsletter"].label = mark_safe(mlh_newsletter)
+        self.fields["agree_to_mlh_stuff"].label = mlh_stuff
+        self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
 
         # HACK: Disable the form if there's not an active wave
         if not application_models.Wave.objects.active_wave():
-            for field_name in self.fields.keys():
+            for field_name in self.fields:
                 self.fields[field_name].widget.attrs["disabled"] = "disabled"
 
     def is_valid(self) -> bool:
-        """Checks to ensure that a wave is currently active.
-        """
+        """Check to ensure that a wave is currently active."""
         if not application_models.Wave.objects.active_wave():
             self.add_error(
                 None,

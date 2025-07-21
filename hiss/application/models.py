@@ -22,6 +22,7 @@ from application.constants import (
     AGREE,
     AGREE_DISAGREE,
     CLASSIFICATIONS,
+    COUNTRIES_TUPLES,
     DISCOVERY_METHOD_OPTIONS,
     GENDERS,
     GRAD_YEARS,
@@ -39,7 +40,6 @@ from application.constants import (
     STATUS_PENDING,
     WARECHOICE,
 )
-from application.countries import COUNTRIES_TUPLES
 from application.filesize_validation import FileSizeValidator
 
 s3_storage = S3Storage()
@@ -342,8 +342,6 @@ class Application(models.Model):
         else:
             self.meal_group = None
 
-
-
     def clean(self):
         super().clean()
 
@@ -357,27 +355,25 @@ class Application(models.Model):
         if (not self.is_adult and self.age > MAX_AGE) or (
             self.is_adult and self.age < MAX_AGE
         ):
-            msg = "Age and adult status do not match. Please confirm you are 18 or older."
-            raise exceptions.ValidationError(
-                msg
+            msg = (
+                "Age and adult status do not match. Please confirm you are 18 or older."
             )
+            raise exceptions.ValidationError(msg)
         # Fixes the obos admin panel bug, idk why the checkbox doesn't show up
         if not self.age >= MAX_AGE or not self.is_adult:
             msg = (
                 "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
                 f"us at {settings.ORGANIZER_EMAIL}. "
             )
-            raise exceptions.ValidationError(
-                msg
-            )
+            raise exceptions.ValidationError(msg)
 
         if not is_valid_name(self.first_name):
-            msg = "First name can only contain letters, spaces, hyphens, and apostrophes."
-            raise exceptions.ValidationError(
-                msg
+            msg = (
+                "First name can only contain letters, spaces, hyphens, and apostrophes."
             )
+            raise exceptions.ValidationError(msg)
         if not is_valid_name(self.last_name):
-            msg = "Last name can only contain letters, spaces, hyphens, and apostrophes."
-            raise exceptions.ValidationError(
-                msg
+            msg = (
+                "Last name can only contain letters, spaces, hyphens, and apostrophes."
             )
+            raise exceptions.ValidationError(msg)
