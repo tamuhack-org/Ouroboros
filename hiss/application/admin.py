@@ -366,12 +366,12 @@ class ApplicationAdmin(admin.ModelAdmin):
             users_to_process = []
             apps_to_create = []
 
-            User = get_user_model()
+            user_model = get_user_model()
             email_prefix, domain = template_data['tamu_email'].split('@')
 
             for _ in range(num_to_create):
                 email_to_use = f"{email_prefix}+{get_random_string(6)}@{domain}"
-                user, created = User.objects.get_or_create(email=email_to_use)
+                user, created = user_model.objects.get_or_create(email=email_to_use)
                 if created:
                     user.set_password(get_random_string(12))
                     user.save()
