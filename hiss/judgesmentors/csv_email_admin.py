@@ -6,10 +6,17 @@ from django.urls import path
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.mail import EmailMultiAlternatives
 from shared.admin_functions import send_mass_html_mail
+from judgesmentors.models import Judge, Mentor, STATUS_CONFIRMED, STATUS_INVITED
 import csv
 import io
 import json
+import pyqrcode
+from io import BytesIO
+
+User = get_user_model()
 
 
 class CSVEmailAdminView:
@@ -106,14 +113,22 @@ class CSVEmailAdminView:
                     print(f"Building {email_type} email for: {judge_data['name']} ({judge_data.get('email', 'unknown')})")
                     if email_type == 'interest':
                         email_tuple = self.build_judge_interest_email(judge_data)
+                        email_tuples.append(email_tuple)
                     else:  # confirmation
-                        email_tuple = self.build_judge_confirmation_email(judge_data)
-                    email_tuples.append(email_tuple)
+                        email_obj = self.build_judge_confirmation_email(judge_data)
+                        email_obj.send()
+                        print(f"Sent confirmation email with QR code to {judge_data['name']}")
                 
-                if email_tuples:
+                if email_type == 'interest' and email_tuples:
                     print(f"Sending {len(email_tuples)} {email_type} emails...")
                     send_mass_html_mail(email_tuples)
                     print("=== EMAILS SENT SUCCESSFULLY ===")
+                    return JsonResponse({
+                        'success': True, 
+                        'message': f'Successfully sent {email_type} emails to {len(email_tuples)} judges!'
+                    })
+                elif email_type == 'confirmation':
+                    print(f"=== CONFIRMATION EMAILS WITH QR CODES SENT SUCCESSFULLY ===")
                     return JsonResponse({
                         'success': True, 
                         'message': f'Successfully sent {email_type} emails to {len(email_tuples)} judges!'
@@ -146,7 +161,43 @@ class CSVEmailAdminView:
         return subject, text_message, html_message, None, [test_email]
     
     def build_judge_confirmation_email(self, judge_data):
-        """Build confirmation email from judge data"""
+        """Build confirmation email with QR code from judge data"""
+        
+        user, created = User.objects.get_or_create(
+            email=judge_data['email'],
+            defaults={'is_active': True}
+        )
+        
+        judge, created = Judge.objects.get_or_create(
+            user=user,
+            defaults={
+                'name': judge_data['name'],
+                'phone': judge_data.get('phone', ''),
+                'tshirt_size': judge_data.get('tshirt_size', 'M'),
+                'is_tamu_faculty': judge_data.get('is_tamu_faculty', False),
+                'track': judge_data.get('track', 'SW'),
+                'additional_info': judge_data.get('additional_info', ''),
+                'status': STATUS_CONFIRMED,
+            }
+        )
+        
+        name_parts = judge_data['name'].split()
+        first_name = name_parts[0] if name_parts else 'Judge'
+        last_name = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
+        
+        qr_content = json.dumps({
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": judge_data['email'],
+            "role": "judge",
+            "university": "TAMU" if judge_data.get('is_tamu_faculty') else "External"
+        })
+        
+        qr_code = pyqrcode.create(qr_content)
+        qr_stream = BytesIO()
+        qr_code.png(qr_stream, scale=5)
+        
+        
         subject = f"TEST: Thank you for signing up to judge {settings.EVENT_NAME} {settings.EVENT_YEAR}! (Original: {judge_data.get('name', 'Unknown')})"
         context = {
             "name": judge_data.get('name', 'Judge'),
@@ -162,7 +213,14 @@ class CSVEmailAdminView:
         
         test_email = "ajmds66@gmail.com"
         print(f"TESTING: Redirecting confirmation email from {judge_data.get('email', 'unknown')} to {test_email}")
-        return subject, text_message, html_message, None, [test_email]
+        print(f"Created/updated Judge record for {judge_data['name']} with QR code")
+        
+        # Return EmailMultiAlternatives object instead of tuple
+        email = EmailMultiAlternatives(subject, text_message, None, [test_email])
+        email.attach_alternative(html_message, "text/html")
+        email.attach("code.png", qr_stream.getvalue(), "image/png")
+        
+        return email
     
     def process_mentors_csv(self, request):
         """Process mentors CSV and send emails - no database storage"""
@@ -225,14 +283,18 @@ class CSVEmailAdminView:
                     print(f"Building {email_type} email for: {mentor_data['name']} ({mentor_data.get('email', 'unknown')})")
                     if email_type == 'interest':
                         email_tuple = self.build_mentor_interest_email(mentor_data)
+                        email_tuples.append(email_tuple)
                     else:  # confirmation
-                        email_tuple = self.build_mentor_confirmation_email(mentor_data)
-                    email_tuples.append(email_tuple)
+                        email_obj = self.build_mentor_confirmation_email(mentor_data)
+                        email_obj.send()
+                        print(f"Sent confirmation email with QR code to {mentor_data['name']}")
                 
-                if email_tuples:
+                if email_type == 'interest' and email_tuples:
                     print(f"Sending {len(email_tuples)} {email_type} emails...")
                     send_mass_html_mail(email_tuples)
                     print("=== EMAILS SENT SUCCESSFULLY ===")
+                elif email_type == 'confirmation':
+                    print(f"=== CONFIRMATION EMAILS WITH QR CODES SENT SUCCESSFULLY ===")
                     return JsonResponse({
                         'success': True, 
                         'message': f'Successfully sent {email_type} emails to {len(email_tuples)} mentors!'
@@ -265,7 +327,45 @@ class CSVEmailAdminView:
         return subject, text_message, html_message, None, [test_email]
     
     def build_mentor_confirmation_email(self, mentor_data):
-        """Build confirmation email from mentor data"""
+        """Build confirmation email with QR code from mentor data"""
+        # Create or get User
+        user, created = User.objects.get_or_create(
+            email=mentor_data['email'],
+            defaults={'is_active': True}
+        )
+        
+        # Create or update Mentor
+        mentor, created = Mentor.objects.get_or_create(
+            user=user,
+            defaults={
+                'name': mentor_data['name'],
+                'phone': mentor_data.get('phone', ''),
+                'tshirt_size': mentor_data.get('tshirt_size', 'M'),
+                'is_tamu_faculty': mentor_data.get('is_tamu_faculty', False),
+                'track': mentor_data.get('track', 'SW'),
+                'additional_info': mentor_data.get('additional_info', ''),
+                'status': STATUS_CONFIRMED,
+            }
+        )
+        
+        # Generate QR code (same format as applicants)
+        name_parts = mentor_data['name'].split()
+        first_name = name_parts[0] if name_parts else 'Mentor'
+        last_name = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
+        
+        qr_content = json.dumps({
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": mentor_data['email'],
+            "role": "mentor",
+            "university": "TAMU" if mentor_data.get('is_tamu_faculty') else "External"
+        })
+        
+        qr_code = pyqrcode.create(qr_content)
+        qr_stream = BytesIO()
+        qr_code.png(qr_stream, scale=5)
+        
+        # Build email with QR code attachment
         subject = f"TEST: Thank you for signing up to mentor at {settings.EVENT_NAME} {settings.EVENT_YEAR}! (Original: {mentor_data.get('name', 'Unknown')})"
         context = {
             "name": mentor_data.get('name', 'Mentor'),
@@ -282,7 +382,14 @@ class CSVEmailAdminView:
         
         test_email = "ajmds66@gmail.com"
         print(f"TESTING: Redirecting mentor confirmation email from {mentor_data.get('email', 'unknown')} to {test_email}")
-        return subject, text_message, html_message, None, [test_email]
+        print(f"Created/updated Mentor record for {mentor_data['name']} with QR code")
+        
+        # Return EmailMultiAlternatives object instead of tuple
+        email = EmailMultiAlternatives(subject, text_message, None, [test_email])
+        email.attach_alternative(html_message, "text/html")
+        email.attach("code.png", qr_stream.getvalue(), "image/png")
+        
+        return email
 
 
 csv_email_admin = CSVEmailAdminView()

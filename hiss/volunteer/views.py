@@ -8,6 +8,7 @@ from rest_framework.request import Request
 from application.models import STATUS_CHECKED_IN, Application
 from volunteer.models import FoodEvent, WorkshopEvent
 from volunteer.serializers import EmailAuthTokenSerializer
+from judgesmentors.models import Judge, Mentor, STATUS_CHECKED_IN as JM_STATUS_CHECKED_IN
 
 USER_NOT_CHECKED_IN_MSG = (
     "This hacker has not been checked in. Please find an organizer immediately."
@@ -57,17 +58,52 @@ class CheckinHackerView(views.APIView):
         if not user_email:
             # The hacker's email was not provided in the request body, we can't do anything.
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
-        application: Application = get_object_or_404(
-            Application, user__email=user_email
-        )
-        return JsonResponse(
-            {
-                "checkinStatus": application.status,
-                "wares": application.wares if application.wares else "None",
-                "first_name": application.first_name,
-                "last_name": application.last_name,
-            }
-        )
+        
+        try:
+            application: Application = Application.objects.get(user__email=user_email)
+            return JsonResponse(
+                {
+                    "checkinStatus": application.status,
+                    "wares": application.wares if application.wares else "None",
+                    "first_name": application.first_name,
+                    "last_name": application.last_name,
+                }
+            )
+        except Application.DoesNotExist:
+            # If no application found, try judges and mentors
+            pass
+        
+        # Try to find judge
+        try:
+            judge = Judge.objects.get(user__email=user_email)
+            name_parts = judge.name.split()
+            first_name = name_parts[0] if name_parts else 'Judge'
+            last_name = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
+            return JsonResponse({
+                "checkinStatus": judge.status,
+                "first_name": first_name,
+                "last_name": last_name,
+                "wares": "None",
+            })
+        except Judge.DoesNotExist:
+            pass
+            
+        # Try to find mentor
+        try:
+            mentor = Mentor.objects.get(user__email=user_email)
+            name_parts = mentor.name.split()
+            first_name = name_parts[0] if name_parts else 'Mentor'
+            last_name = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
+            return JsonResponse({
+                "checkinStatus": mentor.status,
+                "first_name": first_name,
+                "last_name": last_name,
+                "wares": "None",  # Keep same response format
+            })
+        except Mentor.DoesNotExist:
+            pass
+        
+        return response.Response(status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request: Request, format: str = None):
         """Sets a specific user's Application status as STATUS_CHECKED_IN (indicating that a user has successfully
@@ -78,13 +114,33 @@ class CheckinHackerView(views.APIView):
         if not user_email:
             # The hacker's email was not provided in the request body, we can't do anything.
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
-        # Return 404 if no application exists for the provided user.
-        application: Application = get_object_or_404(
-            Application, user__email=user_email
-        )
-        application.status = STATUS_CHECKED_IN
-        application.save()
-        return response.Response(status=status.HTTP_200_OK)
+        
+        try:
+            application: Application = Application.objects.get(user__email=user_email)
+            application.status = STATUS_CHECKED_IN
+            application.save()
+            return response.Response(status=status.HTTP_200_OK)
+        except Application.DoesNotExist:
+            # If no application found, try judges and mentors
+            pass
+        
+        try:
+            judge = Judge.objects.get(user__email=user_email)
+            judge.status = JM_STATUS_CHECKED_IN
+            judge.save()
+            return response.Response(status=status.HTTP_200_OK)
+        except Judge.DoesNotExist:
+            pass
+            
+        try:
+            mentor = Mentor.objects.get(user__email=user_email)
+            mentor.status = JM_STATUS_CHECKED_IN
+            mentor.save()
+            return response.Response(status=status.HTTP_200_OK)
+        except Mentor.DoesNotExist:
+            pass
+        
+        return response.Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class CreateFoodEventView(views.APIView):
