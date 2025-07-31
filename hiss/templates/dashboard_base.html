@@ -13,7 +13,10 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <a class="nav-item" href="{% url 'status' %}">Status</span></a>
-                            <a class="nav-item nav-right" href="{% url 'customauth:logout' %}">Log Out</a>
+                            <form method="POST" action="{% url 'customauth:logout' %}" class="nav-item nav-right" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link nav-item nav-right" style="padding: 0; border: none; background: none;">Log Out</button>
+                            </form>
                         </div>
                     </nav>
                 </div>
