@@ -26,6 +26,12 @@ WORKDIR "hiss"
 
 RUN python manage.py collectstatic --no-input
 
+ARG PGDATABASE
+ARG PGHOST
+ARG PGPASSWORD
+ARG PGPORT
+ARG PGUSER
+
 RUN python manage.py migrate
 
 ENTRYPOINT []
