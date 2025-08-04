@@ -26,11 +26,7 @@ WORKDIR "hiss"
 
 RUN python manage.py collectstatic --no-input
 
-ARG PGDATABASE
-ARG PGHOST
-ARG PGPASSWORD
-ARG PGPORT
-ARG PGUSER
+ARG DATABASE_URL
 
 RUN python manage.py migrate
 
