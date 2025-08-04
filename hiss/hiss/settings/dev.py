@@ -33,5 +33,13 @@ EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = "webmaster@localhost"
 MEDIA_ROOT = "resumes"
 
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
+
 AWS_S3_KEY_PREFIX = "dev-resumes"
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
