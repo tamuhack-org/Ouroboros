@@ -33,7 +33,7 @@ urlpatterns = [
     path("accounts/", include("customauth.urls")),
     path("application/", include("application.urls", namespace="application")),
     path("healthy/", healthcheck),
-    re_path(r"^$", RedirectView.as_view(pattern_name="customauth:login")),
+    re_path(r"^$", RedirectView.as_view(pattern_name="status")),
     path("status/", include("status.urls")),
     path("api/volunteer/", include("volunteer.urls")),
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
