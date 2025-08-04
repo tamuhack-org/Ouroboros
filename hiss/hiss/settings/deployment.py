@@ -41,9 +41,8 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
 MEDIA_ROOT = "/resumes"
 
-
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ["DATABASE_URL"], engine="django_cockroachdb"
+        default=os.environ["DATABASE_URL"], engine="django.db.backends.postgresql"
     )
 }
