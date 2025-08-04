@@ -148,5 +148,6 @@ CORS_URLS_REGEX = r"^/api/.*$"
 CSRF_TRUSTED_ORIGINS = [
     "https://*.ericwli.xyz",   # matches any sub-domain on HTTPS
     "https://*.tamuhack.com",
-    "https://*.tamuhack.org"
+    "https://*.tamuhack.org",
+    "https://*.railway.app"
 ]
