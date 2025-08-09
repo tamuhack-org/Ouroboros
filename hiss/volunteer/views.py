@@ -43,6 +43,10 @@ class VerifyAuthenticatedView(views.APIView):
         BTW these requests expect the "Authorization" header to be set to "Token <token>"
         """
         return response.Response(status=status.HTTP_200_OK)
+    
+    def post(self, request: Request, format: str | None = None):
+        """same as above but slither is using post method to verify. Not changing it in slither since i don't know if that could break something"""
+        return response.Response(status=status.HTTP_200_OK)
 
 
 class CheckinHackerView(views.APIView):
