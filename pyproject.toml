@@ -23,7 +23,6 @@ dependencies = [
     "django-admin-list-filter-dropdown>=1.0.3",
     "django-admin-rangefilter>=0.13.2",
     "django-anymail>=12.0",
-    "django-cockroachdb>=5.2",
     "django-cors-headers>=4.7.0",
     "django-multiselectfield>=0.1.13",
     "django-phonenumber-field>=8.0.0",

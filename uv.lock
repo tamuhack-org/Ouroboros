@@ -283,18 +283,6 @@ wheels = [
 ]
 
 [[package]]
-name = "django-cockroachdb"
-version = "5.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/a0/97/6bb94323cbde117a9458b405be92483019b1766d105da211d223dfdde6f3/django-cockroachdb-5.2.tar.gz", hash = "sha256:55ae8be9d3fe1d0899dbc2923e26c9e041e6e312d85e00bc403d47abc54e14e4", size = 24911 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/80/f3/7ab1ce079c6728d83614dc8e949f680c8d89932df7befd0b11d05ea366a6/django_cockroachdb-5.2-py3-none-any.whl", hash = "sha256:5d2301698259ccaecbc11dae10a5a84b80b0786ce79e94c59175c983cb13f41c", size = 27135 },
-]
-
-[[package]]
 name = "django-cors-headers"
 version = "4.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -539,7 +527,6 @@ dependencies = [
     { name = "django-admin-list-filter-dropdown" },
     { name = "django-admin-rangefilter" },
     { name = "django-anymail" },
-    { name = "django-cockroachdb" },
     { name = "django-cors-headers" },
     { name = "django-multiselectfield" },
     { name = "django-phonenumber-field" },
@@ -594,7 +581,6 @@ requires-dist = [
     { name = "django-admin-list-filter-dropdown", specifier = ">=1.0.3" },
     { name = "django-admin-rangefilter", specifier = ">=0.13.2" },
     { name = "django-anymail", specifier = ">=12.0" },
-    { name = "django-cockroachdb", specifier = ">=5.2" },
     { name = "django-cors-headers", specifier = ">=4.7.0" },
     { name = "django-multiselectfield", specifier = ">=0.1.13" },
     { name = "django-phonenumber-field", specifier = ">=8.0.0" },
