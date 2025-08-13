@@ -298,16 +298,12 @@ TRANSPORT_MODES: list[tuple[str, str]] = [
     (MANUAL_POWER, "Walking/Biking"),
 ]
 QUESTION1_TEXT = "Tell us your best programming joke."
-UNISEX_XXS = "XXS"
-UNISEX_XS = "XS"
 UNISEX_S = "S"
 UNISEX_M = "M"
 UNISEX_L = "L"
 UNISEX_XL = "XL"
 UNISEX_XXL = "XXL"
 SHIRT_SIZES = [
-    (UNISEX_XXS, "XXS"),
-    (UNISEX_XS, "XS"),
     (UNISEX_S, "S"),
     (UNISEX_M, "M"),
     (UNISEX_L, "L"),
