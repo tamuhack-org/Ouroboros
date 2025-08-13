@@ -9,7 +9,7 @@ from .customization import *  # noqa: F403
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY") or sys.exit("SECRET_KEY is not set")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ["*"]
 SESSION_COOKIE_SECURE = True
 SECURE_BROWSER_XSS_FILTER = True
@@ -35,7 +35,7 @@ ANYMAIL = {
     "MAILGUN_SENDER_DOMAIN": "mail.tamuhack.com",
 }
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-DEFAULT_FROM_EMAIL = f"The {ORGANIZER_NAME} Team <{ORGANIZER_EMAIL}>"
+DEFAULT_FROM_EMAIL = f"The {ORGANIZER_NAME} Team <{ORGANIZER_EMAIL}>"  # noqa: F405
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
