@@ -29,6 +29,19 @@ if len(BASE_PATHNAME) > 0:
 
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 
+# DJANGO_HUEY = {
+#     'huey_class': 'huey.RedisHuey',
+#     'name': 'default',
+#     'connection': {
+#         'host': 'localhost',
+#         'port': 6379,
+#         'db': 0,
+#     },
+#     'consumer': {
+#         'workers': 4,
+#         'worker_type': 'thread',
+#     },
+# }
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -53,8 +66,18 @@ INSTALLED_APPS = [
     "django_s3_storage",
     "address",
     "rangefilter",
+    # "django_huey",
+    # "bx_django_utils",
+    # "huey_monitor",
     "judgesmentors.apps.JudgesmentorsConfig",
 ]
+
+DJANGO_HUEY_MONITOR = {
+    "results_url": True,
+    "enable_stats": True,
+    "stats_url": True,
+    "base_url": "huey/",
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
