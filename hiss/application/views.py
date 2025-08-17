@@ -12,7 +12,7 @@ from application.emails import send_confirmation_email, send_creation_email
 from application.forms import ApplicationModelForm
 from application.models import (
     Application,
-    Wave, 
+    Wave,
 )
 
 

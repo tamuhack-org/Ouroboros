@@ -22,7 +22,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic.base import RedirectView
+
 from judgesmentors.csv_email_admin import csv_email_admin
+
 
 def healthcheck(_request):
     return http.HttpResponse("")

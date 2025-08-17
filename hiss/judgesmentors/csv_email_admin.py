@@ -1,10 +1,9 @@
 import csv
 import io
-import json
 
 from django.conf import settings
-from django.contrib import admin, messages
-from django.http import HttpResponseRedirect, JsonResponse
+from django.contrib.admin.views.decorators import staff_member_required
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import path
@@ -17,7 +16,6 @@ class CSVEmailAdminView:
     """Lightweight CSV to Email admin interface - no database storage"""
 
     def get_urls(self):
-        from django.contrib.admin.views.decorators import staff_member_required
         return [
             path('judges/', staff_member_required(self.judge_email_view), name='csv_judge_emails'),
             path('mentors/', staff_member_required(self.mentor_email_view), name='csv_mentor_emails'),
