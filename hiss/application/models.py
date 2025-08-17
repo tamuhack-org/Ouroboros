@@ -313,6 +313,7 @@ class Application(models.Model):
     @override
     def save(self, *args, **kwargs):
         """Override save to ensure meal group assignment logic is applied."""
+        self.full_clean()
         self.assign_meal_group()
         super().save(*args, **kwargs)
 
