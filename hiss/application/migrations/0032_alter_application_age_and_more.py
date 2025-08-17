@@ -21,8 +21,11 @@ class Migration(migrations.Migration):
             field=models.CharField(blank=True, default='', max_length=255, verbose_name='Do you have any dietary restrictions?'),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='technology_experience',
-            field=models.CharField(blank=True, max_length=255, verbose_name='What technology do you have experience with?'),
+            model_name="application",
+            name="technology_experience",
+            field=models.TextField(
+                blank=True,
+                verbose_name="What technology do you have experience with?",
+            ),
         ),
     ]

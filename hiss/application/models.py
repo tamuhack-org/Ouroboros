@@ -273,8 +273,8 @@ class Application(models.Model):
     )
     meal_group = models.CharField(max_length=255, null=True, blank=True, default=None)
 
-    technology_experience = models.CharField(
-        "What technology do you have experience with?", max_length=255, blank=True
+    technology_experience = models.TextField(
+        "What technology do you have experience with?", blank=True
     )
 
     # TEAM MATCHING INFO

@@ -130,13 +130,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 # DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
 CORS_ORIGIN_WHITELIST = [
     "https://volunteer.tamuhack.com",
     "https://volunteer.tamuhack.org",
@@ -155,5 +148,6 @@ CORS_URLS_REGEX = r"^/api/.*$"
 CSRF_TRUSTED_ORIGINS = [
     "https://*.ericwli.xyz",   # matches any sub-domain on HTTPS
     "https://*.tamuhack.com",
-    "https://*.tamuhack.org"
+    "https://*.tamuhack.org",
+    "https://*.railway.app"
 ]
