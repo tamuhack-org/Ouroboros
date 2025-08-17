@@ -49,7 +49,7 @@ class SharedTestCase(test.TestCase):
         self.application_fields = {
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "shirt_size": application.constants.UNISEX_XXS,
+            "shirt_size": application.constants.UNISEX_M,
             "major": "Computer Science",
             "school": self.first_school,
             "school_other": "",  # Defaults to empty if no other school is provided
