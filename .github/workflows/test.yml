@@ -16,18 +16,3 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build the stack
         run: docker compose run web python3 manage.py test
-  coverage:
-    name: 'Check test coverage'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build the stack
-        run: docker compose build
-      - name: Create coverage XML report
-        run: docker compose run web /bin/bash -c "coverage run --source='.' manage.py test && coverage xml"
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          file: hiss/coverage.xml
-          name: codecov-umbrella
-          fail_ci_if_error: true
