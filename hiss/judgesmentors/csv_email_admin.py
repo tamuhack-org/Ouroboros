@@ -131,7 +131,7 @@ class CSVEmailAdminView:
                     print(f"=== CONFIRMATION EMAILS WITH QR CODES SENT SUCCESSFULLY ===")
                     return JsonResponse({
                         'success': True, 
-                        'message': f'Successfully sent {email_type} emails to {len(email_tuples)} judges!'
+                        'message': f'Successfully sent {email_type} emails to {processed_count} judges!'
                     })
                 else:
                     return JsonResponse({'error': 'No email tuples to send'}, status=400)
@@ -293,11 +293,15 @@ class CSVEmailAdminView:
                     print(f"Sending {len(email_tuples)} {email_type} emails...")
                     send_mass_html_mail(email_tuples)
                     print("=== EMAILS SENT SUCCESSFULLY ===")
+                    return JsonResponse({
+                        'success': True, 
+                        'message': f'Successfully sent {email_type} emails to {len(email_tuples)} mentors!'
+                    })
                 elif email_type == 'confirmation':
                     print(f"=== CONFIRMATION EMAILS WITH QR CODES SENT SUCCESSFULLY ===")
                     return JsonResponse({
                         'success': True, 
-                        'message': f'Successfully sent {email_type} emails to {len(email_tuples)} mentors!'
+                        'message': f'Successfully sent {email_type} emails to {processed_count} mentors!'
                     })
                 else:
                     return JsonResponse({'error': 'No email tuples to send'}, status=400)

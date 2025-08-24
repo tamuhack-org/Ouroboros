@@ -80,10 +80,11 @@ class CheckinHackerView(views.APIView):
             first_name = name_parts[0] if name_parts else 'Judge'
             last_name = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
             return JsonResponse({
-                "checkinStatus": judge.status,
+                "checkinStatus": judge.get_status_display(),
                 "first_name": first_name,
                 "last_name": last_name,
                 "wares": "None",
+                "mealGroup": "Judge/Mentor",
             })
         except Judge.DoesNotExist:
             pass
@@ -95,10 +96,11 @@ class CheckinHackerView(views.APIView):
             first_name = name_parts[0] if name_parts else 'Mentor'
             last_name = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
             return JsonResponse({
-                "checkinStatus": mentor.status,
+                "checkinStatus": mentor.get_status_display(),
                 "first_name": first_name,
                 "last_name": last_name,
                 "wares": "None",  # Keep same response format
+                "mealGroup": "Judge/Mentor",
             })
         except Mentor.DoesNotExist:
             pass
