@@ -1,6 +1,5 @@
 # pylint: disable=C0330
 import csv
-from typing import List, Tuple
 from unfold.admin import ModelAdmin
 from address.forms import AddressWidget
 from address.models import AddressField
@@ -12,7 +11,7 @@ from django.db import transaction
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
-from django.utils import timezone
+from django.utils import timezone # type: ignore
 from django.utils.html import strip_tags
 from unfold.contrib.filters.admin import (
     ChoicesDropdownFilter,

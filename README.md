@@ -85,6 +85,38 @@ To do this, push to the staging environment, open the Heroku bash shell, and run
 python3 manage.py migrate --run-syncdb
 ```
 
+# CSV Format Requirements
+
+## Judge CSV Format
+The judge CSV file should contain the following columns:
+```
+name,email,phone,tshirt_size,is_faculty,track,additional_info
+```
+
+**Column descriptions:**
+- `name`: Full name of the judge
+- `email`: Email address (required)
+- `phone`: Phone number (optional)
+- `tshirt_size`: T-shirt size (XS, S, M, L, XL, XXL)
+- `is_faculty`: Whether the person is faculty (yes/no, true/false, 1/0, y/n)
+- `track`: Competition track (SW, HW, AI, GENERAL)
+- `additional_info`: Additional notes or information (optional)
+
+## Mentor CSV Format
+The mentor CSV file should contain the following columns:
+```
+name,email,phone,tshirt_size,is_faculty,track,additional_info
+```
+
+**Column descriptions:**
+- `name`: Full name of the mentor
+- `email`: Email address (required)
+- `phone`: Phone number (optional)
+- `tshirt_size`: T-shirt size (XS, S, M, L, XL, XXL)
+- `is_faculty`: Whether the person is faculty (yes/no, true/false, 1/0, y/n)
+- `track`: Competition track (SW, HW, AI, GENERAL)
+- `additional_info`: Additional notes or information (optional)
+
 # Contributing
 
 Install [Poetry](https://python-poetry.org/docs/#installation). Once installed, navigate to the root of the project and run the following:
