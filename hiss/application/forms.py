@@ -88,7 +88,7 @@ class ApplicationModelForm(forms.ModelForm):
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
 
-        mlh_stuff = (
+        mlh_stuff = (  # noqa: F841
             f"I authorize {settings.ORGANIZER_NAME} to share my application/registration information for"
             " event administration, ranking, MLH administration, pre- and post-event informational e-mails,"
             'and occasional messages about hackathons in-line with the <a href="https://mlh.io/privacy">MLH'
@@ -97,7 +97,6 @@ class ApplicationModelForm(forms.ModelForm):
             ' and the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>'
         )
 
-        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
         # self.fields["agree_to_mlh_stuff"].label = mlh_stuff
         # self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
 
