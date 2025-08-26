@@ -98,8 +98,8 @@ class ApplicationModelForm(forms.ModelForm):
         )
 
         mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
-        self.fields["agree_to_mlh_stuff"].label = mlh_stuff
-        self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
+        # self.fields["agree_to_mlh_stuff"].label = mlh_stuff
+        # self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
 
         # HACK: Disable the form if there's not an active wave
         if not application_models.Wave.objects.active_wave():
@@ -147,8 +147,8 @@ class ApplicationModelForm(forms.ModelForm):
         widgets = {
             "is_adult": forms.CheckboxInput,
             "agree_to_coc": forms.CheckboxInput,
-            "agree_to_mlh_stuff": forms.CheckboxInput,
-            "signup_to_mlh_newsletter": forms.CheckboxInput,
+            # "agree_to_mlh_stuff": forms.CheckboxInput,
+            # "signup_to_mlh_newsletter": forms.CheckboxInput,
             "agree_to_photos": forms.CheckboxInput,
             "accessibility_requirements": forms.CheckboxInput,
             "travel_reimbursement": forms.CheckboxInput,
