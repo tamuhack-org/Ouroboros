@@ -128,11 +128,10 @@ class School(models.Model):
 
 
 def filename_generator(_instance, filename: str):
-    if filename is None:
-        logger.error(f"filename_generator received None filename for instance {_instance}")
-        return f"{uuid.uuid4()}.pdf"
-    path = Path(filename)
+    path = Path(filename or "")
     ext = path.suffix.lower()
+    if not ext:
+        ext = ".pdf"
     return f"{uuid.uuid4()}{ext}"
 
 
@@ -167,7 +166,6 @@ class Application(models.Model):
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[
-            FileExtensionValidator(allowed_extensions=["pdf"]),
             FileSizeValidator(max_filesize=2.5),
         ],
         upload_to=filename_generator,
@@ -319,15 +317,13 @@ class Application(models.Model):
     def save(self, *args, **kwargs):
         """Override save to ensure meal group assignment logic is applied."""
         self.assign_meal_group()
-        
-        # Log resume upload attempts
         if self.resume:
             try:
                 logger.info(f"Attempting to save resume for user {self.user.email}: {self.resume.name}")
                 super().save(*args, **kwargs)
                 logger.info(f"Successfully saved resume for user {self.user.email}")
-            except Exception as e:
-                logger.error(f"Failed to save resume for user {self.user.email}: {str(e)}")
+            except Exception:
+                logger.exception(f"Failed to save resume for user {self.user.email}:")
                 # Continue with save without resume
                 self.resume = None
                 super().save(*args, **kwargs)
