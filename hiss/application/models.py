@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import re
 import uuid
 from datetime import datetime
@@ -43,6 +44,7 @@ from application.constants import (
 from application.filesize_validation import FileSizeValidator
 
 s3_storage = S3Storage()
+logger = logging.getLogger(__name__)
 
 
 class WaveManager(models.Manager["Wave"]):
@@ -314,7 +316,20 @@ class Application(models.Model):
     def save(self, *args, **kwargs):
         """Override save to ensure meal group assignment logic is applied."""
         self.assign_meal_group()
-        super().save(*args, **kwargs)
+        
+        # Log resume upload attempts
+        if self.resume:
+            try:
+                logger.info(f"Attempting to save resume for user {self.user.email}: {self.resume.name}")
+                super().save(*args, **kwargs)
+                logger.info(f"Successfully saved resume for user {self.user.email}")
+            except Exception as e:
+                logger.error(f"Failed to save resume for user {self.user.email}: {str(e)}")
+                # Continue with save without resume
+                self.resume = None
+                super().save(*args, **kwargs)
+        else:
+            super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse_lazy("application:update", args=[self.id])
