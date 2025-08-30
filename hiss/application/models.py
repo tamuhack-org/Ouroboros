@@ -217,23 +217,23 @@ class Application(models.Model):
     num_hackathons_attended = models.CharField(
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
-    # wares = models.CharField(
-    #     "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track",
-    #     choices=WARECHOICE,
-    #     max_length=8,
-    #     default=NO_ANSWER,
-    #     blank=False,
-    #     null=True,
-    # )
+    wares = models.CharField(
+        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track",
+        choices=WARECHOICE,
+        max_length=8,
+        default=NO_ANSWER,
+        blank=False,
+        null=True,
+    )
 
     # LEGAL INFO
     agree_to_coc = models.BooleanField(choices=AGREE, default=None)
     agree_to_mlh_stuff = models.BooleanField(
         choices=AGREE, null=True, default=None, blank=True
     )
-    # signup_to_mlh_newsletter = models.BooleanField(
-    #     choices=AGREE_DISAGREE, null=True, default=None, blank=True
-    # )
+    signup_to_mlh_newsletter = models.BooleanField(
+        choices=AGREE_DISAGREE, null=True, default=None, blank=True
+    )
     is_adult = models.BooleanField(
         "Please confirm you are 18 or older.",
         choices=AGREE,
