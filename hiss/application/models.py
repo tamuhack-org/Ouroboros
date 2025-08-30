@@ -128,6 +128,9 @@ class School(models.Model):
 
 
 def filename_generator(_instance, filename: str):
+    if filename is None:
+        logger.error(f"filename_generator received None filename for instance {_instance}")
+        return f"{uuid.uuid4()}.pdf"
     path = Path(filename)
     ext = path.suffix.lower()
     return f"{uuid.uuid4()}{ext}"
