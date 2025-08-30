@@ -158,9 +158,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': '/var/log/django/error.log',
+            'class': 'logging.StreamHandler',
         },
         'console': {
             'class': 'logging.StreamHandler',
