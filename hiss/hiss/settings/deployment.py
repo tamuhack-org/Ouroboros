@@ -1,13 +1,12 @@
+import logging
 import os
 import sys
-import logging
 
 import dj_database_url
 
 from .base import *  # noqa: F403
 from .customization import *  # noqa: F403
 
-# Initialize logger for production settings
 logger = logging.getLogger(__name__)
 logger.info("Loading production settings")
 
@@ -42,11 +41,24 @@ ANYMAIL = {
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = f"The {ORGANIZER_NAME} Team <{ORGANIZER_EMAIL}>"  # noqa: F405
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "default_acl": None,
+            "file_overwrite": False,
+            "signature_version": "s3v4",
+            "region_name": "us-east-2",
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
-MEDIA_ROOT = "/resumes"
+AWS_LOCATION = "resumes"
+MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{AWS_LOCATION}/"
 
-# Log S3 configuration
 logger.info(f"S3 bucket configured: {AWS_STORAGE_BUCKET_NAME}")
 logger.info(f"AWS Access Key ID present: {'Yes' if os.getenv('AWS_ACCESS_KEY_ID') else 'No'}")
 logger.info(f"AWS Secret Access Key present: {'Yes' if os.getenv('AWS_SECRET_ACCESS_KEY') else 'No'}")
