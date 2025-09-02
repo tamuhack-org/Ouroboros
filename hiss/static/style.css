@@ -184,7 +184,7 @@ input[type="submit"] {
     letter-spacing: 1px;
 }
 
-.application, .login-box, .status-box, .team-form, .team-detail {
+.application, .login-box, .status-box {
     background: #fff;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
     border-radius: 3px;
@@ -786,65 +786,6 @@ button {
     margin-top: 2px;
 }
 
-.team-form {
-    padding: 80px 100px;
-    max-width: 550px;
-    display: block;
-    margin: auto;
-}
-.team-detail {
-    padding: 80px 70px;
-    margin-top: 2rem;
-}
-
-.team-form h3, .team-detail h3{
-    font-size: 24px;
-    text-transform: uppercase;
-}
-
-.team-form h4 {
-    margin-top: 2em;
-    margin-bottom: 30px;
-    font-size: 20px;
-    font-weight: 400;
-}
-
-.team-form .create label { display: none; }
-
-.team-form form input[type=text] {
-    border: 1px solid #C5C5C5;
-    border-radius: 5px;
-    padding: 10px 15px;
-    width: 100%;
-}
-
-.team-detail h4 {
-    font-size: 18px;
-    text-transform: capitalize;
-    margin-bottom: 10px;
-}
-.team-detail h5 {
-    font-weight: 300;
-    font-size: 18px;
-}
-.team-detail ul {
-    padding: 0;
-}
-.team-detail ul li {
-    font-size: 20px;
-    font-weight: 300;
-}
-
-.team-detail .note {
-    color: #777;
-    font-size: 14px;
-    font-weight: 300;
-}
-
-.team-detail input[type=submit] {
-    padding: 12px;
-}
-
 .error-container{
     position: absolute;
     left: 50%;
@@ -968,23 +909,6 @@ button {
         text-align: left;
         float: left;
         margin-top: 5px;
-    }
-    .team-form {
-        padding: 60px 50px;
-    }
-    .team-detail {
-        padding: 60px 30px 40px;
-        margin-top: 20px;
-        margin-bottom: 60px;
-    }
-    .team-detail h4, .team-detail h5, .team-detail ul li {
-        font-size: 16px;
-    }
-    .team-detail .note {
-        font-size: 12px;
-    }
-    .team-detail input[type=submit] {
-        margin: 0;
     }
 }
 

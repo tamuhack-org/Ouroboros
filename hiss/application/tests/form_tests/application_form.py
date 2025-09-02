@@ -1,5 +1,5 @@
+from application.constants import GENDER_OTHER, RACE_OTHER
 from application.forms import ApplicationModelForm
-from application.models import GENDER_OTHER, RACE_OTHER
 from shared import test_case
 
 

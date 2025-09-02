@@ -6,7 +6,6 @@ from django.urls import reverse_lazy
 from shared import test_case
 from user.models import User
 
-
 URL_REGEX = r"(?P<url>https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))"
 
 
@@ -14,7 +13,7 @@ class ResendActivationEmailView(test_case.SharedTestCase):
     def setUp(self):
         self.email = "hacker@tamu.edu"
         self.password = "dummypassword"
-        self.inactive_user = User.objects._create_user(
+        self.inactive_user = User.objects.create(
             email=self.email, password=self.password
         )
 

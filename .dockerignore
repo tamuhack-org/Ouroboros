@@ -1,0 +1,6 @@
+# Exclude the project virtual environment from image builds
+.venv
+
+# idek if envs are included
+.env
+.env*

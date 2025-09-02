@@ -4,10 +4,10 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy
 
 from application.models import Application
-from shared import test_case
+from shared.test_case import SharedTestCase
 
 
-class CreateApplicationViewTestCase(test_case.SharedTestCase):
+class CreateApplicationViewTestCase(SharedTestCase):
     def test_requires_login(self) -> None:
         response: HttpResponse = self.client.get(reverse_lazy("application:create"))
 
@@ -26,14 +26,14 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
     def test_fails_without_active_wave(self) -> None:
         self.client.force_login(self.user)
 
-        response: HttpResponse = self.client.post(
+        response = self.client.post(
             reverse_lazy("application:create"), self.application_fields
         )
+        form = response.context["form"]
 
         self.assertFormError(
-            response,
-            "form",
-            "__all__",
+            form,
+            None,
             "Applications may only be submitted during an active registration wave.",
         )
 
@@ -60,13 +60,14 @@ class CreateApplicationViewTestCase(test_case.SharedTestCase):
         self.application_fields["resume"] = SimpleUploadedFile("resume2.pdf", b"dummy")
         self.application_fields["school"] = self.first_school.pk
 
-        response: HttpResponse = self.client.post(
+        response = self.client.post(
             reverse_lazy("application:create"), data=self.application_fields
         )
+        form = response.context["form"]
+
         self.assertFormError(
-            response,
-            "form",
-            "__all__",
+            form,
+            None,
             "You can only submit one application to this event.",
         )
 

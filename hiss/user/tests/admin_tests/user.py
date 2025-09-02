@@ -1,4 +1,3 @@
-from django.contrib import admin
 from django.urls import reverse_lazy
 
 from shared import test_case
@@ -12,7 +11,7 @@ class UserAdminTestCase(test_case.SharedTestCase):
             change_url,
             {
                 "action": "export_user_emails",
-                admin.ACTION_CHECKBOX_NAME: [self.user.pk],
+                "_selected_action": [self.user.pk],
             },
             follow=True,
         )

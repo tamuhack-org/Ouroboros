@@ -1,5 +1,6 @@
 [![codecov](https://codecov.io/gh/tamuhack-org/Ouroboros/branch/main/graph/badge.svg)](https://codecov.io/gh/tamuhack-org/Ouroboros)
 
+Be careful, you need internet so that you can get the bootstrap file - we might want to switch from this for future use because it's super annoying
 
 # :snake: Hiss
 
@@ -70,14 +71,25 @@ python3 manage.py migrate --run-syncdb
 ```
 
 # Contributing
+We now use uv for dependency management, ensure that uv is installed.
 
-Install [Poetry](https://python-poetry.org/docs/#installation). Once installed, navigate to the root of the project and run the following:
-```
-poetry install
-poetry run autohooks activate
-```
-This enables pre-commit hooks to make sure your code is formatted prooperly, so you won't get blocked in a PR.
+```sh
+uv venv --python 3.12
+uv sync
 
+source .venv/bin/activate
+python ./hiss/manage.py migrate #Apply all migrations
+
+python ./hiss/manage.py createsuperuser
+
+
+python ./hiss/manage.py runserver
+```
+
+```
+/admin/csv-emails/judges/
+/admin/csv-emails/mentors/
+```
 
 # Brought to you by
 

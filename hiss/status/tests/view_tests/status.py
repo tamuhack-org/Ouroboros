@@ -3,10 +3,9 @@ from datetime import timedelta
 from django.urls import reverse_lazy
 from django.utils import timezone
 
-from application import models as application_models
-from application.models import Wave, Application
+import application.constants
+from application.models import Application, Wave
 from shared import test_case
-from team.models import Team
 
 
 class StatusViewTestCase(test_case.SharedTestCase):
@@ -88,7 +87,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
         Application.objects.create(
             **self.application_fields,
             wave=self.wave1,
-            status=application_models.STATUS_EXPIRED,
+            status=application.constants.STATUS_EXPIRED,
         )
         self.user.confirmation_deadline = timezone.now() - timedelta(days=10000)
         self.user.save()
@@ -103,7 +102,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
         Application.objects.create(
             **self.application_fields,
             wave=self.wave1,
-            status=application_models.STATUS_ADMITTED,
+            status=application.constants.STATUS_ADMITTED,
         )
         self.user.confirmation_deadline = timezone.now() + timedelta(days=10000)
         self.user.save()
@@ -119,7 +118,7 @@ class StatusViewTestCase(test_case.SharedTestCase):
         Application.objects.create(
             **self.application_fields,
             wave=self.wave1,
-            status=application_models.STATUS_CONFIRMED,
+            status=application.constants.STATUS_CONFIRMED,
         )
         self.user.confirmation_deadline = timezone.now() + timedelta(days=10000)
         self.user.save()
@@ -134,54 +133,22 @@ class StatusViewTestCase(test_case.SharedTestCase):
         Application.objects.create(
             **self.application_fields,
             wave=self.wave1,
-            status=application_models.STATUS_REJECTED,
+            status=application.constants.STATUS_REJECTED,
         )
 
         response = self.client.get(reverse_lazy("status"))
 
         self.assertTrue("REJECTED" in response.context)
 
-    def test_rejected_RSVP_context(self):
+    def test_rejected_rsvp_context(self):
         self.create_active_wave()
         self.client.force_login(self.user)
         Application.objects.create(
             **self.application_fields,
             wave=self.wave1,
-            status=application_models.STATUS_DECLINED,
+            status=application.constants.STATUS_DECLINED,
         )
 
         response = self.client.get(reverse_lazy("status"))
 
         self.assertTrue("DECLINED" in response.context and response.context["DECLINED"])
-
-    def test_not_applied_no_team_buttons(self):
-        self.client.force_login(self.user)
-
-        response = self.client.get(reverse_lazy("status"))
-
-        self.assertNotContains(response, reverse_lazy("team:join"))
-        self.assertNotContains(response, reverse_lazy("team:create"))
-        self.assertNotContains(response, "My Team")
-
-    def test_applied_but_not_joined_displays_create_join_team_buttons(self):
-        self.create_active_wave()
-        self.client.force_login(self.user)
-        Application.objects.create(**self.application_fields, wave=self.wave1)
-
-        response = self.client.get(reverse_lazy("status"))
-
-        self.assertContains(response, reverse_lazy("team:create"))
-        self.assertContains(response, reverse_lazy("team:join"))
-        self.assertNotContains(response, "My Team")
-
-    def test_applied_and_joined_team_displays_my_team_button(self):
-        self.create_active_wave()
-        self.client.force_login(self.user)
-        Application.objects.create(**self.application_fields, wave=self.wave1)
-        team = Team.objects.create(name="team_name")
-        self.user.team = team
-        self.user.save()
-
-        response = self.client.get(reverse_lazy("status"))
-
-        self.assertContains(response, reverse_lazy("team:detail", args=[team.pk]))

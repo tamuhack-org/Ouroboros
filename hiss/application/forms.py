@@ -1,15 +1,14 @@
 import ast
-import json
 
 from django import forms
 from django.conf import settings
+from django.db.models import Case, IntegerField, When
 from django.utils.safestring import mark_safe
-from django.db.models import Case, When, IntegerField
 
+import application.constants
+from application import constants
 from application import models as application_models
 from application.models import School
-
-from address.forms import AddressField
 
 
 class ApplicationModelForm(forms.ModelForm):
@@ -51,194 +50,20 @@ class ApplicationModelForm(forms.ModelForm):
     )
 
     # Languages
-    PYTHON = "Python"
-    JAVA_SCRIPT = "JavaScript"
-    TYPE_SCRIPT = "TypeScript"
-    JAVA = "Java"
-    C_SHARP = "C#"
-    C_LANG = "C"
-    CPP = "C++"
-    GOLANG = "Go"
-    R_LANG = "R"
-    SWIFT = "Swift"
-    DART = "Dart"
-    KOTLIN = "Kotlin"
-    RUBY = "Ruby"
-    RUST = "Rust"
-    SCALA = "Scala"
-    SQL = "SQL"
-    HTML = "HTML"
-    CSS = "CSS"
-    PHP = "PHP"
-    ELIXIR = "Elixir"
-    VERILOG = "Verilog"
-    HASKELL = "Haskell"
-    LUA = "Lua"
-    # Concepts
-    MACHINE_LEARNING = "ML"
-    FULL_STACK = "full-stack"
-    FRONT_END = "front-end"
-    BACK_END = "back-end"
-    WEB = "web-dev"
-    MOBILE = "mobile-dev"
-    DESIGN = "design"
-    DATA_SCIENCE = "data-science"
-    DEV_OPS = "dev-ops"
-    CLOUD = "cloud"
-    DATABASES = "databases"
-    UI_UX = "UI/UX"
-    GENERATIVE_AI = "generative-ai"
-    DATA_VIS = "data-visualization"
-    COMPUTER_GRAPHICS = "computer-graphics"
-    GAME_DEV = "game-development"
-    CYBERSECURITY = "cybersecurity"
-    DATA_STRUCTURES = "data-structures"
-    REST_APIS = "rest-apis"
-    TESTING = "software-testing"
-    MICROCONTROLLERS = "microcontrollers"
-    SYSTEMS_PROGRAMMING = "computer-systems-programming"
-    HARDWARE = "computer-hardware"
-    OS = "operating-systems"
-    # Industry Standards
-    AWS = "AWS"
-    GOOGLE_CLOUD = "Google-Cloud"
-    MS_AZURE = "Microsoft-Azure"
-    VERCEL = "Vercel"
-    POSTGRESQL = "PostgreSQL"
-    MONGO_DB = "MongoDB"
-    REACT = "React"
-    ANGULAR = "Angular"
-    VUE = "Vue.js"
-    SVELTE = "Svelte"
-    BOOTSTRAP = "Bootstrap"
-    RAILS = "Ruby-on-Rails"
-    DJANGO = "Django"
-    FIREBASE = "Firebase"
-    GIT = "Git"
-    UNIX_LINUX = "Unix/Linux"
-    JUPYTER_NOTEBOOKS = "Jupyter-Notebooks"
-    NODE_JS = "Node.js"
-    DOCKER = "Docker"
-    KUBERNETES = "Kubernetes"
-    TENSORFLOW = "Tensorflow"
-    PYTORCH = "PyTorch"
-    FLUTTER = "Flutter"
-    REACT_NATIVE = "React-Native"
 
-    TECHNOLOGY_EXPERIENCE = (
-        (PYTHON, "Python"),
-        (JAVA_SCRIPT, "JavaScript"),
-        (TYPE_SCRIPT, "TypeScript"),
-        (JAVA, "Java"),
-        (C_SHARP, "C#"),
-        (C_LANG, "C"),
-        (CPP, "C++"),
-        (GOLANG, "Golang"),
-        (R_LANG, "R"),
-        (SWIFT, "Swift"),
-        (DART, "Dart"),
-        (KOTLIN, "Kotlin"),
-        (RUBY, "Ruby"),
-        (RUST, "Rust"),
-        (SCALA, "Scala"),
-        (SQL, "SQL"),
-        (HTML, "HTML"),
-        (CSS, "CSS"),
-        (PHP, "PHP"),
-        (ELIXIR, "Elixir"),
-        (VERILOG, "Verilog"),
-        (HASKELL, "Haskell"),
-        (LUA, "Lua"),
-        (FULL_STACK, "Full Stack"),
-        (FRONT_END, "Front End"),
-        (BACK_END, "Back End"),
-        (WEB, "Web"),
-        (MOBILE, "Mobile"),
-        (DESIGN, "Design"),
-        (DEV_OPS, "Dev Ops"),
-        (CLOUD, "Cloud"),
-        (DATA_SCIENCE, "Data Science"),
-        (MACHINE_LEARNING, "Machine Learning"),
-        (DATABASES, "Databases"),
-        (UI_UX, "UI/UX"),
-        (GENERATIVE_AI, "Generative AI"),
-        (DATA_VIS, "Data Visualization"),
-        (COMPUTER_GRAPHICS, "Computer Graphics"),
-        (GAME_DEV, "Game Development"),
-        (CYBERSECURITY, "Cybersecurity"),
-        (DATA_STRUCTURES, "Data Structures"),
-        (REST_APIS, "REST APIs"),
-        (TESTING, "Software Testing"),
-        (MICROCONTROLLERS, "Microcontrollers"),
-        (SYSTEMS_PROGRAMMING, "Computer Systems Programming"),
-        (HARDWARE, "Computer Hardware"),
-        (OS, "Operating Systems"),
-        (AWS, "AWS"),
-        (GOOGLE_CLOUD, "Google Cloud"),
-        (MS_AZURE, "Microsoft Azure"),
-        (VERCEL, "Vercel"),
-        (POSTGRESQL, "PostgreSQL"),
-        (MONGO_DB, "MongoDB"),
-        (REACT, "React"),
-        (ANGULAR, "Angular"),
-        (VUE, "Vue.js"),
-        (SVELTE, "Svelte"),
-        (BOOTSTRAP, "Bootstrap"),
-        (RAILS, "Ruby on Rails"),
-        (DJANGO, "Django"),
-        (FIREBASE, "Firebase"),
-        (GIT, "Git"),
-        (UNIX_LINUX, "Unix/Linux"),
-        (JUPYTER_NOTEBOOKS, "Jupyter Notebooks"),
-        (NODE_JS, "Node.js"),
-        (DOCKER, "Docker"),
-        (KUBERNETES, "Kubernetes"),
-        (TENSORFLOW, "Tensorflow"),
-        (PYTORCH, "PyTorch"),
-        (FLUTTER, "Flutter"),
-        (REACT_NATIVE, "React Native"),
-    )
     # SKILLS
     technology_experience = forms.MultipleChoiceField(
         label="What technical skills do you have?",
         help_text="Select all that apply",
-        choices=TECHNOLOGY_EXPERIENCE,
+        choices=constants.TECHNOLOGY_EXPERIENCE,
         required=False,
     )
-
-    VEGAN = "Vegan"
-    VEGETARIAN = "Vegetarian"
-    NO_BEEF = "No-Beef"
-    NO_PORK = "No-Pork"
-    HALAL = "Halal"
-    KOSHER = "Kosher"
-    GLUTEN_FREE = "Gluten-Free"
-    FOOD_ALLERGY = "Food-Allergy"
-    OTHER_DIETARY_RESTRICTION = "Other"
-
-    DIETARY_RESTRICTIONS = (
-        (VEGAN, "Vegan"),
-        (VEGETARIAN, "Vegetarian"),
-        (NO_BEEF, "No Beef"),
-        (NO_PORK, "No Pork"),
-        (HALAL, "Halal"),
-        (KOSHER, "Kosher"),
-        (GLUTEN_FREE, "Gluten-Free"),
-        (FOOD_ALLERGY, "Food Allergy"),
-        (OTHER_DIETARY_RESTRICTION, "Other"),
-    )
-
     dietary_restrictions = forms.MultipleChoiceField(
         label="Do you have any dietary restrictions?",
         help_text="Select all that apply",
-        choices=DIETARY_RESTRICTIONS,
+        choices=constants.DIETARY_RESTRICTIONS,
         required=False,
     )
-
-    # address = AddressField(
-    #     help_text="You will not receive swag and prizes without an address",
-    #     required=False,
-    # )
 
     def __init__(self, *args, **kwargs):
         if kwargs.get("instance"):
@@ -253,17 +78,17 @@ class ApplicationModelForm(forms.ModelForm):
 
         super().__init__(*args, **kwargs)
 
-        photo_agreement = "I grant permission for TAMUhack to use my name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event 'TAMUhack 2025' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases."
+        photo_agreement = "I grant permission for TAMUhack to use my name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event 'HowdyHack 2025' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases."
         accessibilities = "Please check this box you would like our team to follow up with you personally to discuss your accessibility accommodations during this event."
 
-        self.fields["agree_to_photos"].label = mark_safe(photo_agreement)
-        self.fields["accessibility_requirements"].label = mark_safe(accessibilities)
+        self.fields["agree_to_photos"].label = photo_agreement
+        self.fields["accessibility_requirements"].label = accessibilities
 
         self.fields["agree_to_coc"].label = mark_safe(
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
 
-        mlh_stuff = (
+        mlh_stuff = (  # noqa: F841
             f"I authorize {settings.ORGANIZER_NAME} to share my application/registration information for"
             " event administration, ranking, MLH administration, pre- and post-event informational e-mails,"
             'and occasional messages about hackathons in-line with the <a href="https://mlh.io/privacy">MLH'
@@ -272,19 +97,16 @@ class ApplicationModelForm(forms.ModelForm):
             ' and the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>'
         )
 
-        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
-        self.fields["agree_to_mlh_stuff"].label = mark_safe(mlh_stuff)
-        self.fields["signup_to_mlh_newsletter"].label = mark_safe(mlh_newsletter)
+        # self.fields["agree_to_mlh_stuff"].label = mlh_stuff
+        # self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
 
         # HACK: Disable the form if there's not an active wave
         if not application_models.Wave.objects.active_wave():
-            for field_name in self.fields.keys():
+            for field_name in self.fields:
                 self.fields[field_name].widget.attrs["disabled"] = "disabled"
 
     def is_valid(self) -> bool:
-        """
-        Checks to ensure that a wave is currently active.
-        """
+        """Check to ensure that a wave is currently active."""
         if not application_models.Wave.objects.active_wave():
             self.add_error(
                 None,
@@ -294,7 +116,7 @@ class ApplicationModelForm(forms.ModelForm):
 
     def clean(self):
         gender = self.cleaned_data.get("gender")
-        if gender == application_models.GENDER_OTHER:
+        if gender == application.constants.GENDER_OTHER:
             gender_other = self.cleaned_data.get("gender_other")
             if not gender_other:
                 msg = forms.ValidationError(
@@ -304,7 +126,7 @@ class ApplicationModelForm(forms.ModelForm):
         races = self.cleaned_data.get("race")
         if races:
             race_other = self.cleaned_data.get("race_other")
-            if application_models.RACE_OTHER in races and not race_other:
+            if application.constants.RACE_OTHER in races and not race_other:
                 msg = forms.ValidationError(
                     "Please fill out this field with the appropriate information."
                 )
@@ -324,8 +146,8 @@ class ApplicationModelForm(forms.ModelForm):
         widgets = {
             "is_adult": forms.CheckboxInput,
             "agree_to_coc": forms.CheckboxInput,
-            "agree_to_mlh_stuff": forms.CheckboxInput,
-            "signup_to_mlh_newsletter": forms.CheckboxInput,
+            # "agree_to_mlh_stuff": forms.CheckboxInput,
+            # "signup_to_mlh_newsletter": forms.CheckboxInput,
             "agree_to_photos": forms.CheckboxInput,
             "accessibility_requirements": forms.CheckboxInput,
             "travel_reimbursement": forms.CheckboxInput,
@@ -357,10 +179,10 @@ class ApplicationModelForm(forms.ModelForm):
             "race_other",
             "num_hackathons_attended",
             "technology_experience",
-            "wares",
+            #"wares",
             "dietary_restrictions",
             "has_team",
-            "wants_team",
+            "discovery_method",
             "shirt_size",
             # "address",
             "resume",
@@ -377,7 +199,7 @@ class ApplicationModelForm(forms.ModelForm):
             "notes",
             "agree_to_photos",
             "agree_to_coc",
-            "agree_to_mlh_stuff",
-            "signup_to_mlh_newsletter",
+            #"agree_to_mlh_stuff",
+            #"signup_to_mlh_newsletter",
             "is_adult",
         ]

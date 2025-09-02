@@ -1,0 +1,69 @@
+<html>
+	<div style="max-width:800px; background-color: #ADD8E6; z-index: -1; position: absolute; top: 0; left: 0; padding: 20px">
+
+		<div style="font-family: Questrial, sans-serif;
+					background: #fff;
+					box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+					border-radius: 3px;
+					padding: 50px!important;
+					max-width: 500px;
+					display: block;
+					margin: 20px auto;
+					margin-top: 0px">
+			<h2 style="margin-bottom: 20px; font-size: 14px; color: #777777">Hi {{ name }}!</h2>
+
+			<p style="line-height: 20px; -webkit-font-smoothing: antialiased;
+					font-weight: normal;
+					color: #777777;
+					margin-bottom: 20px;">
+				<strong>Thank you for signing up to be a judge for {{ event_name }} {{ event_year }}!</strong>
+				We've successfully received your information and are thrilled to have you as part of our judging panel.
+			</p>
+
+			<p style="line-height: 20px; -webkit-font-smoothing: antialiased;
+					font-weight: normal;
+					color: #777777;
+					margin-bottom: 20px;">
+				<strong>Here's what you need to know:</strong><br><br>
+				📅 <strong>Event Date:</strong> {{ event_date_text }}<br>
+				📍 <strong>Location:</strong> Memorial Student Center, Texas A&M University<br>
+				⏰ <strong>Judging Schedule:</strong> We'll send specific judging times and assignments closer to the event<br>
+				👕 <strong>T-Shirt Size:</strong> We have you down for size {{ tshirt_size }}
+			</p>
+
+			<p style="line-height: 20px; -webkit-font-smoothing: antialiased;
+					font-weight: normal;
+					color: #777777;
+					margin-bottom: 20px;">
+				<strong>What to expect as a judge:</strong><br>
+				• You'll evaluate innovative projects created by talented hackers<br>
+				• We'll provide detailed judging criteria and evaluation guidelines<br>
+				• You'll get to interact with students and see amazing technology demos<br>
+				• Light refreshments will be provided during judging sessions
+			</p>
+
+			<p style="line-height: 20px; -webkit-font-smoothing: antialiased;
+					font-weight: normal;
+					color: #777777;
+					margin-bottom: 20px;">
+				We'll send you more details about parking, check-in procedures, and judging logistics 
+				as we get closer to the event. If you have any questions or need to update your information, 
+				please reach out to us at {{ organizer_email }}.
+			</p>
+
+			<h3 style=" margin-bottom: 5px;
+						font-size: 14px;
+						line-height: 30px;
+						-webkit-font-smoothing: antialiased;
+						font-weight: normal;">
+				Thanks again for volunteering!
+			</h3>
+
+			<strong style=" color: #ADD8E6;
+							font-size: 14px;">
+				The {{ organizer_name }} Team
+			</strong>
+
+		</div>
+	</div>
+</html>

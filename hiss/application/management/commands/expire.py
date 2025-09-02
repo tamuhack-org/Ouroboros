@@ -1,16 +1,17 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-from application.models import Application, STATUS_ADMITTED, STATUS_EXPIRED
+from application.constants import STATUS_ADMITTED, STATUS_EXPIRED
+from application.models import Application
 
 
 class Command(BaseCommand):
-    def handle(self, *args, **options):
+    def handle(self, *_args, **_options):
         unconfirmed = Application.objects.filter(
             status=STATUS_ADMITTED, confirmation_deadline__lt=timezone.now()
         )
-        self.stdout.write("Going to expire %s applications" % (unconfirmed.count()))
+        self.stdout.write(f"Going to expire {unconfirmed.count()} applications")
         expired = unconfirmed.update(status=STATUS_EXPIRED)
         self.stdout.write(
-            self.style.SUCCESS("All %s applications successfully approved" % expired)
+            self.style.SUCCESS(f"All {expired} applications successfully approved")
         )

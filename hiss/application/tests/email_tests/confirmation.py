@@ -22,8 +22,9 @@ class ApplicationConfirmationEmailTestCase(test_case.SharedTestCase):
     def test_send_confirmation_email_attaches_file(self):
         send_confirmation_email(self.app)
 
+        # Check that the email has the QR and ics attachments
         email: EmailMultiAlternatives = mail.outbox[0]
-        self.assertEqual(len(email.attachments), 1)
+        self.assertEqual(len(email.attachments), 2)
 
 
     """
