@@ -352,8 +352,6 @@ class Application(models.Model):
             self.meal_group = self.get_next_meal_group()
         elif self.status == "E":  # Waitlisted
             self.meal_group = "E"
-        else:
-            self.meal_group = None
 
     def clean(self):
         super().clean()
