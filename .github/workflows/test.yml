@@ -14,5 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build the stack
-        run: docker compose run web python3 manage.py test
+      - name: Build Docker image
+        run: docker build -t ouroboros .
+      - name: Run tests
+        run: docker run ouroboros python3 manage.py test
