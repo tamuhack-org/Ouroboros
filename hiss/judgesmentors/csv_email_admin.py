@@ -58,7 +58,7 @@ class CSVEmailAdminView:
         }
         return render(request, 'admin/csv_email_interface.html', context)
 
-    def process_judges_csv(self, request):
+    def process_judges_csv(self, request):  # noqa: PLR0911
         """Process judges CSV and send emails - no database storage"""
         if request.method != "POST":
             return JsonResponse({'error': 'POST required'}, status=405)
@@ -149,12 +149,12 @@ class CSVEmailAdminView:
     def build_judge_confirmation_email(self, judge_data):
         """Build confirmation email with QR code from judge data"""
 
-        user, created = User.objects.get_or_create(
+        user, _created = User.objects.get_or_create(
             email=judge_data['email'],
             defaults={'is_active': True}
         )
 
-        judge, created = Judge.objects.get_or_create(
+        _judge, _created = Judge.objects.get_or_create(
             user=user,
             defaults={
                 'name': judge_data['name'],
@@ -204,7 +204,7 @@ class CSVEmailAdminView:
 
         return email
 
-    def process_mentors_csv(self, request):
+    def process_mentors_csv(self, request):  # noqa: PLR0911
         """Process mentors CSV and send emails - no database storage"""
         if request.method != "POST":
             return JsonResponse({'error': 'POST required'}, status=405)
@@ -284,13 +284,13 @@ class CSVEmailAdminView:
     def build_mentor_confirmation_email(self, mentor_data):
         """Build confirmation email with QR code from mentor data"""
         # Create or get User
-        user, created = User.objects.get_or_create(
+        user, _created = User.objects.get_or_create(
             email=mentor_data['email'],
             defaults={'is_active': True}
         )
 
         # Create or update Mentor
-        mentor, created = Mentor.objects.get_or_create(
+        _mentor, _created = Mentor.objects.get_or_create(
             user=user,
             defaults={
                 'name': mentor_data['name'],
