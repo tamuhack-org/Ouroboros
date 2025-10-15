@@ -11,4 +11,6 @@ urlpatterns = [
     path("checkin", views.CheckinHackerView.as_view(), name="user-checkin"),
     path("food", views.CreateFoodEventView.as_view(), name="food"),
     path("workshops", views.CreateWorkshopEventView.as_view(), name="workshops"),
+    path("judge-lookup", views.JudgeLookupView.as_view(), name="judge-lookup"),
+    path("mentor-lookup", views.MentorLookupView.as_view(), name="mentor-lookup"),
 ]

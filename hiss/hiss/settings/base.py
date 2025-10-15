@@ -138,6 +138,7 @@ CORS_ORIGIN_WHITELIST = [
     "https://tamuhack.com",
     "https://tamuhack.org",
     "http://localhost:3000",
+    "http://localhost:5173",
     "http://tamuhack.com",
     "http://tamuhack.org",
 ]
