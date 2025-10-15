@@ -80,7 +80,7 @@ class CheckinHackerView(views.APIView):
             first_name = name_parts[0] if name_parts else 'Judge'
             last_name = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
             return JsonResponse({
-                "checkinStatus": judge.get_status_display(),
+                "checkinStatus": judge.status,
                 "first_name": first_name,
                 "last_name": last_name,
                 "wares": "None",
@@ -96,7 +96,7 @@ class CheckinHackerView(views.APIView):
             first_name = name_parts[0] if name_parts else 'Mentor'
             last_name = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
             return JsonResponse({
-                "checkinStatus": mentor.get_status_display(),
+                "checkinStatus": mentor.status,
                 "first_name": first_name,
                 "last_name": last_name,
                 "wares": "None",  # Keep same response format
@@ -159,19 +159,49 @@ class CreateFoodEventView(views.APIView):
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
         user = get_object_or_404(get_user_model(), email=user_email)
-        application = get_object_or_404(Application, user__email=user_email)
+        
+        # Try application first
+        try:
+            application = Application.objects.get(user__email=user_email)
+            food_events = FoodEvent.objects.filter(user=user)
+            meal_codes = [event.meal for event in food_events]
 
-        food_events = FoodEvent.objects.filter(user=user)
-        # Just a list of the "meal" fields for all FoodEvents
-        meal_codes = [event.meal for event in food_events]
-
-        return JsonResponse(
-            {
+            return JsonResponse({
                 "mealScans": meal_codes,
                 "dietaryRestrictions": application.dietary_restrictions,
                 "mealGroup": application.meal_group,
-            }
-        )
+            })
+        except Application.DoesNotExist:
+            pass
+        
+        # Check if judge or mentor
+        try:
+            judge = Judge.objects.get(user__email=user_email)
+            food_events = FoodEvent.objects.filter(user=user)
+            meal_codes = [event.meal for event in food_events]
+            
+            return JsonResponse({
+                "mealScans": meal_codes,
+                "dietaryRestrictions": "[]",
+                "mealGroup": "Judge/Mentor",
+            })
+        except Judge.DoesNotExist:
+            pass
+            
+        try:
+            mentor = Mentor.objects.get(user__email=user_email)
+            food_events = FoodEvent.objects.filter(user=user)
+            meal_codes = [event.meal for event in food_events]
+            
+            return JsonResponse({
+                "mealScans": meal_codes,
+                "dietaryRestrictions": "[]",
+                "mealGroup": "Judge/Mentor",
+            })
+        except Mentor.DoesNotExist:
+            pass
+            
+        return response.Response(status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request: Request, format: str = None):
         """Creates a new FoodEvent (indicating that a user has taken food for this meal). If the request is malformed (
@@ -185,20 +215,44 @@ class CreateFoodEventView(views.APIView):
         if not (user_email and meal):
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
-        application: Application = get_object_or_404(
-            Application, user__email=user_email
-        )
-
-        # Ensure that user has checked in
-        if not application.status == STATUS_CHECKED_IN:
-            return response.Response(
-                data={"error": USER_NOT_CHECKED_IN_MSG},
-                status=status.HTTP_412_PRECONDITION_FAILED,
-            )
-
-        food_event = FoodEvent.objects.create(user=application.user, meal=meal)
-        food_event.save()
-        return response.Response(status=status.HTTP_200_OK)
+        user = get_object_or_404(get_user_model(), email=user_email)
+        
+        # Try application first
+        try:
+            application = Application.objects.get(user__email=user_email)
+            # Ensure that user has checked in
+            if not application.status == STATUS_CHECKED_IN:
+                return response.Response(
+                    data={"error": USER_NOT_CHECKED_IN_MSG},
+                    status=status.HTTP_412_PRECONDITION_FAILED,
+                )
+            food_event = FoodEvent.objects.create(user=user, meal=meal)
+            food_event.save()
+            return response.Response(status=status.HTTP_200_OK)
+        except Application.DoesNotExist:
+            pass
+        
+        # Try judge
+        try:
+            judge = Judge.objects.get(user__email=user_email)
+        
+            food_event = FoodEvent.objects.create(user=user, meal=meal)
+            food_event.save()
+            return response.Response(status=status.HTTP_200_OK)
+        except Judge.DoesNotExist:
+            pass
+            
+        # Try mentor
+        try:
+            mentor = Mentor.objects.get(user__email=user_email)
+        
+            food_event = FoodEvent.objects.create(user=user, meal=meal)
+            food_event.save()
+            return response.Response(status=status.HTTP_200_OK)
+        except Mentor.DoesNotExist:
+            pass
+            
+        return response.Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class CreateWorkshopEventView(views.APIView):
@@ -245,3 +299,51 @@ class CreateWorkshopEventView(views.APIView):
 
         WorkshopEvent.objects.create(user=application.user)
         return response.Response(status=status.HTTP_200_OK)
+
+
+class JudgeLookupView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def get(self, request: Request, format: str = None):
+        """Returns judge information for a specific email address. If the judge doesn't exist, returns 404."""
+        user_email = request.GET.get("email", None)
+        if not user_email:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            judge = Judge.objects.get(user__email=user_email)
+            return JsonResponse({
+                "name": judge.name,
+                "email": user_email,
+                "track": judge.track,
+                "status": judge.status,
+                "is_faculty": judge.is_faculty,
+                "tshirt_size": judge.tshirt_size,
+            })
+        except Judge.DoesNotExist:
+            return response.Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class MentorLookupView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def get(self, request: Request, format: str = None):
+        """Returns mentor information for a specific email address. If the mentor doesn't exist, returns 404."""
+        user_email = request.GET.get("email", None)
+        if not user_email:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            mentor = Mentor.objects.get(user__email=user_email)
+            return JsonResponse({
+                "name": mentor.name,
+                "email": user_email,
+                "track": mentor.track,
+                "status": mentor.status,
+                "is_tamu_faculty": mentor.is_tamu_faculty,
+                "tshirt_size": mentor.tshirt_size,
+            })
+        except Mentor.DoesNotExist:
+            return response.Response(status=status.HTTP_404_NOT_FOUND)
