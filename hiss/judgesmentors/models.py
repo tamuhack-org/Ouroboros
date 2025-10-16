@@ -41,7 +41,7 @@ class Judge(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     tshirt_size = models.CharField(max_length=5, choices=TSHIRT_CHOICES, default="M")
     is_faculty = models.BooleanField(default=False)
-    track = models.CharField(max_length=10, choices=TRACK_CHOICES, default="SW")
+    track = models.CharField(max_length=100, choices=TRACK_CHOICES, default="SW")
     additional_info = models.TextField(blank=True)
 
 
