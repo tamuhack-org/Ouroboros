@@ -5,15 +5,16 @@ from django.contrib.auth import views as auth_views
 from django.contrib.sites import shortcuts as site_shortcuts
 from django.contrib.sites.requests import RequestSite
 from django.http import HttpResponse
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import generic
 
 from customauth import forms as customauth_forms
 from customauth.tokens import email_confirmation_generator
 from user.models import User
+
 
 def send_confirmation_email(curr_domain: RequestSite, user: User) -> None:
     subject = "Confirm your email address!"
@@ -58,7 +59,7 @@ class ActivateView(views.View):
     def get(self, request, *_args, **kwargs):
         user = None
         try:
-            uid = force_text(urlsafe_base64_decode(kwargs["uidb64"]))
+            uid = force_str(urlsafe_base64_decode(kwargs["uidb64"]))
             user = get_user_model().objects.get(id=int(uid))
         except (
             TypeError,
@@ -74,27 +75,25 @@ class ActivateView(views.View):
             user.save()
             login(request, user)
             return redirect(reverse_lazy("status"))
-        else:
-            return HttpResponse("Activation link is invalid.")
+        return HttpResponse("Activation link is invalid.")
 
 
 class PlaceholderPasswordResetView(auth_views.PasswordResetView):
-    """
-    Uses PlaceholderPasswordResetForm instead of default PasswordResetForm.
-    """
+    """Uses PlaceholderPasswordResetForm instead of default PasswordResetForm."""
 
     form_class = customauth_forms.PlaceholderPasswordResetForm
     html_email_template_name = "registration/emails/password_reset.html"
     email_template_name = "registration/emails/password_reset.html"
     subject_template_name = "registration/emails/password_reset_subject.txt"
     success_url = reverse_lazy("customauth:password_reset_done")
-    extra_email_context = {"event_name": settings.EVENT_NAME, "organizer_name": settings.ORGANIZER_NAME}
+    extra_email_context = {
+        "event_name": settings.EVENT_NAME,
+        "organizer_name": settings.ORGANIZER_NAME,
+    }
 
 
 class PlaceholderPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
-    """
-    Uses PlaceholderSetPasswordForm instead of default SetPasswordForm.
-    """
+    """Uses PlaceholderSetPasswordForm instead of default SetPasswordForm."""
 
     template_name = "registration/password_reset_confirm.html"
     form_class = customauth_forms.PlaceholderSetPasswordForm

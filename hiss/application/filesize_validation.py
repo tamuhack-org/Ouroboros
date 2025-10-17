@@ -3,14 +3,14 @@ from django.utils.deconstruct import deconstructible
 
 
 @deconstructible
-class FileSizeValidator(object):
-    """Validator to ensure files are of a desired size or less"""
+class FileSizeValidator:  # noqa: PLW1641
+    """Validator to ensure files are of a desired size or less."""
 
     message = "File size %(filesize)s is too large. Files must be less than: %(max_filesize)s."
     code = "invalid_filesize"
 
     def __init__(self, max_filesize=None, message=None, code=None):
-        """Note: max_filesize will be interpreted as MB (i.e. max_filesize=1.2 -> 1.2 MB)"""
+        """Note: max_filesize will be interpreted as MB (i.e. max_filesize=1.2 -> 1.2 MB)."""
         self.max_filesize = max_filesize
         if message is not None:
             self.message = message

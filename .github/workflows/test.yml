@@ -13,21 +13,8 @@ jobs:
     name: 'Run unit tests'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Build the stack
-        run: docker-compose run web python3 manage.py test
-  coverage:
-    name: 'Check test coverage'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build the stack
-        run: docker-compose build
-      - name: Create coverage XML report
-        run: docker-compose run web /bin/bash -c "coverage run --source='.' manage.py test && coverage xml"
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          file: hiss/coverage.xml
-          name: codecov-umbrella
-          fail_ci_if_error: true
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t ouroboros .
+      - name: Run tests
+        run: docker run ouroboros python3 manage.py test

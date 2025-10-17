@@ -1,10 +1,13 @@
-from django.contrib import admin
+# I would be careful about manually typing in "_selected_action" into the post
+# request I just inpsected the post request in the dashboard and looked at what
+# it did, but it might not be the best idea
 from django.core import mail
 from django.urls import reverse_lazy
 from django.utils import timezone
 
 from application.admin import build_approval_email, build_rejection_email
-from application.models import STATUS_ADMITTED, STATUS_REJECTED, Application
+from application.constants import STATUS_ADMITTED, STATUS_REJECTED
+from application.models import Application
 from shared import test_case
 
 
@@ -19,11 +22,6 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
     """
     Email subject should have settings.EVENT_NAME, not hard-coded "TAMUhack"
     """
-    # def test_approval_email_customizes_event_name(self):
-    #     event_name = "BIGGEST HACKATHON EVER"
-    #     with self.settings(EVENT_NAME=event_name):
-    #         subject, *_ = build_approval_email(self.app, timezone.now())
-    #         self.assertIn(event_name, subject)
 
     def test_approval_email_customizes_organizer_email(self):
         organizer_email = "BESTHACKATHON@BALLER.COM"
@@ -53,7 +51,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
 
         self.client.post(
             change_url,
-            {"action": "approve", admin.ACTION_CHECKBOX_NAME: [self.app.pk]},
+            {"action": "approve", "_selected_action": [self.app.pk]},
             follow=True,
         )
 
@@ -65,7 +63,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         change_url = reverse_lazy("admin:application_application_changelist")
 
         self.client.post(
-            change_url, {"action": "approve", admin.ACTION_CHECKBOX_NAME: [self.app.pk]}
+            change_url, {"action": "approve", "_selected_action": [self.app.pk]}
         )
 
         self.assertEqual(len(mail.outbox), 1)
@@ -73,10 +71,11 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
     def test_reject_action_sends_rejection_email(self):
         self.client.force_login(self.admin)
         change_url = reverse_lazy("admin:application_application_changelist")
+        print(change_url)
 
         self.client.post(
             change_url,
-            {"action": "reject", admin.ACTION_CHECKBOX_NAME: [self.app.pk]},
+            {"action": "reject", "_selected_action": [self.app.pk]},
             follow=True,
         )
 
@@ -87,7 +86,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         change_url = reverse_lazy("admin:application_application_changelist")
         self.client.post(
             change_url,
-            {"action": "reject", admin.ACTION_CHECKBOX_NAME: [self.app.pk]},
+            {"action": "reject", "_selected_action": [self.app.pk]},
             follow=True,
         )
         self.app.refresh_from_db()
@@ -100,7 +99,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
             change_url,
             {
                 "action": "export_application_emails",
-                admin.ACTION_CHECKBOX_NAME: [self.app.pk],
+                "_selected_action": [self.app.pk],
             },
             follow=True,
         )
@@ -113,7 +112,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
             change_url,
             {
                 "action": "resend_confirmation",
-                admin.ACTION_CHECKBOX_NAME: [self.app.pk],
+                "_selected_action": [self.app.pk],
             },
             follow=True,
         )

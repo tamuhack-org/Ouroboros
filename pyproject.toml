@@ -1,95 +1,168 @@
-[tool.poetry]
+[project]
 name = "hiss"
 version = "0.1.0"
 description = "open source hackathon registration system"
-authors = ["Gabriel Britain", "Cameron Brill <tamuhack@cameronbrill.me>", "Adil Rasiyani"]
+authors = [
+    { name = "Gabriel Britain" },
+    { name = "Cameron Brill", email = "tamuhack@cameronbrill.me" },
+    { name = "Adil Rasiyani" },
+]
+requires-python = ">=3.12"
 license = "GPL-3.0"
+dependencies = [
+    "babel>=2.17.0",
+    "bcrypt>=4.2.1",
+    "cachetools>=5.5.2",
+    "certifi>=2025.1.31",
+    "chardet>=5.2.0",
+    "colorama>=0.4.6",
+    "coverage>=7.6.12",
+    "dj-database-url>=2.3.0",
+    "django>=5.1.6",
+    "django-address>=0.2.8",
+    "django-admin-list-filter-dropdown>=1.0.3",
+    "django-admin-rangefilter>=0.13.2",
+    "django-anymail>=12.0",
+    "django-cors-headers>=4.7.0",
+    "django-multiselectfield>=0.1.13",
+    "django-phonenumber-field>=8.0.0",
+    "django-s3-storage>=0.15.0",
+    "django-storages>=1.14.5",
+    "django-stubs>=5.1.3",
+    "djangorestframework>=3.15.2",
+    "entrypoints>=0.4",
+    "google-api-core>=2.24.1",
+    "google-auth>=2.38.0",
+    "google-cloud-core>=2.4.2",
+    "google-cloud-storage>=3.0.0",
+    "google-resumable-media>=2.7.2",
+    "googleapis-common-protos>=1.68.0",
+    "gunicorn>=23.0.0",
+    "idna>=3.10",
+    "phonenumbers>=8.13.55",
+    "protobuf>=5.29.3",
+    "psycopg>=3.2.9",
+    "pyasn1>=0.6.1",
+    "pyasn1-modules>=0.4.1",
+    "pypng>=0.20220715.0",
+    "pyqrcode>=1.2.1",
+    "pytz>=2025.1",
+    "qrtools>=0.0.2",
+    "requests>=2.32.3",
+    "rsa>=4.9",
+    "six>=1.17.0",
+    "sqlparse>=0.5.3",
+    "tblib>=3.0.0",
+    "urllib3>=2.3.0",
+    "whitenoise>=6.9.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.7"
-astroid = "2.2.5"
-babel = "2.7.0"
-cachetools = "3.1.1"
-certifi = "2019.9.11"
-chardet = "3.0.4"
-colorama = "0.4.1"
-coverage = "5.1"
-dj-database-url = "0.5.0"
-django = "2.2.13"
-django-admin-list-filter-dropdown = "1.0.2"
-django-admin-rangefilter = "0.5.0"
-django-anymail = "7.0.0"
-django-cors-headers = "3.2.0"
-django-multiselectfield = "0.1.11"
-django-phonenumber-field = "3.0.1"
-django-s3-storage = "0.13.2"
-django-storages = "1.7.2"
-djangorestframework = "3.10.2"
-entrypoints = "0.3"
-gunicorn = "19.9.0"
-idna = "2.8"
-isort = "4.3.21"
-lazy-object-proxy = "1.4.2"
-mccabe = "0.6.1"
-phonenumbers = "8.10.15"
-pypng = "0.0.20"
-pyqrcode = "1.2.1"
-pytz = "2019.2"
-qrtools = "0.0.2"
-requests = "2.22.0"
-rsa = "4.0"
-six = "1.12.0"
-sqlparse = "0.3.0"
-tblib = "1.5.0"
-typed-ast = "1.4.0"
-urllib3 = "1.25.6"
-whitenoise = "5.2.0"
-wrapt = "1.11.2"
-
-[tool.poetry.dev-dependencies]
-autohooks = "^2.2.0"
-autohooks-plugin-black = "^1.2.0"
-autohooks-plugin-pylint = "^1.2.0"
-autohooks-plugin-isort = "^1.0.0"
-flake8 = "3.7.8"
-pycodestyle = "2.5.0"
-pyflakes = "2.1.1"
-pylint = "2.3.1"
-pylint-django = "2.0.11"
-pylint-plugin-utils = "0.5"
+[dependency-groups]
+dev = [
+    "ruff>=0.9.7",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.autohooks]
-mode = "poetry"
-pre-commit = ["autohooks.plugins.black", "autohooks.plugins.pylint", "autohooks.plugins.isort"]
+[tool.ruff]
+src=["hiss"]
 
-[tool.autohooks.plugins.pylint]
-arguments = ["--exit-zero", "--rcfile=./hiss/.pylintrc"]
+# Maximum line length (matches PEP8 / black)
+line-length = 88
 
-[tool.black]
-exclude = '''
-/(
-   \.git
-  | \.hg
-  | \.venv
-  | \.circleci
-  | \.github
-  | \.vscode
-  | _build
-  | build
-  | dist
-  | docs
-  | \./*/migrations
-  | env
-)/
-'''
+# Target Python version
+target-version = "py312"
 
-[tool.isort]
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-line_length = 80
+# Allow autofixing for common issues
+fix = true
+
+
+[tool.ruff.lint]
+unfixable = ["F401"]  # Prevents autofixing of unused imports
+select = [
+  "F", # pyflakes
+  "E", # pycodestyle error rules
+  "W", # pydocstyle warn rules
+  "I", # isort (import sorting)
+  "N", # pep8-naming
+  # "D", # pydocstyle
+  "UP", # pyupgrade (make upgrading python version easier by automating syntax changes)
+  "ASYNC", # flake8-async
+  "ASYNC1", # flake8-trio
+  "S", # flake8-bandit
+  "B", # flake8-bugbear
+  "A", # flake8-builtins
+  "C4", # flake8-comprehensions
+  "DTZ", # flake8-datetimez
+  "T10", # flake8-debugger
+  "DJ", # flake8-django
+  "EM", # flake8-errmsg
+  "ISC", # flake8-implicit-str-concat
+  "PIE", # flake8-pie 
+  # TODO: enable the following after installing structlog
+  # "T20", # flake8-print
+  "RSE", # flake8-raise
+  "RET", # flake8-return
+  "SLF", # flake8-self
+  "SLOT", # flake8-slots
+  "SIM", # flake8-simplify
+  "TID", # flake8-tidy-imports
+  "PTH", # flake8-use-pathlib
+  "PGH", # pygrep-hooks
+  "PL", # pylint
+  "TRY", # tryceratops
+  "FLY", # flynt
+  "FURB", # refurb
+  "RUF", # Ruff-specific rules
+]
+ignore = [
+  "E501", # ignoring line-length lint rules as ruff's formatter should be sufficient
+  "C90", # mccabe (cyclomatic) complexity measures how technically testable a function is - this is not a good measure of complexity. when ruff supports it, enable a cognitive complexity rule
+  "D100", # Missing docstring in public module. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D101", # Missing docstring in public class. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D102", # Missing docstring in public method. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D103", # Missing docstring in public function. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D104", # Missing docstring in public package. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D105", # Missing docstring in magic method. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D106", # Missing docstring in public nested class. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D107", # Missing docstring in __init__. I don't want to enforce docstrings exist, but want to enforce they're idiomaitc.
+  "D203", # one blank line before class. this is incompatible with formatter
+  "D211", # no blank line before class. This is incompatible with formatter
+  "D213", # multi line summary second lint. This is incompatible with D212
+  "YTT", # flake8-2020. this is a weird ruleset... kinda has 2012 movie vibes, these rules are handled by UP.
+  "ANN", # flake8-annotations. These rules should be handled by a type checker, not linter.
+  "COM", # flake8-commas. This ruleset is handled by formatting rules.
+  "CPY", # flake8-copyright... who cares?
+  "DJ001", # django-nullable-model-string-field: consider re-enabling and fixing offenders in the future, disabled because I am lazy and don't want to fix rn.
+  "EXE", # flake8-executable: not relevant for this codebase.
+  "FA", # flake8-future-annotations: has a bunch of false positives for some reason
+  "ICN", # flake8-import-conventions: these rules are covered by other rulesets.
+  "LOG", # flake8-logging: I don't like the standard python logger... use structlog!
+  "G", # flake8-logging-format: these rules are handled by other rulesets.
+  "INP", # flake8-no-pep420: too opinionated... follow the peps!
+  "PYI", # flake8-pyi: these rules should be handled by a typechecker
+  "PT", # flake8-pytest-style: this codebase is not using pytest
+  "Q", # flake8-quotes: this ruleset is handled by formatter.
+  "TCH", # flake8-type-checking: this ruleset is handled by a typechecker.
+  "INT", # flake8-gettext: this ruleset is handled by other rulesets.
+  "PLR6301", # pylint-refactor[no-self-use]
+  "RUF012", # this one is kind of a pain and not a huge a risk
+  "ISC001", # this conflicts with the formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F403"]
+"**/tests/*" = ["S105"]
+"**/test*" = ["S105"]
+"hiss/hiss/settings/dev.py" = ["S105"]
+"hiss/shared/management/commands/seeddb.py" = [
+  "S311", # this file isn't using the pseudo-random generator for cryptographic purposes.
+]
+[tool.ruff.lint.flake8-builtins]
+ignorelist=["format"]
+
+
+[tool.ruff.lint.pylint]
+max-branches = 13

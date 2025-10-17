@@ -3,8 +3,9 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import override_settings
 from django.utils import timezone
 
-from application import models as application_models
-from application.models import Wave, School
+import application.constants
+from application.constants import COUNTRIES_TUPLES
+from application.models import School, Wave
 from user.models import User
 
 TEST_RESUME_DIR = "test_resume_dir"
@@ -48,27 +49,42 @@ class SharedTestCase(test.TestCase):
         self.application_fields = {
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "shirt_size": application_models.WOMENS_XXS,
+            "shirt_size": application.constants.UNISEX_M,
             "major": "Computer Science",
             "school": self.first_school,
-            "gender": application_models.FEMALE,
-            "classification": application_models.FRESHMAN,
+            "school_other": "",  # Defaults to empty if no other school is provided
+            "gender": application.constants.FEMALE,
+            "gender_other": "",  # Defaults to empty if no self-description is given
+            "classification": application.constants.FRESHMAN,
             "grad_year": timezone.now().year + 1,
-            "num_hackathons_attended": application_models.HACKATHONS_0,
+            "level_of_study": application.constants.STUDY_UNDERGRAD_3YEAR,  # Assuming a 4-year undergrad program
+            "num_hackathons_attended": application.constants.HACKATHONS_0,
+            "age": 19,
+            "phone_number": "000-000-0000",
             "user": self.user,
-            "race": [application_models.NO_ANSWER],
-            "has_team": application_models.HAS_TEAM,
-            "wants_team": application_models.WANTS_TEAM,
-            "technology_experience": [],
-            "address": "1600 Pennsylvania Avenue Northwest, Washington, DC, USA",
+            "race": [application.constants.NO_ANSWER],
+            "race_other": "",  # Defaults to empty if no self-description is given
+            "has_team": application.constants.HAS_TEAM,
+            "discovery_method": "Friend",  # Default value for how the user heard about the event
             "extra_links": "A",
             "question1": "B",
-            # "question2": "C",
-            # "question3": "D",
             "is_adult": True,
-            "additional_accommodations": "E",
             "agree_to_coc": True,
             "agree_to_mlh_stuff": True,
+            "agree_to_photos": True,
+            "signup_to_mlh_newsletter": True,
+            "accessibility_requirements": False,  # Default assumption: no special requirements
+            "additional_accommodations": "E",
+            "country": COUNTRIES_TUPLES[0][0],
+            "tamu_email": "",  # Default empty unless provided
+            "major_other": "",  # Default empty unless provided
+            "meal_group": "E",  # Defaults to None unless assigned
+            "wares": application.constants.WARECHOICE[0][0],  # Default to "Software"
+            "notes": "",  # Defaults to empty unless set
+            "emergency_contact_name": "John Doe",  # Placeholder
+            "emergency_contact_relationship": "Parent",  # Placeholder
+            "emergency_contact_phone": "000-000-0000",  # Placeholder
+            "emergency_contact_email": "johndoe@example.com",  # Placeholder
             **self.resume_file_data,
         }
 

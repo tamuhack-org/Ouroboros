@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import forms as auth_forms
-from django.contrib.auth import get_user_model
-from django.contrib.auth import password_validation
+from django.contrib.auth import get_user_model, password_validation
 from django.core.exceptions import ValidationError
 from django.forms import widgets
 
@@ -50,18 +49,17 @@ class ResendActivationEmailForm(forms.Form):
     def clean_email(self):
         data = self.cleaned_data["email"]
         if not User.objects.filter(email=data).exists():
-            raise ValidationError("No account with this email exists.")
+            msg = "No account with this email exists."
+            raise ValidationError(msg)
         user: User = User.objects.get(email=data)
         if user.is_active:
-            raise ValidationError("This account has already been activated.")
+            msg = "This account has already been activated."
+            raise ValidationError(msg)
         return data
 
 
 class PlaceholderPasswordResetForm(auth_forms.PasswordResetForm):
-    """
-    It's the same as the parent form, just overriding the attributes to be placeholders
-    instead of labels.
-    """
+    """Same as the parent form, with attributes as placeholders instead of labels."""
 
     email = forms.EmailField(
         widget=widgets.EmailInput(attrs={"placeholder": "Email"}), label=""
@@ -69,9 +67,7 @@ class PlaceholderPasswordResetForm(auth_forms.PasswordResetForm):
 
 
 class PlaceholderSetPasswordForm(auth_forms.SetPasswordForm):
-    """
-    It's the same as the parent form, just overriding attributes to be placeholders instead of labels.
-    """
+    """Same as the parent form, with attributes as placeholders instead of labels."""
 
     new_password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "New password"}),
