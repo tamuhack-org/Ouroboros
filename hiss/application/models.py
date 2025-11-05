@@ -11,6 +11,7 @@ from typing import (
 
 from django.conf import settings
 from django.core import exceptions
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.db.models import QuerySet
 from django.urls import reverse_lazy
@@ -166,6 +167,7 @@ class Application(models.Model):
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
         validators=[
             FileSizeValidator(max_filesize=2.5),
+            FileExtensionValidator(allowed_extensions=["pdf"]),
         ],
         upload_to=filename_generator,
     )
@@ -315,7 +317,6 @@ class Application(models.Model):
     @override
     def save(self, *args, **kwargs):
         """Override save to ensure meal group assignment logic is applied."""
-        self.full_clean()
         self.assign_meal_group()
         if self.resume:
             try:
