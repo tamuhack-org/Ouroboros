@@ -93,7 +93,7 @@ class ApplicationModelForm(forms.ModelForm):
             " event administration, ranking, MLH administration, pre- and post-event informational e-mails,"
             'and occasional messages about hackathons in-line with the <a href="https://mlh.io/privacy">MLH'
             ' Privacy Policy</a>. I further agree to the terms of both the <a href="https://github.com/MLH'
-            '/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</a>'
+            '/mlh-policies/tree/master/contest-terms.md">MLH Contest Terms and Conditions</a>'
             ' and the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>'
         )
 
