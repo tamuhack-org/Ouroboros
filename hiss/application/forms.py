@@ -3,7 +3,7 @@ import ast
 from django import forms
 from django.conf import settings
 from django.db.models import Case, IntegerField, When
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 
 import application.constants
 from application import constants
@@ -84,7 +84,7 @@ class ApplicationModelForm(forms.ModelForm):
         self.fields["agree_to_photos"].label = photo_agreement
         self.fields["accessibility_requirements"].label = accessibilities
 
-        self.fields["agree_to_coc"].label = mark_safe(
+        self.fields["agree_to_coc"].label = format_html(
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
 
@@ -99,7 +99,7 @@ class ApplicationModelForm(forms.ModelForm):
 
         mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
 
-        self.fields["agree_to_mlh_stuff"].label = mark_safe(mlh_stuff)
+        self.fields["agree_to_mlh_stuff"].label = format_html(mlh_stuff)
         self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
 
         # HACK: Disable the form if there's not an active wave
