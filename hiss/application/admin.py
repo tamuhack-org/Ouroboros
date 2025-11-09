@@ -18,7 +18,7 @@ from django_admin_listfilter_dropdown.filters import (
 )
 from rangefilter.filters import DateRangeFilter
 
-from application.constants import RACES, STATUS_ADMITTED, STATUS_REJECTED
+from application.constants import RACES, STATUS_ADMITTED, STATUS_REJECTED, STATUS_EXPIRED
 from application.emails import send_confirmation_email
 from application.models import (
     Application,
@@ -127,6 +127,41 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) 
         for application in queryset:
             application.status = STATUS_REJECTED
             email_tuples.append(build_rejection_email(application))
+            application.save()
+    send_mass_html_mail(email_tuples)
+
+
+def build_waitlist_email(application: Application) -> tuple[str, str, str, None, list[str]]:
+    """Create an email data tuple indicating that a user's application has been waitlisted.
+
+    Args:
+        application (Application): The application object containing user details.
+
+    Returns:
+        A tuple representing the email to send.
+    """
+    subject = f"Regarding your {settings.EVENT_NAME} application"
+
+    context = {
+        "first_name": application.first_name,
+        "event_name": settings.EVENT_NAME,
+        "organizer_name": settings.ORGANIZER_NAME,
+        "event_year": settings.EVENT_YEAR,
+        "organizer_email": settings.ORGANIZER_EMAIL,
+        "event_date_text": settings.EVENT_DATE_TEXT,
+    }
+    html_message = render_to_string("application/emails/reject-waitlist.html", context)
+    message = strip_tags(html_message)
+    return subject, message, html_message, None, [application.user.email]
+
+
+def waitlist(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) -> None:
+    """Set the status of selected Applications to waitlisted (expired) and send waitlist emails."""
+    email_tuples = []
+    with transaction.atomic():
+        for application in queryset:
+            application.status = STATUS_EXPIRED
+            email_tuples.append(build_waitlist_email(application))
             application.save()
     send_mass_html_mail(email_tuples)
 
@@ -297,6 +332,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"
+    waitlist.short_description = "Waitlist Selected Applications"
     export_application_emails.short_description = (
         "Export Emails for Selected Applications"
     )
@@ -304,7 +340,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "Resend Confirmation to Selected Applications"
     )
 
-    actions = [approve, reject, export_application_emails, resend_confirmation]
+    actions = [approve, reject, waitlist, export_application_emails, resend_confirmation]
 
     def has_add_permission(self, _request):
         return True
