@@ -3,7 +3,7 @@ import ast
 from django import forms
 from django.conf import settings
 from django.db.models import Case, IntegerField, When
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 
 import application.constants
 from application import constants
@@ -84,7 +84,7 @@ class ApplicationModelForm(forms.ModelForm):
         self.fields["agree_to_photos"].label = photo_agreement
         self.fields["accessibility_requirements"].label = accessibilities
 
-        self.fields["agree_to_coc"].label = mark_safe(
+        self.fields["agree_to_coc"].label = format_html(
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>'
         )
 
@@ -93,12 +93,14 @@ class ApplicationModelForm(forms.ModelForm):
             " event administration, ranking, MLH administration, pre- and post-event informational e-mails,"
             'and occasional messages about hackathons in-line with the <a href="https://mlh.io/privacy">MLH'
             ' Privacy Policy</a>. I further agree to the terms of both the <a href="https://github.com/MLH'
-            '/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</a>'
+            '/mlh-policies/tree/master/contest-terms.md">MLH Contest Terms and Conditions</a>'
             ' and the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>'
         )
 
-        # self.fields["agree_to_mlh_stuff"].label = mlh_stuff
-        # self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
+        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
+
+        self.fields["agree_to_mlh_stuff"].label = format_html(mlh_stuff)
+        self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
 
         # HACK: Disable the form if there's not an active wave
         if not application_models.Wave.objects.active_wave():
@@ -146,8 +148,8 @@ class ApplicationModelForm(forms.ModelForm):
         widgets = {
             "is_adult": forms.CheckboxInput,
             "agree_to_coc": forms.CheckboxInput,
-            # "agree_to_mlh_stuff": forms.CheckboxInput,
-            # "signup_to_mlh_newsletter": forms.CheckboxInput,
+            "agree_to_mlh_stuff": forms.CheckboxInput,
+            "signup_to_mlh_newsletter": forms.CheckboxInput,
             "agree_to_photos": forms.CheckboxInput,
             "accessibility_requirements": forms.CheckboxInput,
             "travel_reimbursement": forms.CheckboxInput,
@@ -179,7 +181,7 @@ class ApplicationModelForm(forms.ModelForm):
             "race_other",
             "num_hackathons_attended",
             "technology_experience",
-            #"wares",
+            "wares",
             "dietary_restrictions",
             "has_team",
             "discovery_method",
@@ -199,7 +201,7 @@ class ApplicationModelForm(forms.ModelForm):
             "notes",
             "agree_to_photos",
             "agree_to_coc",
-            #"agree_to_mlh_stuff",
-            #"signup_to_mlh_newsletter",
+            "agree_to_mlh_stuff",
+            "signup_to_mlh_newsletter",
             "is_adult",
         ]
