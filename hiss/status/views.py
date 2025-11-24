@@ -5,7 +5,7 @@ from django.views import generic
 import application.constants
 from application.models import Application, Wave
 from user.models import User
-
+from django.utils import timezone
 
 class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
     template_name = "status/status.html"
@@ -37,7 +37,10 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
             elif app_status == application.constants.STATUS_REJECTED:
                 context["REJECTED"] = True
             elif app_status == application.constants.STATUS_ADMITTED:
-                context["NEEDS_TO_CONFIRM"] = True
+                if app.confirmation_deadline and timezone.now() > app.confirmation_deadline:
+                    context["EXPIRED"] = True
+                else:
+                    context["NEEDS_TO_CONFIRM"] = True
                 context["application"] = app
                 context["confirmation_deadline"] = app.confirmation_deadline
             elif app_status == application.constants.STATUS_CONFIRMED:

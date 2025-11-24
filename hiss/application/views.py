@@ -96,11 +96,10 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
             raise PermissionDenied(
                 msg
             )
-        if app.status == STATUS_ADMITTED and app.confirmation_deadline < Wave.objects.get_active_wave().current_time():
+        if app.status == STATUS_ADMITTED and app.is_past_confirmation_deadline:
             msg = "You can't confirm your application after the confirmation deadline."
-            raise PermissionDenied(
-                msg
-            )
+            raise PermissionDenied(msg)
+
         app.status = STATUS_CONFIRMED
         app.save()
         send_confirmation_email(app)
