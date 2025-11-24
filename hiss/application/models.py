@@ -306,9 +306,16 @@ class Application(models.Model):
     datetime_submitted = models.DateTimeField(auto_now_add=True)
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
+    has_rsvped = models.BooleanField(default=False)
     status = models.CharField(
         choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
     )
+
+    @property
+    def is_past_confirmation_deadline(self) -> bool:
+        if not self.confirmation_deadline:
+            return False
+        return timezone.now() > self.confirmation_deadline
 
     @override
     def __str__(self):
