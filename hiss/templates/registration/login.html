@@ -1,60 +1,46 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% load static %}
+
 {% block body %}
+<main class="container page-auth flex flex-center">
+    <article class="card card-elevated max-w-md w-full">
+        <header class="text-center mb-4">
+            <img src="{% static 'th_bw.svg' %}" alt="Logo" width="40">
+            <h1 class="auth-title text-uppercase tracking-wide mt-3">{{ event_name }} {{ event_year }}</h1>
+            <p class="text-muted text-sm">Log in or sign up to continue</p>
+        </header>
 
-<section class="signin">
-    <div class="container">
-        <div class="row justify-content-md-center text-center">
-            <div class="col-sm-12 col-md-8 col-lg-6 login-box">
+        <form method="POST" action="{% url 'customauth:login' %}">
+            {% csrf_token %}
 
-                <header>
-                    <img class="header-logo" src="{% static 'th_bw.svg' %}">
-                    <h1>{{ event_name }} {{event_year}}</h1>
-                    <h6 style="font-weight: 300;">Log in or sign up to continue</h5>
-                </header>
+            {% if form.errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">{{ error|escape }}</div>
+                {% endfor %}
+            {% endif %}
 
-                <form id="login-form" method="POST" action="{% url 'customauth:login' %}">
-                    {% csrf_token %}
-                    <!-- security -->
-                    <div class="form-row">
-                        {% if form.errors %}
-                        {% for error in form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                        {% endfor %}
-                        {% endif %}
-                        {{ csrf_input }}
-                        {% for field in form %}
-                        {{ field.errors }}
-                        {{ field.label_tag }} {{ field }}
-                        {% if field.help_text %}
-                        <p class="help">{{ field.help_text|safe }}</p>
-                        {% endif %}
+            {% for field in form %}
+                <label>
+                    {{ field.label }}
+                    {{ field }}
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                        <small class="helptext">{{ field.help_text|safe }}</small>
+                    {% endif %}
+                </label>
+            {% endfor %}
 
-                        {% endfor %}
-
-                        <div class="forgot-pswd-wrapper">
-                            <a href="{% url 'customauth:password_reset' %}" class="forgot-pswd">Forgot Password?</a>
-                        </div>
-                        <div class="forgot-pswd-wrapper">
-                            <a href="{% url 'customauth:resend_activation' %}" class="forgot-pswd">Can't Log In?</a>
-                        </div>
-
-
-                        <input type="submit" class="btn btn-lg btn-block btn-login" value="Log In"/>
-                    </div>
-                    {% csrf_token %}
-                </form>
-
-                <div class="row login-alt-options pt-4">
-                    <div class="col-sm-12 col-lg-12 text-center">
-                        Don't have an account? <a href="{% url 'customauth:signup' %}">Sign up</a>
-                    </div>
-                </div>
-
+            <div class="flex justify-end gap-3 mb-4">
+                <a href="{% url 'customauth:password_reset' %}">Forgot Password?</a>
+                <a href="{% url 'customauth:resend_activation' %}">Can't Log In?</a>
             </div>
-        </div>
-    </div>
-</section>
+
+            <button type="submit" class="btn-primary w-full">Log In</button>
+        </form>
+
+        <p class="text-center mt-4 mb-0">
+            Don't have an account? <a href="{% url 'customauth:signup' %}">Sign up</a>
+        </p>
+    </article>
+</main>
 {% endblock %}

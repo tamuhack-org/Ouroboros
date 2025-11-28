@@ -30,7 +30,33 @@
   /* Override Pico's primary color */
   --pico-primary: var(--color-accent);
   --pico-primary-hover: var(--color-accent-emphasis);
+
+  /* Spacing scale */
+  --space-1: calc(var(--pico-spacing) * 0.25);
+  --space-2: calc(var(--pico-spacing) * 0.5);
+  --space-3: var(--pico-spacing);
+  --space-4: calc(var(--pico-spacing) * 1.5);
+  --space-5: calc(var(--pico-spacing) * 2);
+
+  /* Typography scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+
+  /* Max widths */
+  --max-w-sm: 24rem;
+  --max-w-md: 32rem;
+  --max-w-lg: 48rem;
+  --max-w-xl: 64rem;
 }
+
+/* ==========================================================================
+   Tailwind ish stuff?
+   ========================================================================== */
+
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
 .flex-wrap { flex-wrap: wrap; }
@@ -41,10 +67,10 @@
 .items-center { align-items: center; }
 .items-start { align-items: flex-start; }
 .items-end { align-items: flex-end; }
-.gap-1 { gap: calc(var(--pico-spacing) * 0.5); }
-.gap-2 { gap: var(--pico-spacing); }
-.gap-3 { gap: calc(var(--pico-spacing) * 1.5); }
-.gap-4 { gap: calc(var(--pico-spacing) * 2); }
+.gap-1 { gap: var(--space-2); }
+.gap-2 { gap: var(--space-3); }
+.gap-3 { gap: var(--space-4); }
+.gap-4 { gap: var(--space-5); }
 
 .block { display: block; }
 .inline { display: inline; }
@@ -53,19 +79,440 @@
 
 .w-full { width: 100%; }
 .w-auto { width: auto; }
-.max-w-sm { max-width: 24rem; }
-.max-w-md { max-width: 32rem; }
-.max-w-lg { max-width: 48rem; }
-.max-w-xl { max-width: 64rem; }
+.max-w-sm { max-width: var(--max-w-sm); }
+.max-w-md { max-width: var(--max-w-md); }
+.max-w-lg { max-width: var(--max-w-lg); }
+.max-w-xl { max-width: var(--max-w-xl); }
 
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 
-.text-xs { font-size: 0.75rem; }
-.text-sm { font-size: 0.875rem; }
-.text-base { font-size: 1rem; }
-.text-lg { font-size: 1.125rem; }
-.text-xl { font-size: 1.25rem; }
-.text-2xl { font-size: 1.5rem; }
+.text-xs { font-size: var(--text-xs); }
+.text-sm { font-size: var(--text-sm); }
+.text-base { font-size: var(--text-base); }
+.text-lg { font-size: var(--text-lg); }
+.text-xl { font-size: var(--text-xl); }
+.text-2xl { font-size: var(--text-2xl); }
 
+/* Auth page title - matches legacy size */
+.auth-title {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-1);
+}
+
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+.text-uppercase { text-transform: uppercase; }
+.text-capitalize { text-transform: capitalize; }
+.text-lowercase { text-transform: lowercase; }
+
+.tracking-wide { letter-spacing: 0.05em; }
+.tracking-wider { letter-spacing: 0.1em; }
+
+.text-muted { color: var(--color-text-muted); }
+.text-accent { color: var(--color-accent); }
+.text-secondary { color: var(--color-secondary); }
+.text-danger { color: var(--color-danger); }
+
+/* ==========================================================================
+   Spacing
+   ========================================================================== */
+
+/* Margin */
+.m-0 { margin: 0; }
+.m-1 { margin: var(--space-1); }
+.m-2 { margin: var(--space-2); }
+.m-3 { margin: var(--space-3); }
+.m-4 { margin: var(--space-4); }
+.m-5 { margin: var(--space-5); }
+.m-auto { margin: auto; }
+
+.mx-auto { margin-left: auto; margin-right: auto; }
+.my-auto { margin-top: auto; margin-bottom: auto; }
+
+.mt-0 { margin-top: 0; }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-5 { margin-top: var(--space-5); }
+
+.mb-0 { margin-bottom: 0; }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-5 { margin-bottom: var(--space-5); }
+
+.ml-auto { margin-left: auto; }
+.mr-auto { margin-right: auto; }
+
+/* Padding */
+.p-0 { padding: 0; }
+.p-1 { padding: var(--space-1); }
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-5 { padding: var(--space-5); }
+
+.px-3 { padding-left: var(--space-3); padding-right: var(--space-3); }
+.px-4 { padding-left: var(--space-4); padding-right: var(--space-4); }
+.px-5 { padding-left: var(--space-5); padding-right: var(--space-5); }
+
+.py-3 { padding-top: var(--space-3); padding-bottom: var(--space-3); }
+.py-4 { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+.py-5 { padding-top: var(--space-5); padding-bottom: var(--space-5); }
+
+.pt-4 { padding-top: var(--space-4); }
+.pt-5 { padding-top: var(--space-5); }
+.pb-4 { padding-bottom: var(--space-4); }
+.pb-5 { padding-bottom: var(--space-5); }
+
+
+.bg-accent-subtle { background-color: var(--color-accent-subtle); }
+.bg-secondary-subtle { background-color: var(--color-secondary-subtle); }
+.bg-white { background-color: #fff; }
+
+.nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  box-shadow: 0 1px 0 rgba(27, 31, 36, 0.1);
+  padding: 0.75rem var(--space-4);
+}
+
+.nav-header-left {
+  display: flex;
+  align-items: center;
+}
+
+.nav-header-left img {
+  width: 28px;
+  height: auto;
+}
+
+.nav-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.nav-header-right a {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+}
+
+.nav-header-right a:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: var(--color-text);
+}
+
+.nav-header-right form {
+  margin: 0;
+}
+
+.nav-header-right .btn-logout {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: 0.375rem 0.75rem;
+  margin: 0;
+  background: transparent;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.nav-header-right .btn-logout:hover {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+
+/* ==========================================================================
+   Component: Buttons
+   ========================================================================== */
+
+/* Primary button (pink) */
+.btn-primary {
+  --pico-background-color: var(--color-accent);
+  --pico-border-color: var(--color-accent);
+  --pico-color: #fff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  --pico-background-color: var(--color-accent-emphasis);
+  --pico-border-color: var(--color-accent-emphasis);
+}
+
+/* Secondary button (blue) */
+.btn-secondary {
+  --pico-background-color: var(--color-secondary);
+  --pico-border-color: var(--color-secondary);
+  --pico-color: #fff;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  --pico-background-color: var(--color-secondary-emphasis);
+  --pico-border-color: var(--color-secondary-emphasis);
+}
+
+/* Outline variant */
+.btn-outline {
+  --pico-background-color: transparent;
+  --pico-color: var(--color-accent);
+  --pico-border-color: var(--color-accent);
+}
+
+.btn-outline:hover,
+.btn-outline:focus {
+  --pico-background-color: var(--color-accent);
+  --pico-color: #fff;
+}
+
+/* ==========================================================================
+   Component: Cards (Article styling)
+   ========================================================================== */
+
+.card {
+  background: #fff;
+  border-radius: var(--pico-border-radius);
+  padding: var(--space-5);
+}
+
+.card-elevated {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   Component: Alerts
+   ========================================================================== */
+
+.alert {
+  padding: var(--space-3);
+  border-radius: var(--pico-border-radius);
+  margin-bottom: var(--space-3);
+}
+
+.alert-danger {
+  background-color: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  color: var(--color-danger);
+}
+
+/* ==========================================================================
+   Component: Forms
+   ========================================================================== */
+
+/* Required field indicator */
+.required::after {
+  content: " *";
+  color: var(--color-danger);
+}
+
+/* Help text */
+.helptext {
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}
+
+/* Error list styling */
+.errorlist {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-2) 0;
+  background-color: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--pico-border-radius);
+}
+
+.errorlist li {
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+}
+
+/* ==========================================================================
+   Component: Timeline
+   ========================================================================== */
+
+/* Timeline component */
+.status-timeline {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding: 0;
+  margin: 0 0 var(--space-5);
+  list-style: none;
+}
+
+.status-timeline::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  border-bottom: 2px dashed var(--color-border);
+}
+
+.status-timeline li {
+  position: relative;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.status-timeline .point {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border: 4px solid var(--color-timeline);
+  border-radius: 50%;
+  background: #fff;
+  z-index: 1;
+}
+
+.status-timeline .point-complete {
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--color-timeline);
+  border-radius: 50%;
+  background: var(--color-timeline);
+  z-index: 1;
+}
+
+.status-timeline .point-complete img {
+  width: 100%;
+  height: 100%;
+}
+
+.status-timeline .label {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+/* Status card */
+.status-card {
+  background: #fff;
+  border-radius: var(--pico-border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: var(--space-5);
+  margin-top: var(--space-4);
+}
+
+.status-label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.status-value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+}
+
+.status-description {
+  color: var(--color-text-muted);
+  max-width: var(--max-w-md);
+  margin: 0 auto var(--space-4);
+}
+
+.status-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-4);
+}
+
+/* ==========================================================================
+   Page Backgrounds
+   ========================================================================== */
+
+.page-auth {
+  background-color: var(--color-accent-subtle);
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+  padding: var(--space-3);
+  box-sizing: border-box;
+}
+
+.page-auth-alt {
+  background-color: var(--color-secondary-subtle);
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+  padding: var(--space-3);
+  box-sizing: border-box;
+}
+
+.page-dashboard {
+  background-color: var(--color-accent-subtle);
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+}
+
+/* ==========================================================================
+   Responsive Utilities
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .hide-mobile { display: none; }
+  .show-mobile { display: block; }
+  
+  .text-center-mobile { text-align: center; }
+  
+  .card {
+    padding: var(--space-3);
+  }
+}
+
+@media (min-width: 769px) {
+  .hide-desktop { display: none; }
+  .show-desktop { display: block; }
+}
+
+/* ==========================================================================
+   Error Pages
+   ========================================================================== */
+
+.error-page {
+  text-align: center;
+}
+
+.error-code {
+  font-size: 6rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.error-title {
+  font-size: var(--text-xl);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-3);
+}
+
+.error-message {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-5);
+}
