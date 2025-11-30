@@ -310,12 +310,6 @@ class Application(models.Model):
         choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
     )
 
-    @property
-    def is_past_confirmation_deadline(self) -> bool:
-        if not self.confirmation_deadline:
-            return False
-        return timezone.now() > self.confirmation_deadline
-
     @override
     def __str__(self):
         return f"{self.last_name}, {self.first_name} - Application"
@@ -336,6 +330,13 @@ class Application(models.Model):
                 super().save(*args, **kwargs)
         else:
             super().save(*args, **kwargs)
+    
+    
+    @property
+    def is_past_confirmation_deadline(self) -> bool:
+        if not self.confirmation_deadline:
+            return False
+        return timezone.now() > self.confirmation_deadline
 
     def get_absolute_url(self):
         return reverse_lazy("application:update", args=[self.id])
