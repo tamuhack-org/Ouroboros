@@ -390,3 +390,9 @@ class Application(models.Model):
                 "Last name can only contain letters, spaces, hyphens, and apostrophes."
             )
             raise exceptions.ValidationError(msg)
+
+    @property
+    def is_past_confirmation_deadline(self) -> bool:
+        if not self.confirmation_deadline:
+            return False
+        return timezone.now() > self.confirmation_deadline
