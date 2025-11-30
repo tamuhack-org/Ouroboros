@@ -73,16 +73,35 @@
         <p class="status-description">
             Please RSVP below by <strong>October 16th, 2025, at 11:59PM</strong> or you risk losing your spot.
         </p>
-        <div class="status-actions">
-            <form method="POST" action="{% url 'application:decline' pk=application.pk %}">
-                {% csrf_token %}
-                <button type="submit" class="btn-secondary">No, I will NOT participate.</button>
-            </form>
-            <form method="POST" action="{% url 'application:confirm' pk=application.pk %}">
-                {% csrf_token %}
+
+        <form method="POST" action="{% url 'rsvp_submit' pk=application.pk %}" class="rsvp-form">
+            {% csrf_token %}
+            {% for field in rsvp_form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}" {% if field.field.required %}class="required-form-input"{% endif %}>
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <small class="error">{{ field.errors }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="status-actions">
+                <a href="{% url 'application:decline' pk=application.pk %}" 
+                   onclick="event.preventDefault(); document.getElementById('decline-form').submit();" 
+                   class="btn-secondary">No, I will NOT participate.</a>
                 <button type="submit" class="btn-primary">I'll be there!</button>
-            </form>
-        </div>
+            </div>
+        </form>
+
+        <form id="decline-form" method="POST" action="{% url 'application:decline' pk=application.pk %}" style="display: none;">
+            {% csrf_token %}
+        </form>
 
     {% elif CONFIRMED %}
         <p class="status-label">Your attendance has been</p>

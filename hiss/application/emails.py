@@ -1,6 +1,7 @@
 import json
 import os
 from io import BytesIO
+from pathlib import Path
 
 import pyqrcode
 import requests
@@ -86,6 +87,7 @@ def send_confirmation_email(app: Application) -> None:
     qr_stream = BytesIO()
     qr_code.png(qr_stream, scale=5)
     email.attach("code.png", qr_stream.getvalue(), "text/png")
-    email.attach_file("static/th26invite.ics", mimetype="text/calendar")
+    ics_path = Path(settings.BASE_DIR) / ".." / "static" / "th26invite.ics"
+    email.attach_file(str(ics_path), mimetype="text/calendar")
     print(f"sending confirmation email to {app.user.email}")
     email.send()

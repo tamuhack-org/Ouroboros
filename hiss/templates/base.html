@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'pico.pink.min.css' %}">
     <link rel="stylesheet" href="{% static 'custom.css' %}">
     <link rel="icon" type="image/png" href="{% static 'th_bw.svg' %}">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
     {% block additional_CSS %}
     {% endblock %}
     {{ form.media }}
@@ -21,25 +21,25 @@
 {% block body %}
 {% endblock %}
 
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.min.js" type="text/javascript"></script>
 <script src="{%  static 'main.js' %}"></script>
-                        <script>
-                        var countChecked = function() {
-                          var n = $( "input:checked" ).length;
-                          if(n == 1) {
-                                $("#toggle-click").show()
-                            } else {
-                                $("#toggle-click").hide()
-                            }
-                        };
-                        countChecked();
+<script>
+var countChecked = function() {
+  var n = $( "input:checked" ).length;
+  if(n == 1) {
+        $("#toggle-click").show()
+    } else {
+        $("#toggle-click").hide()
+    }
+};
+countChecked();
 
-                        $( "input[type=checkbox]" ).on( "click", countChecked );
-                    </script>
+$( "input[type=checkbox]" ).on( "click", countChecked );
+</script>
 </body>
 
 </html>

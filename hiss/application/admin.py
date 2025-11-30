@@ -33,7 +33,6 @@ class ApplicationAdminForm(forms.ModelForm):
         fields = "__all__"  # noqa: DJ007
         widgets = {
             "gender": forms.RadioSelect,
-            "classification": forms.RadioSelect,
             "grad_year": forms.RadioSelect,
             "status": forms.RadioSelect,
         }
@@ -223,14 +222,11 @@ class ApplicationAdmin(admin.ModelAdmin):
         "race",
         "major",
         "school",
-        "classification",
         "grad_year",
         "num_hackathons_attended",
-        "technology_experience",
         "dietary_restrictions",
         "extra_links",
         # "address",
-        "question1",
         # "question2",
         # "question3",
         "notes",
@@ -239,7 +235,6 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_filter = (
         ("school", RelatedOnlyFieldListFilter),
         ("status", ChoiceDropdownFilter),
-        ("classification", ChoiceDropdownFilter),
         ("gender", ChoiceDropdownFilter),
         ("major", ChoiceDropdownFilter),
         ("grad_year", ChoiceDropdownFilter),
@@ -256,7 +251,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         "school",
         "user_email",
         "datetime_submitted",
-        "classification",
         "grad_year",
         "status",
         "additional_accommodations",
@@ -275,7 +269,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "phone_number",
                     "country",
                     "extra_links",
-                    "question1",
                     # "question2",
                     # "question3",
                     "resume",
@@ -290,7 +283,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "school_other",
                     "major",
                     "major_other",
-                    "classification",
                     "gender",
                     "gender_other",
                     "race",
@@ -298,7 +290,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "grad_year",
                     "level_of_study",
                     "num_hackathons_attended",
-                    "technology_experience",
                 ]
             },
         ),
