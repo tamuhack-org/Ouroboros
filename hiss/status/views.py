@@ -37,7 +37,7 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
             elif app_status == application.constants.STATUS_REJECTED:
                 context["REJECTED"] = True
             elif app_status == application.constants.STATUS_ADMITTED:
-                if app.confirmation_deadline and timezone.now() > app.confirmation_deadline:
+                if app.confirmation_deadline and app.is_past_confirmation_deadline:
                     context["EXPIRED"] = True
                 else:
                     context["NEEDS_TO_CONFIRM"] = True
