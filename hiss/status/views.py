@@ -34,8 +34,9 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
             return context
 
         app: Application = user.application_set.first()
+        context["application"] = app
         status = app.status
-
+        
         if status == application.constants.STATUS_ADMITTED:
             context["application"] = app
             context["confirmation_deadline"] = app.confirmation_deadline
