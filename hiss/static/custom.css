@@ -66,7 +66,8 @@
     /* Adjust accent colors for better dark mode contrast */
     --color-accent: #ff9fb1;
     --color-accent-emphasis: #ffb5c2;
-    --color-accent-subtle: #3d2a2e;
+    --color-accent-subtle: #262626;
+;
 
     /* Secondary adjustments */
     --color-secondary: #6b9fd4;
