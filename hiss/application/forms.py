@@ -51,6 +51,7 @@ class InitialRegistrationForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
+        kwargs.setdefault('label_suffix', '')
         super().__init__(*args, **kwargs)
 
         photo_agreement = f"I grant permission for {settings.ORGANIZER_NAME} to use my name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event '{settings.EVENT_NAME} {settings.EVENT_YEAR}' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases."
@@ -79,7 +80,6 @@ class InitialRegistrationForm(forms.ModelForm):
         # Mark other optional fields
         self.fields["extra_links"].label = self.fields["extra_links"].label + " (optional)"
         self.fields["notes"].label = self.fields["notes"].label + " (optional)"
-        self.fields["accessibility_requirements"].label = self.fields["accessibility_requirements"].label + " (optional)"
 
         if not application_models.Wave.objects.active_wave():
             for field_name in self.fields:
@@ -190,6 +190,7 @@ class RSVPConfirmationForm(forms.ModelForm):
                     kwargs.get("instance").dietary_restrictions or "[]"
                 ),
             }
+        kwargs.setdefault('label_suffix', '')
         super().__init__(*args, **kwargs)
 
         # Make fields required even though model has blank=True
@@ -393,7 +394,6 @@ class ApplicationModelForm(forms.ModelForm):
             "resume",
             "extra_links",
             "additional_accommodations",
-            "accessibility_requirements",
             "emergency_contact_name",
             "emergency_contact_relationship",
             "emergency_contact_phone",
