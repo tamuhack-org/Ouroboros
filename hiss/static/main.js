@@ -60,12 +60,27 @@ $(document).ready(function () {
       $("#id_tamu_email").parent().hide();
     }
   });
+
+  if ($("#id_wares").val() !== "HW") {
+    $("#id_starforge_interest").parent().hide();
+  }
+  $("#id_wares").on("change", function () {
+    let selection = $("#id_wares").val();
+    if (selection === "HW") {
+      $("#id_starforge_interest").parent().show();
+    } else {
+      $("#id_starforge_interest").parent().hide();
+    }
+  });
   // Custom styling for multi-select inputs.
   // Reference: https://select2.org/getting-started/basic-usage
   // $('#id_technology_experience').select2();
   const settings = {};
   if ($("#id_school").length) {
     new TomSelect("#id_school", settings);
+  }
+  if ($("#id_dietary_restrictions").length) {
+    new TomSelect("#id_dietary_restrictions", settings);
   }
   // $('#id_dietary_restrictions').select2();
 });
