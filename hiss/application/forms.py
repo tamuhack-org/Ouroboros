@@ -52,7 +52,7 @@ class InitialRegistrationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        photo_agreement = "I grant permission for TAMUhack to use my name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event 'HowdyHack 2025' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases."
+        photo_agreement = f"I grant permission for {settings.ORGANIZER_NAME} to use my name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event '{settings.EVENT_NAME} {settings.EVENT_YEAR}' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases."
         accessibilities = "Please check this box you would like our team to follow up with you personally to discuss your accessibility accommodations during this event."
 
         self.fields["agree_to_photos"].label = photo_agreement
