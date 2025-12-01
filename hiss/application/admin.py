@@ -17,7 +17,6 @@ from django.utils.html import strip_tags
 from django_admin_listfilter_dropdown.filters import (
     ChoiceDropdownFilter,
 )
-from hiss.settings.customization import EVENT_TIMEZONE
 from rangefilter.filters import DateRangeFilter
 
 from application.constants import (
@@ -31,6 +30,7 @@ from application.models import (
     Application,
     Wave,
 )
+from hiss.settings.customization import EVENT_TIMEZONE
 from shared.admin_functions import send_mass_html_mail
 
 
@@ -70,7 +70,8 @@ def build_approval_email(
         "event_name": settings.EVENT_NAME,
         "organizer_name": settings.ORGANIZER_NAME,
         "event_year": settings.EVENT_YEAR,
-        "confirmation_deadline": confirmation_deadline,
+        "confirmation_deadline": confirmation_deadline.strftime("%B %-d, %Y"),
+        "confirmation_time": confirmation_deadline.strftime("%-I:%M %p %Z"),
         "organizer_email": settings.ORGANIZER_EMAIL,
         "event_date_text": settings.EVENT_DATE_TEXT,
     }
