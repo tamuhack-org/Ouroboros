@@ -15,7 +15,7 @@ class ExpireManagementCommandTestCase(test_case.SharedTestCase):
             **self.application_fields,
             wave=self.wave1,
             confirmation_deadline=timezone.now() - timedelta(days=1),
-            status=STATUS_PENDING
+            status=STATUS_PENDING,
         )
         new_app_fields = self.application_fields
         new_app_fields["user"] = self.admin
@@ -23,7 +23,7 @@ class ExpireManagementCommandTestCase(test_case.SharedTestCase):
             **new_app_fields,
             wave=self.wave1,
             confirmation_deadline=timezone.now() + timedelta(days=1),
-            status=STATUS_PENDING
+            status=STATUS_PENDING,
         )
 
         call_command("randomadmit", ".5")

@@ -4,35 +4,76 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0020_auto_20231214_2259'),
+        ("application", "0020_auto_20231214_2259"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='application',
-            name='major_other',
-            field=models.CharField(blank=True, max_length=255, null=True, verbose_name='Other'),
+            model_name="application",
+            name="major_other",
+            field=models.CharField(
+                blank=True, max_length=255, null=True, verbose_name="Other"
+            ),
         ),
         migrations.AddField(
-            model_name='application',
-            name='tamu_email',
-            field=models.EmailField(blank=True, max_length=75, null=True, verbose_name='TAMU Email if you are a Texas A&M student'),
+            model_name="application",
+            name="tamu_email",
+            field=models.EmailField(
+                blank=True,
+                max_length=75,
+                null=True,
+                verbose_name="TAMU Email if you are a Texas A&M student",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='grad_year',
-            field=models.IntegerField(choices=[(2024, 2024), (2025, 2025), (2026, 2026), (2027, 2027), (2028, 2028), (2029, 2029)], verbose_name='What is your anticipated graduation year?'),
+            model_name="application",
+            name="grad_year",
+            field=models.IntegerField(
+                choices=[
+                    (2024, 2024),
+                    (2025, 2025),
+                    (2026, 2026),
+                    (2027, 2027),
+                    (2028, 2028),
+                    (2029, 2029),
+                ],
+                verbose_name="What is your anticipated graduation year?",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='major',
-            field=models.CharField(choices=[('Computer Science', 'Computer Science'), ('Software Engineering', 'Software Engineering'), ('Computer Engineering', 'Computer Engineering'), ('Electrical Engineering', 'Electrical Engineering'), ('Information Technology', 'Information Technology'), ('Data Science', 'Data Science'), ('major_other', 'Other')], default='NA', max_length=100, verbose_name="What's your major?"),
+            model_name="application",
+            name="major",
+            field=models.CharField(
+                choices=[
+                    ("Computer Science", "Computer Science"),
+                    ("Software Engineering", "Software Engineering"),
+                    ("Computer Engineering", "Computer Engineering"),
+                    ("Electrical Engineering", "Electrical Engineering"),
+                    ("Information Technology", "Information Technology"),
+                    ("Data Science", "Data Science"),
+                    ("major_other", "Other"),
+                ],
+                default="NA",
+                max_length=100,
+                verbose_name="What's your major?",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='shirt_size',
-            field=models.CharField(choices=[('XXS', 'XXS'), ('XS', 'XS'), ('S', 'S'), ('M', 'M'), ('L', 'L'), ('XL', 'XL'), ('XXL', 'XXL')], max_length=4, verbose_name='What size shirt do you wear?'),
+            model_name="application",
+            name="shirt_size",
+            field=models.CharField(
+                choices=[
+                    ("XXS", "XXS"),
+                    ("XS", "XS"),
+                    ("S", "S"),
+                    ("M", "M"),
+                    ("L", "L"),
+                    ("XL", "XL"),
+                    ("XXL", "XXL"),
+                ],
+                max_length=4,
+                verbose_name="What size shirt do you wear?",
+            ),
         ),
     ]

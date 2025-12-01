@@ -8,7 +8,6 @@ import application.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("application", "0006_auto_20200808_2035"),
     ]

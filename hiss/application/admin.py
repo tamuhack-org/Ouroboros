@@ -1,5 +1,6 @@
 # pylint: disable=C0330
 import csv
+from zoneinfo import ZoneInfo
 
 from address.forms import AddressWidget
 from address.models import AddressField
@@ -18,12 +19,18 @@ from django_admin_listfilter_dropdown.filters import (
 )
 from rangefilter.filters import DateRangeFilter
 
-from application.constants import RACES, STATUS_ADMITTED, STATUS_REJECTED
+from application.constants import (
+    RACES,
+    STATUS_ADMITTED,
+    STATUS_EXPIRED,
+    STATUS_REJECTED,
+)
 from application.emails import send_confirmation_email
 from application.models import (
     Application,
     Wave,
 )
+from hiss.settings.customization import EVENT_TIMEZONE
 from shared.admin_functions import send_mass_html_mail
 
 
@@ -33,7 +40,6 @@ class ApplicationAdminForm(forms.ModelForm):
         fields = "__all__"  # noqa: DJ007
         widgets = {
             "gender": forms.RadioSelect,
-            "classification": forms.RadioSelect,
             "grad_year": forms.RadioSelect,
             "status": forms.RadioSelect,
         }
@@ -64,7 +70,8 @@ def build_approval_email(
         "event_name": settings.EVENT_NAME,
         "organizer_name": settings.ORGANIZER_NAME,
         "event_year": settings.EVENT_YEAR,
-        "confirmation_deadline": confirmation_deadline,
+        "confirmation_deadline": confirmation_deadline.strftime("%B %-d, %Y"),
+        "confirmation_time": confirmation_deadline.strftime("%-I:%M %p %Z"),
         "organizer_email": settings.ORGANIZER_EMAIL,
         "event_date_text": settings.EVENT_DATE_TEXT,
     }
@@ -93,14 +100,18 @@ def build_rejection_email(application: Application) -> tuple[str, str, None, lis
     return subject, message, html_message, None, [application.user.email]
 
 
-def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) -> None:
+def approve(
+    _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
+) -> None:
     """Approve selected Applications.
 
     Sets the value of the `approved` field for the selected `Application`s to `True`, creates an RSVP deadline for
     each user based on how many days each wave gives to RSVP, and then emails all of the users to inform them that
     their applications have been approved.
     """
-    today_end = timezone.now().replace(hour=23, minute=59, second=59, microsecond=0)
+
+    tz = ZoneInfo(EVENT_TIMEZONE)
+    today_end = timezone.now().astimezone(tz).replace(hour=23, minute=59, second=59, microsecond=0)
     apps = queryset.select_related("wave")
 
     to_update = []
@@ -127,6 +138,45 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) 
         for application in queryset:
             application.status = STATUS_REJECTED
             email_tuples.append(build_rejection_email(application))
+            application.save()
+    send_mass_html_mail(email_tuples)
+
+
+def build_waitlist_email(
+    application: Application,
+) -> tuple[str, str, str, None, list[str]]:
+    """Create an email data tuple indicating that a user's application has been waitlisted.
+
+    Args:
+        application (Application): The application object containing user details.
+
+    Returns:
+        A tuple representing the email to send.
+    """
+    subject = f"Regarding your {settings.EVENT_NAME} application"
+
+    context = {
+        "first_name": application.first_name,
+        "event_name": settings.EVENT_NAME,
+        "organizer_name": settings.ORGANIZER_NAME,
+        "event_year": settings.EVENT_YEAR,
+        "organizer_email": settings.ORGANIZER_EMAIL,
+        "event_date_text": settings.EVENT_DATE_TEXT,
+    }
+    html_message = render_to_string("application/emails/reject-waitlist.html", context)
+    message = strip_tags(html_message)
+    return subject, message, html_message, None, [application.user.email]
+
+
+def waitlist(
+    _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
+) -> None:
+    """Set the status of selected Applications to waitlisted (expired) and send waitlist emails."""
+    email_tuples = []
+    with transaction.atomic():
+        for application in queryset:
+            application.status = STATUS_EXPIRED
+            email_tuples.append(build_waitlist_email(application))
             application.save()
     send_mass_html_mail(email_tuples)
 
@@ -188,23 +238,20 @@ class ApplicationAdmin(admin.ModelAdmin):
         "race",
         "major",
         "school",
-        "classification",
         "grad_year",
         "num_hackathons_attended",
-        "technology_experience",
         "dietary_restrictions",
         "extra_links",
         # "address",
-        "question1",
         # "question2",
         # "question3",
         "notes",
+        "misc_short_answer",
         "is_a_walk_in",
     ]
     list_filter = (
         ("school", RelatedOnlyFieldListFilter),
         ("status", ChoiceDropdownFilter),
-        ("classification", ChoiceDropdownFilter),
         ("gender", ChoiceDropdownFilter),
         ("major", ChoiceDropdownFilter),
         ("grad_year", ChoiceDropdownFilter),
@@ -221,7 +268,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         "school",
         "user_email",
         "datetime_submitted",
-        "classification",
         "grad_year",
         "status",
         "additional_accommodations",
@@ -240,7 +286,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "phone_number",
                     "country",
                     "extra_links",
-                    "question1",
                     # "question2",
                     # "question3",
                     "resume",
@@ -255,7 +300,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "school_other",
                     "major",
                     "major_other",
-                    "classification",
                     "gender",
                     "gender_other",
                     "race",
@@ -263,7 +307,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "grad_year",
                     "level_of_study",
                     "num_hackathons_attended",
-                    "technology_experience",
                 ]
             },
         ),
@@ -287,7 +330,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
         (
             "Miscellaneous",
-            {"fields": ["notes", "is_adult", "accessibility_requirements"]},
+            {"fields": ["notes", "misc_short_answer", "is_adult", "accessibility_requirements"]},
         ),
     ]
     formfield_overrides = {
@@ -297,6 +340,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"
+    waitlist.short_description = "Waitlist Selected Applications"
     export_application_emails.short_description = (
         "Export Emails for Selected Applications"
     )
@@ -304,7 +348,13 @@ class ApplicationAdmin(admin.ModelAdmin):
         "Resend Confirmation to Selected Applications"
     )
 
-    actions = [approve, reject, export_application_emails, resend_confirmation]
+    actions = [
+        approve,
+        reject,
+        waitlist,
+        export_application_emails,
+        resend_confirmation,
+    ]
 
     def has_add_permission(self, _request):
         return True

@@ -7,25 +7,56 @@ import application.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0033_alter_wave_options_and_more'),
+        ("application", "0033_alter_wave_options_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='application',
-            name='discovery_method',
-            field=models.CharField(choices=[('Friend', 'From a friend'), ('Tabling', 'Tabling outside Zachry'), ('Howdy Week', 'From Howdy Week'), ('Yard Sign', 'Yard sign'), ('Social Media', 'Social media'), ('Student Orgs', 'Though another student org'), ('TH Organizer', 'From a TAMUhack organizer'), ('ENGR Newsletter', 'From the TAMU Engineering Newsletter'), ('MLH', 'Major League Hacking (MLH)'), ('Attended Before', "I've attended HowdyHack before")], max_length=16, verbose_name='How did you hear about HowdyHack?'),
+            model_name="application",
+            name="discovery_method",
+            field=models.CharField(
+                choices=[
+                    ("Friend", "From a friend"),
+                    ("Tabling", "Tabling outside Zachry"),
+                    ("Howdy Week", "From Howdy Week"),
+                    ("Yard Sign", "Yard sign"),
+                    ("Social Media", "Social media"),
+                    ("Student Orgs", "Though another student org"),
+                    ("TH Organizer", "From a TAMUhack organizer"),
+                    ("ENGR Newsletter", "From the TAMU Engineering Newsletter"),
+                    ("MLH", "Major League Hacking (MLH)"),
+                    ("Attended Before", "I've attended HowdyHack before"),
+                ],
+                max_length=16,
+                verbose_name="How did you hear about HowdyHack?",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='resume',
-            field=models.FileField(help_text='Companies will use this resume to offer interviews for internships and full-time positions.', upload_to=application.models.filename_generator, validators=[application.filesize_validation.FileSizeValidator(max_filesize=2.5)], verbose_name='Upload your resume (PDF only)'),
+            model_name="application",
+            name="resume",
+            field=models.FileField(
+                help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
+                upload_to=application.models.filename_generator,
+                validators=[
+                    application.filesize_validation.FileSizeValidator(max_filesize=2.5)
+                ],
+                verbose_name="Upload your resume (PDF only)",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='shirt_size',
-            field=models.CharField(choices=[('S', 'S'), ('M', 'M'), ('L', 'L'), ('XL', 'XL'), ('XXL', 'XXL')], max_length=4, verbose_name='What size shirt do you wear?'),
+            model_name="application",
+            name="shirt_size",
+            field=models.CharField(
+                choices=[
+                    ("S", "S"),
+                    ("M", "M"),
+                    ("L", "L"),
+                    ("XL", "XL"),
+                    ("XXL", "XXL"),
+                ],
+                max_length=4,
+                verbose_name="What size shirt do you wear?",
+            ),
         ),
     ]

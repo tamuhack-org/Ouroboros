@@ -55,7 +55,6 @@ class SharedTestCase(test.TestCase):
             "school_other": "",  # Defaults to empty if no other school is provided
             "gender": application.constants.FEMALE,
             "gender_other": "",  # Defaults to empty if no self-description is given
-            "classification": application.constants.FRESHMAN,
             "grad_year": timezone.now().year + 1,
             "level_of_study": application.constants.STUDY_UNDERGRAD_3YEAR,  # Assuming a 4-year undergrad program
             "num_hackathons_attended": application.constants.HACKATHONS_0,
@@ -64,10 +63,7 @@ class SharedTestCase(test.TestCase):
             "user": self.user,
             "race": [application.constants.NO_ANSWER],
             "race_other": "",  # Defaults to empty if no self-description is given
-            "has_team": application.constants.HAS_TEAM,
-            "discovery_method": "Friend",  # Default value for how the user heard about the event
             "extra_links": "A",
-            "question1": "B",
             "is_adult": True,
             "agree_to_coc": True,
             "agree_to_mlh_stuff": True,

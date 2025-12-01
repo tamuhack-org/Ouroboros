@@ -1,6 +1,7 @@
 import json
 import os
 from io import BytesIO
+from pathlib import Path
 
 import pyqrcode
 import requests
@@ -51,7 +52,7 @@ def send_confirmation_email(app: Application) -> None:
         r = requests.post(
             os.environ.get("APPLE_WALLET_GEN_URL"),
             json={"email": app.user.email, "meal_group": app.meal_group},
-            timeout=10
+            timeout=10,
         )
         apple_wallet_pass_url = r.json().get("s3_path")
     except requests.exceptions.RequestException as e:
@@ -86,6 +87,7 @@ def send_confirmation_email(app: Application) -> None:
     qr_stream = BytesIO()
     qr_code.png(qr_stream, scale=5)
     email.attach("code.png", qr_stream.getvalue(), "text/png")
-    email.attach_file("static/hh25invite.ics", mimetype="text/calendar")
+    ics_path = Path(settings.BASE_DIR) / ".." / "static" / "th26invite.ics"
+    email.attach_file(str(ics_path), mimetype="text/calendar")
     print(f"sending confirmation email to {app.user.email}")
     email.send()

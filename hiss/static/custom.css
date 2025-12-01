@@ -1,0 +1,1089 @@
+:root {
+  /* Primary (Pink) */
+  --color-accent: #ff90a4;
+  --color-accent-emphasis: #e86e84;
+  --color-accent-subtle: #f9ecee;
+
+  /* Secondary (Blue) */
+  --color-secondary: #3e678c;
+  --color-secondary-emphasis: #325270;
+  --color-secondary-subtle: #d8ecfe;
+
+  /* Teal accent */
+  --color-teal: #2ebfc7;
+  --color-teal-emphasis: #24a5ac;
+
+  /* Timeline */
+  --color-timeline: #ed768b;
+
+  /* Neutral - use Pico's variables for automatic dark mode */
+  --color-text: var(--pico-color);
+  --color-text-muted: var(--pico-muted-color);
+  --color-border: var(--pico-muted-border-color);
+  --color-border-subtle: var(--pico-form-element-border-color);
+
+  /* Surfaces */
+  --color-surface: var(--pico-background-color);
+  --color-card-bg: var(--pico-card-background-color);
+
+  /* Feedback */
+  --color-danger: #dc3545;
+  --color-danger-bg: #f8d7da;
+  --color-danger-border: #f5c6cb;
+
+  /* Override Pico's primary color */
+  --pico-primary: var(--color-accent);
+  --pico-primary-hover: var(--color-accent-emphasis);
+
+  /* Spacing scale */
+  --space-1: calc(var(--pico-spacing) * 0.25);
+  --space-2: calc(var(--pico-spacing) * 0.5);
+  --space-3: var(--pico-spacing);
+  --space-4: calc(var(--pico-spacing) * 1.5);
+  --space-5: calc(var(--pico-spacing) * 2);
+
+  /* Typography scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+
+  /* Max widths */
+  --max-w-sm: 24rem;
+  --max-w-md: 32rem;
+  --max-w-lg: 48rem;
+  --max-w-xl: 64rem;
+}
+
+/* ==========================================================================
+   Dark Mode Overrides
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Adjust accent colors for better dark mode contrast */
+    --color-accent: #ff9fb1;
+    --color-accent-emphasis: #ffb5c2;
+    --color-accent-subtle: #262626;
+;
+
+    /* Secondary adjustments */
+    --color-secondary: #6b9fd4;
+    --color-secondary-emphasis: #8bb8e8;
+    --color-secondary-subtle: #1e2d3d;
+
+    /* Teal adjustments */
+    --color-teal: #40d4dc;
+    --color-teal-emphasis: #5de0e7;
+
+    /* Timeline - slightly brighter for dark mode */
+    --color-timeline: #ff8a9d;
+
+    /* Feedback - dark mode variants */
+    --color-danger: #f5a6ae;
+    --color-danger-bg: #3d1f22;
+    --color-danger-border: #5c2d32;
+  }
+}
+
+/* Also support explicit dark theme attribute */
+[data-theme="dark"] {
+  --color-accent: #ff9fb1;
+  --color-accent-emphasis: #ffb5c2;
+  --color-accent-subtle: #3d2a2e;
+
+  --color-secondary: #6b9fd4;
+  --color-secondary-emphasis: #8bb8e8;
+  --color-secondary-subtle: #1e2d3d;
+
+  --color-teal: #40d4dc;
+  --color-teal-emphasis: #5de0e7;
+
+  --color-timeline: #ff8a9d;
+
+  --color-danger: #f5a6ae;
+  --color-danger-bg: #3d1f22;
+  --color-danger-border: #5c2d32;
+}
+
+/* ==========================================================================
+   Tailwind ish stuff? ty claude code
+   ========================================================================== */
+
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.items-center {
+  align-items: center;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
+.gap-1 {
+  gap: var(--space-2);
+}
+.gap-2 {
+  gap: var(--space-3);
+}
+.gap-3 {
+  gap: var(--space-4);
+}
+.gap-4 {
+  gap: var(--space-5);
+}
+
+.block {
+  display: block;
+}
+.inline {
+  display: inline;
+}
+.inline-block {
+  display: inline-block;
+}
+.hidden {
+  display: none;
+}
+
+.w-full {
+  width: 100%;
+}
+.w-auto {
+  width: auto;
+}
+.max-w-sm {
+  max-width: var(--max-w-sm);
+}
+.max-w-md {
+  max-width: var(--max-w-md);
+}
+.max-w-lg {
+  max-width: var(--max-w-lg);
+}
+.max-w-xl {
+  max-width: var(--max-w-xl);
+}
+
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
+.text-xs {
+  font-size: var(--text-xs);
+}
+.text-sm {
+  font-size: var(--text-sm);
+}
+.text-base {
+  font-size: var(--text-base);
+}
+.text-lg {
+  font-size: var(--text-lg);
+}
+.text-xl {
+  font-size: var(--text-xl);
+}
+.text-2xl {
+  font-size: var(--text-2xl);
+}
+
+/* Auth page title - matches legacy size */
+.auth-title {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-1);
+}
+
+.font-normal {
+  font-weight: 400;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.font-bold {
+  font-weight: 700;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.tracking-wide {
+  letter-spacing: 0.05em;
+}
+.tracking-wider {
+  letter-spacing: 0.1em;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+.text-accent {
+  color: var(--color-accent);
+}
+.text-secondary {
+  color: var(--color-secondary);
+}
+.text-danger {
+  color: var(--color-danger);
+}
+
+/* ==========================================================================
+   Spacing
+   ========================================================================== */
+
+/* Margin */
+.m-0 {
+  margin: 0;
+}
+.m-1 {
+  margin: var(--space-1);
+}
+.m-2 {
+  margin: var(--space-2);
+}
+.m-3 {
+  margin: var(--space-3);
+}
+.m-4 {
+  margin: var(--space-4);
+}
+.m-5 {
+  margin: var(--space-5);
+}
+.m-auto {
+  margin: auto;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+.mt-2 {
+  margin-top: var(--space-2);
+}
+.mt-3 {
+  margin-top: var(--space-3);
+}
+.mt-4 {
+  margin-top: var(--space-4);
+}
+.mt-5 {
+  margin-top: var(--space-5);
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+.mb-2 {
+  margin-bottom: var(--space-2);
+}
+.mb-3 {
+  margin-bottom: var(--space-3);
+}
+.mb-4 {
+  margin-bottom: var(--space-4);
+}
+.mb-5 {
+  margin-bottom: var(--space-5);
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+.mr-auto {
+  margin-right: auto;
+}
+
+/* Padding */
+.p-0 {
+  padding: 0;
+}
+.p-1 {
+  padding: var(--space-1);
+}
+.p-2 {
+  padding: var(--space-2);
+}
+.p-3 {
+  padding: var(--space-3);
+}
+.p-4 {
+  padding: var(--space-4);
+}
+.p-5 {
+  padding: var(--space-5);
+}
+
+.px-3 {
+  padding-left: var(--space-3);
+  padding-right: var(--space-3);
+}
+.px-4 {
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+.px-5 {
+  padding-left: var(--space-5);
+  padding-right: var(--space-5);
+}
+
+.py-3 {
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+.py-4 {
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+.py-5 {
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-5);
+}
+
+.pt-4 {
+  padding-top: var(--space-4);
+}
+.pt-5 {
+  padding-top: var(--space-5);
+}
+.pb-4 {
+  padding-bottom: var(--space-4);
+}
+.pb-5 {
+  padding-bottom: var(--space-5);
+}
+
+.bg-accent-subtle {
+  background-color: var(--color-accent-subtle);
+}
+.bg-secondary-subtle {
+  background-color: var(--color-secondary-subtle);
+}
+.bg-white {
+  background-color: var(--color-card-bg);
+}
+
+.nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-card-bg);
+  box-shadow: 0 1px 0 var(--color-border-subtle);
+  padding: 0.75rem var(--space-4);
+}
+
+.nav-header-left {
+  display: flex;
+  align-items: center;
+}
+
+.nav-header-left img {
+  width: 28px;
+  height: auto;
+}
+
+/* Logo color inversion for dark mode */
+img[src*="th_bw.svg"] {
+  filter: invert(0);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) img[src*="th_bw.svg"] {
+    filter: invert(1);
+  }
+}
+
+[data-theme="dark"] img[src*="th_bw.svg"] {
+  filter: invert(1);
+}
+
+.nav-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.nav-header-right a {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+}
+
+.nav-header-right a:hover {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-text);
+}
+
+.nav-header-right form {
+  margin: 0;
+}
+
+.nav-header-right .btn-logout {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: 0.375rem 0.75rem;
+  margin: 0;
+  background: transparent;
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.nav-header-right .btn-logout:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-card-bg);
+}
+
+/* ==========================================================================
+   Component: Buttons
+   ========================================================================== */
+
+/* Primary button (pink) */
+.btn-primary {
+  --pico-background-color: var(--color-accent);
+  --pico-border-color: var(--color-accent);
+  --pico-color: #fff;
+}
+
+/* Dark mode: use dark text on light pink background */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .btn-primary {
+    --pico-color: #1a1a1a;
+  }
+}
+
+[data-theme="dark"] .btn-primary {
+  --pico-color: #1a1a1a;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  --pico-background-color: var(--color-accent-emphasis);
+  --pico-border-color: var(--color-accent-emphasis);
+}
+
+/* Secondary button (ghost style) */
+.btn-secondary {
+  padding-inline: var(--space-2);
+  padding-block: var(--space-1);
+  --pico-background-color: transparent;
+  --pico-border-color: transparent;
+  --pico-color: var(--color-text-muted);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  --pico-background-color: rgba(0, 0, 0, 0.03);
+  --pico-border-color: transparent;
+  --pico-color: var(--color-text);
+}
+
+/* Dark mode: lighter hover background */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .btn-secondary:hover,
+  :root:not([data-theme="light"]) .btn-secondary:focus {
+    --pico-background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+[data-theme="dark"] .btn-secondary:hover,
+[data-theme="dark"] .btn-secondary:focus {
+  --pico-background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Outline variant */
+.btn-outline {
+  --pico-background-color: transparent;
+  --pico-color: var(--color-accent);
+  --pico-border-color: var(--color-accent);
+}
+
+.btn-outline:hover,
+.btn-outline:focus {
+  --pico-background-color: var(--color-accent);
+  --pico-color: #fff;
+}
+
+/* Dark mode: use dark text on light pink background */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .btn-outline:hover,
+  :root:not([data-theme="light"]) .btn-outline:focus {
+    --pico-color: #1a1a1a;
+  }
+}
+
+[data-theme="dark"] .btn-outline:hover,
+[data-theme="dark"] .btn-outline:focus {
+  --pico-color: #1a1a1a;
+}
+
+/* ==========================================================================
+   Component: Cards (Article styling)
+   ========================================================================== */
+
+.card {
+  background: var(--color-card-bg);
+  border-radius: var(--pico-border-radius);
+  padding: var(--space-5);
+}
+
+.card-elevated {
+  box-shadow: var(--pico-card-box-shadow);
+}
+
+/* ==========================================================================
+   Component: Alerts
+   ========================================================================== */
+
+.alert {
+  padding: var(--space-3);
+  border-radius: var(--pico-border-radius);
+  margin-bottom: var(--space-3);
+}
+
+.alert-danger {
+  background-color: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  color: var(--color-danger);
+}
+
+/* ==========================================================================
+   Component: Forms
+   ========================================================================== */
+
+/* Form container - optimal reading width for accessibility (45-75 chars) */
+form {
+  max-width: 28rem; /* ~448px - optimal for form inputs */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Allow full-width forms when explicitly needed */
+form.form-full-width {
+  max-width: none;
+}
+
+/* Compact textareas - smaller default for optional fields */
+textarea {
+  height: 4rem;
+  min-height: 4rem;
+  resize: vertical;
+}
+
+/* Form labels should always be left-aligned for readability */
+form label,
+form .form-group {
+  text-align: left;
+}
+
+/* Expandable textarea when user needs more space */
+textarea.textarea-lg {
+  min-height: 8rem;
+}
+
+/* Required field indicator */
+.required::after {
+  content: " *";
+  color: var(--color-danger);
+}
+
+/* Help text */
+.helptext {
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}
+
+/* Form help text (general instructions at top of form) */
+.form-help-text {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  padding: var(--space-3);
+  background-color: var(--color-secondary-subtle);
+  border-left: 3px solid var(--color-secondary);
+  border-radius: var(--pico-border-radius);
+}
+
+/* Checkbox */
+p:has(input[type="checkbox"]),
+.form-group:has(input[type="checkbox"]) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+p:has(input[type="checkbox"]) label,
+.form-group:has(input[type="checkbox"]) label {
+  order: 2;
+  margin-bottom: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+p:has(input[type="checkbox"]) input[type="checkbox"],
+.form-group:has(input[type="checkbox"]) input[type="checkbox"] {
+  order: 1;
+  margin: 0;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+p:has(input[type="checkbox"]) .helptext,
+.form-group:has(input[type="checkbox"]) .helptext,
+.form-group:has(input[type="checkbox"]) small {
+  order: 3;
+  width: 100%;
+  margin-top: 0;
+}
+
+/* Error list styling */
+.errorlist {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-2) 0;
+  background-color: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--pico-border-radius);
+}
+
+.errorlist li {
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+}
+
+/* ==========================================================================
+   Component: Timeline
+   ========================================================================== */
+
+/* Timeline component */
+.status-timeline {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding: 0;
+  margin: 0 0 var(--space-5);
+  list-style: none;
+}
+
+.status-timeline::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  border-bottom: 2px dashed var(--color-border);
+}
+
+.status-timeline li {
+  position: relative;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.status-timeline .point {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border: 4px solid var(--color-timeline);
+  border-radius: 50%;
+  background: var(--color-card-bg);
+  z-index: 1;
+}
+
+.status-timeline .point-complete {
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--color-timeline);
+  border-radius: 50%;
+  background: var(--color-timeline);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+
+.status-timeline .point-complete img {
+  width: 80%;
+  height: 80%;
+}
+
+.status-timeline .label {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+/* Status card */
+.status-card {
+  background: var(--color-card-bg);
+  border-radius: var(--pico-border-radius);
+  box-shadow: var(--pico-card-box-shadow);
+  padding: var(--space-5);
+  margin-top: var(--space-4);
+}
+
+.status-label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.status-value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+}
+
+.status-description {
+  color: var(--color-text-muted);
+  max-width: var(--max-w-md);
+  margin: 0 auto var(--space-4);
+}
+
+.status-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-4);
+}
+
+/* ==========================================================================
+   Page Backgrounds
+   ========================================================================== */
+
+.page-auth {
+  background-color: var(--color-accent-subtle);
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+  padding: var(--space-3);
+  box-sizing: border-box;
+}
+
+.page-auth-alt {
+  background-color: var(--color-secondary-subtle);
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+  padding: var(--space-3);
+  box-sizing: border-box;
+}
+
+.page-dashboard {
+  background-color: var(--color-accent-subtle);
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+}
+
+/* ==========================================================================
+   Responsive Utilities
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none;
+  }
+  .show-mobile {
+    display: block;
+  }
+
+  .text-center-mobile {
+    text-align: center;
+  }
+
+  .card {
+    padding: var(--space-3);
+  }
+}
+
+@media (min-width: 769px) {
+  .hide-desktop {
+    display: none;
+  }
+  .show-desktop {
+    display: block;
+  }
+}
+
+/* ==========================================================================
+   Error Pages
+   ========================================================================== */
+
+.error-page {
+  text-align: center;
+}
+
+.error-code {
+  font-size: 6rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.error-title {
+  font-size: var(--text-xl);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-3);
+}
+
+.error-message {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-5);
+}
+
+/* ==========================================================================
+   Tom Select Custom Styling
+   ========================================================================== */
+
+/* Main wrapper - match form input styling */
+.ts-wrapper.single .ts-control,
+.ts-wrapper.multi .ts-control {
+  width: 100%;
+  padding: 8px;
+  border-radius: 3px;
+  border: 1px solid var(--pico-form-element-border-color) !important;
+  background: var(--pico-form-element-background-color);
+  color: var(--color-text);
+  font-size: 14px;
+  min-height: 50px;
+  box-shadow: none;
+}
+
+/* Input text inside Tom Select */
+.ts-wrapper .ts-control input {
+  color: var(--color-text) !important;
+}
+
+/* Focus state - match Pico's focus styling */
+.ts-wrapper.single .ts-control:focus,
+.ts-wrapper.multi .ts-control:focus,
+.ts-wrapper.focus .ts-control {
+  border-color: var(--color-accent) !important;
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-accent-subtle);
+}
+
+/* Dropdown menu */
+.ts-dropdown {
+  background: var(--pico-form-element-background-color);
+  border: 1px solid var(--pico-form-element-border-color);
+  border-radius: 3px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+/* Dropdown options */
+.ts-dropdown .option {
+  padding: 10px 12px;
+  color: var(--color-text);
+  background: transparent;
+}
+
+/* Hover state */
+.ts-dropdown .option:hover,
+.ts-dropdown .option.active {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-text);
+}
+
+/* Selected option */
+.ts-dropdown .option.selected {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+/* Multi-select items (tags) */
+.ts-wrapper.multi .ts-control > div {
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 4px 8px;
+  margin: 2px 4px 2px 0;
+  font-size: 14px;
+}
+
+/* Dark mode: use dark text on light pink background */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ts-wrapper.multi .ts-control > div {
+    background: var(--color-accent);
+    color: #1a1a1a;
+  }
+}
+
+[data-theme="dark"] .ts-wrapper.multi .ts-control > div {
+  background: var(--color-accent);
+  color: #1a1a1a;
+}
+
+/* Remove button on multi-select items */
+.ts-wrapper.multi .ts-control > div .remove {
+  color: inherit;
+  opacity: 0.7;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  margin-left: 6px;
+  padding-left: 6px;
+  text-decoration: none;
+}
+
+.ts-wrapper.multi .ts-control > div .remove:hover {
+  opacity: 1;
+}
+
+/* Dark mode: adjust border */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ts-wrapper.multi .ts-control > div .remove {
+    border-left-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+[data-theme="dark"] .ts-wrapper.multi .ts-control > div .remove {
+  border-left-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Placeholder text */
+.ts-wrapper.single .ts-control input::placeholder,
+.ts-wrapper.multi .ts-control input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+/* Clear button (if enabled) */
+.ts-control .clear-button {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+  padding: 0 8px;
+  cursor: pointer;
+}
+
+.ts-control .clear-button:hover {
+  opacity: 1;
+  color: var(--color-danger);
+}
+
+/* Loading spinner */
+.ts-wrapper.loading .ts-control::after {
+  border-color: var(--color-accent) transparent transparent transparent;
+}
+
+/* Disabled state */
+.ts-wrapper.disabled .ts-control,
+.ts-wrapper.disabled .ts-control input {
+  background-color: var(--pico-form-element-disabled-background-color);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* No results message */
+.ts-dropdown .no-results {
+  padding: 12px;
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+}
+
+/* Option group headers */
+.ts-dropdown .optgroup-header {
+  font-weight: 600;
+  padding: 8px 12px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border-subtle);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Ensure dropdown appears above other elements */
+.ts-dropdown {
+  z-index: 1000;
+}
+
+/* Fix for single select arrow */
+.ts-wrapper.single .ts-control::after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--color-text-muted);
+  pointer-events: none;
+}
+
+.ts-wrapper.single.dropdown-active .ts-control::after {
+  border-top: none;
+  border-bottom: 5px solid var(--color-text-muted);
+}
+
+/* Make sure the input area has proper spacing for the arrow */
+.ts-wrapper.single .ts-control input {
+  padding-right: 30px;
+}

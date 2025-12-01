@@ -12,7 +12,10 @@ class TokenAuthTestCase(test_case.SharedTestCase):
         self.volunteer_email = "volunteer@email.com"
         self.volunteer_password = "password"
         self.volunteer = User.objects.create_user(
-            email=self.volunteer_email, password=self.volunteer_password, is_active=True, is_staff=True
+            email=self.volunteer_email,
+            password=self.volunteer_password,
+            is_active=True,
+            is_staff=True,
         )
         self.volunteer.save()
 

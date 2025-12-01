@@ -3,10 +3,10 @@ from django.db import models
 
 User = get_user_model()
 
-STATUS_INVITED = "I"      # Invited (interest email sent)
-STATUS_CONFIRMED = "C"    # Confirmed (signed up)
+STATUS_INVITED = "I"  # Invited (interest email sent)
+STATUS_CONFIRMED = "C"  # Confirmed (signed up)
 STATUS_CHECKED_IN = "CI"  # Checked in at event
-STATUS_DECLINED = "D"     # Declined invitation
+STATUS_DECLINED = "D"  # Declined invitation
 
 STATUS_CHOICES = [
     (STATUS_INVITED, "Invited"),
@@ -33,9 +33,9 @@ TSHIRT_CHOICES = [
 
 
 class Judge(models.Model):
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='judge_profile')
-
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="judge_profile"
+    )
 
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=20, blank=True)
@@ -44,9 +44,9 @@ class Judge(models.Model):
     track = models.CharField(max_length=100, choices=TRACK_CHOICES, default="SW")
     additional_info = models.TextField(blank=True)
 
-
-    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=STATUS_INVITED)
-
+    status = models.CharField(
+        max_length=2, choices=STATUS_CHOICES, default=STATUS_INVITED
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -58,10 +58,11 @@ class Judge(models.Model):
     def __str__(self):
         return f"{self.name} ({self.user.email})"
 
+
 class Mentor(models.Model):
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='mentor_profile')
-
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="mentor_profile"
+    )
 
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=20, blank=True)
@@ -70,9 +71,9 @@ class Mentor(models.Model):
     track = models.CharField(max_length=10, choices=TRACK_CHOICES, default="SW")
     additional_info = models.TextField(blank=True)
 
-
-    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=STATUS_INVITED)
-
+    status = models.CharField(
+        max_length=2, choices=STATUS_CHOICES, default=STATUS_INVITED
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -60,6 +60,53 @@ docker-compose run web python3 manage.py createsuperuser # Enter details for an 
 You're all set! Just run `docker-compose up` and you're good to go!
 
 
+To use it, simply replace the values in `docker-compose.prod.yml` with the values you need, and run
+
+```shell script
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+```
+
+
+# CRON job configuration
+This project includes a cron job to automatically expire unconfirmed applications.
+
+The Django management command is located at:
+application/management/commands/expire.py
+
+To run it manually:
+
+```sh
+python manage.py expire
+```
+
+On Railway, this is scheduled via a cron job (e.g., daily at 11:59 PM CST) to:
+
+Mark unconfirmed applications as expired
+
+Send notification emails to affected users
+
+Ensure your environment variables (e.g., SECRET_KEY, DATABASE_URL, email settings) are set correctly when running this command.
+
+## Contributing
+We now use uv for dependency management, ensure that uv is installed.
+
+```sh
+uv venv --python 3.12
+uv sync
+
+source .venv/bin/activate
+python ./hiss/manage.py migrate #Apply all migrations
+
+python ./hiss/manage.py createsuperuser
+
+
+python ./hiss/manage.py runserver
+```
+
+```
+/admin/csv-emails/judges/
+/admin/csv-emails/mentors/
+```
 
 # Brought to you by
 

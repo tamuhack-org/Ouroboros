@@ -10,5 +10,7 @@ def customization(_request: HttpRequest):
         "event_start_date": settings.EVENT_START_DATETIME,
         "event_end_date": settings.EVENT_END_DATETIME,
         "organizer_email": settings.ORGANIZER_EMAIL,
-        "organizer_name": settings.ORGANIZER_NAME
+        "organizer_name": settings.ORGANIZER_NAME,
+        "misc_short_answer_enabled": settings.MISC_SHORT_ANSWER_ENABLED,
+        "misc_short_answer_prompt": settings.MISC_SHORT_ANSWER_PROMPT,
     }

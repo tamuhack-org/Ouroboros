@@ -1,37 +1,26 @@
-{% extends 'base.html' %} {% load static %} {% block body %}
+{% extends 'base.html' %}
+{% load static %}
 
-<section class="signin sign_up">
-  <div class="container">
-    <div class="row justify-content-md-center">
-      <div class="col-sm-12 col-md-8 col-lg-6 login-box">
-        <header class="text-center">
-          <img class="header-logo" src="{% static 'th_bw.svg' %}" />
-          <h1>{{ event_name }} {{ event_year }} Application</h1>
+{% block body %}
+<main class="container page-auth-alt flex flex-center">
+    <article class="card card-elevated max-w-md w-full">
+        <header class="text-center mb-4">
+            <img src="{% static 'th_bw.svg' %}" alt="Logo" width="40">
+            <h1 class="auth-title text-uppercase tracking-wide mt-3">{{ event_name }} {{ event_year }} Application</h1>
         </header>
-        <p>
-          To activate your account, enter your email address and click the
-          activation link in the email you receive.
-        </p>
-        <form method="POST">
-          {% csrf_token %}
-          <!-- security -->
 
-          {{ form.as_p }}
-          <input
-            type="submit"
-            value="Resend Verification"
-            class="btn btn-lg btn-block btn-login"
-          />
+        <p class="mb-4">To activate your account, enter your email address and click the activation link in the email you receive.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-primary w-full">Resend Verification</button>
         </form>
-        <div class="row login-alt-options pt-4">
-          <div class="col-sm-12 col-lg-12 text-left">
+
+        <p class="text-sm mt-4 mb-0">
             If you still have issues accessing your account, please email us at
             <a href="mailto:{{ organizer_email }}">{{ organizer_email }}</a>.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
+        </p>
+    </article>
+</main>
 {% endblock %}
