@@ -18,4 +18,4 @@ AWS_S3_BUCKET_NAME = "th-26-resumes"
 MISC_SHORT_ANSWER_ENABLED = True
 MISC_SHORT_ANSWER_PROMPT = "If you were a fruit, what fruit would you be and why? (Keep it brief, like 1 sentence is fine)"
 MISC_SHORT_ANSWER_MAX_LENGTH = 500
-MISC_SHORT_ANSWER_REQUIRED = False
+MISC_SHORT_ANSWER_REQUIRED = True
