@@ -428,6 +428,21 @@
   height: auto;
 }
 
+/* Logo color inversion for dark mode */
+img[src*="th_bw.svg"] {
+  filter: invert(0);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) img[src*="th_bw.svg"] {
+    filter: invert(1);
+  }
+}
+
+[data-theme="dark"] img[src*="th_bw.svg"] {
+  filter: invert(1);
+}
+
 .nav-header-right {
   display: flex;
   align-items: center;
