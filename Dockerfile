@@ -1,23 +1,23 @@
 FROM python:3.12
-# currently pinned to uv 0.6, new members will have to update
-COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /uvx /bin/ 
+
+# currently pinned to uv 0.9, new members will have to update
+COPY --from=ghcr.io/astral-sh/uv:0.9 /uv /uvx /bin/
 
 WORKDIR /app
 
 # Enable bytecode compilation
 ENV UV_COMPILE_BYTECODE=1
 
-# Copy from the cache instead of linking since it's a mounted volume ENV UV_LINK_MODE=copy
-
 # Install the project's dependencies using the lockfile and settings
 COPY pyproject.toml uv.lock ./
-RUN --mount=type=cache,id=s/0ff66b76-9182-4173-a1c9-1a4d46c73094-/root/cache/uv,target=/root/.cache/uv \
-    uv sync --frozen --no-install-project --no-dev
+
+# Step 1: Sync dependencies (No cache mounts)
+RUN uv sync --frozen --no-install-project --no-dev
 
 ADD . /app
 
-RUN --mount=type=cache,id=s/0ff66b76-9182-4173-a1c9-1a4d46c73094-/root/cache/uv,target=/root/.cache/uv \
-    uv sync --frozen --no-dev
+# Step 2: Sync the project itself (No cache mounts)
+RUN uv sync --frozen --no-dev
 
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
@@ -28,9 +28,9 @@ RUN python manage.py collectstatic --no-input
 
 ARG DATABASE_URL
 
+# NOTE: Running migrations during the build process is risky (see notes below)
 RUN python manage.py migrate
 
 ENTRYPOINT []
 
-# CMD ["gunicorn", "-b", ":8000", "hiss.wsgi:application", "--log-file=-", "--capture-output", "--log-level=debug"]
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "hiss.wsgi:application"]
