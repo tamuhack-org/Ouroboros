@@ -70,7 +70,7 @@ def build_approval_email(
         "event_name": settings.EVENT_NAME,
         "organizer_name": settings.ORGANIZER_NAME,
         "event_year": settings.EVENT_YEAR,
-        "confirmation_deadline": confirmation_deadline,
+        "confirmation_deadline": confirmation_deadline.strftime("%B %-d, %Y"),
         "organizer_email": settings.ORGANIZER_EMAIL,
         "event_date_text": settings.EVENT_DATE_TEXT,
     }
