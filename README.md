@@ -1,20 +1,32 @@
 [![codecov](https://codecov.io/gh/tamuhack-org/Ouroboros/branch/main/graph/badge.svg)](https://codecov.io/gh/tamuhack-org/Ouroboros)
 
-Be careful, you need internet so that you can get the bootstrap file - we might want to switch from this for future use because it's super annoying
-
 # :snake: Hiss
 
 An open-source, hackathon registration system. :school:
 
-## :question: Questions
-
-If you have questions, we might've answered them already on the [wiki](https://github.com/tamuhack-org/Ouroboros/wiki)! Check it out.
 
 ## :computer: Running Locally
 
-### Local Development
+### Local development
 
-For local development, we highly encourage using [Docker Compose](https://docs.docker.com/compose/).
+The fastest way to develop locally is with [uv](https://docs.astral.sh/uv/).
+
+```sh
+uv venv --python 3.12
+uv sync
+
+source .venv/bin/activate
+python ./hiss/manage.py migrate #Apply all migrations
+
+python ./hiss/manage.py createsuperuser
+
+
+python ./hiss/manage.py runserver
+```
+
+### Mimic Production
+
+To mimic production, we highly encourage using [Docker Compose](https://docs.docker.com/compose/).
 
 After Docker Compose is installed, there are just a few steps left for first-time setup:
 
@@ -47,11 +59,6 @@ docker-compose run web python3 manage.py createsuperuser # Enter details for an 
 
 You're all set! Just run `docker-compose up` and you're good to go!
 
-### Mimic Production
-
-To mimic a real production environment, a `docker-compose.prod.yml` file has been included in the repository for you to use.
-
-This file is set up on the assumption that you are using [Mailgun](https://mailgun.com) as your team's email provider.
 
 To use it, simply replace the values in `docker-compose.prod.yml` with the values you need, and run
 
@@ -59,16 +66,7 @@ To use it, simply replace the values in `docker-compose.prod.yml` with the value
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 ```
 
-### Staging Environment
 
-We also have a staging environment Github Action workflow. To run this, simply create another heroku app, set `HEROKU_APP_NAME` in `.github/workflows/staging.yml` to the name of the heroku app, and push to a non-protected branch.
-
-In order for the staging environment to work, you must connect a [Heroku Postgres](https://www.heroku.com/postgres) instance to the app. Anytime you change models or forms and make a new migration, you must manually sync the database in the heroku console. 
-
-To do this, push to the staging environment, open the Heroku bash shell, and run the following command:
-```
-python3 manage.py migrate --run-syncdb
-```
 # CRON job configuration
 This project includes a cron job to automatically expire unconfirmed applications.
 
@@ -89,7 +87,7 @@ Send notification emails to affected users
 
 Ensure your environment variables (e.g., SECRET_KEY, DATABASE_URL, email settings) are set correctly when running this command.
 
-# Contributing
+## Contributing
 We now use uv for dependency management, ensure that uv is installed.
 
 ```sh
