@@ -411,7 +411,7 @@
 }
 
 .nav-header-right .btn-logout:hover {
-  background-color: var(--color-accent);
+  background-color: var(--color-secondary);
   color: #fff;
 }
 
