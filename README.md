@@ -69,6 +69,25 @@ To do this, push to the staging environment, open the Heroku bash shell, and run
 ```
 python3 manage.py migrate --run-syncdb
 ```
+# CRON job configuration
+This project includes a cron job to automatically expire unconfirmed applications.
+
+The Django management command is located at:
+application/management/commands/expire.py
+
+To run it manually:
+
+```sh
+python manage.py expire
+```
+
+On Railway, this is scheduled via a cron job (e.g., daily at 11:59 PM CST) to:
+
+Mark unconfirmed applications as expired
+
+Send notification emails to affected users
+
+Ensure your environment variables (e.g., SECRET_KEY, DATABASE_URL, email settings) are set correctly when running this command.
 
 # Contributing
 We now use uv for dependency management, ensure that uv is installed.
