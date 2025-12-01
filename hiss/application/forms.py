@@ -279,10 +279,8 @@ class ApplicationModelForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         photo_agreement = f"I grant permission for {settings.ORGANIZER_NAME} to use my name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event '{settings.EVENT_NAME} {settings.EVENT_YEAR}' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases."
-        accessibilities = "Please check this box you would like our team to follow up with you personally to discuss your accessibility accommodations during this event."
 
         self.fields["agree_to_photos"].label = photo_agreement
-        self.fields["accessibility_requirements"].label = accessibilities
 
         self.fields["agree_to_coc"].label = format_html(
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf" target="_blank" rel="noopener noreferrer">MLH Code of Conduct</a>'
