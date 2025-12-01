@@ -492,6 +492,17 @@ img[src*="th_bw.svg"] {
 .btn-primary {
   --pico-background-color: var(--color-accent);
   --pico-border-color: var(--color-accent);
+  --pico-color: #fff;
+}
+
+/* Dark mode: use dark text on light pink background */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .btn-primary {
+    --pico-color: #1a1a1a;
+  }
+}
+
+[data-theme="dark"] .btn-primary {
   --pico-color: #1a1a1a;
 }
 
@@ -512,9 +523,22 @@ img[src*="th_bw.svg"] {
 
 .btn-secondary:hover,
 .btn-secondary:focus {
-  --pico-background-color: var(--pico-secondary-hover-background);
+  --pico-background-color: rgba(0, 0, 0, 0.03);
   --pico-border-color: transparent;
   --pico-color: var(--color-text);
+}
+
+/* Dark mode: lighter hover background */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .btn-secondary:hover,
+  :root:not([data-theme="light"]) .btn-secondary:focus {
+    --pico-background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+[data-theme="dark"] .btn-secondary:hover,
+[data-theme="dark"] .btn-secondary:focus {
+  --pico-background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Outline variant */
@@ -527,6 +551,19 @@ img[src*="th_bw.svg"] {
 .btn-outline:hover,
 .btn-outline:focus {
   --pico-background-color: var(--color-accent);
+  --pico-color: #fff;
+}
+
+/* Dark mode: use dark text on light pink background */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .btn-outline:hover,
+  :root:not([data-theme="light"]) .btn-outline:focus {
+    --pico-color: #1a1a1a;
+  }
+}
+
+[data-theme="dark"] .btn-outline:hover,
+[data-theme="dark"] .btn-outline:focus {
   --pico-color: #1a1a1a;
 }
 
