@@ -77,6 +77,7 @@ class SharedTestCase(test.TestCase):
             "meal_group": "E",  # Defaults to None unless assigned
             "wares": application.constants.WARECHOICE[0][0],  # Default to "Software"
             "notes": "",  # Defaults to empty unless set
+            "misc_short_answer": "I would be a banana because I like yellow.",  # Required field
             "emergency_contact_name": "John Doe",  # Placeholder
             "emergency_contact_relationship": "Parent",  # Placeholder
             "emergency_contact_phone": "000-000-0000",  # Placeholder
