@@ -902,11 +902,17 @@ p:has(input[type="checkbox"]) .helptext,
   width: 100%;
   padding: 8px;
   border-radius: 3px;
-  border: 1px solid #bbb !important;
-  background: var(--color-card-bg);
+  border: 1px solid var(--pico-form-element-border-color) !important;
+  background: var(--pico-form-element-background-color);
+  color: var(--color-text);
   font-size: 14px;
   min-height: 50px;
   box-shadow: none;
+}
+
+/* Input text inside Tom Select */
+.ts-wrapper .ts-control input {
+  color: var(--color-text) !important;
 }
 
 /* Focus state - match Pico's focus styling */
@@ -920,10 +926,10 @@ p:has(input[type="checkbox"]) .helptext,
 
 /* Dropdown menu */
 .ts-dropdown {
-  background: var(--color-card-bg);
-  border: 1px solid #bbb;
+  background: var(--pico-form-element-background-color);
+  border: 1px solid var(--pico-form-element-border-color);
   border-radius: 3px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
   margin-top: 4px;
   font-size: 14px;
 }
@@ -932,7 +938,7 @@ p:has(input[type="checkbox"]) .helptext,
 .ts-dropdown .option {
   padding: 10px 12px;
   color: var(--color-text);
-  background: var(--color-card-bg);
+  background: transparent;
 }
 
 /* Hover state */

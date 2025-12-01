@@ -246,6 +246,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         # "question2",
         # "question3",
         "notes",
+        "misc_short_answer",
         "is_a_walk_in",
     ]
     list_filter = (
@@ -329,7 +330,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
         (
             "Miscellaneous",
-            {"fields": ["notes", "is_adult", "accessibility_requirements"]},
+            {"fields": ["notes", "misc_short_answer", "is_adult", "accessibility_requirements"]},
         ),
     ]
     formfield_overrides = {

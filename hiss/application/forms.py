@@ -81,6 +81,17 @@ class InitialRegistrationForm(forms.ModelForm):
         self.fields["extra_links"].label = self.fields["extra_links"].label + " (optional)"
         self.fields["notes"].label = self.fields["notes"].label + " (optional)"
 
+        # Configure misc short answer question based on settings
+        if settings.MISC_SHORT_ANSWER_ENABLED:
+            self.fields["misc_short_answer"].label = settings.MISC_SHORT_ANSWER_PROMPT
+            self.fields["misc_short_answer"].required = settings.MISC_SHORT_ANSWER_REQUIRED
+            self.fields["misc_short_answer"].max_length = settings.MISC_SHORT_ANSWER_MAX_LENGTH
+            if not settings.MISC_SHORT_ANSWER_REQUIRED:
+                self.fields["misc_short_answer"].label = self.fields["misc_short_answer"].label + " (optional)"
+        else:
+            # Remove field if disabled
+            self.fields.pop("misc_short_answer", None)
+
         if not application_models.Wave.objects.active_wave():
             for field_name in self.fields:
                 self.fields[field_name].widget.attrs["disabled"] = "disabled"
@@ -160,6 +171,7 @@ class InitialRegistrationForm(forms.ModelForm):
             "resume",
             "extra_links",
             "notes",
+            "misc_short_answer",
             "agree_to_photos",
             "agree_to_coc",
             "agree_to_mlh_stuff",
