@@ -67,8 +67,6 @@
     --color-accent: #ff9fb1;
     --color-accent-emphasis: #ffb5c2;
     --color-accent-subtle: #262626;
-;
-
     /* Secondary adjustments */
     --color-secondary: #6b9fd4;
     --color-secondary-emphasis: #8bb8e8;
@@ -893,197 +891,203 @@ p:has(input[type="checkbox"]) .helptext,
 }
 
 /* ==========================================================================
-   Tom Select Custom Styling
+   Tom Select Custom Styling - Harmonized with Pico & Pink Theme
    ========================================================================== */
 
-/* Main wrapper - match form input styling */
+/* 1. Base Control (The Input Box) 
+   Matches Pico's input[type="text"] styles exactly */
 .ts-wrapper.single .ts-control,
 .ts-wrapper.multi .ts-control {
-  width: 100%;
-  padding: 8px;
-  border-radius: 3px;
-  border: 1px solid var(--pico-form-element-border-color) !important;
-  background: var(--pico-form-element-background-color);
+  background-color: var(--pico-form-element-background-color);
+  border: var(--pico-border-width) solid var(--color-border-subtle);
+  border-radius: var(--pico-border-radius);
   color: var(--color-text);
-  font-size: 14px;
-  min-height: 50px;
+  font-family: inherit;
+  font-size: 1rem; /* Match standard input size */
+  line-height: var(--pico-line-height);
+  padding: var(--pico-form-element-spacing-vertical)
+    var(--pico-form-element-spacing-horizontal);
   box-shadow: none;
+  transition:
+    border-color var(--pico-transition),
+    box-shadow var(--pico-transition);
+  min-height: calc(
+    1rem * var(--pico-line-height) + var(--pico-form-element-spacing-vertical) *
+      2 + var(--pico-border-width) * 2
+  );
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-/* Input text inside Tom Select */
+/* Remove default browser outlines */
+.ts-wrapper.single .ts-control:focus,
+.ts-wrapper.multi .ts-control:focus {
+  outline: none;
+}
+
+/* 2. Focus State (The Pink Glow) 
+   Matches your --color-accent-subtle glow */
+.ts-wrapper.focus .ts-control {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 var(--pico-outline-width) var(--color-accent-subtle);
+  outline: none;
+}
+
+/* 3. Text Input inside the box */
 .ts-wrapper .ts-control input {
   color: var(--color-text) !important;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0 !important; /* Reset Tom Select margins */
 }
 
-/* Focus state - match Pico's focus styling */
-.ts-wrapper.single .ts-control:focus,
-.ts-wrapper.multi .ts-control:focus,
-.ts-wrapper.focus .ts-control {
-  border-color: var(--color-accent) !important;
-  outline: none;
-  box-shadow: 0 0 0 3px var(--color-accent-subtle);
-}
-
-/* Dropdown menu */
-.ts-dropdown {
-  background: var(--pico-form-element-background-color);
-  border: 1px solid var(--pico-form-element-border-color);
-  border-radius: 3px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
-  margin-top: 4px;
-  font-size: 14px;
-}
-
-/* Dropdown options */
-.ts-dropdown .option {
-  padding: 10px 12px;
-  color: var(--color-text);
-  background: transparent;
-}
-
-/* Hover state */
-.ts-dropdown .option:hover,
-.ts-dropdown .option.active {
-  background-color: var(--color-accent-subtle);
-  color: var(--color-text);
-}
-
-/* Selected option */
-.ts-dropdown .option.selected {
-  background-color: var(--color-accent-subtle);
-  color: var(--color-text);
-  font-weight: 500;
-}
-
-/* Multi-select items (tags) */
-.ts-wrapper.multi .ts-control > div {
-  background: var(--color-accent);
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  padding: 4px 8px;
-  margin: 2px 4px 2px 0;
-  font-size: 14px;
-}
-
-/* Dark mode: use dark text on light pink background */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .ts-wrapper.multi .ts-control > div {
-    background: var(--color-accent);
-    color: #1a1a1a;
-  }
-}
-
-[data-theme="dark"] .ts-wrapper.multi .ts-control > div {
-  background: var(--color-accent);
-  color: #1a1a1a;
-}
-
-/* Remove button on multi-select items */
-.ts-wrapper.multi .ts-control > div .remove {
-  color: inherit;
-  opacity: 0.7;
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
-  margin-left: 6px;
-  padding-left: 6px;
-  text-decoration: none;
-}
-
-.ts-wrapper.multi .ts-control > div .remove:hover {
-  opacity: 1;
-}
-
-/* Dark mode: adjust border */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .ts-wrapper.multi .ts-control > div .remove {
-    border-left-color: rgba(0, 0, 0, 0.3);
-  }
-}
-
-[data-theme="dark"] .ts-wrapper.multi .ts-control > div .remove {
-  border-left-color: rgba(0, 0, 0, 0.3);
-}
-
-/* Placeholder text */
 .ts-wrapper.single .ts-control input::placeholder,
 .ts-wrapper.multi .ts-control input::placeholder {
   color: var(--color-text-muted);
-  opacity: 0.6;
+  opacity: 1; /* Override browser defaults */
 }
 
-/* Clear button (if enabled) */
-.ts-control .clear-button {
-  color: var(--color-text-muted);
-  opacity: 0.7;
-  padding: 0 8px;
-  cursor: pointer;
-}
-
-.ts-control .clear-button:hover {
-  opacity: 1;
-  color: var(--color-danger);
-}
-
-/* Loading spinner */
-.ts-wrapper.loading .ts-control::after {
-  border-color: var(--color-accent) transparent transparent transparent;
-}
-
-/* Disabled state */
-.ts-wrapper.disabled .ts-control,
-.ts-wrapper.disabled .ts-control input {
-  background-color: var(--pico-form-element-disabled-background-color);
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* No results message */
-.ts-dropdown .no-results {
-  padding: 12px;
-  color: var(--color-text-muted);
-  font-style: italic;
-  text-align: center;
-}
-
-/* Option group headers */
-.ts-dropdown .optgroup-header {
-  font-weight: 600;
-  padding: 8px 12px;
-  color: var(--color-text);
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border-subtle);
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Ensure dropdown appears above other elements */
+/* 4. Dropdown Menu (The Options List) */
 .ts-dropdown {
+  background-color: var(--color-card-bg); /* Use card background */
+  border: var(--pico-border-width) solid var(--color-border-subtle);
+  border-radius: var(--pico-border-radius);
+  box-shadow: var(--pico-card-box-shadow);
+  color: var(--color-text);
+  margin-top: var(--space-2);
+  padding: 0;
   z-index: 1000;
+  overflow: hidden; /* Keeps corners rounded */
 }
 
-/* Fix for single select arrow */
+/* Individual Options */
+.ts-dropdown .option {
+  padding: var(--space-2) var(--space-3); /* Comfortable spacing */
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+/* Hover / Active Option - Light Pink Background */
+.ts-dropdown .option:hover,
+.ts-dropdown .option.active,
+.ts-dropdown .active {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-text);
+}
+
+/* Selected Option (in the list) */
+.ts-dropdown .option.selected {
+  background-color: var(--color-accent-subtle);
+  font-weight: 600;
+  color: var(--color-accent-emphasis);
+}
+
+/* 5. Multi-Select Tags (The Chips) 
+   Matches .btn-primary logic */
+.ts-wrapper.multi .ts-control > div.item {
+  background-color: var(--color-accent);
+  color: #fff; /* Light mode text */
+  border-radius: calc(var(--pico-border-radius) * 0.5);
+  padding: 2px 8px;
+  margin: 0 4px 0 0;
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  box-shadow: none; /* Remove TS default shading */
+  text-shadow: none;
+}
+
+/* "x" Remove button on tags */
+.ts-wrapper.multi .ts-control > div.item .remove {
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  margin-left: 6px;
+  padding-left: 6px;
+  font-size: 1.1em;
+  vertical-align: middle;
+  display: inline-block;
+  opacity: 0.8;
+}
+
+.ts-wrapper.multi .ts-control > div.item .remove:hover {
+  opacity: 1;
+  background: transparent; /* Prevent weird TS hover backgrounds */
+}
+
+/* 6. Single Select Arrow (Chevron) */
 .ts-wrapper.single .ts-control::after {
-  content: '';
+  content: "";
   display: block;
   position: absolute;
-  right: 15px;
+  right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid var(--color-text-muted);
+  width: 0.7em;
+  height: 0.7em;
+  background-image: var(--pico-icon-chevron); /* Uses Pico's SVG if available */
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
   pointer-events: none;
+  opacity: 0.5;
 }
 
-.ts-wrapper.single.dropdown-active .ts-control::after {
-  border-top: none;
-  border-bottom: 5px solid var(--color-text-muted);
+/* Fallback CSS Arrow if Pico SVG var isn't available */
+.ts-wrapper.single .ts-control:not(:has(background-image))::after {
+  border-color: var(--color-text-muted) transparent transparent transparent;
+  border-style: solid;
+  border-width: 5px 5px 0 5px;
+  height: 0;
+  width: 0;
+  background: none;
 }
 
-/* Make sure the input area has proper spacing for the arrow */
-.ts-wrapper.single .ts-control input {
-  padding-right: 30px;
+/* 7. Dark Mode Specific Overrides */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ts-wrapper.multi .ts-control > div.item {
+    color: #1a1a1a; /* Dark text on pink background for contrast */
+  }
+
+  :root:not([data-theme="light"])
+    .ts-wrapper.multi
+    .ts-control
+    > div.item
+    .remove {
+    border-left-color: rgba(0, 0, 0, 0.2);
+  }
+
+  /* Ensure dropdown doesn't get lost in dark mode */
+  :root:not([data-theme="light"]) .ts-dropdown {
+    background-color: #1e1e1e; /* Slightly lighter than pure black */
+    border-color: var(--color-border-subtle);
+  }
+}
+
+/* Explicit Dark Theme Attribute Support */
+[data-theme="dark"] .ts-wrapper.multi .ts-control > div.item {
+  color: #1a1a1a;
+}
+
+[data-theme="dark"] .ts-wrapper.multi .ts-control > div.item .remove {
+  border-left-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .ts-dropdown {
+  background-color: #1e1e1e;
+  border-color: var(--color-border-subtle);
+}
+
+/* 8. Loading & Disabled States */
+.ts-wrapper.loading .ts-control::before {
+  border-color: var(--color-text-muted) var(--color-accent-subtle)
+    var(--color-text-muted) var(--color-text-muted);
+}
+
+.ts-wrapper.disabled .ts-control {
+  opacity: 0.5;
+  background-color: var(--pico-form-element-disabled-background-color);
+  cursor: not-allowed;
 }
