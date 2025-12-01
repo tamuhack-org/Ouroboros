@@ -1,5 +1,3 @@
-
-
 import django
 from django.template import Library
 

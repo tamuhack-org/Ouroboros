@@ -1,5 +1,2 @@
-
-urlpatterns = [
-
-]
+urlpatterns = []
 app_name = "team"

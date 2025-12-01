@@ -22,18 +22,14 @@ from multiselectfield import MultiSelectField
 from application.constants import (
     AGREE,
     AGREE_DISAGREE,
-    CLASSIFICATIONS,
     COUNTRIES_TUPLES,
-    DISCOVERY_METHOD_OPTIONS,
     GENDERS,
     GRAD_YEARS,
     HACKATHON_TIMES,
-    HAS_TEAM_OPTIONS,
     LEVELS_OF_STUDY,
     MAJORS,
     MAX_AGE,
     NO_ANSWER,
-    QUESTION1_TEXT,
     RACES,
     SHIRT_SIZES,
     STATUS_CONFIRMED,
@@ -161,7 +157,6 @@ class Application(models.Model):
         max_length=200,
         blank=True,
     )
-    question1 = models.TextField(QUESTION1_TEXT, max_length=500)
     resume = models.FileField(
         "Upload your resume (PDF only)",
         help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
@@ -190,9 +185,6 @@ class Application(models.Model):
         "What's your major?", default=NO_ANSWER, choices=MAJORS, max_length=100
     )
     major_other = models.CharField("Other", max_length=255, null=True, blank=True)
-    classification = models.CharField(
-        "What classification are you?", choices=CLASSIFICATIONS, max_length=3
-    )
     gender = models.CharField(
         "What's your gender?", choices=GENDERS, max_length=2, default=NO_ANSWER
     )
@@ -247,52 +239,44 @@ class Application(models.Model):
         choices=AGREE_DISAGREE, null=True, default=None, blank=True
     )
 
-    # LOGISTICAL INFO
+    # LOGISTICAL INFO (collected during RSVP, nullable for initial registration)
     shirt_size = models.CharField(
-        "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4
+        "What size shirt do you wear?",
+        choices=SHIRT_SIZES,
+        max_length=4,
+        blank=True,
+        null=True,
     )
 
     additional_accommodations = models.TextField(
         'Do you require any special accommodations at the event? Please list dietary restrictions here if you selected "food allergy" or "other".',
         max_length=500,
         blank=True,
+        null=True,
     )
 
     # Emergency Contact Info
     emergency_contact_name = models.CharField(
-        "Emergency Contact Name", max_length=255, blank=False
+        "Emergency Contact Name", max_length=255, blank=True, null=True
     )
     emergency_contact_relationship = models.CharField(
-        "Emergency Contact Relationship", max_length=255, blank=False
+        "Emergency Contact Relationship", max_length=255, blank=True, null=True
     )
     emergency_contact_phone = models.CharField(
-        "Emergency Contact Phone Number", max_length=255, blank=False
+        "Emergency Contact Phone Number", max_length=255, blank=True, null=True
     )
     emergency_contact_email = models.CharField(
-        "Emergency Contact Email", max_length=255, blank=False
+        "Emergency Contact Email", max_length=255, blank=True, null=True
     )
 
     dietary_restrictions = models.CharField(
-        "Do you have any dietary restrictions?", max_length=255, blank=True, default=""
+        "Do you have any dietary restrictions?",
+        max_length=255,
+        blank=True,
+        null=True,
+        default="",
     )
     meal_group = models.CharField(max_length=255, null=True, blank=True, default=None)
-
-    technology_experience = models.TextField(
-        "What technology do you have experience with?", blank=True
-    )
-
-    # TEAM MATCHING INFO
-    has_team = models.CharField(
-        "Do you have a team yet?",
-        choices=HAS_TEAM_OPTIONS,
-        max_length=16,
-    )
-    discovery_method = models.CharField(
-        f"How did you hear about {settings.EVENT_NAME}?",
-        choices=DISCOVERY_METHOD_OPTIONS,
-        help_text="",
-        max_length=16,
-    )
 
     # CONFIRMATION DEADLINE
     confirmation_deadline = models.DateTimeField(null=True, blank=True)
@@ -320,7 +304,9 @@ class Application(models.Model):
         self.assign_meal_group()
         if self.resume:
             try:
-                logger.info(f"Attempting to save resume for user {self.user.email}: {self.resume.name}")
+                logger.info(
+                    f"Attempting to save resume for user {self.user.email}: {self.resume.name}"
+                )
                 super().save(*args, **kwargs)
                 logger.info(f"Successfully saved resume for user {self.user.email}")
             except Exception:

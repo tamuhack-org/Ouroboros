@@ -5,15 +5,31 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0030_delete_dietaryrestriction'),
+        ("application", "0030_delete_dietaryrestriction"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='application',
-            name='race',
-            field=multiselectfield.db.fields.MultiSelectField(choices=[('AI', 'American Indian or Alaskan Native'), ('ASI', 'Asian (Indian Subcontinent)'), ('ASE', 'Asian (East Asia)'), ('ASSE', 'Asian (Southeast Asia)'), ('AS', 'Asian (Other)'), ('BL', 'Black or African-American'), ('HI', 'Hispanic or Latino'), ('NH', 'Native Hawaiian or other Pacific Islander'), ('MENA', 'Middle Eastern or North African'), ('WH', 'White'), ('NA', 'Prefer not to answer'), ('O', 'Prefer to self-describe')], max_length=41, verbose_name='What race(s) do you identify with?'),
+            model_name="application",
+            name="race",
+            field=multiselectfield.db.fields.MultiSelectField(
+                choices=[
+                    ("AI", "American Indian or Alaskan Native"),
+                    ("ASI", "Asian (Indian Subcontinent)"),
+                    ("ASE", "Asian (East Asia)"),
+                    ("ASSE", "Asian (Southeast Asia)"),
+                    ("AS", "Asian (Other)"),
+                    ("BL", "Black or African-American"),
+                    ("HI", "Hispanic or Latino"),
+                    ("NH", "Native Hawaiian or other Pacific Islander"),
+                    ("MENA", "Middle Eastern or North African"),
+                    ("WH", "White"),
+                    ("NA", "Prefer not to answer"),
+                    ("O", "Prefer to self-describe"),
+                ],
+                max_length=41,
+                verbose_name="What race(s) do you identify with?",
+            ),
         ),
     ]

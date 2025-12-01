@@ -1,22 +1,25 @@
-{% extends 'dashboard_base.html' %} {% block content %}{% load static %}
+{% extends 'dashboard_base.html' %}
+{% load static %}
 
-<div class="application">
-  <header class="text-center">
-    <img class="header-logo" src="{% static 'th_bw.svg' %}" />
-    <h5>{{event_name}} {{event_year}} Application</h5>
-  </header>
+{% block content %}
+<article class="card card-elevated">
+    <header class="text-center mb-4">
+        <img src="{% static 'th_bw.svg' %}" alt="Logo" width="40">
+        <h1 class="auth-title text-uppercase tracking-wide mt-3">{{ event_name }} {{ event_year }} Application</h1>
+    </header>
 
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %} {{ form.as_p }} {% if active_wave %}
-    <div class="row">
-      <div class="col-12 col-lg-4 col-md-6">
-        <button type="submit" class="btn btn-lg btn-block btn-login w-100">
-          Submit
-        </button>
-      </div>
-    </div>
-    {% endif %}
-    <br />
-  </form>
-</div>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.form_help_text %}
+        <p class="form-help-text mb-3"><em>{{ form.form_help_text }}</em></p>
+        {% endif %}
+        {{ form.as_p }}
+
+        {% if active_wave %}
+        <div class="mt-4">
+            <button type="submit" class="btn-primary">Submit</button>
+        </div>
+        {% endif %}
+    </form>
+</article>
 {% endblock %}

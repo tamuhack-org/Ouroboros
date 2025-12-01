@@ -4,15 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('judgesmentors', '0001_initial'),
+        ("judgesmentors", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='judge',
-            name='track',
-            field=models.CharField(choices=[('SW', 'Software'), ('HW', 'Hardware'), ('AI', 'AI/ML'), ('GENERAL', 'General')], default='SW', max_length=100),
+            model_name="judge",
+            name="track",
+            field=models.CharField(
+                choices=[
+                    ("SW", "Software"),
+                    ("HW", "Hardware"),
+                    ("AI", "AI/ML"),
+                    ("GENERAL", "General"),
+                ],
+                default="SW",
+                max_length=100,
+            ),
         ),
     ]

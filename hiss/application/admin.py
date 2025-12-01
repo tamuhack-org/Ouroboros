@@ -18,7 +18,12 @@ from django_admin_listfilter_dropdown.filters import (
 )
 from rangefilter.filters import DateRangeFilter
 
-from application.constants import RACES, STATUS_ADMITTED, STATUS_REJECTED, STATUS_EXPIRED
+from application.constants import (
+    RACES,
+    STATUS_ADMITTED,
+    STATUS_EXPIRED,
+    STATUS_REJECTED,
+)
 from application.emails import send_confirmation_email
 from application.models import (
     Application,
@@ -33,7 +38,6 @@ class ApplicationAdminForm(forms.ModelForm):
         fields = "__all__"  # noqa: DJ007
         widgets = {
             "gender": forms.RadioSelect,
-            "classification": forms.RadioSelect,
             "grad_year": forms.RadioSelect,
             "status": forms.RadioSelect,
         }
@@ -93,7 +97,9 @@ def build_rejection_email(application: Application) -> tuple[str, str, None, lis
     return subject, message, html_message, None, [application.user.email]
 
 
-def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) -> None:
+def approve(
+    _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
+) -> None:
     """Approve selected Applications.
 
     Sets the value of the `approved` field for the selected `Application`s to `True`, creates an RSVP deadline for
@@ -131,7 +137,9 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) 
     send_mass_html_mail(email_tuples)
 
 
-def build_waitlist_email(application: Application) -> tuple[str, str, str, None, list[str]]:
+def build_waitlist_email(
+    application: Application,
+) -> tuple[str, str, str, None, list[str]]:
     """Create an email data tuple indicating that a user's application has been waitlisted.
 
     Args:
@@ -155,7 +163,9 @@ def build_waitlist_email(application: Application) -> tuple[str, str, str, None,
     return subject, message, html_message, None, [application.user.email]
 
 
-def waitlist(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) -> None:
+def waitlist(
+    _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
+) -> None:
     """Set the status of selected Applications to waitlisted (expired) and send waitlist emails."""
     email_tuples = []
     with transaction.atomic():
@@ -223,14 +233,11 @@ class ApplicationAdmin(admin.ModelAdmin):
         "race",
         "major",
         "school",
-        "classification",
         "grad_year",
         "num_hackathons_attended",
-        "technology_experience",
         "dietary_restrictions",
         "extra_links",
         # "address",
-        "question1",
         # "question2",
         # "question3",
         "notes",
@@ -239,7 +246,6 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_filter = (
         ("school", RelatedOnlyFieldListFilter),
         ("status", ChoiceDropdownFilter),
-        ("classification", ChoiceDropdownFilter),
         ("gender", ChoiceDropdownFilter),
         ("major", ChoiceDropdownFilter),
         ("grad_year", ChoiceDropdownFilter),
@@ -256,7 +262,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         "school",
         "user_email",
         "datetime_submitted",
-        "classification",
         "grad_year",
         "status",
         "additional_accommodations",
@@ -275,7 +280,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "phone_number",
                     "country",
                     "extra_links",
-                    "question1",
                     # "question2",
                     # "question3",
                     "resume",
@@ -290,7 +294,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "school_other",
                     "major",
                     "major_other",
-                    "classification",
                     "gender",
                     "gender_other",
                     "race",
@@ -298,7 +301,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                     "grad_year",
                     "level_of_study",
                     "num_hackathons_attended",
-                    "technology_experience",
                 ]
             },
         ),
@@ -340,7 +342,13 @@ class ApplicationAdmin(admin.ModelAdmin):
         "Resend Confirmation to Selected Applications"
     )
 
-    actions = [approve, reject, waitlist, export_application_emails, resend_confirmation]
+    actions = [
+        approve,
+        reject,
+        waitlist,
+        export_application_emails,
+        resend_confirmation,
+    ]
 
     def has_add_permission(self, _request):
         return True
