@@ -54,10 +54,8 @@ class InitialRegistrationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         photo_agreement = f"I grant permission for {settings.ORGANIZER_NAME} to use my name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event '{settings.EVENT_NAME} {settings.EVENT_YEAR}' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases."
-        accessibilities = "Please check this box you would like our team to follow up with you personally to discuss your accessibility accommodations during this event."
 
         self.fields["agree_to_photos"].label = photo_agreement
-        self.fields["accessibility_requirements"].label = accessibilities
 
         self.fields["agree_to_coc"].label = format_html(
             'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf" target="_blank" rel="noopener noreferrer">MLH Code of Conduct</a>'
@@ -81,7 +79,7 @@ class InitialRegistrationForm(forms.ModelForm):
         # Mark other optional fields
         self.fields["extra_links"].label = self.fields["extra_links"].label + " (optional)"
         self.fields["notes"].label = self.fields["notes"].label + " (optional)"
-        self.fields["accessibility_requirements"].label = accessibilities + " (optional)"
+        self.fields["accessibility_requirements"].label = self.fields["accessibility_requirements"].label + " (optional)"
 
         if not application_models.Wave.objects.active_wave():
             for field_name in self.fields:
@@ -203,7 +201,10 @@ class RSVPConfirmationForm(forms.ModelForm):
 
         # Mark optional fields
         self.fields["additional_accommodations"].label = self.fields["additional_accommodations"].label + " (optional)"
-        self.fields["accessibility_requirements"].label = self.fields["accessibility_requirements"].label + " (optional)"
+
+        # Add accessibility follow-up text for RSVP form
+        accessibilities = "Please check this box you would like our team to follow up with you personally to discuss your accessibility accommodations during this event."
+        self.fields["accessibility_requirements"].label = accessibilities + " (optional)"
 
     class Meta:
         model = application_models.Application

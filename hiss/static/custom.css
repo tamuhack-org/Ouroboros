@@ -432,17 +432,20 @@
   --pico-border-color: var(--color-accent-emphasis);
 }
 
-/* Secondary button (blue) */
+/* Secondary button (ghost style) */
 .btn-secondary {
-  --pico-background-color: var(--color-secondary);
-  --pico-border-color: var(--color-secondary);
-  --pico-color: #fff;
+  padding-inline: var(--space-2);
+  padding-block: var(--space-1);
+  --pico-background-color: transparent;
+  --pico-border-color: transparent;
+  --pico-color: var(--color-text-muted);
 }
 
 .btn-secondary:hover,
 .btn-secondary:focus {
-  --pico-background-color: var(--color-secondary-emphasis);
-  --pico-border-color: var(--color-secondary-emphasis);
+  --pico-background-color: rgba(0, 0, 0, 0.05);
+  --pico-border-color: transparent;
+  --pico-color: var(--color-text);
 }
 
 /* Outline variant */
@@ -492,6 +495,36 @@
    Component: Forms
    ========================================================================== */
 
+/* Form container - optimal reading width for accessibility (45-75 chars) */
+form {
+  max-width: 28rem; /* ~448px - optimal for form inputs */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Allow full-width forms when explicitly needed */
+form.form-full-width {
+  max-width: none;
+}
+
+/* Compact textareas - smaller default for optional fields */
+textarea {
+  height: 4rem;
+  min-height: 4rem;
+  resize: vertical;
+}
+
+/* Form labels should always be left-aligned for readability */
+form label,
+form .form-group {
+  text-align: left;
+}
+
+/* Expandable textarea when user needs more space */
+textarea.textarea-lg {
+  min-height: 8rem;
+}
+
 /* Required field indicator */
 .required::after {
   content: " *";
@@ -517,28 +550,33 @@
 }
 
 /* Checkbox */
-p:has(input[type="checkbox"]) {
+p:has(input[type="checkbox"]),
+.form-group:has(input[type="checkbox"]) {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: var(--space-2);
 }
 
-p:has(input[type="checkbox"]) label {
+p:has(input[type="checkbox"]) label,
+.form-group:has(input[type="checkbox"]) label {
   order: 2;
   margin-bottom: 0;
   flex: 1;
   min-width: 0;
 }
 
-p:has(input[type="checkbox"]) input[type="checkbox"] {
+p:has(input[type="checkbox"]) input[type="checkbox"],
+.form-group:has(input[type="checkbox"]) input[type="checkbox"] {
   order: 1;
   margin: 0;
   flex-shrink: 0;
   margin-top: 0.25rem;
 }
 
-p:has(input[type="checkbox"]) .helptext {
+p:has(input[type="checkbox"]) .helptext,
+.form-group:has(input[type="checkbox"]) .helptext,
+.form-group:has(input[type="checkbox"]) small {
   order: 3;
   width: 100%;
   margin-top: 0;

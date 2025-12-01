@@ -74,25 +74,12 @@
             Please RSVP below by <strong>{{ confirmation_deadline }}</strong> or you risk losing your spot.
         </p>
 
-        <form method="POST" action="{% url 'rsvp_submit' pk=application.pk %}" class="rsvp-form">
+        <form method="POST" action="{% url 'rsvp_submit' pk=application.pk %}" class="rsvp-form text-left">
             {% csrf_token %}
             {% if rsvp_form.form_help_text %}
             <p class="form-help-text mb-3"><em>{{ rsvp_form.form_help_text }}</em></p>
             {% endif %}
-            {% for field in rsvp_form %}
-                <div class="form-group">
-                    <label for="{{ field.id_for_label }}" {% if field.field.required %}class="required-form-input"{% endif %}>
-                        {{ field.label }}
-                    </label>
-                    {{ field }}
-                    {% if field.help_text %}
-                        <small>{{ field.help_text }}</small>
-                    {% endif %}
-                    {% if field.errors %}
-                        <small class="error">{{ field.errors }}</small>
-                    {% endif %}
-                </div>
-            {% endfor %}
+            {{ rsvp_form.as_p }}
 
             <div class="status-actions">
                 <a href="{% url 'application:decline' pk=application.pk %}"
