@@ -506,6 +506,44 @@
   margin-top: var(--space-2);
 }
 
+/* Form help text (general instructions at top of form) */
+.form-help-text {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  padding: var(--space-3);
+  background-color: var(--color-secondary-subtle);
+  border-left: 3px solid var(--color-secondary);
+  border-radius: var(--pico-border-radius);
+}
+
+/* Checkbox */
+p:has(input[type="checkbox"]) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+p:has(input[type="checkbox"]) label {
+  order: 2;
+  margin-bottom: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+p:has(input[type="checkbox"]) input[type="checkbox"] {
+  order: 1;
+  margin: 0;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+p:has(input[type="checkbox"]) .helptext {
+  order: 3;
+  width: 100%;
+  margin-top: 0;
+}
+
 /* Error list styling */
 .errorlist {
   list-style: none;

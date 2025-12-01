@@ -76,6 +76,9 @@
 
         <form method="POST" action="{% url 'rsvp_submit' pk=application.pk %}" class="rsvp-form">
             {% csrf_token %}
+            {% if rsvp_form.form_help_text %}
+            <p class="form-help-text mb-3"><em>{{ rsvp_form.form_help_text }}</em></p>
+            {% endif %}
             {% for field in rsvp_form %}
                 <div class="form-group">
                     <label for="{{ field.id_for_label }}" {% if field.field.required %}class="required-form-input"{% endif %}>

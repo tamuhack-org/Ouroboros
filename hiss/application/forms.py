@@ -15,17 +15,18 @@ class InitialRegistrationForm(forms.ModelForm):
     """Initial registration form for required information"""
 
     required_css_class = "required-form-input"
+    form_help_text = "All fields are required unless marked as (optional)."
 
     gender_other = forms.CharField(
-        label='If you chose "Prefer to self-describe", please elaborate.',
+        label='If you chose "Prefer to self-describe", please elaborate (optional).',
         required=False,
     )
     race_other = forms.CharField(
-        label='If you chose "Prefer to self-describe", please elaborate.',
+        label='If you chose "Prefer to self-describe", please elaborate (optional).',
         required=False,
     )
     major_other = forms.CharField(
-        label='If you chose "Other", please specify your major.',
+        label='If you chose "Other", please specify your major (optional).',
         required=False,
     )
 
@@ -41,11 +42,11 @@ class InitialRegistrationForm(forms.ModelForm):
     )
 
     school_other = forms.CharField(
-        label='If you chose "Other", please enter your school\'s name here.',
+        label='If you chose "Other", please enter your school\'s name here (optional).',
         required=False,
     )
     tamu_email = forms.CharField(
-        label="TAMU Email if you are a Texas A&M student",
+        label="TAMU Email if you are a Texas A&M student (optional)",
         required=False,
     )
 
@@ -71,10 +72,16 @@ class InitialRegistrationForm(forms.ModelForm):
             ' and the <a href="https://mlh.io/privacy" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>'
         )
 
-        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
+        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements (optional)."
 
         self.fields["agree_to_mlh_stuff"].label = format_html(mlh_stuff)
         self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
+        self.fields["is_adult"].label = "Please confirm you are 18 or older."
+
+        # Mark other optional fields
+        self.fields["extra_links"].label = self.fields["extra_links"].label + " (optional)"
+        self.fields["notes"].label = self.fields["notes"].label + " (optional)"
+        self.fields["accessibility_requirements"].label = accessibilities + " (optional)"
 
         if not application_models.Wave.objects.active_wave():
             for field_name in self.fields:
@@ -169,9 +176,10 @@ class RSVPConfirmationForm(forms.ModelForm):
     """Form for collecting logistics info after acceptance confirmation."""
 
     required_css_class = "required-form-input"
+    form_help_text = "All fields are required unless marked as (optional)."
 
     dietary_restrictions = forms.MultipleChoiceField(
-        label="Do you have any dietary restrictions?",
+        label="Do you have any dietary restrictions (optional)?",
         help_text="Select all that apply",
         choices=constants.DIETARY_RESTRICTIONS,
         required=False,
@@ -185,6 +193,17 @@ class RSVPConfirmationForm(forms.ModelForm):
                 ),
             }
         super().__init__(*args, **kwargs)
+
+        # Make fields required even though model has blank=True
+        self.fields["shirt_size"].required = True
+        self.fields["emergency_contact_name"].required = True
+        self.fields["emergency_contact_relationship"].required = True
+        self.fields["emergency_contact_phone"].required = True
+        self.fields["emergency_contact_email"].required = True
+
+        # Mark optional fields
+        self.fields["additional_accommodations"].label = self.fields["additional_accommodations"].label + " (optional)"
+        self.fields["accessibility_requirements"].label = self.fields["accessibility_requirements"].label + " (optional)"
 
     class Meta:
         model = application_models.Application
@@ -206,17 +225,18 @@ class RSVPConfirmationForm(forms.ModelForm):
 # Keep the legacy form for backwards compatibility if needed
 class ApplicationModelForm(forms.ModelForm):
     required_css_class = "required-form-input"
+    form_help_text = "All fields are required unless marked as (optional)."
 
     gender_other = forms.CharField(
-        label='If you chose "Prefer to self-describe", please elaborate.',
+        label='If you chose "Prefer to self-describe", please elaborate (optional).',
         required=False,
     )
     race_other = forms.CharField(
-        label='If you chose "Prefer to self-describe", please elaborate.',
+        label='If you chose "Prefer to self-describe", please elaborate (optional).',
         required=False,
     )
     major_other = forms.CharField(
-        label='If you chose "Other", please specify your major.',
+        label='If you chose "Other", please specify your major (optional).',
         required=False,
     )
 
@@ -233,16 +253,16 @@ class ApplicationModelForm(forms.ModelForm):
     )
 
     school_other = forms.CharField(
-        label='If you chose "Other", please enter your school\'s name here.',
+        label='If you chose "Other", please enter your school\'s name here (optional).',
         required=False,
     )
     tamu_email = forms.CharField(
-        label="TAMU Email if you are a Texas A&M student",
+        label="TAMU Email if you are a Texas A&M student (optional)",
         required=False,
     )
 
     dietary_restrictions = forms.MultipleChoiceField(
-        label="Do you have any dietary restrictions?",
+        label="Do you have any dietary restrictions (optional)?",
         help_text="Select all that apply",
         choices=constants.DIETARY_RESTRICTIONS,
         required=False,
@@ -277,10 +297,17 @@ class ApplicationModelForm(forms.ModelForm):
             ' and the <a href="https://mlh.io/privacy" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>'
         )
 
-        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements."
+        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements (optional)."
 
         self.fields["agree_to_mlh_stuff"].label = format_html(mlh_stuff)
         self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
+        self.fields["is_adult"].label = "Please confirm you are 18 or older."
+
+        # Mark other optional fields
+        self.fields["extra_links"].label = self.fields["extra_links"].label + " (optional)"
+        self.fields["notes"].label = self.fields["notes"].label + " (optional)"
+        self.fields["accessibility_requirements"].label = accessibilities + " (optional)"
+        self.fields["additional_accommodations"].label = self.fields["additional_accommodations"].label + " (optional)"
 
         # HACK: Disable the form if there's not an active wave
         if not application_models.Wave.objects.active_wave():
