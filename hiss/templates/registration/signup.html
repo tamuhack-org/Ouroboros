@@ -1,35 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block body %}
+<main class="container page-auth-alt flex flex-center">
+    <article class="card card-elevated max-w-md w-full">
+        <header class="text-center mb-4">
+            <img src="{% static 'th_bw.svg' %}" alt="Logo" width="40">
+            <h1 class="auth-title text-uppercase tracking-wide mt-3">{{ event_name }} {{ event_year }}</h1>
+            <p class="text-muted text-sm">Log in or sign up to continue</p>
+        </header>
 
-<section class="signin sign_up">
-    <div class="container">
-        <div class="row justify-content-md-center text-center">
-            <div class="col-sm-12 col-md-8 col-lg-6 login-box">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-primary w-full">Register</button>
+        </form>
 
-                <header>
-                    <img class="header-logo" src="{% static 'th_bw.svg' %}">
-                    <h1>{{ event_name }} {{ event_year }}</h1>
-                    <h6 style="font-weight: 300;">Log in or sign up to continue</h5>
-                </header>
-
-                <form method="POST">
-                    {% csrf_token %}    <!-- security -->
-
-                    {{form.as_p}}
-                    <input type="submit" value="Register" class="btn btn-lg btn-block btn-login"
-                    >
-                </form>
-
-                <div class="row login-alt-options pt-4">
-                    <div class="col-sm-12 col-lg-12 text-center">
-                        Already have an account? <a href="{% url 'customauth:login' %}">Log in</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
+        <p class="text-center mt-4 mb-0">
+            Already have an account? <a href="{% url 'customauth:login' %}">Log in</a>
+        </p>
+    </article>
+</main>
 {% endblock %}

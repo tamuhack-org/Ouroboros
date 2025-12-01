@@ -9,7 +9,7 @@ from django.views import generic
 
 from application.constants import STATUS_ADMITTED, STATUS_CONFIRMED, STATUS_DECLINED
 from application.emails import send_confirmation_email, send_creation_email
-from application.forms import ApplicationModelForm
+from application.forms import InitialRegistrationForm
 from application.models import (
     Application,
     Wave,
@@ -22,7 +22,7 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
     Checks if an Application doesn't already exist and the User's not already applied to be a volunteer.
     """
 
-    form_class = ApplicationModelForm
+    form_class = InitialRegistrationForm
     template_name = "application/application_form.html"
     success_url = reverse_lazy("status")
 
@@ -31,7 +31,7 @@ class CreateApplicationView(mixins.LoginRequiredMixin, generic.CreateView):
         context["active_wave"] = Wave.objects.active_wave()
         return context
 
-    def form_valid(self, form: ApplicationModelForm):
+    def form_valid(self, form: InitialRegistrationForm):
         try:
             if Application.objects.filter(user=self.request.user).exists():
                 form.add_error(
@@ -57,7 +57,7 @@ class UpdateApplicationView(mixins.LoginRequiredMixin, generic.UpdateView):
     """
 
     queryset = Application.objects.all()
-    form_class = ApplicationModelForm
+    form_class = InitialRegistrationForm
     template_name = "application/application_form.html"
     success_url = reverse_lazy("status")
 
@@ -88,14 +88,10 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
             return redirect(reverse_lazy("status"))
         if app.user != request.user:
             msg = "You don't have permission to view this application."
-            raise PermissionDenied(
-                msg
-            )
+            raise PermissionDenied(msg)
         if app.status != STATUS_ADMITTED:
             msg = "You can't confirm your application if it hasn't been approved."
-            raise PermissionDenied(
-                msg
-            )
+            raise PermissionDenied(msg)
         if app.status == STATUS_ADMITTED and app.is_past_confirmation_deadline:
             msg = (
                 "You can't confirm your application after the confirmation deadline. "
@@ -121,14 +117,10 @@ class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
             return redirect(reverse_lazy("status"))
         if app.user != request.user:
             msg = "You don't have permission to view this application."
-            raise PermissionDenied(
-                msg
-            )
+            raise PermissionDenied(msg)
         if app.status not in (STATUS_ADMITTED, STATUS_CONFIRMED):
             msg = "You can't decline your spot if it hasn't been approved."
-            raise PermissionDenied(
-                msg
-            )
+            raise PermissionDenied(msg)
         app.status = STATUS_DECLINED
         app.save()
         return redirect(reverse_lazy("status"))

@@ -83,15 +83,17 @@ class CheckinHackerView(views.APIView):
         try:
             judge = Judge.objects.get(user__email=user_email)
             name_parts = judge.name.split()
-            first_name = name_parts[0] if name_parts else 'Judge'
-            last_name = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
-            return JsonResponse({
-                "checkinStatus": judge.status,
-                "first_name": first_name,
-                "last_name": last_name,
-                "wares": "None",
-                "mealGroup": "Judge/Mentor",
-            })
+            first_name = name_parts[0] if name_parts else "Judge"
+            last_name = " ".join(name_parts[1:]) if len(name_parts) > 1 else ""
+            return JsonResponse(
+                {
+                    "checkinStatus": judge.status,
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "wares": "None",
+                    "mealGroup": "Judge/Mentor",
+                }
+            )
         except Judge.DoesNotExist:
             pass
 
@@ -99,15 +101,17 @@ class CheckinHackerView(views.APIView):
         try:
             mentor = Mentor.objects.get(user__email=user_email)
             name_parts = mentor.name.split()
-            first_name = name_parts[0] if name_parts else 'Mentor'
-            last_name = ' '.join(name_parts[1:]) if len(name_parts) > 1 else ''
-            return JsonResponse({
-                "checkinStatus": mentor.status,
-                "first_name": first_name,
-                "last_name": last_name,
-                "wares": "None",  # Keep same response format
-                "mealGroup": "Judge/Mentor",
-            })
+            first_name = name_parts[0] if name_parts else "Mentor"
+            last_name = " ".join(name_parts[1:]) if len(name_parts) > 1 else ""
+            return JsonResponse(
+                {
+                    "checkinStatus": mentor.status,
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "wares": "None",  # Keep same response format
+                    "mealGroup": "Judge/Mentor",
+                }
+            )
         except Mentor.DoesNotExist:
             pass
 
@@ -172,11 +176,13 @@ class CreateFoodEventView(views.APIView):
             food_events = FoodEvent.objects.filter(user=user)
             meal_codes = [event.meal for event in food_events]
 
-            return JsonResponse({
-                "mealScans": meal_codes,
-                "dietaryRestrictions": application.dietary_restrictions,
-                "mealGroup": application.meal_group,
-            })
+            return JsonResponse(
+                {
+                    "mealScans": meal_codes,
+                    "dietaryRestrictions": application.dietary_restrictions,
+                    "mealGroup": application.meal_group,
+                }
+            )
         except Application.DoesNotExist:
             pass
 
@@ -186,11 +192,13 @@ class CreateFoodEventView(views.APIView):
             food_events = FoodEvent.objects.filter(user=user)
             meal_codes = [event.meal for event in food_events]
 
-            return JsonResponse({
-                "mealScans": meal_codes,
-                "dietaryRestrictions": "[]",
-                "mealGroup": "Judge/Mentor",
-            })
+            return JsonResponse(
+                {
+                    "mealScans": meal_codes,
+                    "dietaryRestrictions": "[]",
+                    "mealGroup": "Judge/Mentor",
+                }
+            )
         except Judge.DoesNotExist:
             pass
 
@@ -199,11 +207,13 @@ class CreateFoodEventView(views.APIView):
             food_events = FoodEvent.objects.filter(user=user)
             meal_codes = [event.meal for event in food_events]
 
-            return JsonResponse({
-                "mealScans": meal_codes,
-                "dietaryRestrictions": "[]",
-                "mealGroup": "Judge/Mentor",
-            })
+            return JsonResponse(
+                {
+                    "mealScans": meal_codes,
+                    "dietaryRestrictions": "[]",
+                    "mealGroup": "Judge/Mentor",
+                }
+            )
         except Mentor.DoesNotExist:
             pass
 
@@ -319,14 +329,16 @@ class JudgeLookupView(views.APIView):
 
         try:
             judge = Judge.objects.get(user__email=user_email)
-            return JsonResponse({
-                "name": judge.name,
-                "email": user_email,
-                "track": judge.track,
-                "status": judge.status,
-                "is_faculty": judge.is_faculty,
-                "tshirt_size": judge.tshirt_size,
-            })
+            return JsonResponse(
+                {
+                    "name": judge.name,
+                    "email": user_email,
+                    "track": judge.track,
+                    "status": judge.status,
+                    "is_faculty": judge.is_faculty,
+                    "tshirt_size": judge.tshirt_size,
+                }
+            )
         except Judge.DoesNotExist:
             return response.Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -343,13 +355,15 @@ class MentorLookupView(views.APIView):
 
         try:
             mentor = Mentor.objects.get(user__email=user_email)
-            return JsonResponse({
-                "name": mentor.name,
-                "email": user_email,
-                "track": mentor.track,
-                "status": mentor.status,
-                "is_tamu_faculty": mentor.is_tamu_faculty,
-                "tshirt_size": mentor.tshirt_size,
-            })
+            return JsonResponse(
+                {
+                    "name": mentor.name,
+                    "email": user_email,
+                    "track": mentor.track,
+                    "status": mentor.status,
+                    "is_tamu_faculty": mentor.is_tamu_faculty,
+                    "tshirt_size": mentor.tshirt_size,
+                }
+            )
         except Mentor.DoesNotExist:
             return response.Response(status=status.HTTP_404_NOT_FOUND)

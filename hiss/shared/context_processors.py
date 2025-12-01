@@ -10,5 +10,5 @@ def customization(_request: HttpRequest):
         "event_start_date": settings.EVENT_START_DATETIME,
         "event_end_date": settings.EVENT_END_DATETIME,
         "organizer_email": settings.ORGANIZER_EMAIL,
-        "organizer_name": settings.ORGANIZER_NAME
+        "organizer_name": settings.ORGANIZER_NAME,
     }

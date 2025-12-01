@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,43 +14,149 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Judge',
+            name="Judge",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('phone', models.CharField(blank=True, max_length=20)),
-                ('tshirt_size', models.CharField(choices=[('XS', 'XS'), ('S', 'S'), ('M', 'M'), ('L', 'L'), ('XL', 'XL'), ('XXL', 'XXL')], default='M', max_length=5)),
-                ('is_faculty', models.BooleanField(default=False)),
-                ('track', models.CharField(choices=[('SW', 'Software'), ('HW', 'Hardware'), ('AI', 'AI/ML'), ('GENERAL', 'General')], default='SW', max_length=10)),
-                ('additional_info', models.TextField(blank=True)),
-                ('status', models.CharField(choices=[('I', 'Invited'), ('C', 'Confirmed'), ('CI', 'Checked In'), ('D', 'Declined')], default='I', max_length=2)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='judge_profile', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("phone", models.CharField(blank=True, max_length=20)),
+                (
+                    "tshirt_size",
+                    models.CharField(
+                        choices=[
+                            ("XS", "XS"),
+                            ("S", "S"),
+                            ("M", "M"),
+                            ("L", "L"),
+                            ("XL", "XL"),
+                            ("XXL", "XXL"),
+                        ],
+                        default="M",
+                        max_length=5,
+                    ),
+                ),
+                ("is_faculty", models.BooleanField(default=False)),
+                (
+                    "track",
+                    models.CharField(
+                        choices=[
+                            ("SW", "Software"),
+                            ("HW", "Hardware"),
+                            ("AI", "AI/ML"),
+                            ("GENERAL", "General"),
+                        ],
+                        default="SW",
+                        max_length=10,
+                    ),
+                ),
+                ("additional_info", models.TextField(blank=True)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("I", "Invited"),
+                            ("C", "Confirmed"),
+                            ("CI", "Checked In"),
+                            ("D", "Declined"),
+                        ],
+                        default="I",
+                        max_length=2,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="judge_profile",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Judge',
-                'verbose_name_plural': 'Judges',
+                "verbose_name": "Judge",
+                "verbose_name_plural": "Judges",
             },
         ),
         migrations.CreateModel(
-            name='Mentor',
+            name="Mentor",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('phone', models.CharField(blank=True, max_length=20)),
-                ('tshirt_size', models.CharField(choices=[('XS', 'XS'), ('S', 'S'), ('M', 'M'), ('L', 'L'), ('XL', 'XL'), ('XXL', 'XXL')], default='M', max_length=5)),
-                ('is_tamu_faculty', models.BooleanField(default=False)),
-                ('track', models.CharField(choices=[('SW', 'Software'), ('HW', 'Hardware'), ('AI', 'AI/ML'), ('GENERAL', 'General')], default='SW', max_length=10)),
-                ('additional_info', models.TextField(blank=True)),
-                ('status', models.CharField(choices=[('I', 'Invited'), ('C', 'Confirmed'), ('CI', 'Checked In'), ('D', 'Declined')], default='I', max_length=2)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='mentor_profile', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("phone", models.CharField(blank=True, max_length=20)),
+                (
+                    "tshirt_size",
+                    models.CharField(
+                        choices=[
+                            ("XS", "XS"),
+                            ("S", "S"),
+                            ("M", "M"),
+                            ("L", "L"),
+                            ("XL", "XL"),
+                            ("XXL", "XXL"),
+                        ],
+                        default="M",
+                        max_length=5,
+                    ),
+                ),
+                ("is_tamu_faculty", models.BooleanField(default=False)),
+                (
+                    "track",
+                    models.CharField(
+                        choices=[
+                            ("SW", "Software"),
+                            ("HW", "Hardware"),
+                            ("AI", "AI/ML"),
+                            ("GENERAL", "General"),
+                        ],
+                        default="SW",
+                        max_length=10,
+                    ),
+                ),
+                ("additional_info", models.TextField(blank=True)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("I", "Invited"),
+                            ("C", "Confirmed"),
+                            ("CI", "Checked In"),
+                            ("D", "Declined"),
+                        ],
+                        default="I",
+                        max_length=2,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="mentor_profile",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Mentor',
-                'verbose_name_plural': 'Mentors',
+                "verbose_name": "Mentor",
+                "verbose_name_plural": "Mentors",
             },
         ),
     ]

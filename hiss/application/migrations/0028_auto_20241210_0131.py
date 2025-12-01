@@ -4,15 +4,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0027_auto_20241125_1435'),
+        ("application", "0027_auto_20241125_1435"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='application',
-            name='wares',
-            field=models.CharField(blank=True, choices=[('SW', 'Software'), ('HW', 'Hardware')], default='NA', max_length=8, null=True, verbose_name='TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track'),
+            model_name="application",
+            name="wares",
+            field=models.CharField(
+                blank=True,
+                choices=[("SW", "Software"), ("HW", "Hardware")],
+                default="NA",
+                max_length=8,
+                null=True,
+                verbose_name="TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track",
+            ),
         ),
     ]

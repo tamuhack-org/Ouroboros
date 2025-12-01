@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0029_alter_application_age_and_more'),
-        ('volunteer', '0004_remove_foodevent_restrictions_alter_foodevent_meal'),
+        ("application", "0029_alter_application_age_and_more"),
+        ("volunteer", "0004_remove_foodevent_restrictions_alter_foodevent_meal"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='DietaryRestriction',
+            name="DietaryRestriction",
         ),
     ]

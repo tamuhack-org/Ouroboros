@@ -60,8 +60,12 @@ AWS_LOCATION = "resumes"
 MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{AWS_LOCATION}/"
 
 logger.info(f"S3 bucket configured: {AWS_STORAGE_BUCKET_NAME}")
-logger.info(f"AWS Access Key ID present: {'Yes' if os.getenv('AWS_ACCESS_KEY_ID') else 'No'}")
-logger.info(f"AWS Secret Access Key present: {'Yes' if os.getenv('AWS_SECRET_ACCESS_KEY') else 'No'}")
+logger.info(
+    f"AWS Access Key ID present: {'Yes' if os.getenv('AWS_ACCESS_KEY_ID') else 'No'}"
+)
+logger.info(
+    f"AWS Secret Access Key present: {'Yes' if os.getenv('AWS_SECRET_ACCESS_KEY') else 'No'}"
+)
 
 DATABASES = {
     "default": dj_database_url.config(

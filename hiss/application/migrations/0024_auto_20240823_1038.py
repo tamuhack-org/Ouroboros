@@ -4,20 +4,31 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0023_auto_20240810_1843'),
+        ("application", "0023_auto_20240810_1843"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='application',
-            name='meal_group',
+            model_name="application",
+            name="meal_group",
             field=models.CharField(blank=True, default=None, max_length=255, null=True),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='status',
-            field=models.CharField(choices=[('P', 'Under Review'), ('R', 'Rejected'), ('A', 'Admitted'), ('C', 'Confirmed'), ('X', 'Declined'), ('I', 'Checked in'), ('E', 'Waitlisted (Expired, internally)')], default='P', max_length=1),
+            model_name="application",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("P", "Under Review"),
+                    ("R", "Rejected"),
+                    ("A", "Admitted"),
+                    ("C", "Confirmed"),
+                    ("X", "Declined"),
+                    ("I", "Checked in"),
+                    ("E", "Waitlisted (Expired, internally)"),
+                ],
+                default="P",
+                max_length=1,
+            ),
         ),
     ]

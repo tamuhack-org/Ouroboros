@@ -22,7 +22,9 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
         regular_user_token = self.get_token(self.email, self.password)
 
         response = self.client.get(
-            reverse_lazy("volunteer:workshops"), data=self.data_dict, HTTP_AUTHORIZATION=regular_user_token
+            reverse_lazy("volunteer:workshops"),
+            data=self.data_dict,
+            HTTP_AUTHORIZATION=regular_user_token,
         )
 
         self.assertEqual(response.status_code, 403)
@@ -30,7 +32,9 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
     def test_get_succeeds_for_volunteer(self):
         self.create_active_wave()
 
-        app = Application.objects.create(**self.application_fields, wave=self.wave1, status=STATUS_CHECKED_IN)
+        app = Application.objects.create(
+            **self.application_fields, wave=self.wave1, status=STATUS_CHECKED_IN
+        )
         volunteer_token = self.get_volunteer_token()
 
         expected_output = {
@@ -43,7 +47,6 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
         app.save()
         app.refresh_from_db()
 
-
         self.client.post(
             reverse_lazy("volunteer:food"),
             data=self.data_dict,
@@ -51,14 +54,17 @@ class CreateFoodEventViewTestCase(TokenAuthTestCase):
         )
 
         response = self.client.get(
-            reverse_lazy("volunteer:food"), data=self.data_dict, HTTP_AUTHORIZATION=volunteer_token
+            reverse_lazy("volunteer:food"),
+            data=self.data_dict,
+            HTTP_AUTHORIZATION=volunteer_token,
         )
 
         self.assertEqual(response.status_code, 200)
         response_json = response.json()
-        self.assertEqual(response_json["dietaryRestrictions"], expected_output["dietaryRestrictions"])
+        self.assertEqual(
+            response_json["dietaryRestrictions"], expected_output["dietaryRestrictions"]
+        )
         self.assertEqual(response_json["mealScans"], expected_output["mealScans"])
-
 
     ### POST tests ###
 

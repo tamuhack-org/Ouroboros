@@ -4,19 +4,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('volunteer', '0003_auto_20220130_1307'),
+        ("volunteer", "0003_auto_20220130_1307"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='foodevent',
-            name='restrictions',
+            model_name="foodevent",
+            name="restrictions",
         ),
         migrations.AlterField(
-            model_name='foodevent',
-            name='meal',
-            field=models.CharField(choices=[('B', 'Breakfast'), ('L', 'Lunch'), ('D', 'Dinner'), ('MS', 'Midnight Snack'), ('B2', 'Breakfast (Day 2)'), ('L2', 'Lunch (Day 2)')], max_length=14),
+            model_name="foodevent",
+            name="meal",
+            field=models.CharField(
+                choices=[
+                    ("B", "Breakfast"),
+                    ("L", "Lunch"),
+                    ("D", "Dinner"),
+                    ("MS", "Midnight Snack"),
+                    ("B2", "Breakfast (Day 2)"),
+                    ("L2", "Lunch (Day 2)"),
+                ],
+                max_length=14,
+            ),
         ),
     ]

@@ -147,34 +147,34 @@ CORS_URLS_REGEX = r"^/api/.*$"
 
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.ericwli.xyz",   # matches any sub-domain on HTTPS
+    "https://*.ericwli.xyz",  # matches any sub-domain on HTTPS
     "https://*.tamuhack.com",
     "https://*.tamuhack.org",
-    "https://*.railway.app"
+    "https://*.railway.app",
 ]
 
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'class': 'logging.StreamHandler',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "class": "logging.StreamHandler",
         },
-        'console': {
-            'class': 'logging.StreamHandler',
+        "console": {
+            "class": "logging.StreamHandler",
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['file', 'console'],
-            'level': 'ERROR',
-            'propagate': True,
+    "loggers": {
+        "django": {
+            "handlers": ["file", "console"],
+            "level": "ERROR",
+            "propagate": True,
         },
-        'django.request': {
-            'handlers': ['file', 'console'],
-            'level': 'ERROR',
-            'propagate': False,
+        "django.request": {
+            "handlers": ["file", "console"],
+            "level": "ERROR",
+            "propagate": False,
         },
     },
 }
