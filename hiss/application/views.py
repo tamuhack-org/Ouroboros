@@ -96,6 +96,14 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
             raise PermissionDenied(
                 msg
             )
+        if app.status == STATUS_ADMITTED and app.is_past_confirmation_deadline:
+            msg = (
+                "You can't confirm your application after the confirmation deadline. "
+                "Since the deadline has passed, you'll be moved to the waitlist. Please keep "
+                "an eye on your email for any updates."
+            )
+            raise PermissionDenied(msg)
+
         app.status = STATUS_CONFIRMED
         app.save()
         send_confirmation_email(app)

@@ -71,7 +71,7 @@
         <p class="status-label">Congrats, you have been</p>
         <p class="status-value">ACCEPTED</p>
         <p class="status-description">
-            Please RSVP below by <strong>October 16th, 2025, at 11:59PM</strong> or you risk losing your spot.
+            Please RSVP below by <strong>{{ confirmation_deadline }}</strong> or you risk losing your spot.
         </p>
 
         <form method="POST" action="{% url 'rsvp_submit' pk=application.pk %}" class="rsvp-form">
@@ -92,8 +92,8 @@
             {% endfor %}
 
             <div class="status-actions">
-                <a href="{% url 'application:decline' pk=application.pk %}" 
-                   onclick="event.preventDefault(); document.getElementById('decline-form').submit();" 
+                <a href="{% url 'application:decline' pk=application.pk %}"
+                   onclick="event.preventDefault(); document.getElementById('decline-form').submit();"
                    class="btn-secondary">No, I will NOT participate.</a>
                 <button type="submit" class="btn-primary">I'll be there!</button>
             </div>
