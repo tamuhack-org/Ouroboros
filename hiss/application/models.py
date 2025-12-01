@@ -285,6 +285,9 @@ class Application(models.Model):
     notes = models.TextField(
         "Anything else you would like us to know?", max_length=300, blank=True
     )
+    misc_short_answer = models.TextField(
+        "Miscellaneous Short Answer", max_length=500, blank=True, null=True
+    )
     # META INFO
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     datetime_submitted = models.DateTimeField(auto_now_add=True)
