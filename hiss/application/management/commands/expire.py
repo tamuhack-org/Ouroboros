@@ -1,10 +1,10 @@
 from django.core.management.base import BaseCommand
-from django.utils import timezone
 from django.db import transaction
+from django.utils import timezone
 
+from application.admin import build_waitlist_email
 from application.constants import STATUS_ADMITTED, STATUS_EXPIRED
 from application.models import Application
-from application.admin import build_waitlist_email
 from shared.admin_functions import send_mass_html_mail
 
 

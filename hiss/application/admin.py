@@ -21,8 +21,8 @@ from rangefilter.filters import DateRangeFilter
 from application.constants import (
     RACES,
     STATUS_ADMITTED,
-    STATUS_REJECTED,
     STATUS_EXPIRED,
+    STATUS_REJECTED,
 )
 from application.emails import send_confirmation_email
 from application.models import (
