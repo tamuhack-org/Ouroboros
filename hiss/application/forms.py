@@ -129,7 +129,6 @@ class InitialRegistrationForm(forms.ModelForm):
             "agree_to_mlh_stuff": forms.CheckboxInput,
             "signup_to_mlh_newsletter": forms.CheckboxInput,
             "agree_to_photos": forms.CheckboxInput,
-            "accessibility_requirements": forms.CheckboxInput,
             "tamu_email": forms.EmailInput(attrs={"placeholder": "netid@tamu.edu"}),
             "extra_links": forms.TextInput(
                 attrs={
@@ -162,7 +161,6 @@ class InitialRegistrationForm(forms.ModelForm):
             "extra_links",
             "notes",
             "agree_to_photos",
-            "accessibility_requirements",
             "agree_to_coc",
             "agree_to_mlh_stuff",
             "signup_to_mlh_newsletter",
