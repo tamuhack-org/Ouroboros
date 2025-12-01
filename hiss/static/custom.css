@@ -459,7 +459,7 @@ img[src*="th_bw.svg"] {
 }
 
 .nav-header-right a:hover {
-  background-color: var(--pico-secondary-hover-background);
+  background-color: var(--color-accent-subtle);
   color: var(--color-text);
 }
 
