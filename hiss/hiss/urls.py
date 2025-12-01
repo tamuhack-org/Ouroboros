@@ -29,6 +29,7 @@ from judgesmentors.csv_email_admin import csv_email_admin
 def healthcheck(_request):
     return http.HttpResponse("")
 
+
 urlpatterns = [
     path("admin/csv-emails/", include(csv_email_admin.get_urls())),
     path("admin/", admin.site.urls),

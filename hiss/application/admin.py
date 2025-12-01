@@ -18,7 +18,12 @@ from django_admin_listfilter_dropdown.filters import (
 )
 from rangefilter.filters import DateRangeFilter
 
-from application.constants import RACES, STATUS_ADMITTED, STATUS_REJECTED, STATUS_EXPIRED
+from application.constants import (
+    RACES,
+    STATUS_ADMITTED,
+    STATUS_REJECTED,
+    STATUS_EXPIRED,
+)
 from application.emails import send_confirmation_email
 from application.models import (
     Application,
@@ -92,7 +97,9 @@ def build_rejection_email(application: Application) -> tuple[str, str, None, lis
     return subject, message, html_message, None, [application.user.email]
 
 
-def approve(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) -> None:
+def approve(
+    _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
+) -> None:
     """Approve selected Applications.
 
     Sets the value of the `approved` field for the selected `Application`s to `True`, creates an RSVP deadline for
@@ -130,7 +137,9 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) 
     send_mass_html_mail(email_tuples)
 
 
-def build_waitlist_email(application: Application) -> tuple[str, str, str, None, list[str]]:
+def build_waitlist_email(
+    application: Application,
+) -> tuple[str, str, str, None, list[str]]:
     """Create an email data tuple indicating that a user's application has been waitlisted.
 
     Args:
@@ -154,7 +163,9 @@ def build_waitlist_email(application: Application) -> tuple[str, str, str, None,
     return subject, message, html_message, None, [application.user.email]
 
 
-def waitlist(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) -> None:
+def waitlist(
+    _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
+) -> None:
     """Set the status of selected Applications to waitlisted (expired) and send waitlist emails."""
     email_tuples = []
     with transaction.atomic():
@@ -331,7 +342,13 @@ class ApplicationAdmin(admin.ModelAdmin):
         "Resend Confirmation to Selected Applications"
     )
 
-    actions = [approve, reject, waitlist, export_application_emails, resend_confirmation]
+    actions = [
+        approve,
+        reject,
+        waitlist,
+        export_application_emails,
+        resend_confirmation,
+    ]
 
     def has_add_permission(self, _request):
         return True

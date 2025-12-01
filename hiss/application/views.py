@@ -88,14 +88,10 @@ class ConfirmApplicationView(mixins.LoginRequiredMixin, views.View):
             return redirect(reverse_lazy("status"))
         if app.user != request.user:
             msg = "You don't have permission to view this application."
-            raise PermissionDenied(
-                msg
-            )
+            raise PermissionDenied(msg)
         if app.status != STATUS_ADMITTED:
             msg = "You can't confirm your application if it hasn't been approved."
-            raise PermissionDenied(
-                msg
-            )
+            raise PermissionDenied(msg)
         if app.status == STATUS_ADMITTED and app.is_past_confirmation_deadline:
             msg = (
                 "You can't confirm your application after the confirmation deadline. "
@@ -121,14 +117,10 @@ class DeclineApplicationView(mixins.LoginRequiredMixin, views.View):
             return redirect(reverse_lazy("status"))
         if app.user != request.user:
             msg = "You don't have permission to view this application."
-            raise PermissionDenied(
-                msg
-            )
+            raise PermissionDenied(msg)
         if app.status not in (STATUS_ADMITTED, STATUS_CONFIRMED):
             msg = "You can't decline your spot if it hasn't been approved."
-            raise PermissionDenied(
-                msg
-            )
+            raise PermissionDenied(msg)
         app.status = STATUS_DECLINED
         app.save()
         return redirect(reverse_lazy("status"))

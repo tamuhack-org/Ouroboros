@@ -11,6 +11,7 @@ from application.forms import RSVPConfirmationForm
 from application.models import Application, Wave
 from user.models import User
 
+
 class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
     template_name = "status/status.html"
 
@@ -78,13 +79,17 @@ class RSVPSubmitView(mixins.LoginRequiredMixin, generic.View):
         app: Application = Application.objects.get(pk=pk)
 
         if app.user != request.user:
-            raise PermissionDenied("You don't have permission to view this application.")
+            raise PermissionDenied(
+                "You don't have permission to view this application."
+            )
 
         if app.status == application.constants.STATUS_CONFIRMED:
             return redirect(reverse_lazy("status"))
 
         if app.status != application.constants.STATUS_ADMITTED:
-            raise PermissionDenied("You can't confirm your application if it hasn't been approved.")
+            raise PermissionDenied(
+                "You can't confirm your application if it hasn't been approved."
+            )
 
         form = RSVPConfirmationForm(request.POST, instance=app)
         if form.is_valid():

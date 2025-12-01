@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('team', '0002_alter_team_admitted'),
-        ('user', '0002_remove_user_team'),
+        ("team", "0002_alter_team_admitted"),
+        ("user", "0002_remove_user_team"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='Team',
+            name="Team",
         ),
     ]

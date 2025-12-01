@@ -241,7 +241,11 @@ class Application(models.Model):
 
     # LOGISTICAL INFO (collected during RSVP, nullable for initial registration)
     shirt_size = models.CharField(
-        "What size shirt do you wear?", choices=SHIRT_SIZES, max_length=4, blank=True, null=True
+        "What size shirt do you wear?",
+        choices=SHIRT_SIZES,
+        max_length=4,
+        blank=True,
+        null=True,
     )
 
     additional_accommodations = models.TextField(
@@ -266,7 +270,11 @@ class Application(models.Model):
     )
 
     dietary_restrictions = models.CharField(
-        "Do you have any dietary restrictions?", max_length=255, blank=True, null=True, default=""
+        "Do you have any dietary restrictions?",
+        max_length=255,
+        blank=True,
+        null=True,
+        default="",
     )
     meal_group = models.CharField(max_length=255, null=True, blank=True, default=None)
 
@@ -296,7 +304,9 @@ class Application(models.Model):
         self.assign_meal_group()
         if self.resume:
             try:
-                logger.info(f"Attempting to save resume for user {self.user.email}: {self.resume.name}")
+                logger.info(
+                    f"Attempting to save resume for user {self.user.email}: {self.resume.name}"
+                )
                 super().save(*args, **kwargs)
                 logger.info(f"Successfully saved resume for user {self.user.email}")
             except Exception:

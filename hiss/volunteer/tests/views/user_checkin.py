@@ -78,7 +78,6 @@ class CheckinUserViewTestCase(TokenAuthTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), expected_output)
 
-
     ### POST tests ###
 
     def test_post_fails_for_regular_user(self):

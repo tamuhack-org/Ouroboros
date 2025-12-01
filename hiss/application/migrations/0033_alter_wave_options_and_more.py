@@ -4,19 +4,18 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0032_alter_application_age_and_more'),
+        ("application", "0032_alter_application_age_and_more"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='wave',
-            options={'ordering': ['start']},
+            name="wave",
+            options={"ordering": ["start"]},
         ),
         migrations.RenameField(
-            model_name='application',
-            old_name='wants_team',
-            new_name='discovery_method',
+            model_name="application",
+            old_name="wants_team",
+            new_name="discovery_method",
         ),
     ]

@@ -7,70 +7,122 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0034_alter_application_discovery_method_and_more'),
+        ("application", "0034_alter_application_discovery_method_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='application',
-            name='classification',
+            model_name="application",
+            name="classification",
         ),
         migrations.RemoveField(
-            model_name='application',
-            name='discovery_method',
+            model_name="application",
+            name="discovery_method",
         ),
         migrations.RemoveField(
-            model_name='application',
-            name='has_team',
+            model_name="application",
+            name="has_team",
         ),
         migrations.RemoveField(
-            model_name='application',
-            name='question1',
+            model_name="application",
+            name="question1",
         ),
         migrations.RemoveField(
-            model_name='application',
-            name='technology_experience',
+            model_name="application",
+            name="technology_experience",
         ),
         migrations.AlterField(
-            model_name='application',
-            name='additional_accommodations',
-            field=models.TextField(blank=True, max_length=500, null=True, verbose_name='Do you require any special accommodations at the event? Please list dietary restrictions here if you selected "food allergy" or "other".'),
+            model_name="application",
+            name="additional_accommodations",
+            field=models.TextField(
+                blank=True,
+                max_length=500,
+                null=True,
+                verbose_name='Do you require any special accommodations at the event? Please list dietary restrictions here if you selected "food allergy" or "other".',
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='dietary_restrictions',
-            field=models.CharField(blank=True, default='', max_length=255, null=True, verbose_name='Do you have any dietary restrictions?'),
+            model_name="application",
+            name="dietary_restrictions",
+            field=models.CharField(
+                blank=True,
+                default="",
+                max_length=255,
+                null=True,
+                verbose_name="Do you have any dietary restrictions?",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='emergency_contact_email',
-            field=models.CharField(blank=True, max_length=255, null=True, verbose_name='Emergency Contact Email'),
+            model_name="application",
+            name="emergency_contact_email",
+            field=models.CharField(
+                blank=True,
+                max_length=255,
+                null=True,
+                verbose_name="Emergency Contact Email",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='emergency_contact_name',
-            field=models.CharField(blank=True, max_length=255, null=True, verbose_name='Emergency Contact Name'),
+            model_name="application",
+            name="emergency_contact_name",
+            field=models.CharField(
+                blank=True,
+                max_length=255,
+                null=True,
+                verbose_name="Emergency Contact Name",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='emergency_contact_phone',
-            field=models.CharField(blank=True, max_length=255, null=True, verbose_name='Emergency Contact Phone Number'),
+            model_name="application",
+            name="emergency_contact_phone",
+            field=models.CharField(
+                blank=True,
+                max_length=255,
+                null=True,
+                verbose_name="Emergency Contact Phone Number",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='emergency_contact_relationship',
-            field=models.CharField(blank=True, max_length=255, null=True, verbose_name='Emergency Contact Relationship'),
+            model_name="application",
+            name="emergency_contact_relationship",
+            field=models.CharField(
+                blank=True,
+                max_length=255,
+                null=True,
+                verbose_name="Emergency Contact Relationship",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='resume',
-            field=models.FileField(help_text='Companies will use this resume to offer interviews for internships and full-time positions.', upload_to=application.models.filename_generator, validators=[application.filesize_validation.FileSizeValidator(max_filesize=2.5), django.core.validators.FileExtensionValidator(allowed_extensions=['pdf'])], verbose_name='Upload your resume (PDF only)'),
+            model_name="application",
+            name="resume",
+            field=models.FileField(
+                help_text="Companies will use this resume to offer interviews for internships and full-time positions.",
+                upload_to=application.models.filename_generator,
+                validators=[
+                    application.filesize_validation.FileSizeValidator(max_filesize=2.5),
+                    django.core.validators.FileExtensionValidator(
+                        allowed_extensions=["pdf"]
+                    ),
+                ],
+                verbose_name="Upload your resume (PDF only)",
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='shirt_size',
-            field=models.CharField(blank=True, choices=[('S', 'S'), ('M', 'M'), ('L', 'L'), ('XL', 'XL'), ('XXL', 'XXL')], max_length=4, null=True, verbose_name='What size shirt do you wear?'),
+            model_name="application",
+            name="shirt_size",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("S", "S"),
+                    ("M", "M"),
+                    ("L", "L"),
+                    ("XL", "XL"),
+                    ("XXL", "XXL"),
+                ],
+                max_length=4,
+                null=True,
+                verbose_name="What size shirt do you wear?",
+            ),
         ),
     ]

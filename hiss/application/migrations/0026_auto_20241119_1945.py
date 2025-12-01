@@ -4,20 +4,26 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0025_auto_20241024_1250'),
+        ("application", "0025_auto_20241024_1250"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='application',
-            name='accessibility_requirements',
-            field=models.BooleanField(blank=True, choices=[(True, 'Agree'), (False, 'Disagree')], default=None, null=True),
+            model_name="application",
+            name="accessibility_requirements",
+            field=models.BooleanField(
+                blank=True,
+                choices=[(True, "Agree"), (False, "Disagree")],
+                default=None,
+                null=True,
+            ),
         ),
         migrations.AddField(
-            model_name='application',
-            name='agree_to_photos',
-            field=models.BooleanField(choices=[(True, 'Agree')], default=None, null=True),
+            model_name="application",
+            name="agree_to_photos",
+            field=models.BooleanField(
+                choices=[(True, "Agree")], default=None, null=True
+            ),
         ),
     ]

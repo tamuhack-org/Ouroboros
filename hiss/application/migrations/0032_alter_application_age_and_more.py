@@ -4,21 +4,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0031_alter_application_race'),
+        ("application", "0031_alter_application_race"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='application',
-            name='age',
-            field=models.PositiveIntegerField(null=True, verbose_name='age'),
+            model_name="application",
+            name="age",
+            field=models.PositiveIntegerField(null=True, verbose_name="age"),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='dietary_restrictions',
-            field=models.CharField(blank=True, default='', max_length=255, verbose_name='Do you have any dietary restrictions?'),
+            model_name="application",
+            name="dietary_restrictions",
+            field=models.CharField(
+                blank=True,
+                default="",
+                max_length=255,
+                verbose_name="Do you have any dietary restrictions?",
+            ),
         ),
         migrations.AlterField(
             model_name="application",

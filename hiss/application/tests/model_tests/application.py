@@ -8,4 +8,3 @@ class ApplicationModelTestCase(test_case.SharedTestCase):
         application = Application(**self.application_fields, wave=self.wave1)
         application.save()
         self.assertNotEqual(self.resume_file_name, application.resume.name)
-
