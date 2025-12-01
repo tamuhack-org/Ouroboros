@@ -67,5 +67,8 @@ $(document).ready(function () {
   if ($("#id_school").length) {
     new TomSelect("#id_school", settings);
   }
+  if ($("#id_dietary_restrictions").length) {
+    new TomSelect("#id_dietary_restrictions", settings);
+  }
   // $('#id_dietary_restrictions').select2();
 });
