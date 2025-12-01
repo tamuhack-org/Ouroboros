@@ -1,5 +1,6 @@
 # pylint: disable=C0330
 import csv
+from zoneinfo import ZoneInfo
 
 from address.forms import AddressWidget
 from address.models import AddressField
@@ -16,6 +17,7 @@ from django.utils.html import strip_tags
 from django_admin_listfilter_dropdown.filters import (
     ChoiceDropdownFilter,
 )
+from hiss.settings.customization import EVENT_TIMEZONE
 from rangefilter.filters import DateRangeFilter
 
 from application.constants import (
@@ -106,7 +108,9 @@ def approve(
     each user based on how many days each wave gives to RSVP, and then emails all of the users to inform them that
     their applications have been approved.
     """
-    today_end = timezone.now().replace(hour=23, minute=59, second=59, microsecond=0)
+
+    tz = ZoneInfo(EVENT_TIMEZONE)
+    today_end = timezone.now().astimezone(tz).replace(hour=23, minute=59, second=59, microsecond=0)
     apps = queryset.select_related("wave")
 
     to_update = []
