@@ -304,7 +304,6 @@ class ApplicationModelForm(forms.ModelForm):
         # Mark other optional fields
         self.fields["extra_links"].label = self.fields["extra_links"].label + " (optional)"
         self.fields["notes"].label = self.fields["notes"].label + " (optional)"
-        self.fields["accessibility_requirements"].label = accessibilities + " (optional)"
         self.fields["additional_accommodations"].label = self.fields["additional_accommodations"].label + " (optional)"
 
         # HACK: Disable the form if there's not an active wave

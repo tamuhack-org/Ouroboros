@@ -17,7 +17,6 @@ from django.utils.html import strip_tags
 from django_admin_listfilter_dropdown.filters import (
     ChoiceDropdownFilter,
 )
-from hiss.settings.customization import EVENT_TIMEZONE
 from rangefilter.filters import DateRangeFilter
 
 from application.constants import (
@@ -31,6 +30,7 @@ from application.models import (
     Application,
     Wave,
 )
+from hiss.settings.customization import EVENT_TIMEZONE
 from shared.admin_functions import send_mass_html_mail
 
 
