@@ -69,7 +69,7 @@ def send_confirmation_email(app: Application) -> None:
         "meal_group": app.meal_group,
         "event_date_text": settings.EVENT_DATE_TEXT,
     }
-    print("context:", context.json())
+    print("context:", context)
     html_msg = render_to_string(email_template, context)
     msg = html.strip_tags(html_msg)
     email = mail.EmailMultiAlternatives(
