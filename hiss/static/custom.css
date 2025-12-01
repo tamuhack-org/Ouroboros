@@ -811,7 +811,6 @@ p:has(input[type="checkbox"]) .helptext,
 .page-auth {
   background-color: var(--color-accent-subtle);
   min-height: 100vh;
-  min-width: 100vw;
   margin: 0;
   padding: var(--space-3);
   box-sizing: border-box;
@@ -820,7 +819,6 @@ p:has(input[type="checkbox"]) .helptext,
 .page-auth-alt {
   background-color: var(--color-secondary-subtle);
   min-height: 100vh;
-  min-width: 100vw;
   margin: 0;
   padding: var(--space-3);
   box-sizing: border-box;
@@ -829,7 +827,6 @@ p:has(input[type="checkbox"]) .helptext,
 .page-dashboard {
   background-color: var(--color-accent-subtle);
   min-height: 100vh;
-  min-width: 100vw;
   margin: 0;
 }
 
