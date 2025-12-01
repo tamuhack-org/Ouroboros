@@ -403,6 +403,13 @@ PURPOSE_OPTIONS = [
 ]
 WARECHOICE = [("SW", "Software"), ("HW", "Hardware")]
 
+# Starforge Foundry Interest
+STARFORGE_INTEREST = [
+    ("Y", "Yes, I would be interested in working with Starforge Foundry"),
+    ("N", "No, I am not interested at this time"),
+    ("M", "Maybe, I would like to learn more"),
+]
+
 
 COUNTRIES = [
     "United States of America",

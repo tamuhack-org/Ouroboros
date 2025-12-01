@@ -32,6 +32,7 @@ from application.constants import (
     NO_ANSWER,
     RACES,
     SHIRT_SIZES,
+    STARFORGE_INTEREST,
     STATUS_CONFIRMED,
     STATUS_OPTIONS,
     STATUS_PENDING,
@@ -216,6 +217,13 @@ class Application(models.Model):
         max_length=8,
         default=NO_ANSWER,
         blank=False,
+        null=True,
+    )
+    starforge_interest = models.CharField(
+        "Would you be interested in collaborating with Starforge Foundry on hardware projects during the event?",
+        choices=STARFORGE_INTEREST,
+        max_length=1,
+        blank=True,
         null=True,
     )
 
