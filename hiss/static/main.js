@@ -64,14 +64,8 @@ $(document).ready(function () {
   // Reference: https://select2.org/getting-started/basic-usage
   // $('#id_technology_experience').select2();
   const settings = {};
-  if ($("#id_dietary_restrictions").length) {
-    new TomSelect("#id_dietary_restrictions", settings);
-  }
   if ($("#id_school").length) {
     new TomSelect("#id_school", settings);
-  }
-  if ($("#id_country").length) {
-    new TomSelect("#id_country", settings);
   }
   // $('#id_dietary_restrictions').select2();
 });
