@@ -66,7 +66,7 @@
     /* Adjust accent colors for better dark mode contrast */
     --color-accent: #ff9fb1;
     --color-accent-emphasis: #ffb5c2;
-    --color-accent-subtle: #262626;
+    --color-accent-subtle: #26283c;
     /* Secondary adjustments */
     --color-secondary: #6b9fd4;
     --color-secondary-emphasis: #8bb8e8;
@@ -576,10 +576,6 @@ img[src*="th_bw.svg"] {
   padding: var(--space-5);
 }
 
-.card-elevated {
-  box-shadow: var(--pico-card-box-shadow);
-}
-
 /* ==========================================================================
    Component: Alerts
    ========================================================================== */
@@ -1046,6 +1042,8 @@ p:has(input[type="checkbox"]) .helptext,
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .ts-wrapper.multi .ts-control > div.item {
     color: #1a1a1a; /* Dark text on pink background for contrast */
+    text-shadow: none;
+    box-shadow: none;
   }
 
   :root:not([data-theme="light"])
@@ -1066,6 +1064,8 @@ p:has(input[type="checkbox"]) .helptext,
 /* Explicit Dark Theme Attribute Support */
 [data-theme="dark"] .ts-wrapper.multi .ts-control > div.item {
   color: #1a1a1a;
+  text-shadow: none;
+  box-shadow: none;
 }
 
 [data-theme="dark"] .ts-wrapper.multi .ts-control > div.item .remove {
