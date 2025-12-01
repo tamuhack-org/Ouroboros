@@ -18,7 +18,7 @@ class Command(BaseCommand):
         )
 
         count = unconfirmed.count()
-        self.stdout.write(f"Going to expire {count} applications")
+        print(f"Going to expire {count} applications")
 
         email_tuples = []
 
@@ -31,8 +31,4 @@ class Command(BaseCommand):
         if email_tuples:
             send_mass_html_mail(email_tuples)
 
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"All {count} applications successfully expired and notified"
-            )
-        )
+        print(f"All {count} applications successfully expired and notified")
