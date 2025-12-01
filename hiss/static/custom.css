@@ -890,3 +890,193 @@ p:has(input[type="checkbox"]) .helptext,
   color: var(--color-text-muted);
   margin-bottom: var(--space-5);
 }
+
+/* ==========================================================================
+   Tom Select Custom Styling
+   ========================================================================== */
+
+/* Main wrapper - match form input styling */
+.ts-wrapper.single .ts-control,
+.ts-wrapper.multi .ts-control {
+  width: 100%;
+  padding: 8px;
+  border-radius: 3px;
+  border: 1px solid #bbb !important;
+  background: var(--color-card-bg);
+  font-size: 14px;
+  min-height: 50px;
+  box-shadow: none;
+}
+
+/* Focus state - match Pico's focus styling */
+.ts-wrapper.single .ts-control:focus,
+.ts-wrapper.multi .ts-control:focus,
+.ts-wrapper.focus .ts-control {
+  border-color: var(--color-accent) !important;
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-accent-subtle);
+}
+
+/* Dropdown menu */
+.ts-dropdown {
+  background: var(--color-card-bg);
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+/* Dropdown options */
+.ts-dropdown .option {
+  padding: 10px 12px;
+  color: var(--color-text);
+  background: var(--color-card-bg);
+}
+
+/* Hover state */
+.ts-dropdown .option:hover,
+.ts-dropdown .option.active {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-text);
+}
+
+/* Selected option */
+.ts-dropdown .option.selected {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+/* Multi-select items (tags) */
+.ts-wrapper.multi .ts-control > div {
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 4px 8px;
+  margin: 2px 4px 2px 0;
+  font-size: 14px;
+}
+
+/* Dark mode: use dark text on light pink background */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ts-wrapper.multi .ts-control > div {
+    background: var(--color-accent);
+    color: #1a1a1a;
+  }
+}
+
+[data-theme="dark"] .ts-wrapper.multi .ts-control > div {
+  background: var(--color-accent);
+  color: #1a1a1a;
+}
+
+/* Remove button on multi-select items */
+.ts-wrapper.multi .ts-control > div .remove {
+  color: inherit;
+  opacity: 0.7;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  margin-left: 6px;
+  padding-left: 6px;
+  text-decoration: none;
+}
+
+.ts-wrapper.multi .ts-control > div .remove:hover {
+  opacity: 1;
+}
+
+/* Dark mode: adjust border */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ts-wrapper.multi .ts-control > div .remove {
+    border-left-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+[data-theme="dark"] .ts-wrapper.multi .ts-control > div .remove {
+  border-left-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Placeholder text */
+.ts-wrapper.single .ts-control input::placeholder,
+.ts-wrapper.multi .ts-control input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+/* Clear button (if enabled) */
+.ts-control .clear-button {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+  padding: 0 8px;
+  cursor: pointer;
+}
+
+.ts-control .clear-button:hover {
+  opacity: 1;
+  color: var(--color-danger);
+}
+
+/* Loading spinner */
+.ts-wrapper.loading .ts-control::after {
+  border-color: var(--color-accent) transparent transparent transparent;
+}
+
+/* Disabled state */
+.ts-wrapper.disabled .ts-control,
+.ts-wrapper.disabled .ts-control input {
+  background-color: var(--pico-form-element-disabled-background-color);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* No results message */
+.ts-dropdown .no-results {
+  padding: 12px;
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+}
+
+/* Option group headers */
+.ts-dropdown .optgroup-header {
+  font-weight: 600;
+  padding: 8px 12px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border-subtle);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Ensure dropdown appears above other elements */
+.ts-dropdown {
+  z-index: 1000;
+}
+
+/* Fix for single select arrow */
+.ts-wrapper.single .ts-control::after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--color-text-muted);
+  pointer-events: none;
+}
+
+.ts-wrapper.single.dropdown-active .ts-control::after {
+  border-top: none;
+  border-bottom: 5px solid var(--color-text-muted);
+}
+
+/* Make sure the input area has proper spacing for the arrow */
+.ts-wrapper.single .ts-control input {
+  padding-right: 30px;
+}

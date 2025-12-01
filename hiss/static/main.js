@@ -63,12 +63,15 @@ $(document).ready(function () {
   // Custom styling for multi-select inputs.
   // Reference: https://select2.org/getting-started/basic-usage
   // $('#id_technology_experience').select2();
-  try {
-    const settings = {};
+  const settings = {};
+  if ($("#id_dietary_restrictions").length) {
     new TomSelect("#id_dietary_restrictions", settings);
+  }
+  if ($("#id_school").length) {
     new TomSelect("#id_school", settings);
-  } finally {
-    console.log("Here");
+  }
+  if ($("#id_country").length) {
+    new TomSelect("#id_country", settings);
   }
   // $('#id_dietary_restrictions').select2();
 });
