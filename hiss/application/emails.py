@@ -52,7 +52,7 @@ def send_confirmation_email(app: Application) -> None:
     try:
         r = requests.post(
             os.environ.get("APPLE_WALLET_GEN_URL"),
-            json={"email": app.user.email, "meal_group": app.meal_group},
+            json={"email": app.user.email, "meal_group": app.meal_group, "first_name": app.first_name, "last_name": app.last_name},
             headers={"X-API-Key": os.environ.get("APPLE_WALLET_SECRET_KEY")},
             timeout=10,
         )
