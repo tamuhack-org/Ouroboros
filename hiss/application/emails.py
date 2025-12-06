@@ -48,6 +48,7 @@ def send_confirmation_email(app: Application) -> None:
 
     # Generate apple wallet
     apple_wallet_pass_url = ""
+    google_wallet_pass_url = ""
     try:
         r = requests.post(
             os.environ.get("APPLE_WALLET_GEN_URL"),
@@ -55,10 +56,12 @@ def send_confirmation_email(app: Application) -> None:
             headers={"X-API-Key": os.environ.get("APPLE_WALLET_SECRET_KEY")},
             timeout=10,
         )
-        apple_wallet_pass_url = r.json().get("s3_path")
-        print(r.json())
+        response_data = r.json()
+        apple_wallet_pass_url = response_data.get("apple_url", "")
+        google_wallet_pass_url = response_data.get("google_url", "")
+        print("Wallet generation response:", response_data)
     except requests.exceptions.RequestException as e:
-        print(f"Error generating apple wallet pass: {e}")
+        print(f"Error generating wallet passes: {e}")
 
     context = {
         "first_name": app.first_name,
@@ -67,6 +70,7 @@ def send_confirmation_email(app: Application) -> None:
         "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
         "apple_wallet_url": apple_wallet_pass_url,
+        "google_wallet_url": google_wallet_pass_url,
         "meal_group": app.meal_group,
         "event_date_text": settings.EVENT_DATE_TEXT,
     }
