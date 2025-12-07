@@ -98,3 +98,23 @@ def send_confirmation_email(app: Application) -> None:
     email.attach_file(str(ics_path), mimetype="text/calendar")
     print(f"sending confirmation email to {app.user.email}")
     email.send()
+
+
+def send_still_reviewing_email(app: Application) -> None:
+    """Send an email to inform the user that their application is still under review.
+
+    :param app: The user's application
+    :return: None
+    """
+    subject = f"An update from the {settings.ORGANIZER_NAME} team"
+    template_name = "application/emails/still-reviewing.html"
+    context = {
+        "first_name": app.first_name,
+        "event_name": settings.EVENT_NAME,
+        "organizer_name": settings.ORGANIZER_NAME,
+        "event_year": settings.EVENT_YEAR,
+        "organizer_email": settings.ORGANIZER_EMAIL,
+        "event_date_text": settings.EVENT_DATE_TEXT,
+    }
+
+    app.user.send_html_email(template_name, context, subject)

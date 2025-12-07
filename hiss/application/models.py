@@ -9,7 +9,6 @@ from typing import (
     override,
 )
 
-from django.conf import settings
 from django.core import exceptions
 from django.core.validators import FileExtensionValidator
 from django.db import models
@@ -28,7 +27,6 @@ from application.constants import (
     HACKATHON_TIMES,
     LEVELS_OF_STUDY,
     MAJORS,
-    MAX_AGE,
     NO_ANSWER,
     RACES,
     SHIRT_SIZES,
@@ -241,6 +239,8 @@ class Application(models.Model):
         default=None,
         help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
         "A&M.",
+        blank=True,
+        null=True,
     )
     agree_to_photos = models.BooleanField(choices=AGREE, null=True, default=None)
     accessibility_requirements = models.BooleanField(
@@ -361,21 +361,6 @@ class Application(models.Model):
             match = re.match(pattern, name)
 
             return bool(match)
-
-        if (not self.is_adult and self.age > MAX_AGE) or (
-            self.is_adult and self.age < MAX_AGE
-        ):
-            msg = (
-                "Age and adult status do not match. Please confirm you are 18 or older."
-            )
-            raise exceptions.ValidationError(msg)
-        # Fixes the obos admin panel bug, idk why the checkbox doesn't show up
-        if not self.age >= MAX_AGE or not self.is_adult:
-            msg = (
-                "Unfortunately, we cannot accept hackers under the age of 18. Have additional questions? Email "
-                f"us at {settings.ORGANIZER_EMAIL}. "
-            )
-            raise exceptions.ValidationError(msg)
 
         if not is_valid_name(self.first_name):
             msg = (
