@@ -24,6 +24,11 @@ python ./hiss/manage.py createsuperuser
 python ./hiss/manage.py runserver
 ```
 
+### Pushing to staging
+```
+git push -f origin origin/feature:staging
+```
+
 ### Mimic Production
 
 To mimic production, we highly encourage using [Docker Compose](https://docs.docker.com/compose/).
