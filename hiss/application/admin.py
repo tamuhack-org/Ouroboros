@@ -23,9 +23,10 @@ from application.constants import (
     RACES,
     STATUS_ADMITTED,
     STATUS_EXPIRED,
+    STATUS_PENDING,
     STATUS_REJECTED,
 )
-from application.emails import send_confirmation_email
+from application.emails import send_confirmation_email, send_still_reviewing_email
 from application.models import (
     Application,
     Wave,
@@ -142,10 +143,10 @@ def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) 
     send_mass_html_mail(email_tuples)
 
 
-def build_waitlist_email(
+def build_waitlist_expired_email(
     application: Application,
 ) -> tuple[str, str, str, None, list[str]]:
-    """Create an email data tuple indicating that a user's application has been waitlisted.
+    """Create an email for users whose applications expired (didn't confirm by deadline).
 
     Args:
         application (Application): The application object containing user details.
@@ -153,7 +154,7 @@ def build_waitlist_email(
     Returns:
         A tuple representing the email to send.
     """
-    subject = f"Regarding your {settings.EVENT_NAME} application"
+    subject = f"Update/next steps on your {settings.EVENT_NAME} application status"
 
     context = {
         "first_name": application.first_name,
@@ -163,7 +164,33 @@ def build_waitlist_email(
         "organizer_email": settings.ORGANIZER_EMAIL,
         "event_date_text": settings.EVENT_DATE_TEXT,
     }
-    html_message = render_to_string("application/emails/reject-waitlist.html", context)
+    html_message = render_to_string("application/emails/waitlist-expired.html", context)
+    message = strip_tags(html_message)
+    return subject, message, html_message, None, [application.user.email]
+
+
+def build_waitlist_manual_email(
+    application: Application,
+) -> tuple[str, str, str, None, list[str]]:
+    """Create an email for users who are manually waitlisted by admin.
+
+    Args:
+        application (Application): The application object containing user details.
+
+    Returns:
+        A tuple representing the email to send.
+    """
+    subject = f"Update/next steps on your {settings.EVENT_NAME} application status"
+
+    context = {
+        "first_name": application.first_name,
+        "event_name": settings.EVENT_NAME,
+        "organizer_name": settings.ORGANIZER_NAME,
+        "event_year": settings.EVENT_YEAR,
+        "organizer_email": settings.ORGANIZER_EMAIL,
+        "event_date_text": settings.EVENT_DATE_TEXT,
+    }
+    html_message = render_to_string("application/emails/waitlist-manual.html", context)
     message = strip_tags(html_message)
     return subject, message, html_message, None, [application.user.email]
 
@@ -176,7 +203,7 @@ def waitlist(
     with transaction.atomic():
         for application in queryset:
             application.status = STATUS_EXPIRED
-            email_tuples.append(build_waitlist_email(application))
+            email_tuples.append(build_waitlist_manual_email(application))
             application.save()
     send_mass_html_mail(email_tuples)
 
@@ -184,10 +211,16 @@ def waitlist(
 def resend_confirmation(
     _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
 ) -> None:
-    """Resends the confirmation email to the selected applications."""
+    """Resends the confirmation email to the selected applications.
+
+    If the application is still pending, sends a 'still reviewing' email instead.
+    """
     for application in queryset:
         application.save()
-        send_confirmation_email(application)
+        if application.status == STATUS_PENDING:
+            send_still_reviewing_email(application)
+        else:
+            send_confirmation_email(application)
 
 
 def export_application_emails(

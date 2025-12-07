@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils import timezone
 
-from application.admin import build_waitlist_email
+from application.admin import build_waitlist_expired_email
 from application.constants import STATUS_ADMITTED, STATUS_EXPIRED
 from application.models import Application
 from shared.admin_functions import send_mass_html_mail
@@ -26,7 +26,7 @@ class Command(BaseCommand):
             for app in unconfirmed:
                 app.status = STATUS_EXPIRED
                 app.save()
-                email_tuples.append(build_waitlist_email(app))
+                email_tuples.append(build_waitlist_expired_email(app))
 
         if email_tuples:
             send_mass_html_mail(email_tuples)
