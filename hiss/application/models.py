@@ -9,7 +9,6 @@ from typing import (
     override,
 )
 
-from django.conf import settings
 from django.core import exceptions
 from django.core.validators import FileExtensionValidator
 from django.db import models
@@ -28,7 +27,6 @@ from application.constants import (
     HACKATHON_TIMES,
     LEVELS_OF_STUDY,
     MAJORS,
-    MAX_AGE,
     NO_ANSWER,
     RACES,
     SHIRT_SIZES,
