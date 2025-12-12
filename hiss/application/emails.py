@@ -52,7 +52,12 @@ def send_confirmation_email(app: Application) -> None:
     try:
         r = requests.post(
             os.environ.get("APPLE_WALLET_GEN_URL"),
-            json={"email": app.user.email, "meal_group": app.meal_group, "first_name": app.first_name, "last_name": app.last_name},
+            json={
+                "email": app.user.email,
+                "meal_group": app.meal_group,
+                "first_name": app.first_name,
+                "last_name": app.last_name,
+            },
             headers={"X-API-Key": os.environ.get("APPLE_WALLET_SECRET_KEY")},
             timeout=10,
         )
@@ -114,6 +119,28 @@ def send_still_reviewing_email(app: Application) -> None:
         "organizer_name": settings.ORGANIZER_NAME,
         "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
+        "event_date_text": settings.EVENT_DATE_TEXT,
+    }
+
+    app.user.send_html_email(template_name, context, subject)
+
+
+def send_reminder_email(app: Application) -> None:
+    """Send an email to inform the user to RSVP.
+
+    :param app: The user's application
+    :return: None
+    """
+    subject = f"Reminder: RSVP for {settings.EVENT_NAME}!"
+    template_name = "application/emails/rsvp-reminder.html"
+    context = {
+        "first_name": app.first_name,
+        "event_name": settings.EVENT_NAME,
+        "organizer_name": settings.ORGANIZER_NAME,
+        "event_year": settings.EVENT_YEAR,
+        "organizer_email": settings.ORGANIZER_EMAIL,
+        "confirmation_deadline": app.confirmation_deadline.strftime("%B %-d, %Y"),
+        "confirmation_time": app.confirmation_deadline.strftime("%-I:%M %p %Z"),
         "event_date_text": settings.EVENT_DATE_TEXT,
     }
 
