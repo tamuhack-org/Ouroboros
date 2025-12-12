@@ -226,9 +226,9 @@ def resend_confirmation(
     for application in queryset:
         application.save()
         if application.status == STATUS_PENDING:
-            send_reminder_email(application)
-        elif application.status == STATUS_ADMITTED:
             send_still_reviewing_email(application)
+        elif application.status == STATUS_ADMITTED:
+            send_reminder_email(application)
         else:
             send_confirmation_email(application)
 
