@@ -4,15 +4,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0037_application_starforge_interest'),
+        ("application", "0037_application_starforge_interest"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='application',
-            name='is_adult',
-            field=models.BooleanField(blank=True, choices=[(True, 'Agree')], default=None, help_text='Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas A&M.', null=True, verbose_name='Please confirm you are 18 or older.'),
+            model_name="application",
+            name="is_adult",
+            field=models.BooleanField(
+                blank=True,
+                choices=[(True, "Agree")],
+                default=None,
+                help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas A&M.",
+                null=True,
+                verbose_name="Please confirm you are 18 or older.",
+            ),
         ),
     ]

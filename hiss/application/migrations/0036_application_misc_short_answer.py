@@ -4,15 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0035_two_stage_registration'),
+        ("application", "0035_two_stage_registration"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='application',
-            name='misc_short_answer',
-            field=models.TextField(blank=True, max_length=500, null=True, verbose_name='Miscellaneous Short Answer'),
+            model_name="application",
+            name="misc_short_answer",
+            field=models.TextField(
+                blank=True,
+                max_length=500,
+                null=True,
+                verbose_name="Miscellaneous Short Answer",
+            ),
         ),
     ]

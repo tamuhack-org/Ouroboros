@@ -80,18 +80,14 @@ class RSVPSubmitView(mixins.LoginRequiredMixin, generic.View):
 
         if app.user != request.user:
             msg = "You don't have permission to view this application."
-            raise PermissionDenied(
-                msg
-            )
+            raise PermissionDenied(msg)
 
         if app.status == application.constants.STATUS_CONFIRMED:
             return redirect(reverse_lazy("status"))
 
         if app.status != application.constants.STATUS_ADMITTED:
             msg = "You can't confirm your application if it hasn't been approved."
-            raise PermissionDenied(
-                msg
-            )
+            raise PermissionDenied(msg)
 
         form = RSVPConfirmationForm(request.POST, instance=app)
         if form.is_valid():

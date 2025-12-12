@@ -8,7 +8,7 @@ import requests
 from django.conf import settings
 from django.core import mail
 from django.template.loader import render_to_string
-from django.utils import html
+from django.utils import html, timezone
 
 from application.models import Application
 
@@ -133,14 +133,15 @@ def send_reminder_email(app: Application) -> None:
     """
     subject = f"Reminder: RSVP for {settings.EVENT_NAME}!"
     template_name = "application/emails/rsvp-reminder.html"
+    deadline = app.confirmation_deadline or timezone.now()
     context = {
         "first_name": app.first_name,
         "event_name": settings.EVENT_NAME,
         "organizer_name": settings.ORGANIZER_NAME,
         "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
-        "confirmation_deadline": app.confirmation_deadline.strftime("%B %-d, %Y"),
-        "confirmation_time": app.confirmation_deadline.strftime("%-I:%M %p %Z"),
+        "confirmation_deadline": deadline.strftime("%B %-d, %Y"),
+        "confirmation_time": deadline.strftime("%-I:%M %p %Z"),
         "event_date_text": settings.EVENT_DATE_TEXT,
     }
 

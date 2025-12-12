@@ -51,7 +51,7 @@ class InitialRegistrationForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault('label_suffix', '')
+        kwargs.setdefault("label_suffix", "")
         super().__init__(*args, **kwargs)
 
         photo_agreement = f"I grant permission for {settings.ORGANIZER_NAME} to use my name, likeness, voice, and any photographs, video recordings, or audio recordings taken during the event '{settings.EVENT_NAME} {settings.EVENT_YEAR}' for promotional and media purposes, including but not limited to publications, websites, social media, and press releases."
@@ -78,16 +78,24 @@ class InitialRegistrationForm(forms.ModelForm):
         self.fields["is_adult"].label = "Please confirm you are 18 or older."
 
         # Mark other optional fields
-        self.fields["extra_links"].label = self.fields["extra_links"].label + " (optional)"
+        self.fields["extra_links"].label = (
+            self.fields["extra_links"].label + " (optional)"
+        )
         self.fields["notes"].label = self.fields["notes"].label + " (optional)"
 
         # Configure misc short answer question based on settings
         if settings.MISC_SHORT_ANSWER_ENABLED:
             self.fields["misc_short_answer"].label = settings.MISC_SHORT_ANSWER_PROMPT
-            self.fields["misc_short_answer"].required = settings.MISC_SHORT_ANSWER_REQUIRED
-            self.fields["misc_short_answer"].max_length = settings.MISC_SHORT_ANSWER_MAX_LENGTH
+            self.fields[
+                "misc_short_answer"
+            ].required = settings.MISC_SHORT_ANSWER_REQUIRED
+            self.fields[
+                "misc_short_answer"
+            ].max_length = settings.MISC_SHORT_ANSWER_MAX_LENGTH
             if not settings.MISC_SHORT_ANSWER_REQUIRED:
-                self.fields["misc_short_answer"].label = self.fields["misc_short_answer"].label + " (optional)"
+                self.fields["misc_short_answer"].label = (
+                    self.fields["misc_short_answer"].label + " (optional)"
+                )
         else:
             # Remove field if disabled
             self.fields.pop("misc_short_answer", None)
@@ -201,7 +209,7 @@ class RSVPConfirmationForm(forms.ModelForm):
                     kwargs.get("instance").dietary_restrictions or "[]"
                 ),
             }
-        kwargs.setdefault('label_suffix', '')
+        kwargs.setdefault("label_suffix", "")
         super().__init__(*args, **kwargs)
 
         # Make fields required even though model has blank=True
@@ -212,11 +220,15 @@ class RSVPConfirmationForm(forms.ModelForm):
         self.fields["emergency_contact_email"].required = True
 
         # Mark optional fields
-        self.fields["additional_accommodations"].label = self.fields["additional_accommodations"].label + " (optional)"
+        self.fields["additional_accommodations"].label = (
+            self.fields["additional_accommodations"].label + " (optional)"
+        )
 
         # Add accessibility follow-up text for RSVP form
         accessibilities = "Please check this box you would like our team to follow up with you personally to discuss your accessibility accommodations during this event."
-        self.fields["accessibility_requirements"].label = accessibilities + " (optional)"
+        self.fields["accessibility_requirements"].label = (
+            accessibilities + " (optional)"
+        )
 
     class Meta:
         model = application_models.Application
@@ -315,9 +327,13 @@ class ApplicationModelForm(forms.ModelForm):
         self.fields["is_adult"].label = "Please confirm you are 18 or older."
 
         # Mark other optional fields
-        self.fields["extra_links"].label = self.fields["extra_links"].label + " (optional)"
+        self.fields["extra_links"].label = (
+            self.fields["extra_links"].label + " (optional)"
+        )
         self.fields["notes"].label = self.fields["notes"].label + " (optional)"
-        self.fields["additional_accommodations"].label = self.fields["additional_accommodations"].label + " (optional)"
+        self.fields["additional_accommodations"].label = (
+            self.fields["additional_accommodations"].label + " (optional)"
+        )
 
         # HACK: Disable the form if there's not an active wave
         if not application_models.Wave.objects.active_wave():

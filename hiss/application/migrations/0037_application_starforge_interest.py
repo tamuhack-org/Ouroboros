@@ -4,15 +4,27 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('application', '0036_application_misc_short_answer'),
+        ("application", "0036_application_misc_short_answer"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='application',
-            name='starforge_interest',
-            field=models.CharField(blank=True, choices=[('Y', 'Yes, I would be interested in working with Starforge Foundry'), ('N', 'No, I am not interested at this time'), ('M', 'Maybe, I would like to learn more')], max_length=1, null=True, verbose_name='Would you be interested in collaborating with Starforge Foundry on hardware projects during the event?'),
+            model_name="application",
+            name="starforge_interest",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    (
+                        "Y",
+                        "Yes, I would be interested in working with Starforge Foundry",
+                    ),
+                    ("N", "No, I am not interested at this time"),
+                    ("M", "Maybe, I would like to learn more"),
+                ],
+                max_length=1,
+                null=True,
+                verbose_name="Would you be interested in collaborating with Starforge Foundry on hardware projects during the event?",
+            ),
         ),
     ]

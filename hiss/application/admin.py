@@ -116,7 +116,11 @@ def approve(
     """
 
     tz = ZoneInfo(EVENT_TIMEZONE)
-    today_end = timezone.now().astimezone(tz).replace(hour=23, minute=59, second=59, microsecond=0)
+    today_end = (
+        timezone.now()
+        .astimezone(tz)
+        .replace(hour=23, minute=59, second=59, microsecond=0)
+    )
     apps = queryset.select_related("wave")
 
     to_update = []
@@ -369,7 +373,14 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("Confirmation Deadline", {"fields": ["confirmation_deadline"]}),
         (
             "Miscellaneous",
-            {"fields": ["notes", "misc_short_answer", "is_adult", "accessibility_requirements"]},
+            {
+                "fields": [
+                    "notes",
+                    "misc_short_answer",
+                    "is_adult",
+                    "accessibility_requirements",
+                ]
+            },
         ),
     ]
     formfield_overrides = {

@@ -108,6 +108,8 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
     def test_resend_confirmation_email(self):
         self.client.force_login(self.admin)
         change_url = reverse_lazy("admin:application_application_changelist")
+        self.app.confirmation_deadline = timezone.now()
+        self.app.save()
         response = self.client.post(
             change_url,
             {
