@@ -1,3 +1,5 @@
+from hiss.hiss.settings.customization import EVENT_TIMEZONE
+from zoneinfo import ZoneInfo
 import json
 import os
 from io import BytesIO
@@ -133,7 +135,10 @@ def send_reminder_email(app: Application) -> None:
     """
     subject = f"Reminder: RSVP for {settings.EVENT_NAME}!"
     template_name = "application/emails/rsvp-reminder.html"
-    deadline = app.confirmation_deadline or timezone.now()
+
+    tz = ZoneInfo(EVENT_TIMEZONE)
+    utc_deadline = app.confirmation_deadline or timezone.now()
+    deadline = utc_deadline.astimezone(tz)
     context = {
         "first_name": app.first_name,
         "event_name": settings.EVENT_NAME,
