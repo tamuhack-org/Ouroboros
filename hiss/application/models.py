@@ -132,7 +132,6 @@ def filename_generator(_instance, filename: str):
 
 class Application(models.Model):
     """Represents a `Hacker`'s application to this hackathon."""
-
     # ABOUT YOU
     first_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="first name"
@@ -304,6 +303,14 @@ class Application(models.Model):
     status = models.CharField(
         choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
     )
+
+    class Meta:
+        ordering = ["-datetime_submitted"]
+        indexes = [
+            models.Index(fields=["datetime_submitted"]),
+            models.Index(fields=["school"])
+        ]
+
 
     @override
     def __str__(self):
