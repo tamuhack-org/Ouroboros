@@ -272,6 +272,8 @@ class RaceFilter(admin.SimpleListFilter):
 
 
 class ApplicationAdmin(admin.ModelAdmin):
+    list_select_related = ["school", "user", "wave"]
+
     form = ApplicationAdminForm
     readonly_fields = [
         "datetime_submitted",
@@ -386,7 +388,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     formfield_overrides = {
         AddressField: {"widget": AddressWidget(attrs={"style": "width: 300px;"})}
     }
-    list_per_page = 1500
+    list_per_page = 1000
 
     approve.short_description = "Approve Selected Applications"
     reject.short_description = "Reject Selected Applications"
