@@ -41,5 +41,10 @@ DATABASES = {
     }
 }
 
+# Used for debug-toolbar use
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 AWS_S3_KEY_PREFIX = "dev-resumes"
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"

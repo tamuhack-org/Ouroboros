@@ -16,6 +16,7 @@ Including another URLconf
 
 """
 
+from debug_toolbar.toolbar import debug_toolbar_urls
 from django import http
 from django.conf import settings
 from django.conf.urls.static import static
@@ -40,4 +41,5 @@ urlpatterns = [
     path("status/", include("status.urls")),
     path("api/volunteer/", include("volunteer.urls")),
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
+    *debug_toolbar_urls(),
 ]
