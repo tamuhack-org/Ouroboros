@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.staticfiles",
     "django_admin_listfilter_dropdown",
+    "django_tasks",
+    "django_tasks.backends.database",
     "judgesmentors.apps.JudgesmentorsConfig",
     "phonenumber_field",
     "rangefilter",
@@ -56,6 +58,12 @@ INSTALLED_APPS = [
     "user.apps.UserConfig",
     "volunteer.apps.VolunteerConfig",
 ]
+
+TASKS = {
+    "default": {
+        "BACKEND": "django_tasks.backends.database.DatabaseBackend",
+    }
+}
 
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
