@@ -41,6 +41,7 @@ dependencies = [
     "googleapis-common-protos>=1.68.0",
     "gunicorn>=23.0.0",
     "idna>=3.10",
+    "structlog>=24.4.0",
     "phonenumbers>=8.13.55",
     "protobuf>=5.29.3",
     "psycopg>=3.2.9",
@@ -103,8 +104,7 @@ select = [
   "EM", # flake8-errmsg
   "ISC", # flake8-implicit-str-concat
   "PIE", # flake8-pie 
-  # TODO: enable the following after installing structlog
-  # "T20", # flake8-print
+  "T20", # flake8-print
   "RSE", # flake8-raise
   "RET", # flake8-return
   "SLF", # flake8-self

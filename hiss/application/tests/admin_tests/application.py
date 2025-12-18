@@ -1,6 +1,7 @@
 # I would be careful about manually typing in "_selected_action" into the post
 # request I just inpsected the post request in the dashboard and looked at what
 # it did, but it might not be the best idea
+import structlog
 from django.core import mail
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -9,6 +10,8 @@ from application.admin import build_approval_email, build_rejection_email
 from application.constants import STATUS_ADMITTED, STATUS_REJECTED
 from application.models import Application
 from shared import test_case
+
+logger = structlog.get_logger()
 
 
 class ApplicationAdminTestCase(test_case.SharedTestCase):
@@ -71,7 +74,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
     def test_reject_action_sends_rejection_email(self):
         self.client.force_login(self.admin)
         change_url = reverse_lazy("admin:application_application_changelist")
-        print(change_url)
+        logger.debug("Change URL", url=change_url)
 
         self.client.post(
             change_url,

@@ -1,3 +1,4 @@
+import structlog
 from django import views
 from django.conf import settings
 from django.contrib.auth import get_user_model, login
@@ -14,6 +15,8 @@ from django.views import generic
 from customauth import forms as customauth_forms
 from customauth.tokens import email_confirmation_generator
 from user.models import User
+
+logger = structlog.get_logger()
 
 
 def send_confirmation_email(curr_domain: RequestSite, user: User) -> None:
@@ -67,14 +70,20 @@ class ActivateView(views.View):
             OverflowError,
             get_user_model().DoesNotExist,
         ) as e:
-            print(e)
+            logger.warning("Error during account activation", error=str(e))
         if user is not None and email_confirmation_generator.check_token(
             user, kwargs["token"]
         ):
             user.is_active = True
             user.save()
+            logger.info("User successfully activated", user_pk=user.pk)
             login(request, user)
             return redirect(reverse_lazy("status"))
+        logger.warning(
+            "Activation failed",
+            uidb64=kwargs["uidb64"],
+            token=kwargs["token"],
+        )
         return HttpResponse("Activation link is invalid.")
 
 

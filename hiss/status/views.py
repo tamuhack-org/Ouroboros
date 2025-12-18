@@ -1,3 +1,4 @@
+import structlog
 from django.conf import settings
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
@@ -10,6 +11,8 @@ from application.emails import send_confirmation_email
 from application.forms import RSVPConfirmationForm
 from application.models import Application, Wave
 from user.models import User
+
+logger = structlog.get_logger()
 
 
 class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
