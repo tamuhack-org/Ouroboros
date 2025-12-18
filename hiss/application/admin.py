@@ -273,6 +273,7 @@ class RaceFilter(admin.SimpleListFilter):
 
 class ApplicationAdmin(admin.ModelAdmin):
     list_select_related = ["school", "user", "wave"]
+    search_fields = ["first_name", "last_name", "user__email"]
 
     form = ApplicationAdminForm
     readonly_fields = [
