@@ -23,18 +23,13 @@ from application.constants import (
     RACES,
     STATUS_ADMITTED,
     STATUS_EXPIRED,
-    STATUS_PENDING,
     STATUS_REJECTED,
-)
-from application.emails import (
-    send_confirmation_email,
-    send_reminder_email,
-    send_still_reviewing_email,
 )
 from application.models import (
     Application,
     Wave,
 )
+from application.tasks import bg_dispatch_send_update_emails
 from hiss.settings.customization import EVENT_TIMEZONE
 from shared.admin_functions import send_mass_html_mail
 
@@ -217,20 +212,16 @@ def waitlist(
 
 
 def resend_confirmation(
-    _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
+    modeladmin, request: HttpRequest, queryset: QuerySet[Application]
 ) -> None:
     """Resends the confirmation email to the selected applications.
 
     If the application is still pending, sends a 'still reviewing' email instead.
     """
-    for application in queryset:
-        application.save()
-        if application.status == STATUS_PENDING:
-            send_still_reviewing_email(application)
-        elif application.status == STATUS_ADMITTED:
-            send_reminder_email(application)
-        else:
-            send_confirmation_email(application)
+    app_ids = [str(pk) for pk in queryset.values_list("pk", flat=True)]
+    bg_dispatch_send_update_emails.enqueue(app_ids)
+
+    modeladmin.message_user(request, f"Enqueued {len(app_ids)} email tasks.")
 
 
 def export_application_emails(
