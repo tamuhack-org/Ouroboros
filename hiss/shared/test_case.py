@@ -15,36 +15,41 @@ TEST_RESUME_DIR = "test_resume_dir"
 class SharedTestCase(test.TestCase):
     """A shared test case that provides utility functions for testing code easily."""
 
+    @classmethod
+    def setUpTestData(cls) -> None:
+        """Only create these once in memory"""
+        cls.email = "email@dummy.com"
+        cls.password = "password"
+        cls.first_name = "Kennedy"
+        cls.last_name = "Doe"
+
+        cls.user = User.objects.create_user(
+            email=cls.email, password=cls.password, is_active=True
+        )
+
+        cls.email2 = "dummy@email.com"
+        cls.first_name2 = "Kris"
+        cls.last_name2 = "Doh"
+        cls.user2 = User.objects.create_user(
+            email=cls.email2, password=cls.password, is_active=True
+        )
+
+        cls.admin_email = "admin@official.com"
+        cls.admin_password = "admin_password"
+        cls.admin = User.objects.create_superuser(
+            cls.admin_email, cls.admin_password, is_active=True
+        )
+
+        cls.first_school = School.objects.create(name="first school")
+        cls.second_school = School.objects.create(name="second school")
+
     def setUp(self) -> None:
-        self.email = "email@dummy.com"
-        self.password = "password"
-        self.first_name = "Kennedy"
-        self.last_name = "Doe"
+        """Modifiable data"""
         self.wave1 = None
-
-        self.user = User.objects.create_user(
-            email=self.email, password=self.password, is_active=True
-        )
-
-        self.email2 = "dummy@email.com"
-        self.first_name2 = "Kris"
-        self.last_name2 = "Doh"
-        self.user2 = User.objects.create_user(
-            email=self.email2, password=self.password, is_active=True
-        )
-
-        self.admin_email = "admin@official.com"
-        self.admin_password = "admin_password"
-        self.admin = User.objects.create_superuser(
-            self.admin_email, self.admin_password, is_active=True
-        )
 
         self.resume_file_name = "resume.pdf"
         self.resume = SimpleUploadedFile(self.resume_file_name, b"dummy")
         self.resume_file_data = {"resume": self.resume}
-
-        self.first_school = School.objects.create(name="first school")
-        self.second_school = School.objects.create(name="second school")
 
         self.application_fields = {
             "first_name": self.first_name,

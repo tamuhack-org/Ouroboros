@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import sys
 from pathlib import Path
 
 from django.urls import reverse_lazy
@@ -63,9 +62,7 @@ INSTALLED_APPS = [
 # Use ImmediateBackend for tests to run tasks synchronously
 TASKS = {
     "default": {
-        "BACKEND": "django_tasks.backends.immediate.ImmediateBackend"
-        if "test" in sys.argv
-        else "django_tasks.backends.database.DatabaseBackend",
+        "BACKEND": "django_tasks.backends.database.DatabaseBackend",
     }
 }
 

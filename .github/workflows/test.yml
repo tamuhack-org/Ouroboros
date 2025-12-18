@@ -17,4 +17,4 @@ jobs:
       - name: Build Docker image
         run: docker build -t ouroboros .
       - name: Run tests
-        run: docker run ouroboros python3 manage.py test
+        run: docker run ouroboros python3 manage.py test --settings=hiss.settings.test
