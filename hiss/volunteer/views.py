@@ -83,7 +83,6 @@ class CheckinHackerView(views.APIView):
         except Application.DoesNotExist:
             # If no application found, try judges and mentors
             logger.info("No application found when checking status", email=user_email)
-            pass
 
         # Try to find judge
         try:
@@ -142,7 +141,6 @@ class CheckinHackerView(views.APIView):
             return response.Response(status=status.HTTP_200_OK)
         except Application.DoesNotExist:
             logger.info("No application found when checking in", email=user_email)
-            pass
 
         try:
             judge = Judge.objects.get(user__email=user_email)
@@ -152,7 +150,6 @@ class CheckinHackerView(views.APIView):
             return response.Response(status=status.HTTP_200_OK)
         except Judge.DoesNotExist:
             logger.info("No judge found when checking in", email=user_email)
-            pass
 
         try:
             mentor = Mentor.objects.get(user__email=user_email)
@@ -162,7 +159,6 @@ class CheckinHackerView(views.APIView):
             return response.Response(status=status.HTTP_200_OK)
         except Mentor.DoesNotExist:
             logger.info("No mentor found when checking in", email=user_email)
-            pass
 
         logger.warning("Check-in failed: no user found", email=user_email)
         return response.Response(status=status.HTTP_404_NOT_FOUND)

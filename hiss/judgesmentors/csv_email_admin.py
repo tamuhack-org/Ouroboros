@@ -154,7 +154,7 @@ class CSVEmailAdminView:
             return JsonResponse({"error": "No judges processed"}, status=400)
 
         except Exception as e:
-            logger.error("Error processing CSV", error=str(e))
+            logger.exception("Error processing CSV", error=str(e))
             return JsonResponse({"error": str(e)}, status=500)
 
     def build_judge_interest_email(self, judge_data):
@@ -305,7 +305,7 @@ class CSVEmailAdminView:
             return JsonResponse({"error": "No mentors processed"}, status=400)
 
         except Exception as e:
-            logger.error("Error processing CSV", error=str(e))
+            logger.exception("Error processing CSV", error=str(e))
             return JsonResponse({"error": str(e)}, status=500)
 
     def build_mentor_interest_email(self, mentor_data):
