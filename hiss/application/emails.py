@@ -6,12 +6,15 @@ from zoneinfo import ZoneInfo
 
 import pyqrcode
 import requests
+import structlog
 from django.conf import settings
 from django.core import mail
 from django.template.loader import render_to_string
 from django.utils import html, timezone
 
 from application.models import Application
+
+logger = structlog.get_logger()
 
 
 def send_creation_email(app: Application) -> None:
@@ -65,9 +68,9 @@ def send_confirmation_email(app: Application) -> None:
         response_data = r.json()
         apple_wallet_pass_url = response_data.get("apple_url", "")
         google_wallet_pass_url = response_data.get("google_url", "")
-        print("Wallet generation response:", response_data)
-    except requests.exceptions.RequestException as e:
-        print(f"Error generating wallet passes: {e}")
+        logger.info("Wallet generation response", response=response_data)
+    except requests.exceptions.RequestException:
+        logger.exception("Error generating wallet passes")
 
     context = {
         "first_name": app.first_name,
@@ -80,7 +83,7 @@ def send_confirmation_email(app: Application) -> None:
         "meal_group": app.meal_group,
         "event_date_text": settings.EVENT_DATE_TEXT,
     }
-    print("context:", context)
+    logger.debug("Email context", context=context)
     html_msg = render_to_string(email_template, context)
     msg = html.strip_tags(html_msg)
     email = mail.EmailMultiAlternatives(
@@ -102,7 +105,7 @@ def send_confirmation_email(app: Application) -> None:
     email.attach("code.png", qr_stream.getvalue(), "text/png")
     ics_path = Path(settings.BASE_DIR) / ".." / "static" / "th26invite.ics"
     email.attach_file(str(ics_path), mimetype="text/calendar")
-    print(f"sending confirmation email to {app.user.email}")
+    logger.info("Sending confirmation email", email=app.user.email)
     email.send()
 
 

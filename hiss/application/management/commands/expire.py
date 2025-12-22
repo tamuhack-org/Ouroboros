@@ -1,3 +1,4 @@
+import structlog
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils import timezone
@@ -6,6 +7,8 @@ from application.admin import build_waitlist_expired_email
 from application.constants import STATUS_ADMITTED, STATUS_EXPIRED
 from application.models import Application
 from shared.admin_functions import send_mass_html_mail
+
+logger = structlog.get_logger()
 
 
 class Command(BaseCommand):
@@ -18,7 +21,7 @@ class Command(BaseCommand):
         )
 
         count = unconfirmed.count()
-        print(f"Going to expire {count} applications")
+        logger.info("Going to expire applications", count=count)
 
         email_tuples = []
 
@@ -31,4 +34,4 @@ class Command(BaseCommand):
         if email_tuples:
             send_mass_html_mail(email_tuples)
 
-        print(f"All {count} applications successfully expired and notified")
+        logger.info("All applications successfully expired and notified", count=count)

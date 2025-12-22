@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from pathlib import Path
 
+import structlog
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -44,6 +45,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.staticfiles",
     "django_admin_listfilter_dropdown",
+    "django_tasks",
+    "django_tasks.backends.database",
     "judgesmentors.apps.JudgesmentorsConfig",
     "phonenumber_field",
     "rangefilter",
@@ -56,6 +59,13 @@ INSTALLED_APPS = [
     "user.apps.UserConfig",
     "volunteer.apps.VolunteerConfig",
 ]
+
+# Use ImmediateBackend for tests to run tasks synchronously
+TASKS = {
+    "default": {
+        "BACKEND": "django_tasks.backends.database.DatabaseBackend",
+    }
+}
 
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
@@ -155,28 +165,52 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
 ]
 
+structlog.configure(
+    processors=[
+        structlog.contextvars.merge_contextvars,
+        structlog.stdlib.filter_by_level,
+        structlog.stdlib.add_logger_name,
+        structlog.stdlib.add_log_level,
+        structlog.stdlib.PositionalArgumentsFormatter(),
+        structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S.%f"),
+        structlog.processors.StackInfoRenderer(),
+        structlog.processors.format_exc_info,
+        structlog.processors.UnicodeDecoder(),
+        structlog.dev.ConsoleRenderer(),
+    ],
+    wrapper_class=structlog.stdlib.BoundLogger,
+    context_class=dict,
+    logger_factory=structlog.stdlib.LoggerFactory(),
+    cache_logger_on_first_use=True,
+)
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {
-        "file": {
-            "class": "logging.StreamHandler",
-        },
-        "console": {
-            "class": "logging.StreamHandler",
+    "formatters": {
+        "structlog": {
+            "()": structlog.stdlib.ProcessorFormatter,
+            "processor": structlog.dev.ConsoleRenderer(),
+            "foreign_pre_chain": [
+                structlog.contextvars.merge_contextvars,
+                structlog.stdlib.add_logger_name,
+                structlog.stdlib.add_log_level,
+                structlog.stdlib.PositionalArgumentsFormatter(),
+                structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S.%f"),
+                structlog.processors.StackInfoRenderer(),
+                structlog.processors.format_exc_info,
+                structlog.processors.UnicodeDecoder(),
+            ],
         },
     },
-    "loggers": {
-        "django": {
-            "handlers": ["file", "console"],
-            "level": "ERROR",
-            "propagate": True,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "structlog",
         },
-        "django.request": {
-            "handlers": ["file", "console"],
-            "level": "ERROR",
-            "propagate": False,
-        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
     },
 }

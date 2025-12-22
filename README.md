@@ -1,118 +1,67 @@
+[![CI](https://github.com/tamuhack-org/Ouroboros/actions/workflows/test.yml/badge.svg)](https://github.com/tamuhack-org/Ouroboros/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/tamuhack-org/Ouroboros/branch/main/graph/badge.svg)](https://codecov.io/gh/tamuhack-org/Ouroboros)
 
 # :snake: Hiss
 
 An open-source, hackathon registration system. :school:
 
-
-## :computer: Running Locally
-
-### Local development
-
-The fastest way to develop locally is with [uv](https://docs.astral.sh/uv/).
-
+## Quickstart (local)
 ```sh
 uv venv --python 3.12
 uv sync
-
 source .venv/bin/activate
-python ./hiss/manage.py migrate #Apply all migrations
-
-python ./hiss/manage.py createsuperuser
-
-
-python ./hiss/manage.py runserver
+python hiss/manage.py migrate
+python hiss/manage.py createsuperuser
+python hiss/manage.py runserver
 ```
 
-### Pushing to staging
+## Testing
+Uses a dedicated settings file for faster runs.
+```sh
+cd hiss
+python manage.py test --settings=hiss.settings.test --parallel
+# or target a subset
+python manage.py test application.tests.view_tests.create --settings=hiss.settings.test
 ```
+
+## Environment configuration
+- Copy `.env.dist` to `.env` and fill required values (e.g., `SECRET_KEY`, database credentials, email backend, storage keys).
+- For Docker, ensure DB credentials match `docker-compose.yml`; production-like overrides live in `docker-compose.prod.yml`.
+
+## Running with Docker (production-like)
+```sh
+docker-compose up -d
+docker-compose exec db psql -U postgres -c "CREATE DATABASE hiss;"
+docker-compose run web python3 manage.py migrate --run-syncdb
+docker-compose exec web python3 manage.py loaddata application/fixtures/schools.json
+docker-compose run web python3 manage.py createsuperuser
+docker-compose up
+```
+To combine overrides: `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up`.
+
+## Deploying to staging
+If using the existing flow, push your feature branch to staging (force push replaces the staging ref—double-check before running):
+```sh
 git push -f origin origin/feature:staging
 ```
 
-### Mimic Production
-
-To mimic production, we highly encourage using [Docker Compose](https://docs.docker.com/compose/).
-
-After Docker Compose is installed, there are just a few steps left for first-time setup:
-
-```shell script
-docker-compose up -d
-docker-compose exec db su postgres # Currently on host, moving into container
-psql # Currently in container, moving into PostgreSQL prompt 
-```
-Now that you're in the PostgreSQL prompt, just run
-
-```sql
-CREATE DATABASE hiss;
-```
-
-This will create the database for you, and you're done with setup!
-
-```shell script
-exit # In the PostgreSQL prompt, moving to container
-exit # In the container, moving to the host
-```
-
-Now that you're on the host machine, just run the following:
-
-```shell script
-docker-compose run web python3 manage.py makemigrations # Only if you modified models.py or forms.py
-docker-compose run web python3 manage.py migrate --run-syncdb
-docker-compose exec web python3 manage.py loaddata application/fixtures/schools.json # Loads in schools for school dropdown in application
-docker-compose run web python3 manage.py createsuperuser # Enter details for an admin user to access the admin panel.
-```
-
-You're all set! Just run `docker-compose up` and you're good to go!
-
-
-To use it, simply replace the values in `docker-compose.prod.yml` with the values you need, and run
-
-```shell script
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
-```
-
-
-# CRON job configuration
-This project includes a cron job to automatically expire unconfirmed applications.
-
-The Django management command is located at:
-application/management/commands/expire.py
-
-To run it manually:
-
+## Scheduled expiration (cron)
+The `expire` management command marks unconfirmed applications as expired and sends notification emails.
 ```sh
 python manage.py expire
 ```
+Location: `hiss/application/management/commands/expire.py`. On Railway, schedule this daily (e.g., 11:59 PM CST) with required env vars present.
 
-On Railway, this is scheduled via a cron job (e.g., daily at 11:59 PM CST) to:
-
-Mark unconfirmed applications as expired
-
-Send notification emails to affected users
-
-Ensure your environment variables (e.g., SECRET_KEY, DATABASE_URL, email settings) are set correctly when running this command.
+## Admin utilities
+- `/admin/csv-emails/judges/` – CSV email interface for judges
+- `/admin/csv-emails/mentors/` – CSV email interface for mentors
 
 ## Contributing
-We now use uv for dependency management, ensure that uv is installed.
+- Install uv and follow the Quickstart steps above.
+- Keep tests green and prefer `--parallel` when running locally.
 
-```sh
-uv venv --python 3.12
-uv sync
+## License
+MIT. See `LICENSE`.
 
-source .venv/bin/activate
-python ./hiss/manage.py migrate #Apply all migrations
-
-python ./hiss/manage.py createsuperuser
-
-
-python ./hiss/manage.py runserver
-```
-
-```
-/admin/csv-emails/judges/
-/admin/csv-emails/mentors/
-```
-
-# Brought to you by
-
+## Brought to you by
 ![TAMUhack](/resources/img/TAMUhack.png)

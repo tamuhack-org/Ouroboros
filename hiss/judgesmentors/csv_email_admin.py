@@ -4,6 +4,7 @@ import json
 from io import BytesIO
 
 import pyqrcode
+import structlog
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
@@ -17,6 +18,8 @@ from django.utils.html import strip_tags
 from judgesmentors.models import STATUS_CONFIRMED, Judge, Mentor
 from shared.admin_functions import send_mass_html_mail
 
+logger = structlog.get_logger()
+
 User = get_user_model()
 
 
@@ -25,7 +28,7 @@ class CSVEmailAdminView:
 
     def normalize_row(self, row):
         """Normalize a CSV row into standardized data format"""
-        print(f"Processing row: {row}")
+        logger.debug("Processing row", row=row)
         is_faculty = str(row.get("is_faculty", "")).lower() in ["yes", "true", "1", "y"]
 
         return {
@@ -94,18 +97,18 @@ class CSVEmailAdminView:
             io_string = io.StringIO(decoded_file)
             reader = csv.DictReader(io_string)
 
-            # Print CSV content to console
-            print("=== CSV UPLOAD - JUDGES ===")
-            print(f"File: {csv_file.name}")
-            print(f"Size: {csv_file.size} bytes")
-            print(f"Email type: {email_type}")
-            print("CSV Content:")
+            # Log CSV content to console
+            logger.info(
+                "CSV upload - judges",
+                file=csv_file.name,
+                size=csv_file.size,
+                email_type=email_type,
+            )
 
             # Reset for reading again
             io_string.seek(0)
             csv_content = io_string.getvalue()
-            print(csv_content)
-            print("=== END CSV CONTENT ===")
+            logger.debug("CSV content", content=csv_content)
 
             # Reset for processing
             io_string.seek(0)
@@ -151,7 +154,7 @@ class CSVEmailAdminView:
             return JsonResponse({"error": "No judges processed"}, status=400)
 
         except Exception as e:
-            print(f"Error: {e!s}")
+            logger.exception("Error processing CSV", error=str(e))
             return JsonResponse({"error": str(e)}, status=500)
 
     def build_judge_interest_email(self, judge_data):
@@ -265,8 +268,10 @@ class CSVEmailAdminView:
                 mentor_data = self.normalize_row(row)
                 mentors_data.append(mentor_data)
                 processed_count += 1
-                print(
-                    f"Added mentor to memory: {mentor_data['name']} ({mentor_data['email']})"
+                logger.info(
+                    "Added mentor to memory",
+                    name=mentor_data["name"],
+                    email=mentor_data["email"],
                 )
 
             # Send emails
@@ -300,7 +305,7 @@ class CSVEmailAdminView:
             return JsonResponse({"error": "No mentors processed"}, status=400)
 
         except Exception as e:
-            print(f"Error: {e!s}")
+            logger.exception("Error processing CSV", error=str(e))
             return JsonResponse({"error": str(e)}, status=500)
 
     def build_mentor_interest_email(self, mentor_data):

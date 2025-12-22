@@ -1,3 +1,4 @@
+import structlog
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -11,6 +12,8 @@ from judgesmentors.models import STATUS_CHECKED_IN as JM_STATUS_CHECKED_IN
 from judgesmentors.models import Judge, Mentor
 from volunteer.models import FoodEvent, WorkshopEvent
 from volunteer.serializers import EmailAuthTokenSerializer
+
+logger = structlog.get_logger()
 
 USER_NOT_CHECKED_IN_MSG = (
     "This hacker has not been checked in. Please find an organizer immediately."
@@ -63,10 +66,12 @@ class CheckinHackerView(views.APIView):
         user_email = request.GET.get("email", None)
         if not user_email:
             # The hacker's email was not provided in the request body, we can't do anything.
+            logger.warning("Check-in status requested without email")
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
         try:
             application: Application = Application.objects.get(user__email=user_email)
+            logger.info("Check-in status retrieved for applicant", email=user_email)
             return JsonResponse(
                 {
                     "checkinStatus": application.status,
@@ -77,7 +82,7 @@ class CheckinHackerView(views.APIView):
             )
         except Application.DoesNotExist:
             # If no application found, try judges and mentors
-            pass
+            logger.info("No application found when checking status", email=user_email)
 
         # Try to find judge
         try:
@@ -125,33 +130,37 @@ class CheckinHackerView(views.APIView):
         user_email = request.data.get("email", None)
         if not user_email:
             # The hacker's email was not provided in the request body, we can't do anything.
+            logger.warning("Checkin status lookup missing email")
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
         try:
             application: Application = Application.objects.get(user__email=user_email)
             application.status = STATUS_CHECKED_IN
             application.save()
+            logger.info("Checked in application user", email=user_email)
             return response.Response(status=status.HTTP_200_OK)
         except Application.DoesNotExist:
-            # If no application found, try judges and mentors
-            pass
+            logger.info("No application found when checking in", email=user_email)
 
         try:
             judge = Judge.objects.get(user__email=user_email)
             judge.status = JM_STATUS_CHECKED_IN
             judge.save()
+            logger.info("Checked in judge", email=user_email)
             return response.Response(status=status.HTTP_200_OK)
         except Judge.DoesNotExist:
-            pass
+            logger.info("No judge found when checking in", email=user_email)
 
         try:
             mentor = Mentor.objects.get(user__email=user_email)
             mentor.status = JM_STATUS_CHECKED_IN
             mentor.save()
+            logger.info("Checked in mentor", email=user_email)
             return response.Response(status=status.HTTP_200_OK)
         except Mentor.DoesNotExist:
-            pass
+            logger.info("No mentor found when checking in", email=user_email)
 
+        logger.warning("Check-in failed: no user found", email=user_email)
         return response.Response(status=status.HTTP_404_NOT_FOUND)
 
 
@@ -229,6 +238,11 @@ class CreateFoodEventView(views.APIView):
 
         # Ensure that all required parameters are present
         if not (user_email and meal):
+            logger.warning(
+                "Food event creation missing required fields",
+                email=user_email,
+                meal=meal,
+            )
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
         user = get_object_or_404(get_user_model(), email=user_email)

@@ -59,21 +59,22 @@ class InitialRegistrationForm(forms.ModelForm):
         self.fields["agree_to_photos"].label = photo_agreement
 
         self.fields["agree_to_coc"].label = format_html(
-            'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf" target="_blank" rel="noopener noreferrer">MLH Code of Conduct</a>'
-        )
-
-        mlh_stuff = (
-            f"I authorize {settings.ORGANIZER_NAME} to share my application/registration information for"
-            " event administration, ranking, MLH administration, pre- and post-event informational e-mails,"
-            'and occasional messages about hackathons in-line with the <a href="https://mlh.io/privacy" target="_blank" rel="noopener noreferrer">MLH'
-            ' Privacy Policy</a>. I further agree to the terms of both the <a href="https://github.com/MLH'
-            '/mlh-policies/tree/master/contest-terms.md" target="_blank" rel="noopener noreferrer">MLH Contest Terms and Conditions</a>'
-            ' and the <a href="https://mlh.io/privacy" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>'
+            'I agree to the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Code of Conduct</a>',
+            'https://static.mlh.io/docs/mlh-code-of-conduct.pdf'
         )
 
         mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements (optional)."
 
-        self.fields["agree_to_mlh_stuff"].label = format_html(mlh_stuff)
+        self.fields["agree_to_mlh_stuff"].label = format_html(
+            'I authorize {} to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational e-mails, '
+            'and occasional messages about hackathons in-line with the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>. '
+            'I further agree to the terms of both the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Contest Terms and Conditions</a> '
+            'and the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>',
+            settings.ORGANIZER_NAME,
+            'https://mlh.io/privacy',
+            'https://github.com/MLH/mlh-policies/tree/master/contest-terms.md',
+            'https://mlh.io/privacy'
+        )
         self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
         self.fields["is_adult"].label = "Please confirm you are 18 or older."
 
@@ -308,21 +309,22 @@ class ApplicationModelForm(forms.ModelForm):
         self.fields["agree_to_photos"].label = photo_agreement
 
         self.fields["agree_to_coc"].label = format_html(
-            'I agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf" target="_blank" rel="noopener noreferrer">MLH Code of Conduct</a>'
-        )
-
-        mlh_stuff = (
-            f"I authorize {settings.ORGANIZER_NAME} to share my application/registration information for"
-            " event administration, ranking, MLH administration, pre- and post-event informational e-mails,"
-            'and occasional messages about hackathons in-line with the <a href="https://mlh.io/privacy" target="_blank" rel="noopener noreferrer">MLH'
-            ' Privacy Policy</a>. I further agree to the terms of both the <a href="https://github.com/MLH'
-            '/mlh-policies/tree/master/contest-terms.md" target="_blank" rel="noopener noreferrer">MLH Contest Terms and Conditions</a>'
-            ' and the <a href="https://mlh.io/privacy" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>'
+            'I agree to the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Code of Conduct</a>',
+            'https://static.mlh.io/docs/mlh-code-of-conduct.pdf'
         )
 
         mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements (optional)."
 
-        self.fields["agree_to_mlh_stuff"].label = format_html(mlh_stuff)
+        self.fields["agree_to_mlh_stuff"].label = format_html(
+            'I authorize {} to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational e-mails, '
+            'and occasional messages about hackathons in-line with the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>. '
+            'I further agree to the terms of both the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Contest Terms and Conditions</a> '
+            'and the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>',
+            settings.ORGANIZER_NAME,
+            'https://mlh.io/privacy',
+            'https://github.com/MLH/mlh-policies/tree/master/contest-terms.md',
+            'https://mlh.io/privacy'
+        )
         self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
         self.fields["is_adult"].label = "Please confirm you are 18 or older."
 

@@ -284,16 +284,16 @@ wheels = [
 
 [[package]]
 name = "django"
-version = "5.2.8"
+version = "6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asgiref" },
     { name = "sqlparse" },
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/05/a2/933dbbb3dd9990494960f6e64aca2af4c0745b63b7113f59a822df92329e/django-5.2.8.tar.gz", hash = "sha256:23254866a5bb9a2cfa6004e8b809ec6246eba4b58a7589bc2772f1bcc8456c7f", size = 10849032, upload-time = "2025-11-05T14:07:32.778Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/15/75/19762bfc4ea556c303d9af8e36f0cd910ab17dff6c8774644314427a2120/django-6.0.tar.gz", hash = "sha256:7b0c1f50c0759bbe6331c6a39c89ae022a84672674aeda908784617ef47d8e26", size = 10932418, upload-time = "2025-12-03T16:26:21.878Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5e/3d/a035a4ee9b1d4d4beee2ae6e8e12fe6dee5514b21f62504e22efcbd9fb46/django-5.2.8-py3-none-any.whl", hash = "sha256:37e687f7bd73ddf043e2b6b97cfe02fcbb11f2dbb3adccc6a2b18c6daa054d7f", size = 8289692, upload-time = "2025-11-05T14:07:28.761Z" },
+    { url = "https://files.pythonhosted.org/packages/d7/ae/f19e24789a5ad852670d6885f5480f5e5895576945fcc01817dfd9bc002a/django-6.0-py3-none-any.whl", hash = "sha256:1cc2c7344303bbfb7ba5070487c17f7fc0b7174bbb0a38cebf03c675f5f19b6d", size = 8339181, upload-time = "2025-12-03T16:26:16.231Z" },
 ]
 
 [[package]]
@@ -438,6 +438,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/9b/6f/a0bab0e6a7676ab3ca02d51b459444e9bd6dd747e3a43b9c24cae6d0a1c6/django_stubs_ext-5.2.7.tar.gz", hash = "sha256:b690655bd4cb8a44ae57abb314e0995dc90414280db8f26fff0cb9fb367d1cac", size = 6524, upload-time = "2025-10-08T08:00:38.895Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f8/c9/60445606e26706d3fccadf3b80ee1a9f32c1012683ff2ada7580937b2da9/django_stubs_ext-5.2.7-py3-none-any.whl", hash = "sha256:0466a7132587d49c5bbe12082ac9824d117a0dedcad5d0ada75a6e0d3aca6f60", size = 9979, upload-time = "2025-10-08T08:00:37.499Z" },
+]
+
+[[package]]
+name = "django-tasks"
+version = "0.10.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "django-stubs-ext" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c3/77/4f987e168ed75840fac277f3d6edfb5de2ea43a92723dcfe6e5510dbb232/django_tasks-0.10.0.tar.gz", hash = "sha256:1505d52e35b354091fc9a24d1446323c12d99c63fe58b63c31b5a1304177d8e8", size = 31297, upload-time = "2025-12-03T20:43:35.91Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c3/ae/161e7559ba6c6177ffa39854d80735c68e12680380322eec5752eca13987/django_tasks-0.10.0-py3-none-any.whl", hash = "sha256:1869e6bbfd0151c87cc711c0a377450f06b805b9da9556ba09dd32b4a0f4cb0a", size = 43071, upload-time = "2025-12-03T20:43:33.755Z" },
 ]
 
 [[package]]
@@ -602,6 +616,7 @@ dependencies = [
     { name = "django-s3-storage" },
     { name = "django-storages" },
     { name = "django-stubs" },
+    { name = "django-tasks" },
     { name = "djangorestframework" },
     { name = "entrypoints" },
     { name = "google-api-core" },
@@ -625,6 +640,7 @@ dependencies = [
     { name = "rsa" },
     { name = "six" },
     { name = "sqlparse" },
+    { name = "structlog" },
     { name = "tblib" },
     { name = "urllib3" },
     { name = "whitenoise" },
@@ -645,7 +661,7 @@ requires-dist = [
     { name = "colorama", specifier = ">=0.4.6" },
     { name = "coverage", specifier = ">=7.6.12" },
     { name = "dj-database-url", specifier = ">=2.3.0" },
-    { name = "django", specifier = ">=5.2.8" },
+    { name = "django", specifier = ">=6.0.0" },
     { name = "django-address", specifier = ">=0.2.8" },
     { name = "django-admin-list-filter-dropdown", specifier = ">=1.0.3" },
     { name = "django-admin-rangefilter", specifier = ">=0.13.2" },
@@ -657,6 +673,7 @@ requires-dist = [
     { name = "django-s3-storage", specifier = ">=0.15.0" },
     { name = "django-storages", specifier = ">=1.14.5" },
     { name = "django-stubs", specifier = ">=5.1.3" },
+    { name = "django-tasks", specifier = ">=0.10.0" },
     { name = "djangorestframework", specifier = ">=3.15.2" },
     { name = "entrypoints", specifier = ">=0.4" },
     { name = "google-api-core", specifier = ">=2.24.1" },
@@ -680,6 +697,7 @@ requires-dist = [
     { name = "rsa", specifier = ">=4.9" },
     { name = "six", specifier = ">=1.17.0" },
     { name = "sqlparse", specifier = ">=0.5.3" },
+    { name = "structlog", specifier = ">=24.4.0" },
     { name = "tblib", specifier = ">=3.0.0" },
     { name = "urllib3", specifier = ">=2.6.0" },
     { name = "whitenoise", specifier = ">=6.9.0" },
@@ -907,6 +925,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/e5/40/edede8dd6977b0d3da179a342c198ed100dd2aba4be081861ee5911e4da4/sqlparse-0.5.3.tar.gz", hash = "sha256:09f67787f56a0b16ecdbde1bfc7f5d9c3371ca683cfeaa8e6ff60b4807ec9272", size = 84999, upload-time = "2024-12-10T12:05:30.728Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a9/5c/bfd6bd0bf979426d405cc6e71eceb8701b148b16c21d2dc3c261efc61c7b/sqlparse-0.5.3-py3-none-any.whl", hash = "sha256:cf2196ed3418f3ba5de6af7e82c694a9fbdbfecccdfc72e281548517081f16ca", size = 44415, upload-time = "2024-12-10T12:05:27.824Z" },
+]
+
+[[package]]
+name = "structlog"
+version = "25.5.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ef/52/9ba0f43b686e7f3ddfeaa78ac3af750292662284b3661e91ad5494f21dbc/structlog-25.5.0.tar.gz", hash = "sha256:098522a3bebed9153d4570c6d0288abf80a031dfdb2048d59a49e9dc2190fc98", size = 1460830, upload-time = "2025-10-27T08:28:23.028Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/45/a132b9074aa18e799b891b91ad72133c98d8042c70f6240e4c5f9dabee2f/structlog-25.5.0-py3-none-any.whl", hash = "sha256:a8453e9b9e636ec59bd9e79bbd4a72f025981b3ba0f5837aebf48f02f37a7f9f", size = 72510, upload-time = "2025-10-27T08:28:21.535Z" },
 ]
 
 [[package]]
