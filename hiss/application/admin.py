@@ -263,6 +263,7 @@ class RaceFilter(admin.SimpleListFilter):
 
 
 class ApplicationAdmin(admin.ModelAdmin):
+    show_facets = admin.ShowFacets.ALWAYS
     list_select_related = ["school", "user", "wave"]
     search_fields = ["first_name", "last_name", "user__email"]
 
