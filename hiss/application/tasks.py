@@ -1,6 +1,9 @@
+import structlog
 from django.tasks import task
 
 from application.constants import STATUS_ADMITTED, STATUS_CONFIRMED, STATUS_PENDING
+
+logger = structlog.get_logger()
 from application.emails import (
     send_confirmation_email,
     send_hardware_confirmation_email,
@@ -23,6 +26,7 @@ def bg_dispatch_send_update_emails(application_ids: list[str]):
 def bg_send_update_email(application_id: str):
     try:
         application = Application.objects.get(pk=application_id)
+        logger.info("Sending update email", application_id=application_id, status=application.status)
         if application.status == STATUS_PENDING:
             send_still_reviewing_email(application)
         elif application.status == STATUS_ADMITTED:
