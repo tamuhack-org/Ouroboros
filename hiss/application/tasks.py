@@ -1,8 +1,9 @@
 from django.tasks import task
 
-from application.constants import STATUS_ADMITTED, STATUS_PENDING
+from application.constants import STATUS_ADMITTED, STATUS_CONFIRMED, STATUS_PENDING
 from application.emails import (
     send_confirmation_email,
+    send_hardware_confirmation_email,
     send_reminder_email,
     send_still_reviewing_email,
 )
@@ -26,6 +27,8 @@ def bg_send_update_email(application_id: str):
             send_still_reviewing_email(application)
         elif application.status == STATUS_ADMITTED:
             send_reminder_email(application)
+        elif application.status == STATUS_CONFIRMED and application.wares == "HW":
+            send_hardware_confirmation_email(application)
         else:
             send_confirmation_email(application)
 

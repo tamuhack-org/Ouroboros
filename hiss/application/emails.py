@@ -109,6 +109,79 @@ def send_confirmation_email(app: Application) -> None:
     email.send()
 
 
+def send_hardware_confirmation_email(app: Application) -> None:
+    """Send a confirmation email to a hardware track user, which contains their QR code as well as additional event information.
+
+    :param app: The user's application
+    :type app: Application
+    :return: None
+    """
+    subject = f"{settings.EVENT_NAME}: Important Day-of Information!"
+    email_template = "application/emails/confirmed-hardware.html"
+
+    if app.status == "E":
+        subject = f"{settings.EVENT_NAME} Waitlist: Important Day-of Information!"
+        email_template = "application/emails/confirmed-hardware-waitlist.html"
+
+    # Generate apple wallet
+    apple_wallet_pass_url = ""
+    google_wallet_pass_url = ""
+    try:
+        r = requests.post(
+            os.environ.get("APPLE_WALLET_GEN_URL"),
+            json={
+                "email": app.user.email,
+                "meal_group": app.meal_group,
+                "first_name": app.first_name,
+                "last_name": app.last_name,
+            },
+            headers={"X-API-Key": os.environ.get("APPLE_WALLET_SECRET_KEY")},
+            timeout=10,
+        )
+        response_data = r.json()
+        apple_wallet_pass_url = response_data.get("apple_url", "")
+        google_wallet_pass_url = response_data.get("google_url", "")
+        logger.info("Wallet generation response", response=response_data)
+    except requests.exceptions.RequestException:
+        logger.exception("Error generating wallet passes")
+
+    context = {
+        "first_name": app.first_name,
+        "event_name": settings.EVENT_NAME,
+        "organizer_name": settings.ORGANIZER_NAME,
+        "event_year": settings.EVENT_YEAR,
+        "organizer_email": settings.ORGANIZER_EMAIL,
+        "apple_wallet_url": apple_wallet_pass_url,
+        "google_wallet_url": google_wallet_pass_url,
+        "meal_group": app.meal_group,
+        "event_date_text": settings.EVENT_DATE_TEXT,
+    }
+    logger.debug("Email context", context=context)
+    html_msg = render_to_string(email_template, context)
+    msg = html.strip_tags(html_msg)
+    email = mail.EmailMultiAlternatives(
+        subject, msg, from_email=None, to=[app.user.email]
+    )
+    email.attach_alternative(html_msg, "text/html")
+
+    qr_content = json.dumps(
+        {
+            "first_name": app.first_name,
+            "last_name": app.last_name,
+            "email": app.user.email,
+            "university": app.school.name,
+        }
+    )
+    qr_code = pyqrcode.create(qr_content)
+    qr_stream = BytesIO()
+    qr_code.png(qr_stream, scale=5)
+    email.attach("code.png", qr_stream.getvalue(), "text/png")
+    ics_path = Path(settings.BASE_DIR) / ".." / "static" / "th26invite.ics"
+    email.attach_file(str(ics_path), mimetype="text/calendar")
+    logger.info("Sending hardware confirmation email", email=app.user.email)
+    email.send()
+
+
 def send_still_reviewing_email(app: Application) -> None:
     """Send an email to inform the user that their application is still under review.
 
