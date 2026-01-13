@@ -2,8 +2,6 @@ import structlog
 from django.tasks import task
 
 from application.constants import STATUS_ADMITTED, STATUS_CONFIRMED, STATUS_PENDING
-
-logger = structlog.get_logger()
 from application.emails import (
     send_confirmation_email,
     send_hardware_confirmation_email,
@@ -11,6 +9,8 @@ from application.emails import (
     send_still_reviewing_email,
 )
 from application.models import Application
+
+logger = structlog.get_logger()
 
 # Note! You must make sure the arguments into the task are JSON serializable!
 # https://docs.djangoproject.com/en/6.0/ref/tasks/#django.tasks.Task.enqueue
