@@ -66,9 +66,12 @@ logger.info(
 logger.info(
     f"AWS Secret Access Key present: {'Yes' if os.getenv('AWS_SECRET_ACCESS_KEY') else 'No'}"
 )
-
 DATABASES = {
+    # Need persisitent connections for bg worker it seems https://docs.djangoproject.com/en/6.0/ref/databases/#persistent-connections
     "default": dj_database_url.config(
-        default=os.environ["DATABASE_URL"], engine="django.db.backends.postgresql"
+        default=os.environ["DATABASE_URL"],
+        engine="django.db.backends.postgresql",
+        conn_max_age=600,
+        conn_health_checks=True,
     )
 }
