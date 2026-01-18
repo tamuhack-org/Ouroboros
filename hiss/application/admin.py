@@ -262,6 +262,29 @@ class RaceFilter(admin.SimpleListFilter):
         return queryset
 
 
+class ConfirmationDeadlineProximityFilter(admin.SimpleListFilter):
+    """Filter applications by how recently their confirmation deadline passed."""
+
+    title = "Deadline within days"
+    parameter_name = "deadline_days"
+
+    def lookups(self, _request: HttpRequest, _model_admin) -> list[tuple[str, str]]:
+        return [
+            ("3", "Past 3 days"),
+            ("5", "Past 5 days"),
+            ("7", "Past 7 days"),
+            ("14", "Past 14 days"),
+            ("30", "Past 30 days"),
+        ]
+
+    def queryset(self, _request: HttpRequest, queryset: QuerySet):
+        if self.value():
+            days = int(self.value())
+            cutoff = timezone.now() - timezone.timedelta(days=days)
+            return queryset.filter(confirmation_deadline__gt=cutoff)
+        return queryset
+
+
 class ApplicationAdmin(admin.ModelAdmin):
     show_facets = admin.ShowFacets.ALWAYS
     list_select_related = ["school", "user", "wave"]
@@ -299,6 +322,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("datetime_submitted", DateRangeFilter),
         ("accessibility_requirements", ChoiceDropdownFilter),
         RaceFilter,
+        ConfirmationDeadlineProximityFilter,
     )
     list_display = (
         "first_name",
