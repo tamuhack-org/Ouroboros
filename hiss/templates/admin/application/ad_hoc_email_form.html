@@ -1,0 +1,108 @@
+{% extends "admin/base_site.html" %}
+{% load admin_urls static %}
+
+{% block title %}{{ title }} | {{ site_title|default:"Django site admin" }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo; <a href="{% url 'admin:application_application_changelist' %}">Applications</a>
+    &rsaquo; {{ title }}
+</div>
+{% endblock %}
+
+{% block content %}
+<div style="padding: 20px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;">
+    <h1>{{ title }}</h1>
+
+    <p style="color: #666; margin-bottom: 20px;">
+        You have selected <strong>{{ app_count }}</strong> application(s) to send an ad hoc email to.
+    </p>
+
+    {% if error %}
+    <div style="background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+
+    <div style="background: #fff3cd; border: 1px solid #ffc107; color: #856404; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
+        <strong>Warning:</strong> This will send emails to all selected applicants. Please review your template carefully before sending.
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 20px;">
+            <label for="subject" style="display: block; margin-bottom: 5px; font-weight: bold; color: #333;">
+                Email Subject: <span style="color: #c00;">*</span>
+            </label>
+            <input type="text" name="subject" id="subject" required
+                   style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%; max-width: 500px; font-size: 14px;"
+                   placeholder="Enter email subject line">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label for="html_template" style="display: block; margin-bottom: 5px; font-weight: bold; color: #333;">
+                HTML Template File: <span style="color: #c00;">*</span>
+            </label>
+            <input type="file" name="html_template" id="html_template" accept=".html,.htm" required
+                   style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+            <p style="color: #666; font-size: 12px; margin-top: 5px;">
+                Upload an HTML file. Must be UTF-8 encoded.
+            </p>
+        </div>
+
+        <div style="margin-bottom: 20px; padding: 15px; background: #e9ecef; border-radius: 4px;">
+            <h3 style="margin-top: 0; color: #333; font-size: 14px;">Available Template Variables</h3>
+            <p style="color: #666; font-size: 12px; margin-bottom: 10px;">
+                You can use these Django template variables in your HTML file:
+            </p>
+            {% verbatim %}
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <tr>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd;"><code>{{ first_name }}</code></td>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd; color: #666;">Applicant's first name</td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd;"><code>{{ last_name }}</code></td>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd; color: #666;">Applicant's last name</td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd;"><code>{{ email }}</code></td>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd; color: #666;">Applicant's email address</td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd;"><code>{{ event_name }}</code></td>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd; color: #666;">Event name (e.g., TAMUhack)</td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd;"><code>{{ event_year }}</code></td>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd; color: #666;">Event year (e.g., 2026)</td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd;"><code>{{ organizer_name }}</code></td>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd; color: #666;">Organizer name</td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd;"><code>{{ organizer_email }}</code></td>
+                    <td style="padding: 4px 8px; border-bottom: 1px solid #ddd; color: #666;">Organizer email</td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 8px;"><code>{{ event_date_text }}</code></td>
+                    <td style="padding: 4px 8px; color: #666;">Event date text (e.g., January 24-25, 2026)</td>
+                </tr>
+            </table>
+            {% endverbatim %}
+        </div>
+
+        <div style="margin-top: 20px;">
+            <button type="submit" style="background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; text-transform: uppercase; margin-right: 10px;">
+                Send Emails
+            </button>
+            <a href="{% url 'admin:application_application_changelist' %}" style="background: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; text-transform: uppercase; text-decoration: none; display: inline-block;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

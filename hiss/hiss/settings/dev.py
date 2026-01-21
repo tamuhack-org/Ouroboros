@@ -48,3 +48,10 @@ INTERNAL_IPS = [
 
 AWS_S3_KEY_PREFIX = "dev-resumes"
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+
+# Use ImmediateBackend for development to run tasks synchronously
+TASKS = {
+    "default": {
+        "BACKEND": "django_tasks.backends.immediate.ImmediateBackend"
+    }
+}

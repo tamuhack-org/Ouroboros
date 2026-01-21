@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     "volunteer.apps.VolunteerConfig",
 ]
 
-# Use ImmediateBackend for tests to run tasks synchronously
+# Use DatabaseBackend for production; dev.py and test.py override with ImmediateBackend
 TASKS = {
     "default": {
         "BACKEND": "django_tasks.backends.database.DatabaseBackend",

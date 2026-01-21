@@ -6,12 +6,15 @@ from address.forms import AddressWidget
 from address.models import AddressField
 from django import forms
 from django.conf import settings
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin.filters import RelatedOnlyFieldListFilter
 from django.db import transaction
 from django.db.models.query import QuerySet
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.template import Template, TemplateSyntaxError
 from django.template.loader import render_to_string
+from django.template.response import TemplateResponse
+from django.urls import path, reverse
 from django.utils import timezone
 from django.utils.html import strip_tags
 from django_admin_listfilter_dropdown.filters import (
@@ -26,10 +29,11 @@ from application.constants import (
     STATUS_REJECTED,
 )
 from application.models import (
+    AdHocEmailBatch,
     Application,
     Wave,
 )
-from application.tasks import bg_dispatch_send_update_emails
+from application.tasks import bg_dispatch_ad_hoc_emails, bg_dispatch_send_update_emails
 from hiss.settings.customization import EVENT_TIMEZONE
 from shared.admin_functions import send_mass_html_mail
 
@@ -238,6 +242,17 @@ def export_application_emails(
 
     return response
 
+def send_ad_hoc_emails(
+    _modeladmin, request: HttpRequest, queryset: QuerySet[Application]
+) -> HttpResponseRedirect:
+    """Redirect to ad hoc email form with selected application IDs."""
+    selected_ids = [str(pk) for pk in queryset.values_list("pk", flat=True)]
+    if not selected_ids:
+        messages.error(request, "No applications selected.")
+        return HttpResponseRedirect(reverse("admin:application_application_changelist"))
+    request.session["ad_hoc_email_app_ids"] = selected_ids
+    return HttpResponseRedirect(reverse("admin:application_ad_hoc_email_form"))
+
 
 def custom_titled_filter(title):
     class Wrapper(admin.FieldListFilter):
@@ -416,6 +431,9 @@ class ApplicationAdmin(admin.ModelAdmin):
     resend_confirmation.short_description = (
         "Resend Confirmation to Selected Applications"
     )
+    send_ad_hoc_emails.short_description = (
+        "Send Ad Hoc Email to Selected Applications"
+    )
 
     actions = [
         approve,
@@ -423,7 +441,91 @@ class ApplicationAdmin(admin.ModelAdmin):
         waitlist,
         export_application_emails,
         resend_confirmation,
+        send_ad_hoc_emails,
     ]
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "ad-hoc-email/",
+                self.admin_site.admin_view(self.ad_hoc_email_view),
+                name="application_ad_hoc_email_form",
+            ),
+        ]
+        return custom_urls + urls
+
+    def ad_hoc_email_view(self, request: HttpRequest) -> HttpResponse:
+        """Router for ad hoc email form GET/POST."""
+        if request.method == "POST":
+            return self._process_ad_hoc_emails(request)
+        return self._render_ad_hoc_email_form(request)
+
+    def _render_ad_hoc_email_form(
+        self, request: HttpRequest, error: str | None = None
+    ) -> HttpResponse:
+        """Render the ad hoc email form."""
+        app_ids = request.session.get("ad_hoc_email_app_ids", [])
+        if not app_ids:
+            messages.error(request, "No applications selected. Please select applications first.")
+            return HttpResponseRedirect(reverse("admin:application_application_changelist"))
+
+        context = {
+            **self.admin_site.each_context(request),
+            "title": "Send Ad Hoc Email",
+            "app_count": len(app_ids),
+            "error": error,
+        }
+        return TemplateResponse(
+            request, "admin/application/ad_hoc_email_form.html", context
+        )
+
+    def _process_ad_hoc_emails(self, request: HttpRequest) -> HttpResponse:
+        """Handle POST: validate and enqueue ad hoc emails."""
+        app_ids = request.session.get("ad_hoc_email_app_ids", [])
+        if not app_ids:
+            messages.error(request, "No applications selected. Please select applications first.")
+            return HttpResponseRedirect(reverse("admin:application_application_changelist"))
+
+        subject = request.POST.get("subject", "").strip()
+        html_file = request.FILES.get("html_template")
+
+        # Validation
+        if not subject:
+            return self._render_ad_hoc_email_form(request, error="Subject is required.")
+        if not html_file:
+            return self._render_ad_hoc_email_form(request, error="HTML template file is required.")
+
+        # Read and decode HTML template
+        try:
+            html_content = html_file.read().decode("utf-8")
+        except UnicodeDecodeError:
+            return self._render_ad_hoc_email_form(
+                request, error="Invalid file encoding. Please upload a UTF-8 encoded HTML file."
+            )
+
+        # Validate template syntax
+        try:
+            Template(html_content)
+        except TemplateSyntaxError as e:
+            return self._render_ad_hoc_email_form(
+                request, error=f"Template syntax error: {e}"
+            )
+
+        # Create batch and enqueue tasks
+        batch = AdHocEmailBatch.objects.create(
+            subject=subject,
+            html_template=html_content,
+        )
+        bg_dispatch_ad_hoc_emails.enqueue(str(batch.id), app_ids)
+
+        # Clear session data
+        del request.session["ad_hoc_email_app_ids"]
+
+        messages.success(
+            request, f"Successfully enqueued {len(app_ids)} ad hoc email tasks."
+        )
+        return HttpResponseRedirect(reverse("admin:application_application_changelist"))
 
     def has_add_permission(self, _request):
         return True

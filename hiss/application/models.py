@@ -42,6 +42,21 @@ s3_storage = S3Storage()
 logger = logging.getLogger(__name__)
 
 
+class AdHocEmailBatch(models.Model):
+    """Stores ad hoc email template for background task processing."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    subject = models.CharField(max_length=255)
+    html_template = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Ad hoc email batches"
+
+    def __str__(self) -> str:
+        return f"{self.subject} ({self.created_at})"
+
+
 class WaveManager(models.Manager["Wave"]):
     def next_wave(self, start_dt: datetime | None = None) -> Wave | None:
         """Return the next INACTIVE wave, if one exists."""
