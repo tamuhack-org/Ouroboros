@@ -101,3 +101,14 @@ class RSVPSubmitView(mixins.LoginRequiredMixin, generic.View):
             return redirect(reverse_lazy("status"))
 
         return redirect(reverse_lazy("status"))
+
+
+class ConfirmedCountView(mixins.LoginRequiredMixin, generic.TemplateView):
+    template_name = "status/confirmed_count.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["confirmed_count"] = Application.objects.filter(
+            status=application.constants.STATUS_CONFIRMED
+        ).count()
+        return context

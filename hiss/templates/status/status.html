@@ -105,6 +105,21 @@
             Have additional questions? Email us at <a href="mailto:{{ organizer_email }}">{{ organizer_email }}</a>.
         </p>
 
+        <p class="status-description">
+         If you've changed your mind, please change your rsvp below. This decision is irriversible,
+        please contact us if you have clicked this by mistake.
+        </p>
+
+        <div class="status-actions">
+            <a href="{% url 'application:decline' pk=application.pk %}"
+               onclick="event.preventDefault(); document.getElementById('decline-form').submit();"
+               class="btn-secondary">I will not be able to participate 
+        </a>
+        </div>
+        <form id="decline-form" method="POST" action="{% url 'application:decline' pk=application.pk %}" style="display: none;">
+            {% csrf_token %}
+        </form>
+
     {% elif REJECTED %}
         <p class="status-label">Your application status is</p>
         <p class="status-value">REJECTED</p>
@@ -126,7 +141,7 @@
         <p class="status-label">Your application is</p>
         <p class="status-value">WAITLISTED</p>
         <p class="status-description">
-            Your admittance to the hackathon is not guaranteed, but you still may be able to attend if we have capacity. We will have a waitlist line for students who are not accepted. Starting at 10AM, we will admit people from the waitlist line until the MSC capacity has been reached. You can read our full waitlist policy on the {{ event_name }} live site.
+            Your admittance to the hackathon is not guaranteed, but you still may be able to attend if we have capacity. We will have a waitlist line for students who are not accepted. Starting at 11AM, we will admit people from the waitlist line until the MSC capacity has been reached. You can read our full waitlist policy on the {{ event_name }} live site.
         </p>
         <p class="status-description">
             In the event that you do choose to attend, prepare for the event by visiting our FAQ for tips and info. See you soon!

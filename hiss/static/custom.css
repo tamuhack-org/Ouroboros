@@ -790,6 +790,7 @@ p:has(input[type="checkbox"]) .helptext,
   color: var(--color-text-muted);
   max-width: var(--max-w-md);
   margin: 0 auto var(--space-4);
+  text-align: start;
 }
 
 .status-actions {
@@ -1087,4 +1088,56 @@ p:has(input[type="checkbox"]) .helptext,
   opacity: 0.5;
   background-color: var(--pico-form-element-disabled-background-color);
   cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Confirmed Count Page - TAMUhack Email Guidelines Style
+   ========================================================================== */
+
+.confirmed-page {
+  background-color: #add8e6;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.confirmed-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: var(--space-3);
+}
+
+.confirmed-card {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: var(--space-5);
+  text-align: center;
+  min-width: 280px;
+}
+
+.confirmed-label {
+  font-size: var(--text-sm);
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.confirmed-count {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #333;
+  line-height: 1;
+  margin-bottom: var(--space-3);
+}
+
+.team-signature {
+  font-size: var(--text-sm);
+  color: #add8e6;
+  font-weight: 600;
+  margin: 0;
 }
