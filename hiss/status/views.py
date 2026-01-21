@@ -59,12 +59,10 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
             application.constants.STATUS_EXPIRED: "EXPIRED",
         }
 
+        # Show accepted status even if past confirmation deadline (for now)
         if status == application.constants.STATUS_ADMITTED:
-            if app.confirmation_deadline and app.is_past_confirmation_deadline:
-                context["EXPIRED"] = True
-            else:
-                context["NEEDS_TO_CONFIRM"] = True
-                context["rsvp_form"] = RSVPConfirmationForm(instance=app)
+            context["NEEDS_TO_CONFIRM"] = True
+            context["rsvp_form"] = RSVPConfirmationForm(instance=app)
             return context
 
         flag = status_map.get(status)
