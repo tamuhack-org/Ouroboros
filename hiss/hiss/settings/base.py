@@ -21,7 +21,7 @@ from django.urls import reverse_lazy
 BASE_DIR = Path(__file__).resolve().parent.parent
 # Base Pathname for Obos (when not being hosted at root)
 BASE_PATHNAME = (
-    os.environ.get("BASE_PATHNAME") if os.environ.get("BASE_PATHNAME") else ""
+    os.environ.get("BASE_PATHNAME") or ""
 )
 BASE_PATHNAME_REGEX = BASE_PATHNAME + r"/$"
 

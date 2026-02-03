@@ -7,7 +7,7 @@ An open-source, hackathon registration system. :school:
 
 ## Quickstart (local)
 ```sh
-uv venv --python 3.12
+uv venv --python 3.13
 uv sync
 source .venv/bin/activate
 python hiss/manage.py migrate
