@@ -75,7 +75,7 @@ class CheckinHackerView(views.APIView):
             return JsonResponse(
                 {
                     "checkinStatus": application.status,
-                    "wares": application.wares if application.wares else "None",
+                    "wares": application.wares or "None",
                     "first_name": application.first_name,
                     "last_name": application.last_name,
                 }
