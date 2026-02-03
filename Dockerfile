@@ -1,4 +1,4 @@
-FROM python:3.12
+FROM python:3.13
 
 # currently pinned to uv 0.9, new members will have to update
 COPY --from=ghcr.io/astral-sh/uv:0.9 /uv /uvx /bin/
