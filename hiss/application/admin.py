@@ -326,11 +326,11 @@ class ApplicationAdmin(admin.ModelAdmin):
         "is_a_walk_in",
     ]
     list_filter = (
-        ("school", RelatedOnlyFieldListFilter),
         ("status", ChoiceDropdownFilter),
         ("gender", ChoiceDropdownFilter),
         ("major", ChoiceDropdownFilter),
         ("grad_year", ChoiceDropdownFilter),
+        ("level_of_study", ChoiceDropdownFilter),
         ("num_hackathons_attended", ChoiceDropdownFilter),
         ("wares", ChoiceDropdownFilter),
         ("shirt_size", ChoiceDropdownFilter),
@@ -338,6 +338,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         ("accessibility_requirements", ChoiceDropdownFilter),
         RaceFilter,
         ConfirmationDeadlineProximityFilter,
+        ("school", RelatedOnlyFieldListFilter),
     )
     list_display = (
         "first_name",
