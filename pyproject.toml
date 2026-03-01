@@ -58,6 +58,7 @@ dependencies = [
     "tblib>=3.0.0",
     "urllib3>=2.6.0",
     "whitenoise>=6.9.0",
+    "django-tasks-db>=0.12.0",
 ]
 
 [dependency-groups]
