@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_admin_listfilter_dropdown",
     "django_tasks",
-    "django_tasks.backends.database",
+    "django_tasks_db",
     "judgesmentors.apps.JudgesmentorsConfig",
     "phonenumber_field",
     "rangefilter",
@@ -63,7 +63,7 @@ INSTALLED_APPS = [
 # Use DatabaseBackend for production; dev.py and test.py override with ImmediateBackend
 TASKS = {
     "default": {
-        "BACKEND": "django_tasks.backends.database.DatabaseBackend",
+        "BACKEND": "django_tasks_db.DatabaseBackend",
     }
 }
 
