@@ -4,6 +4,8 @@ from typing import TYPE_CHECKING, Self, override
 from django.db import models
 from django.db.models import Max, QuerySet
 
+from hiss.settings.customization import MAX_TEAM_CAPACITY
+
 if TYPE_CHECKING:
     from application.models import Application
 
@@ -19,8 +21,6 @@ class TeamQuerySet(QuerySet):
 
 class Team(models.Model):
     """Represents a team in this hackathon."""
-
-    MAX_CAPACITY: int = 4
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
@@ -40,4 +40,4 @@ class Team(models.Model):
 
     @property
     def is_at_max_capacity(self) -> bool:
-        return self.get_members().count() >= self.MAX_CAPACITY
+        return self.get_members().count() >= MAX_TEAM_CAPACITY
