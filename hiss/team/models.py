@@ -13,7 +13,7 @@ class TeamQuerySet(QuerySet):
 
     def order_by_latest_submission(self) -> Self:
         return self.annotate(
-            latest_submission=Max("application__datetime_submitted")
+            latest_submission=Max("members__datetime_submitted")
         ).order_by("-latest_submission")
 
 
@@ -36,7 +36,7 @@ class Team(models.Model):
         return f"Team {self.id} (Captain: {self.captain.email})"
 
     def get_members(self) -> QuerySet["Application"]:
-        return self.application_set.all()
+        return self.members.all()
 
     @property
     def is_at_max_capacity(self) -> bool:
