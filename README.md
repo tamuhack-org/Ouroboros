@@ -5,7 +5,7 @@
 
 An open-source, hackathon registration system. :school:
 
-## Quickstart (local)
+## Quickstar (local)
 ```sh
 uv venv --python 3.13
 uv sync
