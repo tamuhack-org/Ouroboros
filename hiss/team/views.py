@@ -11,15 +11,26 @@ logger = structlog.get_logger()
 
 
 class CreateTeamView(mixins.LoginRequiredMixin, views.View):
-    """Create a new Team with the current user as captain and return the invite link."""
+    """Create a new Team, mark the current user's application as captain, return the invite link."""
 
     def post(self, request: HttpRequest, *_args, **_kwargs):
-        if Team.objects.filter(captain=request.user).exists():
-            raise PermissionDenied("You already captain a team.") #change message?
-        team = Team.objects.create(captain=request.user)
+        app = Application.objects.filter(user=request.user).first()
+        if app is None:
+            msg = "You must have an application to create a team."
+            raise PermissionDenied(msg)
+        if app.team is not None:
+            msg = "You are already on a team."
+            raise PermissionDenied(msg)
+        team = Team.objects.create()
+        app.team = team
+        app.is_captain = True
+        app.save()
         invite_link = request.build_absolute_uri(f"/team/join/{team.id}")
         logger.info("Created team", team_pk=team.pk, user_pk=request.user.pk)
-        return JsonResponse({"team_id": str(team.id), "invite_link": invite_link})
+        return JsonResponse(
+            {"team_id": str(team.id), "invite_link": invite_link},
+            status=201,
+        )
 
 
 class RemoveMemberView(mixins.LoginRequiredMixin, views.View):
@@ -33,9 +44,17 @@ class RemoveMemberView(mixins.LoginRequiredMixin, views.View):
         app: Application = Application.objects.get(pk=pk)
         if app.team is None:
             return JsonResponse({"ok": True})
-        if request.user != app.user and request.user != app.team.captain:
-            raise PermissionDenied("You don't have permission to remove this member.")
+        if app.is_captain:
+            msg = "The captain cannot leave the team; delete the team instead."
+            raise PermissionDenied(msg)
+        captain = app.team.captain
+        is_self = request.user == app.user
+        is_captain = captain is not None and request.user == captain.user
+        if not is_self and not is_captain:
+            msg = "You don't have permission to remove this member."
+            raise PermissionDenied(msg)
         app.team = None
+        app.is_captain = False
         app.save()
         logger.info(
             "Removed member from team", app_pk=app.pk, actor_pk=request.user.pk
@@ -44,15 +63,24 @@ class RemoveMemberView(mixins.LoginRequiredMixin, views.View):
 
 
 class DeleteTeamView(mixins.LoginRequiredMixin, views.View):
-    """Deactivate a team. Only works when no members remain."""
+    """Deactivate a team. Only the captain can call it, and only when no other members remain."""
 
     def post(self, request: HttpRequest, *_args, **_kwargs):
         pk = self.kwargs["pk"]
         team: Team = Team.objects.get(pk=pk)
-        if request.user != team.captain:
-            raise PermissionDenied("Only the team captain can delete the team.")
-        if team.get_members().exists():
-            raise PermissionDenied("Cannot delete a team that still has members.")
+        app = Application.objects.filter(user=request.user, team=team).first()
+        if app is None:
+            msg = "You are not on this team."
+            raise PermissionDenied(msg)
+        if not app.is_captain:
+            msg = "Only the team captain can delete the team."
+            raise PermissionDenied(msg)
+        if team.get_members().count() > 1:
+            msg = "Cannot delete a team that still has members."
+            raise PermissionDenied(msg)
+        app.is_captain = False
+        app.team = None
+        app.save()
         team.is_active = False
         team.save()
         logger.info("Deactivated team", team_pk=team.pk)
