@@ -12,7 +12,7 @@ from typing import (
 from django.core import exceptions
 from django.core.validators import FileExtensionValidator
 from django.db import models
-from django.db.models import QuerySet
+from django.db.models import Q, QuerySet
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django_s3_storage.storage import S3Storage
@@ -323,6 +323,7 @@ class Application(models.Model):
         blank=True,
         related_name="members",
     )
+    is_captain = models.BooleanField(default=False)
     status = models.CharField(
         choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
     )
@@ -331,9 +332,15 @@ class Application(models.Model):
         ordering = ["-datetime_submitted"]
         indexes = [
             models.Index(fields=["datetime_submitted"]),
-            models.Index(fields=["school"])
+            models.Index(fields=["school"]),
         ]
-
+        constraints = [
+            models.UniqueConstraint(
+                fields=["team"],
+                condition=Q(is_captain=True),
+                name="unique_team_captain",
+            )
+        ]
 
     @override
     def __str__(self):
