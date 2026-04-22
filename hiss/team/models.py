@@ -24,19 +24,22 @@ class Team(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    captain = models.OneToOneField(
-        "user.User", on_delete=models.CASCADE, related_name="captained_team"
-    )
     is_active = models.BooleanField(default=True)
 
     objects = TeamQuerySet.as_manager()
 
     @override
     def __str__(self):
-        return f"Team {self.id} (Captain: {self.captain.email})"
+        if self.captain:
+            return f"Team {self.id} (Captain: {self.captain.user.email})"
+        return f"Team {self.id} (No Captain)"
 
     def get_members(self) -> QuerySet["Application"]:
         return self.members.all()
+
+    @property
+    def captain(self) -> "Application | None":
+        return self.members.filter(is_captain=True).first()
 
     @property
     def is_at_max_capacity(self) -> bool:
