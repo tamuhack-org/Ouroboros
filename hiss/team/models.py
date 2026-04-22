@@ -30,7 +30,9 @@ class Team(models.Model):
 
     @override
     def __str__(self):
-        return f"Team {self.id} (Captain: {self.captain.user.email})"
+        if self.captain:
+            return f"Team {self.id} (Captain: {self.captain.user.email})"
+        return f"Team {self.id} (No Captain)"
 
     def get_members(self) -> QuerySet["Application"]:
         return self.members.all()
