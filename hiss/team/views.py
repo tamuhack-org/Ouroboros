@@ -5,6 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest, JsonResponse
 
 from application.models import Application
+from application.models import STATUS_PENDING
 from team.models import Team
 
 logger = structlog.get_logger()
@@ -84,4 +85,34 @@ class DeleteTeamView(mixins.LoginRequiredMixin, views.View):
         team.is_active = False
         team.save()
         logger.info("Deactivated team", team_pk=team.pk)
+        return JsonResponse({"ok": True})
+
+class JoinTeamView(mixins.LoginRequiredMixin, views.View):
+    """Accept an invite and add application to team if prereq is met"""
+    def post(self, request: HttpRequest, *_args, **_kwargs):
+        pk = self.kwargs["pk"]
+        team: Team = Team.objects.get(pk=pk)
+        app = Application.objects.filter(user=request.user).first()
+
+        if app is None:
+            msg = "unable to join team: not applied yet"
+            raise PermissionDenied(msg)
+
+        if app.status != STATUS_PENDING:
+            msg = "unable to join team: not under review"
+            raise PermissionDenied(msg)
+
+        if team.is_at_max_capacity():
+            msg = "unable to join team: team is full"
+            raise PermissionDenied(msg)
+
+        if app.team:
+            msg = "unable to join team: please leave/delete current team"
+            raise PermissionDenied(msg)
+
+
+        app.team = team
+        app.save()
+
+        logger.info("Joined team", team_pk=team.pk, user_pk=request.user.pk)
         return JsonResponse({"ok": True})
