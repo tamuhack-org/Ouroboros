@@ -11,4 +11,6 @@ urlpatterns = [
         name="remove_member",
     ),
     path("<uuid:pk>/delete", views.DeleteTeamView.as_view(), name="delete"),
+    path("join/<uuid:pk>", views.JoinTeamView.as_view(), name="join")
+
 ]
