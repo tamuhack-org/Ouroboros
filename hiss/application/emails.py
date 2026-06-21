@@ -14,8 +14,21 @@ from django.utils import html, timezone
 
 from application.models import Application
 
+import hmac
+import hashlib
+
+
 logger = structlog.get_logger()
 
+def make_hash(user_email):
+    secret_key = os.environ.get("SECRET_KEY").encode('utf-8')
+    data_to_hash = user_email.encode('utf-8')
+
+    hmac_object = hmac.new(secret_key, data_to_hash, hashlib.sha256)
+
+    hash_digest = hmac_object.hexdigest()
+
+    print(f"Generated HASH: {hash_digest}")
 
 def send_creation_email(app: Application) -> None:
     """Send an email to the user informing them of their newly-created apppplication.
@@ -97,8 +110,10 @@ def send_confirmation_email(app: Application) -> None:
             "last_name": app.last_name,
             "email": app.user.email,
             "university": app.school.name,
+            "hash" : make_hash(app.user.email)
         }
     )
+    
     qr_code = pyqrcode.create(qr_content)
     qr_stream = BytesIO()
     qr_code.png(qr_stream, scale=5)
