@@ -3,6 +3,7 @@ from django import views
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest, JsonResponse
+from django.shortcuts import get_object_or_404
 
 from application.constants import STATUS_PENDING
 from application.models import Application
@@ -45,7 +46,7 @@ class RemoveMemberView(mixins.LoginRequiredMixin, views.View):
 
     def post(self, request: HttpRequest, *_args, **_kwargs):
         pk = self.kwargs["pk"]
-        app: Application = Application.objects.get(pk=pk)
+        app: Application = get_object_or_404(Application, pk=pk)
         if app.team is None:
             return JsonResponse({"ok": True})
         if app.is_captain:
