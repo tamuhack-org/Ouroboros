@@ -4,6 +4,7 @@ from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest, JsonResponse
 
+from application.constants import STATUS_PENDING
 from application.models import Application
 from team.models import Team
 
@@ -17,6 +18,9 @@ class CreateTeamView(mixins.LoginRequiredMixin, views.View):
         app = Application.objects.filter(user=request.user).first()
         if app is None:
             msg = "You must have an application to create a team."
+            raise PermissionDenied(msg)
+        if app.status != STATUS_PENDING:
+            msg = "You must be under review to create a team."
             raise PermissionDenied(msg)
         if app.team is not None:
             msg = "You are already on a team."
