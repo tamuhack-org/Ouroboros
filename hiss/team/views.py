@@ -7,7 +7,6 @@ from django.shortcuts import get_object_or_404
 
 from application.constants import STATUS_PENDING
 from application.models import Application
-from application.models import STATUS_PENDING
 from team.models import Team
 
 logger = structlog.get_logger()
@@ -97,17 +96,17 @@ class JoinTeamView(mixins.LoginRequiredMixin, views.View):
     def post(self, request: HttpRequest, *_args, **_kwargs):
         pk = self.kwargs["pk"]
         team: Team = Team.objects.get(pk=pk)
-        app = Application.objects.filter(user=request.user).first()
-
-        if app is None:
-            msg = "unable to join team: not applied yet"
-            raise PermissionDenied(msg)
+        app: Application = get_object_or_404(Application, pk=pk)
 
         if app.status != STATUS_PENDING:
             msg = "unable to join team: not under review"
             raise PermissionDenied(msg)
 
-        if team.is_at_max_capacity():
+        if not team.is_active: 
+            msg = "unable to join team: desired team no longer exists"
+            raise PermissionDenied(msg)
+
+        if team.is_at_max_capacity:
             msg = "unable to join team: team is full"
             raise PermissionDenied(msg)
 
