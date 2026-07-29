@@ -95,8 +95,8 @@ class JoinTeamView(mixins.LoginRequiredMixin, views.View):
     """Accept an invite and add application to team if prereq is met"""
     def post(self, request: HttpRequest, *_args, **_kwargs):
         pk = self.kwargs["pk"]
-        team: Team = Team.objects.get(pk=pk)
-        app: Application = get_object_or_404(Application, pk=pk)
+        team: Team = get_object_or_404(Team, pk=pk)
+        app = Application.objects.filter(user=request.user).first()
 
         if app.status != STATUS_PENDING:
             msg = "unable to join team: not under review"
