@@ -3,7 +3,8 @@ from django import views
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
 
 from application.constants import STATUS_PENDING
 from application.models import Application
@@ -97,6 +98,9 @@ class JoinTeamView(mixins.LoginRequiredMixin, views.View):
         pk = self.kwargs["pk"]
         team: Team = get_object_or_404(Team, pk=pk)
         app = Application.objects.filter(user=request.user).first()
+
+        if app is None:
+            return redirect(reverse_lazy("application"))
 
         if app.status != STATUS_PENDING:
             msg = "unable to join team: not under review"
