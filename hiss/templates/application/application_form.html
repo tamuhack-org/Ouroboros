@@ -22,4 +22,12 @@
         {% endif %}
     </form>
 </article>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const teamId = urlParams.get('team_id');
+
+        if (teamId) localStorage.setItem('pending_team_id', teamId);
+    });
+</script>
 {% endblock %}
