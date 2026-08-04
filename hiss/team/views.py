@@ -100,7 +100,8 @@ class JoinTeamView(mixins.LoginRequiredMixin, views.View):
         app = Application.objects.filter(user=request.user).first()
 
         if app is None:
-            return redirect(reverse_lazy("application"))
+            base_url = reverse("application")
+            return redirect(f"{base_url}?team_id={team.id}")
 
         if app.status != STATUS_PENDING:
             msg = "unable to join team: not under review"
