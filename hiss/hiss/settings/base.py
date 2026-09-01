@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.staticfiles",
     "django_admin_listfilter_dropdown",
-    "django_tasks",
     "django_tasks_db",
     "judgesmentors.apps.JudgesmentorsConfig",
     "phonenumber_field",
