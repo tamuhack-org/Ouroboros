@@ -4,7 +4,7 @@ from team import views
 
 app_name = "team"
 urlpatterns = [
-    path("", views.CreateTeamView.as_view(), name="create"),
+    path("", views.MyTeamView.as_view(), name="my-team"),
     path(
         "members/<uuid:pk>/remove",
         views.RemoveMemberView.as_view(),

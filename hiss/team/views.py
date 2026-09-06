@@ -13,8 +13,26 @@ from team.models import Team
 logger = structlog.get_logger()
 
 
-class CreateTeamView(mixins.LoginRequiredMixin, views.View):
-    """Create a new Team, mark the current user's application as captain, return the invite link."""
+class MyTeamView(mixins.LoginRequiredMixin, views.View):
+    """
+    Get current application's team if it exists
+
+    Create a new Team, mark the current user's application as captain, return the invite link.
+    """
+
+    def get(self, request: HttpRequest, *_args, **_kwargs):
+        logger.info("made it here!!")
+        app = Application.objects.filter(user=request.user).first()
+
+        logger.info("made it here!!")
+        return JsonResponse(
+            {
+                "team_id": str(app.team.id),
+                "is_captain": app.is_captain,
+                "members": list(app.team.get_members().values("id", "is_captain")),
+            },
+            status=200,
+        )
 
     def post(self, request: HttpRequest, *_args, **_kwargs):
         app = Application.objects.filter(user=request.user).first()
