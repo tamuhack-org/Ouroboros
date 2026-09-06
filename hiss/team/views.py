@@ -62,9 +62,7 @@ class RemoveMemberView(mixins.LoginRequiredMixin, views.View):
         app.team = None
         app.is_captain = False
         app.save()
-        logger.info(
-            "Removed member from team", app_pk=app.pk, actor_pk=request.user.pk
-        )
+        logger.info("Removed member from team", app_pk=app.pk, actor_pk=request.user.pk)
         return JsonResponse({"ok": True})
 
 
@@ -92,8 +90,10 @@ class DeleteTeamView(mixins.LoginRequiredMixin, views.View):
         logger.info("Deactivated team", team_pk=team.pk)
         return JsonResponse({"ok": True})
 
+
 class JoinTeamView(mixins.LoginRequiredMixin, views.View):
     """Accept an invite and add application to team if prereq is met"""
+
     def post(self, request: HttpRequest, *_args, **_kwargs):
         pk = self.kwargs["pk"]
         team: Team = get_object_or_404(Team, pk=pk)
@@ -107,7 +107,7 @@ class JoinTeamView(mixins.LoginRequiredMixin, views.View):
             msg = "unable to join team: not under review"
             raise PermissionDenied(msg)
 
-        if not team.is_active: 
+        if not team.is_active:
             msg = "unable to join team: desired team no longer exists"
             raise PermissionDenied(msg)
 
@@ -118,7 +118,6 @@ class JoinTeamView(mixins.LoginRequiredMixin, views.View):
         if app.team:
             msg = "unable to join team: please leave/delete current team"
             raise PermissionDenied(msg)
-
 
         app.team = team
         app.save()
