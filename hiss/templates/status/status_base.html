@@ -1,0 +1,40 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block main %}
+
+<article class="status-card text-center">
+    <header>
+        <ol class="status-timeline">
+            <li>
+                {% if CONFIRMED or REJECTED or PENDING or NEEDS_TO_CONFIRM or DECLINED %}
+                    <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
+                {% else %}
+                    <span class="point"></span>
+                {% endif %}
+                <span class="label">Submitted</span>
+            </li>
+            <li>
+                {% if CONFIRMED or REJECTED or NEEDS_TO_CONFIRM or DECLINED %}
+                    <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
+                {% else %}
+                    <span class="point"></span>
+                {% endif %}
+                <span class="label">Decisions Released</span>
+            </li>
+            {% if CONFIRMED or NEEDS_TO_CONFIRM or DECLINED %}
+            <li>
+                {% if CONFIRMED or DECLINED %}
+                    <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
+                {% else %}
+                    <span class="point"></span>
+                {% endif %}
+                <span class="label">RSVP</span>
+            </li>
+            {% endif %}
+        </ol>
+    </header>
+    {% block content %}
+    {% endblock %}
+</article>
+{% endblock %}

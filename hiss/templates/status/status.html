@@ -1,40 +1,8 @@
-{% extends 'dashboard_base.html' %}
+{% extends 'status/status_base.html' %}
 {% load static tz %}
 
 {% block content %}
 {% get_current_timezone as TIME_ZONE %}
-
-<article class="status-card text-center">
-    <header>
-        <ol class="status-timeline">
-            <li>
-                {% if CONFIRMED or REJECTED or PENDING or NEEDS_TO_CONFIRM or DECLINED %}
-                    <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
-                {% else %}
-                    <span class="point"></span>
-                {% endif %}
-                <span class="label">Submitted</span>
-            </li>
-            <li>
-                {% if CONFIRMED or REJECTED or NEEDS_TO_CONFIRM or DECLINED %}
-                    <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
-                {% else %}
-                    <span class="point"></span>
-                {% endif %}
-                <span class="label">Decisions Released</span>
-            </li>
-            {% if CONFIRMED or NEEDS_TO_CONFIRM or DECLINED %}
-            <li>
-                {% if CONFIRMED or DECLINED %}
-                    <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
-                {% else %}
-                    <span class="point"></span>
-                {% endif %}
-                <span class="label">RSVP</span>
-            </li>
-            {% endif %}
-        </ol>
-    </header>
 
     {% if NOT_APPLIED %}
         <p class="status-label">Your application is</p>
@@ -145,5 +113,4 @@
             Have additional questions? Email us at <a href="mailto:{{ organizer_email }}">{{ organizer_email }}</a>.
         </p>
     {% endif %}
-</article>
 {% endblock %}
