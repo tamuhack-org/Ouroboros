@@ -85,7 +85,7 @@ def build_approval_email(
     return subject, message, html_message, None, [application.user.email]
 
 
-def build_rejection_email(application: Application) -> tuple[str, str, None, list[str]]:
+def build_rejection_email(application: Application) -> tuple[str, str, str, None, list[str]]:
     """Create email indicating a `User` is rejected.
 
     Return type is (subject, message, html_message, from_email, [to_email])
