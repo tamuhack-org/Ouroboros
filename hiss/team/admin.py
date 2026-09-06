@@ -4,7 +4,7 @@ from .models import Team
 
 
 class TeamAdmin(admin.ModelAdmin):
-    list_select_related = ["application"]
+    pass
 
 
 admin.site.register(Team, TeamAdmin)
