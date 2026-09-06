@@ -16,14 +16,6 @@
                 <span class="label">Submitted</span>
             </li>
             <li>
-                {% if CONFIRMED or REJECTED or NEEDS_TO_CONFIRM or WAIT_UNTIL_NEXT_WAVE or DECLINED %}
-                    <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
-                {% else %}
-                    <span class="point"></span>
-                {% endif %}
-                <span class="label">In Review</span>
-            </li>
-            <li>
                 {% if CONFIRMED or REJECTED or NEEDS_TO_CONFIRM or DECLINED %}
                     <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
                 {% else %}
