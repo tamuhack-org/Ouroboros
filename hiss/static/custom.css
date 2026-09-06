@@ -709,7 +709,7 @@ p:has(input[type="checkbox"]) .helptext,
   justify-content: space-between;
   position: relative;
   padding: 0;
-  margin: 0 0 var(--space-5);
+  margin: 0;
   list-style: none;
 }
 
