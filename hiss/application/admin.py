@@ -1,5 +1,6 @@
 # pylint: disable=C0330
 import csv
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 from address.forms import AddressWidget
@@ -50,7 +51,7 @@ class ApplicationAdminForm(forms.ModelForm):
 
 
 def build_approval_email(
-    application: Application, confirmation_deadline: timezone.datetime
+    application: Application, confirmation_deadline: datetime
 ) -> tuple[str, str, str, None, list[str]]:
     """Create an email data tuple indicating that a user's application has been approved.
 
@@ -126,7 +127,7 @@ def approve(
     email_tuples = []
 
     for app in apps:
-        deadline = today_end + timezone.timedelta(days=app.wave.num_days_to_rsvp)
+        deadline = today_end + timedelta(days=app.wave.num_days_to_rsvp)
         app.status = STATUS_ADMITTED
         app.confirmation_deadline = deadline
 
@@ -268,10 +269,10 @@ class RaceFilter(admin.SimpleListFilter):
     title = "Race"
     parameter_name = "race"
 
-    def lookups(self, _request: HttpRequest, _model_admin) -> list[tuple[str, str]]:
+    def lookups(self, request: HttpRequest, model_admin) -> list[tuple[str, str]]:
         return RACES
 
-    def queryset(self, _request: HttpRequest, queryset: QuerySet):
+    def queryset(self, request: HttpRequest, queryset: QuerySet):
         if self.value():
             return queryset.filter(race__contains=self.value())
         return queryset
@@ -283,7 +284,7 @@ class ConfirmationDeadlineProximityFilter(admin.SimpleListFilter):
     title = "Deadline within days"
     parameter_name = "deadline_days"
 
-    def lookups(self, _request: HttpRequest, _model_admin) -> list[tuple[str, str]]:
+    def lookups(self, request: HttpRequest, model_admin) -> list[tuple[str, str]]:
         return [
             ("3", "Past 3 days"),
             ("5", "Past 5 days"),
@@ -292,10 +293,11 @@ class ConfirmationDeadlineProximityFilter(admin.SimpleListFilter):
             ("30", "Past 30 days"),
         ]
 
-    def queryset(self, _request: HttpRequest, queryset: QuerySet):
-        if self.value():
-            days = int(self.value())
-            cutoff = timezone.now() - timezone.timedelta(days=days)
+    def queryset(self, request: HttpRequest, queryset: QuerySet):
+        query_string = self.value()
+        if query_string:
+            days = int(query_string)
+            cutoff = timezone.now() - timedelta(days=days)
             return queryset.filter(confirmation_deadline__gt=cutoff)
         return queryset
 
@@ -528,10 +530,10 @@ class ApplicationAdmin(admin.ModelAdmin):
         )
         return HttpResponseRedirect(reverse("admin:application_application_changelist"))
 
-    def has_add_permission(self, _request):
+    def has_add_permission(self, request):
         return True
 
-    def has_change_permission(self, _request, _obj=None):
+    def has_change_permission(self, request, obj=None):
         return True
 
     @staticmethod
