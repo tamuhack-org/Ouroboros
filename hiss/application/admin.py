@@ -105,6 +105,7 @@ def build_rejection_email(application: Application) -> tuple[str, str, None, lis
     return subject, message, html_message, None, [application.user.email]
 
 
+@admin.action(description="Approve Selected Applications")
 def approve(
     _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
 ) -> None:
@@ -140,6 +141,7 @@ def approve(
     send_mass_html_mail(email_tuples)
 
 
+@admin.action(description="Reject Selected Applications")
 def reject(_modeladmin, _request: HttpRequest, queryset: QuerySet[Application]) -> None:
     """Set the value of the `approved` field for the selected `Application`s to `False`."""
     email_tuples = []
@@ -203,6 +205,7 @@ def build_waitlist_manual_email(
     return subject, message, html_message, None, [application.user.email]
 
 
+@admin.action(description="Waitlist Selected Applications")
 def waitlist(
     _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
 ) -> None:
@@ -216,6 +219,7 @@ def waitlist(
     send_mass_html_mail(email_tuples)
 
 
+@admin.action(description="Resend Confirmation to Selected Applications")
 def resend_confirmation(
     modeladmin, request: HttpRequest, queryset: QuerySet[Application]
 ) -> None:
@@ -229,6 +233,7 @@ def resend_confirmation(
     modeladmin.message_user(request, f"Enqueued {len(app_ids)} email tasks.")
 
 
+@admin.action(description="Export Emails for Selected Applications")
 def export_application_emails(
     _modeladmin, _request: HttpRequest, queryset: QuerySet[Application]
 ):
@@ -243,6 +248,8 @@ def export_application_emails(
 
     return response
 
+
+@admin.action(description="Send Ad Hoc Email to Selected Applications")
 def send_ad_hoc_emails(
     _modeladmin, request: HttpRequest, queryset: QuerySet[Application]
 ) -> HttpResponseRedirect:
@@ -424,19 +431,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         AddressField: {"widget": AddressWidget(attrs={"style": "width: 300px;"})}
     }
     list_per_page = 200
-
-    approve.short_description = "Approve Selected Applications"
-    reject.short_description = "Reject Selected Applications"
-    waitlist.short_description = "Waitlist Selected Applications"
-    export_application_emails.short_description = (
-        "Export Emails for Selected Applications"
-    )
-    resend_confirmation.short_description = (
-        "Resend Confirmation to Selected Applications"
-    )
-    send_ad_hoc_emails.short_description = (
-        "Send Ad Hoc Email to Selected Applications"
-    )
 
     actions = [
         approve,
