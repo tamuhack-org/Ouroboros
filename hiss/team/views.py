@@ -3,7 +3,8 @@ from django import views
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 
 from application.constants import STATUS_PENDING
 from application.models import Application
@@ -61,9 +62,7 @@ class RemoveMemberView(mixins.LoginRequiredMixin, views.View):
         app.team = None
         app.is_captain = False
         app.save()
-        logger.info(
-            "Removed member from team", app_pk=app.pk, actor_pk=request.user.pk
-        )
+        logger.info("Removed member from team", app_pk=app.pk, actor_pk=request.user.pk)
         return JsonResponse({"ok": True})
 
 
@@ -89,4 +88,39 @@ class DeleteTeamView(mixins.LoginRequiredMixin, views.View):
         team.is_active = False
         team.save()
         logger.info("Deactivated team", team_pk=team.pk)
+        return JsonResponse({"ok": True})
+
+
+class JoinTeamView(mixins.LoginRequiredMixin, views.View):
+    """Accept an invite and add application to team if prereq is met"""
+
+    def post(self, request: HttpRequest, *_args, **_kwargs):
+        pk = self.kwargs["pk"]
+        team: Team = get_object_or_404(Team, pk=pk)
+        app = Application.objects.filter(user=request.user).first()
+
+        if app is None:
+            base_url = reverse("application:create")
+            return redirect(f"{base_url}?team_id={team.id}")
+
+        if app.status != STATUS_PENDING:
+            msg = "unable to join team: not under review"
+            raise PermissionDenied(msg)
+
+        if not team.is_active:
+            msg = "unable to join team: desired team no longer exists"
+            raise PermissionDenied(msg)
+
+        if team.is_at_max_capacity:
+            msg = "unable to join team: team is full"
+            raise PermissionDenied(msg)
+
+        if app.team:
+            msg = "unable to join team: please leave/delete current team"
+            raise PermissionDenied(msg)
+
+        app.team = team
+        app.save()
+
+        logger.info("Joined team", team_pk=team.pk, user_pk=request.user.pk)
         return JsonResponse({"ok": True})
