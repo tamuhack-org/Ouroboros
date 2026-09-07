@@ -21,15 +21,17 @@ class MyTeamView(mixins.LoginRequiredMixin, views.View):
     """
 
     def get(self, request: HttpRequest, *_args, **_kwargs):
-        logger.info("made it here!!")
         app = Application.objects.filter(user=request.user).first()
 
-        logger.info("made it here!!")
         return JsonResponse(
             {
                 "team_id": str(app.team.id),
                 "is_captain": app.is_captain,
-                "members": list(app.team.get_members().values("id", "is_captain")),
+                "members": list(
+                    app.team.get_members().values(
+                        "first_name", "last_name", "is_captain"
+                    )
+                ),
             },
             status=200,
         )
