@@ -17,7 +17,7 @@ from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
 from django.utils import timezone
-from django.utils.html import strip_tags
+from django.utils.html import format_html, strip_tags
 from django_admin_listfilter_dropdown.filters import (
     ChoiceDropdownFilter,
 )
@@ -309,6 +309,23 @@ class ConfirmationDeadlineProximityFilter(admin.SimpleListFilter):
         return queryset
 
 
+class ApplicationAdminInline(admin.TabularInline):
+    model = Application
+    fields = ("status", "is_captain", "school", "level_of_study", "grad_year", "resume_link", "extra_links", "gender", "race", "misc_short_answer", "age")
+    readonly_fields = fields
+    extra = 0
+    can_delete = False
+
+    @admin.display(description="Resume")
+    def resume_link(self, obj):
+        if not obj.resume:
+            return "-"
+        return format_html(
+            '<a href="{}">View</a>',
+            obj.resume.url,
+        )
+
+
 class ApplicationAdmin(admin.ModelAdmin):
     show_facets = admin.ShowFacets.ALWAYS
     list_select_related = ["school", "user", "wave"]
@@ -360,7 +377,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         "additional_accommodations",
     )
     fieldsets = [
-        ("Related Objects", {"fields": ["user"]}),
+        ("Related Objects", {"fields": ["team"]}),
         ("Status", {"fields": ["status"]}),
         (
             "Personal Information",
