@@ -29,7 +29,11 @@ def bg_dispatch_send_update_emails(application_ids: list[str]):
 def bg_send_update_email(application_id: str):
     try:
         application = Application.objects.get(pk=application_id)
-        logger.info("Sending update email", application_id=application_id, status=application.status)
+        logger.info(
+            "Sending update email",
+            application_id=application_id,
+            status=application.status,
+        )
         if application.status == STATUS_PENDING:
             send_still_reviewing_email(application)
         elif application.status == STATUS_ADMITTED:
