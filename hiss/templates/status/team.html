@@ -5,7 +5,6 @@
 
 <h1>Team {{ team.id }}</h1>
 
-<p>You are a {% if is_captain %}captain{% else %}member{% endif %}</p>
 <p>link: <a href="{{ invite_link }}">{{ invite_link }}</a></p>
 
 <h2 id="team-members-heading">Team members</h2>
@@ -13,6 +12,7 @@
     {% for member in members %}
     <li>
         {{ member.first_name }} {{ member.last_name }}
+        {% if member.id == application.id%} <em>(self)</em> {% endif %}
         {% if member.is_captain %}<img class="captain-icon" src="{% static 'crown.svg' %}" alt="Team captain">{% endif %}
     </li>
     {% endfor %}

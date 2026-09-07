@@ -23,6 +23,9 @@ class MyTeamView(mixins.LoginRequiredMixin, views.View):
 
     def get(self, request: HttpRequest, *_args, **_kwargs):
         app = Application.objects.filter(user=request.user).first()
+        if app is None:
+            msg = "You must have an application to view a team."
+            raise PermissionDenied(msg)
 
         return JsonResponse(
             {
@@ -66,15 +69,16 @@ class TeamPageView(StatusBaseView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        app = context.get("application")
+        app: Application = context.get("application")
 
         context["team"] = app.team
         context["invite_link"] = self.request.build_absolute_uri(
             reverse("team:join", kwargs={"pk": app.team.id})
         )
+        context["self"] = app.id
         context["is_captain"] = app.is_captain
         context["members"] = list(
-            app.team.get_members().values("first_name", "last_name", "is_captain")
+            app.team.get_members().values("first_name", "last_name", "is_captain", "id")
         )
 
         return context
