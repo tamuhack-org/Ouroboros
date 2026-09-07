@@ -53,9 +53,10 @@ class MyTeamView(mixins.LoginRequiredMixin, views.View):
         app.save()
         invite_link = request.build_absolute_uri(f"/team/join/{team.id}")
         logger.info("Created team", team_pk=team.pk, user_pk=request.user.pk)
-        return JsonResponse(
-            {"team_id": str(team.id), "invite_link": invite_link},
-            status=201,
+
+        # send user to team page after creating team
+        return redirect("status_team")
+
         )
 
 
