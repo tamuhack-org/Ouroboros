@@ -4,7 +4,6 @@ from zoneinfo import ZoneInfo
 from django.conf import settings
 from django.contrib import admin
 from django.db import transaction
-from django.db.models import QuerySet
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import strip_tags
@@ -54,8 +53,7 @@ def build_approval_email(
     return subject, message, html_message, None, [application.user.email]
 
 
-@admin.action(description="Accept selected team")
-def approve(modeladmin, request, queryset: QuerySet[Team]):
+def approve(team: Team):
     """Approve every application in the selected team"""
 
     tz = ZoneInfo(EVENT_TIMEZONE)
@@ -64,7 +62,7 @@ def approve(modeladmin, request, queryset: QuerySet[Team]):
         .astimezone(tz)
         .replace(hour=23, minute=59, second=59, microsecond=0)
     )
-    apps = Application.objects.filter(team__in=queryset).select_related("wave", "user")
+    apps = Application.objects.filter(team=team).select_related("wave", "user")
 
     to_update = []
     email_tuples = []
@@ -85,7 +83,13 @@ def approve(modeladmin, request, queryset: QuerySet[Team]):
 
 class TeamAdmin(admin.ModelAdmin):
     inlines = (ApplicationAdminInline,)
-    actions = [approve]
+
+    def response_change(self, request, obj):
+        # Brittle reference to the request in hiss/templates/admin/team/team/change_form.html make sure edits there are reflected here
+        if "_approve" in request.POST:
+            approve(obj)
+            self.message_user(request, "Team approved.")
+        return super().response_change(request, obj)
 
 
 admin.site.register(Team, TeamAdmin)
