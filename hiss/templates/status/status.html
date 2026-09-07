@@ -24,6 +24,17 @@
             <a href="{{ application.get_absolute_url }}" role="button" class="btn-primary">
                 {% if active_wave_end %}Edit Application{% else %}View Application{% endif %}
             </a>
+
+            {% if not application.team %}
+            <form method="post" action="{% url 'team:my-team' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-primary">Create Team</button>
+            </form>
+            {% else %}
+            <a href="{% url 'status_team' %}" role="button" class="btn-primary">
+                View Team
+            </a>
+            {% endif %}
         </div>
 
     {% elif NEEDS_TO_CONFIRM and not DECLINED %}

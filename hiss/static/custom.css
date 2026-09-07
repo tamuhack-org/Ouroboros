@@ -603,6 +603,14 @@ form {
   margin-right: auto;
 }
 
+.status-actions > form {
+  margin: 0;
+}
+
+.status-actions > form > button {
+  margin-bottom: 0;
+}
+
 /* Allow full-width forms when explicitly needed */
 form.form-full-width {
   max-width: none;
