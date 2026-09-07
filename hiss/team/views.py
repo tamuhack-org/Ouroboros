@@ -8,6 +8,7 @@ from django.urls import reverse
 
 from application.constants import STATUS_PENDING
 from application.models import Application
+from status.views import StatusBaseView
 from team.models import Team
 
 logger = structlog.get_logger()
@@ -57,7 +58,26 @@ class MyTeamView(mixins.LoginRequiredMixin, views.View):
         # send user to team page after creating team
         return redirect("status_team")
 
+
+class TeamPageView(StatusBaseView):
+    """Render the current user's team page."""
+
+    template_name = "status/team.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        app = context.get("application")
+
+        context["team"] = app.team
+        context["invite_link"] = self.request.build_absolute_uri(
+            reverse("team:join", kwargs={"pk": app.team.id})
         )
+        context["is_captain"] = app.is_captain
+        context["members"] = list(
+            app.team.get_members().values("first_name", "last_name", "is_captain")
+        )
+
+        return context
 
 
 class RemoveMemberView(mixins.LoginRequiredMixin, views.View):
