@@ -809,6 +809,19 @@ p:has(input[type="checkbox"]) .helptext,
   margin-top: var(--space-4);
 }
 
+.team-members {
+  width: fit-content;
+  margin-inline: auto;
+  text-align: left;
+}
+
+.captain-icon {
+  width: 1.85cap;
+  height: 1.85cap;
+  color: var(--color-timeline);
+  vertical-align: -0.25em;
+}
+
 /* ==========================================================================
    Page Backgrounds
    ========================================================================== */
