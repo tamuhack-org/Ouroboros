@@ -813,6 +813,37 @@ p:has(input[type="checkbox"]) .helptext,
    Teams
    ========================================================================== */
 
+.team-page-header {
+  position: relative;
+  width: 100%;
+  max-width: var(--max-w-md);
+  height: 2rem;
+  margin: 3rem auto var(--space-3);
+}
+
+.team-page-header h1.status-value {
+  margin: 0;
+  line-height: 2rem;
+  text-align: center;
+}
+
+.status-back-link {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  -webkit-mask: url("arrow-left.svg") center / contain no-repeat;
+  mask: url("arrow-left.svg") center / contain no-repeat;
+}
+
+.status-back-link:hover,
+.status-back-link:focus {
+  background-color: var(--color-timeline);
+}
+
 .team-options .status-actions {
   margin-top: var(--space-1);
   align-items: center;

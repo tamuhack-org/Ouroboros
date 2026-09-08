@@ -3,7 +3,10 @@
 
 {% block content %}
 
-<h1 class="status-value">{% if team %}Your team{% else %}Join a team{% endif %}</h1>
+<div class="team-page-header">
+    <a class="status-back-link" href="{% url 'status' %}" aria-label="Back to status" title="Back to status"></a>
+    <h1 class="status-value">{% if team %}Your team{% else %}Join a team{% endif %}</h1>
+</div>
 
 <p class="status-description">Competing together? Join a team to have your applications reviewed together. You can also compete on your own.</p>
 
