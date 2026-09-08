@@ -13,6 +13,10 @@ python.uv_venv_auto = "create|source"
 description = "Migrate database"
 run = "uv run python hiss/manage.py migrate"
 
+[tasks.makemigrations]
+description = "Make migrations"
+run = "uv run python hiss/manage.py makemigrations"
+
 [tasks.superuser]
 description = "Create superuser"
 run = "uv run python hiss/manage.py createsuperuser"
