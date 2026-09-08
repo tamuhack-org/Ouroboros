@@ -809,6 +809,15 @@ p:has(input[type="checkbox"]) .helptext,
   margin-top: var(--space-4);
 }
 
+/* ==========================================================================
+   Teams
+   ========================================================================== */
+
+.team-options .status-actions {
+  margin-top: var(--space-1);
+  align-items: center;
+}
+
 .team-members {
   width: fit-content;
   margin-inline: auto;
@@ -1109,4 +1118,14 @@ p:has(input[type="checkbox"]) .helptext,
   opacity: 0.5;
   background-color: var(--pico-form-element-disabled-background-color);
   cursor: not-allowed;
+}
+
+.visually-hidden:not(:focus):not(:active) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0); /* Legacy property for Internet Explorer */
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

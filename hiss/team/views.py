@@ -1,8 +1,11 @@
+from uuid import UUID
+
 import structlog
 from django import views
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
-from django.http import HttpRequest, JsonResponse
+from django.db import transaction
+from django.http import Http404, HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 
@@ -55,7 +58,6 @@ class MyTeamView(mixins.LoginRequiredMixin, views.View):
         app.team = team
         app.is_captain = True
         app.save()
-        invite_link = request.build_absolute_uri(f"/team/join/{team.id}")
         logger.info("Created team", team_pk=team.pk, user_pk=request.user.pk)
 
         # send user to team page after creating team
@@ -70,6 +72,9 @@ class TeamPageView(StatusBaseView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         app: Application = context.get("application")
+
+        if app is None or app.team is None:
+            return context
 
         context["team"] = app.team
         context["invite_link"] = self.request.build_absolute_uri(
@@ -94,7 +99,7 @@ class RemoveMemberView(mixins.LoginRequiredMixin, views.View):
         pk = self.kwargs["pk"]
         app: Application = get_object_or_404(Application, pk=pk)
         if app.team is None:
-            return JsonResponse({"ok": True})
+            return redirect("status_team")
         if app.is_captain:
             msg = "The captain cannot leave the team; delete the team instead."
             raise PermissionDenied(msg)
@@ -108,7 +113,7 @@ class RemoveMemberView(mixins.LoginRequiredMixin, views.View):
         app.is_captain = False
         app.save()
         logger.info("Removed member from team", app_pk=app.pk, actor_pk=request.user.pk)
-        return JsonResponse({"ok": True})
+        return redirect("status_team")
 
 
 class DeleteTeamView(mixins.LoginRequiredMixin, views.View):
@@ -133,14 +138,20 @@ class DeleteTeamView(mixins.LoginRequiredMixin, views.View):
         team.is_active = False
         team.save()
         logger.info("Deactivated team", team_pk=team.pk)
-        return JsonResponse({"ok": True})
+        return redirect("status_team")
 
 
 class JoinTeamView(mixins.LoginRequiredMixin, views.View):
     """Accept an invite and add application to team if prereq is met"""
 
     def post(self, request: HttpRequest, *_args, **_kwargs):
-        pk = self.kwargs["pk"]
+        pk = self.kwargs.get("pk")
+        if pk is None:
+            try:
+                pk = UUID(request.POST.get("team_code", "").strip())
+            except ValueError as exc:
+                msg = "Invalid team code."
+                raise Http404(msg) from exc
         team: Team = get_object_or_404(Team, pk=pk)
         app = Application.objects.filter(user=request.user).first()
 
@@ -168,4 +179,33 @@ class JoinTeamView(mixins.LoginRequiredMixin, views.View):
         app.save()
 
         logger.info("Joined team", team_pk=team.pk, user_pk=request.user.pk)
-        return JsonResponse({"ok": True})
+        return redirect("status_team")
+
+
+class PromoteMemberView(mixins.LoginRequiredMixin, views.View):
+    """Transfer captaincy to another member of the captain's team."""
+
+    @transaction.atomic
+    def post(self, request, **kwargs):
+        target = get_object_or_404(Application, pk=kwargs["pk"])
+        if target.team_id is None:
+            msg = "This member has no team."
+            raise PermissionDenied(msg)
+        members = list(
+            Application.objects.select_for_update()
+            .filter(team_id=target.team_id)
+            .order_by("pk")
+        )
+        captain = next((m for m in members if m.is_captain), None)
+        target = next((m for m in members if m.pk == target.pk), None)
+        if captain is None or captain.user_id != request.user.pk:
+            msg = "Only the captain can transfer captaincy."
+            raise PermissionDenied(msg)
+        if target is None or target.is_captain:
+            msg = "Choose another member of your team."
+            raise PermissionDenied(msg)
+        captain.is_captain = False
+        captain.save(update_fields=["is_captain"])
+        target.is_captain = True
+        target.save(update_fields=["is_captain"])
+        return redirect("status_team")
