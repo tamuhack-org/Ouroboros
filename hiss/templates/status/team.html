@@ -17,7 +17,48 @@
 {% endif %}
 
 {% if team %}
-<p>Your team code is <strong>{{ team.id }}</strong></p>
+<p>
+    Your team code is <strong id="team-code">{{ team.id }}</strong>
+    <button type="button" id="copy-team-code" class="btn-secondary" aria-label="Copy team code" title="Copy team code">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M9 9h12v12H9z M5 15H3V3h12v2"></path>
+        </svg>
+    </button>
+    <span id="copy-team-code-status" class="visually-hidden" role="status"></span>
+</p>
+
+<script>
+    let copyTeamCodeReset;
+    document.getElementById('copy-team-code').addEventListener('click', async function () {
+        const status = document.getElementById('copy-team-code-status');
+        const icon = this.querySelector('path');
+        clearTimeout(copyTeamCodeReset);
+        icon.setAttribute('d', 'M9 9h12v12H9z M5 15H3V3h12v2');
+        this.setAttribute('aria-label', 'Copy team code');
+        this.title = 'Copy team code';
+        status.textContent = '';
+        status.classList.add('visually-hidden');
+        this.disabled = true;
+        try {
+            await navigator.clipboard.writeText(document.getElementById('team-code').textContent.trim());
+            icon.setAttribute('d', 'M5 12l4 4L19 6');
+            this.setAttribute('aria-label', 'Team code copied');
+            this.title = 'Copied!';
+            status.textContent = 'Copied!';
+            copyTeamCodeReset = setTimeout(() => {
+                icon.setAttribute('d', 'M9 9h12v12H9z M5 15H3V3h12v2');
+                this.setAttribute('aria-label', 'Copy team code');
+                this.title = 'Copy team code';
+                status.textContent = '';
+            }, 2000);
+        } catch (error) {
+            status.classList.remove('visually-hidden');
+            status.textContent = 'Unable to copy. Please select and copy the code manually.';
+        } finally {
+            this.disabled = false;
+        }
+    });
+</script>
 
 <h2 id="team-members-heading">Team members (max 4)</h2>
 <ol class="team-members" aria-labelledby="team-members-heading">
