@@ -138,7 +138,7 @@ class DeleteTeamView(mixins.LoginRequiredMixin, views.View):
         team.is_active = False
         team.save()
         logger.info("Deactivated team", team_pk=team.pk)
-        return redirect("status_team")
+        return redirect("status")
 
 
 class JoinTeamView(mixins.LoginRequiredMixin, views.View):
