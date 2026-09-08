@@ -17,6 +17,11 @@ run = "uv run python hiss/manage.py migrate"
 description = "Make migrations"
 run = "uv run python hiss/manage.py makemigrations"
 
+[tasks.collectstatic]
+description = "Reload static files"
+run = "uv run python hiss/manage.py collectstatic"
+
+
 [tasks.superuser]
 description = "Create superuser"
 run = "uv run python hiss/manage.py createsuperuser"
