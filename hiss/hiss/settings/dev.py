@@ -52,6 +52,6 @@ DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 # Use ImmediateBackend for development to run tasks synchronously
 TASKS = {
     "default": {
-        "BACKEND": "django_tasks.backends.immediate.ImmediateBackend"
+        "BACKEND": "django.tasks.backends.immediate.ImmediateBackend"
     }
 }
