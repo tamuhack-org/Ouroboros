@@ -14,14 +14,14 @@
 <form class="max-w-sm text-left" method="post" action="{% url 'team:join-code' %}">
     {% csrf_token %}
     <label for="team-code">Team code</label>
-    <input type="text" id="team-code" name="team_code" placeholder="Paste your team code" required>
+    <input type="text" id="team-code" name="team_code" placeholder="e.g. happy-gentle-dolphin" autocapitalize="none" spellcheck="false" required>
     <button type="submit" class="btn-primary">Join team</button>
 </form>
 {% endif %}
 
 {% if team %}
 <p>
-    Your team code is <strong id="team-code">{{ team.id }}</strong>
+    Your team code is <strong id="team-code">{{ team.code }}</strong>
     <button type="button" id="copy-team-code" class="btn-secondary" aria-label="Copy team code" title="Copy team code">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <path d="M9 9h12v12H9z M5 15H3V3h12v2"></path>

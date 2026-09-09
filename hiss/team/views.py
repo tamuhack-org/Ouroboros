@@ -1,11 +1,9 @@
-from uuid import UUID
-
 import structlog
 from django import views
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
-from django.http import Http404, HttpRequest, JsonResponse
+from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 
@@ -33,6 +31,7 @@ class MyTeamView(mixins.LoginRequiredMixin, views.View):
         return JsonResponse(
             {
                 "team_id": str(app.team.id),
+                "team_code": app.team.code,
                 "is_captain": app.is_captain,
                 "members": list(
                     app.team.get_members().values(
@@ -147,12 +146,10 @@ class JoinTeamView(mixins.LoginRequiredMixin, views.View):
     def post(self, request: HttpRequest, *_args, **_kwargs):
         pk = self.kwargs.get("pk")
         if pk is None:
-            try:
-                pk = UUID(request.POST.get("team_code", "").strip())
-            except ValueError as exc:
-                msg = "Invalid team code."
-                raise Http404(msg) from exc
-        team: Team = get_object_or_404(Team, pk=pk)
+            code = "-".join(request.POST.get("team_code", "").strip().lower().split())
+            team = get_object_or_404(Team, code=code, is_active=True)
+        else:
+            team = get_object_or_404(Team, pk=pk)
         app = Application.objects.filter(user=request.user).first()
 
         if app is None:

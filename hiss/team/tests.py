@@ -1,9 +1,46 @@
+from unittest.mock import patch
+
+from django.db import IntegrityError, transaction
+from django.test import TestCase
 from django.urls import reverse
 
 from application.constants import STATUS_REJECTED
 from application.models import Application
 from shared.test_case import SharedTestCase
+from team.codes import ADJECTIVES, SEA_CREATURES, generate_team_code
 from team.models import Team
+
+
+class TeamCodeTestCase(TestCase):
+    def test_code_format(self):
+        for _ in range(100):
+            code = generate_team_code()
+            first, second, creature = code.split("-")
+            self.assertIn(first, ADJECTIVES)
+            self.assertIn(second, ADJECTIVES)
+            self.assertIn(creature, SEA_CREATURES)
+            self.assertTrue(
+                all(word.isalpha() and word.islower() for word in code.split("-"))
+            )
+            self.assertLessEqual(len(code), 64)
+
+    def test_collision_retries_and_code_survives_updates(self):
+        original = Team.objects.create()
+        with patch(
+            "team.models.generate_team_code", return_value="happy-gentle-dolphin"
+        ):
+            other = Team.objects.create(code=original.code)
+        self.assertEqual(other.code, "happy-gentle-dolphin")
+        other.save()
+        other.refresh_from_db()
+        self.assertEqual(other.code, "happy-gentle-dolphin")
+
+    def test_only_active_codes_must_be_unique(self):
+        original = Team.objects.create(is_active=False)
+        replacement = Team.objects.create(code=original.code)
+        self.assertNotEqual(original.pk, replacement.pk)
+        with self.assertRaises(IntegrityError), transaction.atomic():
+            Team.objects.filter(pk=original.pk).update(is_active=True)
 
 
 class TeamActionsTestCase(SharedTestCase):
@@ -20,7 +57,7 @@ class TeamActionsTestCase(SharedTestCase):
 
     def test_join_transfer_leave_and_delete(self):
         # Join team
-        self.client.post(reverse("team:join-code"), {"team_code": str(self.team.pk)})
+        self.client.post(reverse("team:join-code"), {"team_code": self.team.code})
 
         # Transfer captaincy
         self.client.force_login(self.user)
@@ -44,6 +81,34 @@ class TeamActionsTestCase(SharedTestCase):
         self.assertIsNone(self.member.team)
         self.assertFalse(self.member.is_captain)
 
+    def test_join_normalizes_code(self):
+        response = self.client.post(
+            reverse("team:join-code"),
+            {"team_code": f"  {self.team.code.upper().replace('-', ' ')}  "},
+        )
+        self.assertRedirects(response, reverse("status_team"))
+        self.member.refresh_from_db()
+        self.assertEqual(self.member.team, self.team)
+        self.assertContains(self.client.get(reverse("status_team")), self.team.code)
+
+    def test_reused_code_joins_active_team(self):
+        self.team.is_active = False
+        self.team.save()
+        response = self.client.post(
+            reverse("team:join-code"), {"team_code": self.team.code}
+        )
+        self.assertEqual(response.status_code, 404)
+        replacement = Team.objects.create(code=self.team.code)
+        self.client.post(reverse("team:join-code"), {"team_code": self.team.code})
+        self.member.refresh_from_db()
+        self.assertEqual(self.member.team, replacement)
+
+    def test_existing_uuid_invite_still_works(self):
+        response = self.client.post(reverse("team:join", kwargs={"pk": self.team.pk}))
+        self.assertRedirects(response, reverse("status_team"))
+        self.member.refresh_from_db()
+        self.assertEqual(self.member.team, self.team)
+
     def test_team_page_without_team_or_application(self):
         # View the team and status pages without a team
         team_page = self.client.get(reverse("status_team"))
@@ -63,7 +128,7 @@ class TeamActionsTestCase(SharedTestCase):
         self.client.post(reverse("team:promote", kwargs={"pk": self.captain.pk}))
 
         # Join the team and attempt to promote yourself
-        self.client.post(reverse("team:join-code"), {"team_code": str(self.team.pk)})
+        self.client.post(reverse("team:join-code"), {"team_code": self.team.code})
         self.client.post(reverse("team:promote", kwargs={"pk": self.member.pk}))
 
         # Check: the original captain remains in charge
@@ -99,7 +164,7 @@ class TeamActionsTestCase(SharedTestCase):
 
     def test_leave_and_delete_permissions(self):
         # Join team
-        self.client.post(reverse("team:join-code"), {"team_code": str(self.team.pk)})
+        self.client.post(reverse("team:join-code"), {"team_code": self.team.code})
 
         # Captain attempts to leave without transferring captaincy
         self.client.force_login(self.user)
@@ -137,7 +202,7 @@ class TeamActionsTestCase(SharedTestCase):
         self.member.status = STATUS_REJECTED
         self.member.save()
         team_page = self.client.get(reverse("status_team"))
-        ineligible_join = self.client.post(url, {"team_code": str(self.team.pk)})
+        ineligible_join = self.client.post(url, {"team_code": self.team.code})
 
         # check: joining is unavailable and the applicant has no team
         self.member.refresh_from_db()
