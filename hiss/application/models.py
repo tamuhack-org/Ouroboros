@@ -239,10 +239,10 @@ class Application(models.Model):
         choices=AGREE_DISAGREE, null=True, default=None, blank=True
     )
     is_adult = models.BooleanField(
-        "Please confirm you are 18 or older.",
+        "Please confirm you are 18 or older OR you are under 18 and are a current student at TAMU.",
         choices=AGREE,
         default=None,
-        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
+        help_text="Please note that applicants under 18 must prove that they are a current student at Texas "
         "A&M.",
         blank=True,
         null=True,
