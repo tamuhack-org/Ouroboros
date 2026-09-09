@@ -82,6 +82,13 @@ def send_confirmation_email(app: Application) -> None:
         "google_wallet_url": google_wallet_pass_url,
         "meal_group": app.meal_group,
         "event_date_text": settings.EVENT_DATE_TEXT,
+        "event_checkin": (
+            settings.EVENT_WAITLIST_CHECKIN_DATETIME
+            if app.status == "E"
+            else settings.EVENT_START_DATETIME
+        ),
+        "event_website_url": settings.EVENT_WEBSITE_URL,
+        "event_map_url": settings.EVENT_MAP_URL,
     }
     logger.debug("Email context", context=context)
     html_msg = render_to_string(email_template, context)
@@ -103,7 +110,7 @@ def send_confirmation_email(app: Application) -> None:
     qr_stream = BytesIO()
     qr_code.png(qr_stream, scale=5)
     email.attach("code.png", qr_stream.getvalue(), "text/png")
-    ics_path = Path(settings.BASE_DIR) / ".." / "static" / "th26invite.ics"
+    ics_path = Path(settings.BASE_DIR) / ".." / "static" / "hh26invite.ics"
     email.attach_file(str(ics_path), mimetype="text/calendar")
     logger.info("Sending confirmation email", email=app.user.email)
     email.send()
@@ -121,7 +128,7 @@ def send_hardware_confirmation_email(app: Application) -> None:
 
     if app.status == "E":
         subject = f"{settings.EVENT_NAME} Waitlist: Important Day-of Information!"
-        email_template = "application/emails/confirmed-hardware-waitlist.html"
+        email_template = "application/emails/confirmed-waitlist.html"
 
     # Generate apple wallet
     apple_wallet_pass_url = ""
@@ -155,6 +162,13 @@ def send_hardware_confirmation_email(app: Application) -> None:
         "google_wallet_url": google_wallet_pass_url,
         "meal_group": app.meal_group,
         "event_date_text": settings.EVENT_DATE_TEXT,
+        "event_checkin": (
+            settings.EVENT_WAITLIST_CHECKIN_DATETIME
+            if app.status == "E"
+            else settings.EVENT_START_DATETIME
+        ),
+        "event_website_url": settings.EVENT_WEBSITE_URL,
+        "event_map_url": settings.EVENT_MAP_URL,
     }
     logger.debug("Email context", context=context)
     html_msg = render_to_string(email_template, context)
@@ -176,7 +190,7 @@ def send_hardware_confirmation_email(app: Application) -> None:
     qr_stream = BytesIO()
     qr_code.png(qr_stream, scale=5)
     email.attach("code.png", qr_stream.getvalue(), "text/png")
-    ics_path = Path(settings.BASE_DIR) / ".." / "static" / "th26invite.ics"
+    ics_path = Path(settings.BASE_DIR) / ".." / "static" / "hh26invite.ics"
     email.attach_file(str(ics_path), mimetype="text/calendar")
     logger.info("Sending hardware confirmation email", email=app.user.email)
     email.send()
