@@ -222,7 +222,7 @@ class Application(models.Model):
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
     wares = models.CharField(
-        "The event will be offering a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track?",
+        "The event will be offering a week-long hardware track with dedicated prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track?",
         choices=WARECHOICE,
         max_length=8,
         default=NO_ANSWER,
