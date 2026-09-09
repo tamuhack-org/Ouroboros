@@ -783,6 +783,7 @@ p:has(input[type="checkbox"]) .helptext,
 }
 
 .status-label {
+  text-align: center;
   font-size: var(--text-sm);
   color: var(--color-text-muted);
   margin-bottom: var(--space-1);
@@ -798,7 +799,7 @@ p:has(input[type="checkbox"]) .helptext,
   color: var(--color-text-muted);
   max-width: var(--max-w-md);
   margin: 0 auto var(--space-4);
-  text-align: start;
+  text-align: center;
 }
 
 .status-actions {
