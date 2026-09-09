@@ -30,6 +30,10 @@ class StatusViewTestCase(test_case.SharedTestCase):
         response = self.client.get(reverse_lazy("status"))
 
         self.assertTrue("NO_MORE_WAVES" in response.context)
+        self.assertContains(
+            response, "Sorry, we are currently not accepting applications."
+        )
+        self.assertNotContains(response, "Complete Application")
 
     def test_wait_until_next_wave_context(self):
         wave_start = timezone.now() + timedelta(days=5)
@@ -40,6 +44,29 @@ class StatusViewTestCase(test_case.SharedTestCase):
         response = self.client.get(reverse_lazy("status"))
 
         self.assertTrue("WAIT_UNTIL_NEXT_WAVE" in response.context)
+        self.assertContains(
+            response, "Sorry, we are currently not accepting applications."
+        )
+        self.assertNotContains(response, "Complete Application")
+
+    def test_between_waves_shows_applications_closed(self):
+        now = timezone.now()
+        Wave.objects.create(
+            start=now - timedelta(days=10),
+            end=now - timedelta(days=1),
+            num_days_to_rsvp=5,
+        )
+        Wave.objects.create(
+            start=now + timedelta(days=5),
+            end=now + timedelta(days=10),
+            num_days_to_rsvp=5,
+        )
+        self.client.force_login(self.user)
+        response = self.client.get(reverse_lazy("status"))
+        self.assertContains(
+            response, "Sorry, we are currently not accepting applications."
+        )
+        self.assertNotContains(response, "Complete Application")
 
     def test_not_applied_context(self):
         self.create_active_wave()
@@ -47,6 +74,8 @@ class StatusViewTestCase(test_case.SharedTestCase):
 
         response = self.client.get(reverse_lazy("status"))
         self.assertTrue("NOT_APPLIED" in response.context)
+        self.assertContains(response, "Complete Application")
+        self.assertNotContains(response, "currently not accepting applications")
 
     def test_pending_context(self):
         self.create_active_wave()
@@ -80,6 +109,20 @@ class StatusViewTestCase(test_case.SharedTestCase):
         response = self.client.get(reverse_lazy("status"))
 
         self.assertContains(response, "View Application")
+        self.assertContains(response, "SUBMITTED")
+        self.assertNotContains(response, "currently not accepting applications")
+
+    def test_checked_in_shows_status(self):
+        self.create_active_wave()
+        self.client.force_login(self.user)
+        Application.objects.create(
+            **self.application_fields,
+            wave=self.wave1,
+            status=application.constants.STATUS_CHECKED_IN,
+        )
+        response = self.client.get(reverse_lazy("status"))
+        self.assertContains(response, "CHECKED IN")
+        self.assertNotContains(response, "I'll be there!")
 
     def test_confirmation_deadline_expired_context(self):
         self.create_active_wave()

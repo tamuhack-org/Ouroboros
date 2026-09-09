@@ -4,7 +4,10 @@
 {% block content %}
 {% get_current_timezone as TIME_ZONE %}
 
-    {% if NOT_APPLIED %}
+    {% if NO_MORE_WAVES or WAIT_UNTIL_NEXT_WAVE %}
+        <p class="status-description">Sorry, we are currently not accepting applications.</p>
+
+    {% elif NOT_APPLIED %}
         <p class="status-label">Your application is</p>
         <p class="status-value">INCOMPLETE</p>
         <p class="status-description">
@@ -41,7 +44,7 @@
             </div>
         </section>
 
-    {% elif NEEDS_TO_CONFIRM and not DECLINED %}
+    {% elif NEEDS_TO_CONFIRM %}
         <p class="status-label">Congrats, you have been</p>
         <p class="status-value">ACCEPTED</p>
         <p class="status-description">
@@ -95,6 +98,11 @@
             {% csrf_token %}
         </form>
 
+    {% elif CHECKED_IN %}
+        <p class="status-label">Your attendance has been</p>
+        <p class="status-value">CHECKED IN</p>
+        <p class="status-description">Welcome to {{ event_name }}! You're checked in and ready to go.</p>
+
     {% elif REJECTED %}
         <p class="status-label">Your application status is</p>
         <p class="status-value">REJECTED</p>
@@ -108,9 +116,6 @@
     {% elif DECLINED %}
         <p class="status-value">Not Attending</p>
         <p class="status-description">We're sorry to hear you can't make it! Thanks for telling us!</p>
-
-    {% elif NO_MORE_WAVES %}
-        <p class="status-description">Sorry, we are currently not accepting applications.</p>
 
     {% elif EXPIRED %}
         <p class="status-label">Your application is</p>
