@@ -9,6 +9,7 @@ from django.urls import reverse
 
 from application.constants import STATUS_PENDING
 from application.models import Application
+from hiss.settings.customization import MAX_TEAM_CAPACITY
 from status.views import StatusBaseView
 from team.models import Team
 
@@ -165,8 +166,17 @@ class JoinTeamView(mixins.LoginRequiredMixin, views.View):
             raise PermissionDenied(msg)
 
         if team.is_at_max_capacity:
-            msg = "unable to join team: team is full"
-            raise PermissionDenied(msg)
+            message = f"This team has reached the maximum of {MAX_TEAM_CAPACITY} members."
+            if request.headers.get("Accept") == "application/json":
+                return JsonResponse(
+                    {"error": "team_full", "message": message}, status=409
+                )
+            page = TeamPageView()
+            page.setup(request)
+            return page.render_to_response(
+                page.get_context_data(team_code=team.code, team_code_error=message),
+                status=409,
+            )
 
         if app.team:
             msg = "unable to join team: please leave/delete current team"

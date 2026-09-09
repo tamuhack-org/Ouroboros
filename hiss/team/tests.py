@@ -9,6 +9,7 @@ from application.models import Application
 from shared.test_case import SharedTestCase
 from team.codes import ADJECTIVES, SEA_CREATURES, generate_team_code
 from team.models import Team
+from user.models import User
 
 
 class TeamCodeTestCase(TestCase):
@@ -90,6 +91,46 @@ class TeamActionsTestCase(SharedTestCase):
         self.member.refresh_from_db()
         self.assertEqual(self.member.team, self.team)
         self.assertContains(self.client.get(reverse("status_team")), self.team.code)
+
+    def test_full_team_returns_inline_error_and_can_retry_after_member_leaves(self):
+        for index in range(3):
+            user = User.objects.create_user(
+                email=f"teammate{index}@example.com", password=None
+            )
+            Application.objects.create(
+                **{
+                    **self.application_fields,
+                    "user": user,
+                    "wave": self.wave1,
+                    "resume": "resume.pdf",
+                    "team": self.team,
+                }
+            )
+
+        url = reverse("team:join-code")
+        data = {"team_code": self.team.code}
+        response = self.client.post(url, data, HTTP_ACCEPT="application/json")
+        message = "This team has reached the maximum of 4 members."
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(response.json(), {"error": "team_full", "message": message})
+        self.member.refresh_from_db()
+        self.assertIsNone(self.member.team)
+        self.assertEqual(self.team.members.count(), 4)
+
+        # A normal form submission also preserves the code and shows the error.
+        fallback = self.client.post(url, data)
+        self.assertContains(fallback, message, status_code=409)
+        self.assertContains(fallback, 'aria-invalid="true"', status_code=409)
+        self.assertContains(fallback, f'value="{self.team.code}"', status_code=409)
+
+        departing = self.team.members.filter(is_captain=False).first()
+        departing.team = None
+        departing.save()
+        response = self.client.post(url, data, HTTP_ACCEPT="application/json")
+        self.assertRedirects(response, reverse("status_team"))
+        self.member.refresh_from_db()
+        self.assertEqual(self.member.team, self.team)
+        self.assertEqual(self.team.members.count(), 4)
 
     def test_reused_code_joins_active_team(self):
         self.team.is_active = False
