@@ -1,4 +1,5 @@
-from django.utils import timezone
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 MAX_YEARS_ADMISSION = 6
 EVENT_NAME = "TAMUhack"
@@ -8,10 +9,10 @@ ORGANIZER_EMAIL = "hello@tamuhack.com"
 
 MAX_TEAM_CAPACITY = 4
 
-EVENT_START_DATETIME = timezone.datetime(2026, 1, 24, hour=9, minute=0, second=0)
-EVENT_END_DATETIME = timezone.datetime(2026, 1, 25, hour=12, minute=0, second=0)
-EVENT_DATE_TEXT = "January 24-25, 2026"
 EVENT_TIMEZONE = "America/Chicago"
+EVENT_START_DATETIME = datetime(2026, 1, 24, hour=9, tzinfo=ZoneInfo(EVENT_TIMEZONE))
+EVENT_END_DATETIME = datetime(2026, 1, 25, hour=12, tzinfo=ZoneInfo(EVENT_TIMEZONE))
+EVENT_DATE_TEXT = "January 24-25, 2026"
 
 APPLE_WALLET_S3_BUCKET_URL = "https://th26-apple-wallet-passes.s3.amazonaws.com"
 AWS_S3_BUCKET_NAME = "th-26-resumes"
