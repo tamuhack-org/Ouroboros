@@ -849,6 +849,15 @@ p:has(input[type="checkbox"]) .helptext,
   align-items: center;
 }
 
+.team-options .status-actions > a {
+  padding: var(--space-1) var(--space-2);
+  border: var(--pico-border-width) solid transparent;
+}
+
+.team-options .btn-secondary {
+  background-color: transparent;
+}
+
 .team-members {
   width: fit-content;
   margin-inline: auto;

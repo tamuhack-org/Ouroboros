@@ -24,26 +24,22 @@
             <a href="{{ application.get_absolute_url }}" role="button" class="btn-primary">
                 {% if active_wave_end %}Edit Application{% else %}View Application{% endif %}
             </a>
-
-            {% if application.team %}
-            <a href="{% url 'status_team' %}" role="button" class="btn-primary">
-                View Team
-            </a>
-            {% endif %}
         </div>
 
-        {% if not application.team %}
         <section class="team-options mt-4 mb-0" aria-labelledby="team-options-heading">
             <p id="team-options-heading" class="status-label">Team up (optional)</p>
             <div class="status-actions">
+                {% if application.team %}
+                <a href="{% url 'status_team' %}">View Team</a>
+                {% else %}
                 <a href="{% url 'status_team' %}">Join Team</a>
                 <form method="post" action="{% url 'team:my-team' %}">
                     {% csrf_token %}
                     <button type="submit" class="btn-secondary">Create Team</button>
                 </form>
+                {% endif %}
             </div>
         </section>
-        {% endif %}
 
     {% elif NEEDS_TO_CONFIRM and not DECLINED %}
         <p class="status-label">Congrats, you have been</p>
