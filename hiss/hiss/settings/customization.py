@@ -2,7 +2,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 MAX_YEARS_ADMISSION = 6
-EVENT_NAME = "Howdyhack"
+EVENT_NAME = "HowdyHack"
 EVENT_YEAR = "2026"
 ORGANIZER_NAME = "TAMUhack"
 ORGANIZER_EMAIL = "hello@tamuhack.com"

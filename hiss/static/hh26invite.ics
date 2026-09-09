@@ -28,13 +28,13 @@ DTSTAMP:20260908T000000Z
 UID:howdyhack-2026-10-24-chi@tamuhack
 DTSTART;TZID=America/Chicago:20261024T090000
 DTEND;TZID=America/Chicago:20261025T120000
-SUMMARY:See You @ Howdyhack 2026!
+SUMMARY:See You @ HowdyHack 2026!
 URL:https://tamuhack.org/
-DESCRIPTION:We're excited to have you at Howdyhack 2026! 🚀
+DESCRIPTION:We're excited to have you at HowdyHack 2026! 🚀
 LOCATION:275 Joe Routt Blvd\, College Station\, TX 77843
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:Howdyhack 2026 begins soon!
+DESCRIPTION:HowdyHack 2026 begins soon!
 TRIGGER:-P2D
 END:VALARM
 END:VEVENT
