@@ -92,11 +92,30 @@
 </ol>
 
 <script>
+    document.addEventListener('click', (event) => {
+        document.querySelectorAll('.member-actions[open]').forEach((actions) => {
+            if (!actions.contains(event.target)) actions.open = false;
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+        document.querySelectorAll('.member-actions[open]').forEach((actions) => {
+            actions.open = false;
+            actions.querySelector('summary').focus();
+        });
+    });
+
     document.querySelectorAll('.member-actions').forEach((actions) => {
         actions.addEventListener('toggle', () => {
             if (!actions.open) return;
 
+            document.querySelectorAll('.member-actions[open]').forEach((other) => {
+                if (other !== actions) other.open = false;
+            });
+
             const menu = actions.querySelector('.member-actions-menu');
+            menu.style.left = '';
             const menuRect = menu.getBoundingClientRect();
             const actionsRect = actions.getBoundingClientRect();
             const left = Math.min(

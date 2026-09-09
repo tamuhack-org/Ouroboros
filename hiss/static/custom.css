@@ -876,21 +876,10 @@ p:has(input[type="checkbox"]) .helptext,
   height: 1.5rem;
   align-items: center;
   justify-content: center;
-  list-style: none;
-  cursor: pointer;
-}
-
-.member-actions summary::-webkit-details-marker {
-  display: none;
-}
-
-.member-actions summary::marker {
-  content: "";
 }
 
 .member-actions summary::after {
   display: none;
-  content: none;
 }
 
 .member-actions[open] > summary {
@@ -900,7 +889,7 @@ p:has(input[type="checkbox"]) .helptext,
 .member-actions-icon {
   width: 15px;
   height: 15px;
-  background-color: var(--color-text-muted);
+  background-color: white;
   -webkit-mask: url("ellipsis.svg") center / contain no-repeat;
   mask: url("ellipsis.svg") center / contain no-repeat;
 }
