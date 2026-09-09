@@ -9,7 +9,15 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 
 from application.admin import ApplicationAdminInline
-from application.constants import STATUS_ADMITTED
+from application.constants import (
+    STATUS_ADMITTED,
+    STATUS_CHECKED_IN,
+    STATUS_CONFIRMED,
+    STATUS_DECLINED,
+    STATUS_EXPIRED,
+    STATUS_PENDING,
+    STATUS_REJECTED,
+)
 from application.models import Application
 from hiss.settings.customization import EVENT_TIMEZONE
 from shared.admin_functions import send_mass_html_mail
@@ -83,7 +91,32 @@ def approve(team: Team):
 
 class TeamAdmin(admin.ModelAdmin):
     inlines = (ApplicationAdminInline,)
+    list_display = ("__str__", "team_status")
     list_filter = ("is_active",)
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related("members")
+
+    @admin.display(description="Team status")
+    def team_status(self, obj: Team) -> str:
+        status_groups = {
+            STATUS_ADMITTED: "Accepted",
+            STATUS_CONFIRMED: "Accepted",
+            STATUS_CHECKED_IN: "Accepted",
+            STATUS_REJECTED: "Rejected",
+            STATUS_DECLINED: "Rejected",
+            STATUS_PENDING: "In review",
+            STATUS_EXPIRED: "In review",
+        }
+        statuses = {
+            status_groups.get(member.status, "Mixed")
+            for member in obj.members.all()
+        }
+        if not statuses:
+            return "In review"
+        if len(statuses) != 1:
+            return "Mixed"
+        return statuses.pop()
 
     def response_change(self, request, obj):
         # Brittle reference to the request in hiss/templates/admin/team/team/change_form.html make sure edits there are reflected here
