@@ -862,7 +862,94 @@ p:has(input[type="checkbox"]) .helptext,
   vertical-align: -0.25em;
 }
 
-/* ==========================================================================
+.member-actions {
+  display: inline-block;
+  position: relative;
+  width: 1.5rem;
+  margin: 0 0 0 var(--space-1);
+  vertical-align: middle;
+}
+
+.member-actions summary {
+  display: flex;
+  width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  cursor: pointer;
+}
+
+.member-actions summary::-webkit-details-marker {
+  display: none;
+}
+
+.member-actions summary::marker {
+  content: "";
+}
+
+.member-actions summary::after {
+  display: none;
+  content: none;
+}
+
+.member-actions[open] > summary {
+  margin-bottom: 0;
+}
+
+.member-actions-icon {
+  width: 15px;
+  height: 15px;
+  background-color: var(--color-text-muted);
+  -webkit-mask: url("ellipsis.svg") center / contain no-repeat;
+  mask: url("ellipsis.svg") center / contain no-repeat;
+}
+
+.member-actions summary:hover .member-actions-icon,
+.member-actions summary:focus .member-actions-icon {
+  background-color: var(--color-timeline);
+}
+
+.member-actions-menu {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% + var(--space-1));
+  left: 0;
+  width: max-content;
+  padding: var(--space-1) 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--pico-border-radius);
+  background: var(--color-card-bg);
+  box-shadow: var(--pico-card-box-shadow);
+}
+
+.member-actions-menu form {
+  max-width: none;
+  margin: 0;
+}
+
+.member-actions-menu button {
+  width: auto;
+  margin: 0;
+  padding: var(--space-1) var(--space-2);
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.member-actions-menu button:hover,
+.member-actions-menu button:focus {
+  background: var(--color-border-subtle);
+  color: var(--color-text);
+}
+
+.member-actions-menu .member-actions-remove {
+  color: var(--color-danger);
+}
+
+/* ========================================================================== 
    Page Backgrounds
    ========================================================================== */
 

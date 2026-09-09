@@ -71,14 +71,42 @@
         {% if member.id == application.id%} <em>(self)</em> {% endif %}
         {% if member.is_captain %}<img class="captain-icon" src="{% static 'crown.svg' %}" alt="Team captain">{% endif %}
         {% if is_captain and not member.is_captain %}
-        <form method="post" action="{% url 'team:promote' pk=member.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn-secondary">Transfer captaincy</button>
-        </form>
+        <details class="member-actions">
+            <summary aria-label="Actions for {{ member.first_name }} {{ member.last_name }}">
+                <span class="member-actions-icon" aria-hidden="true"></span>
+            </summary>
+            <div class="member-actions-menu">
+                <form method="post" action="{% url 'team:promote' pk=member.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Make captain</button>
+                </form>
+                <form method="post" action="{% url 'team:remove_member' pk=member.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="member-actions-remove">Remove member</button>
+                </form>
+            </div>
+        </details>
         {% endif %}
     </li>
     {% endfor %}
 </ol>
+
+<script>
+    document.querySelectorAll('.member-actions').forEach((actions) => {
+        actions.addEventListener('toggle', () => {
+            if (!actions.open) return;
+
+            const menu = actions.querySelector('.member-actions-menu');
+            const menuRect = menu.getBoundingClientRect();
+            const actionsRect = actions.getBoundingClientRect();
+            const left = Math.min(
+                Math.max(8, menuRect.left),
+                window.innerWidth - menuRect.width - 8,
+            );
+            menu.style.left = `${left - actionsRect.left}px`;
+        });
+    });
+</script>
 
 <div class="status-actions">
     {% if not is_captain %}
