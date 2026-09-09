@@ -24,17 +24,17 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 ORGANIZER;CN=TAMUhack:mailto:hello@tamuhack.com
-DTSTAMP:20251127T000000Z
-UID:tamuhack-2026-01-24-chi@tamuhack
-DTSTART;TZID=America/Chicago:20260124T090000
-DTEND;TZID=America/Chicago:20260125T170000
-SUMMARY:See You @ TAMUhack 2026!
-URL:https://th26.tamuhack.org/
-DESCRIPTION:We're excited to have you at TAMUhack 2026! 🚀
+DTSTAMP:20260908T000000Z
+UID:howdyhack-2026-10-24-chi@tamuhack
+DTSTART;TZID=America/Chicago:20261024T090000
+DTEND;TZID=America/Chicago:20261025T120000
+SUMMARY:See You @ Howdyhack 2026!
+URL:https://tamuhack.org/
+DESCRIPTION:We're excited to have you at Howdyhack 2026! 🚀
 LOCATION:275 Joe Routt Blvd\, College Station\, TX 77843
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:TAMUhack 2026 begins soon!
+DESCRIPTION:Howdyhack 2026 begins soon!
 TRIGGER:-P2D
 END:VALARM
 END:VEVENT

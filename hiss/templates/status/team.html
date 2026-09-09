@@ -1,0 +1,200 @@
+{% extends 'status/status_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="team-page-header">
+    <a class="status-back-link" href="{% url 'status' %}" aria-label="Back to status" title="Back to status"></a>
+    <h1 class="status-value">{% if team %}Your team{% else %}Join a team{% endif %}</h1>
+</div>
+
+<p class="status-description">Competing together? Join a team to have your applications reviewed together. You can also compete on your own.</p>
+
+{% if PENDING and not team %}
+<form id="join-team-form" class="max-w-sm text-left" method="post" action="{% url 'team:join-code' %}">
+    {% csrf_token %}
+    <label for="team-code">Team code</label>
+    <input type="text" id="team-code" name="team_code" value="{{ team_code|default:'' }}" placeholder="e.g. happy-gentle-dolphin" autocapitalize="none" spellcheck="false" aria-describedby="team-code-error" {% if team_code_error %}aria-invalid="true"{% endif %} required>
+    <small id="team-code-error" class="text-danger" role="alert" {% if not team_code_error %}hidden{% endif %}>{{ team_code_error|default:'' }}</small>
+    <button type="submit" class="btn-primary">Join team</button>
+</form>
+
+<script>
+    const joinTeamForm = document.getElementById('join-team-form');
+    const teamCodeInput = document.getElementById('team-code');
+    const teamCodeError = document.getElementById('team-code-error');
+
+    function clearTeamCodeError() {
+        teamCodeInput.removeAttribute('aria-invalid');
+        teamCodeError.textContent = '';
+        teamCodeError.hidden = true;
+    }
+
+    teamCodeInput.addEventListener('input', clearTeamCodeError);
+    joinTeamForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const button = joinTeamForm.querySelector('button[type="submit"]');
+        if (button.disabled) return;
+        clearTeamCodeError();
+        button.disabled = true;
+        button.setAttribute('aria-busy', 'true');
+        try {
+            const response = await fetch(joinTeamForm.action, {
+                method: 'POST',
+                body: new FormData(joinTeamForm),
+                headers: { 'Accept': 'application/json' },
+            });
+            if (response.redirected) {
+                window.location.assign(response.url);
+                return;
+            }
+            let message = 'Unable to join this team. Please try again.';
+            if (response.headers.get('Content-Type')?.includes('application/json')) {
+                const data = await response.json();
+                message = data.message || message;
+            } else if (response.status === 404) {
+                message = 'No active team was found with this code.';
+            }
+            teamCodeInput.setAttribute('aria-invalid', 'true');
+            teamCodeError.textContent = message;
+            teamCodeError.hidden = false;
+            teamCodeInput.focus();
+        } catch (error) {
+            teamCodeError.textContent = 'Unable to connect. Please try again.';
+            teamCodeError.hidden = false;
+        } finally {
+            button.disabled = false;
+            button.removeAttribute('aria-busy');
+        }
+    });
+</script>
+{% endif %}
+
+{% if team %}
+<p>
+    Your team code is <strong id="team-code">{{ team.code }}</strong>
+    <button type="button" id="copy-team-code" class="btn-secondary" aria-label="Copy team code" title="Copy team code">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M9 9h12v12H9z M5 15H3V3h12v2"></path>
+        </svg>
+    </button>
+    <span id="copy-team-code-status" class="visually-hidden" role="status"></span>
+</p>
+
+<script>
+    let copyTeamCodeReset;
+    document.getElementById('copy-team-code').addEventListener('click', async function () {
+        const status = document.getElementById('copy-team-code-status');
+        const icon = this.querySelector('path');
+        clearTimeout(copyTeamCodeReset);
+        icon.setAttribute('d', 'M9 9h12v12H9z M5 15H3V3h12v2');
+        this.setAttribute('aria-label', 'Copy team code');
+        this.title = 'Copy team code';
+        status.textContent = '';
+        status.classList.add('visually-hidden');
+        this.disabled = true;
+        try {
+            await navigator.clipboard.writeText(document.getElementById('team-code').textContent.trim());
+            icon.setAttribute('d', 'M5 12l4 4L19 6');
+            this.setAttribute('aria-label', 'Team code copied');
+            this.title = 'Copied!';
+            status.textContent = 'Copied!';
+            copyTeamCodeReset = setTimeout(() => {
+                icon.setAttribute('d', 'M9 9h12v12H9z M5 15H3V3h12v2');
+                this.setAttribute('aria-label', 'Copy team code');
+                this.title = 'Copy team code';
+                status.textContent = '';
+            }, 2000);
+        } catch (error) {
+            status.classList.remove('visually-hidden');
+            status.textContent = 'Unable to copy. Please select and copy the code manually.';
+        } finally {
+            this.disabled = false;
+        }
+    });
+</script>
+
+<h2 id="team-members-heading">Team members (max 4)</h2>
+<ol class="team-members" aria-labelledby="team-members-heading">
+    {% for member in members %}
+    <li>
+        {{ member.first_name }} {{ member.last_name }}
+        {% if member.id == application.id%} <em>(self)</em> {% endif %}
+        {% if member.is_captain %}<img class="captain-icon" src="{% static 'crown.svg' %}" alt="Team captain">{% endif %}
+        {% if is_captain and not member.is_captain %}
+        <details class="member-actions">
+            <summary aria-label="Actions for {{ member.first_name }} {{ member.last_name }}">
+                <span class="member-actions-icon" aria-hidden="true"></span>
+            </summary>
+            <div class="member-actions-menu">
+                <form method="post" action="{% url 'team:promote' pk=member.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Make captain</button>
+                </form>
+                <form method="post" action="{% url 'team:remove_member' pk=member.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="member-actions-remove">Remove member</button>
+                </form>
+            </div>
+        </details>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ol>
+
+<script>
+    document.addEventListener('click', (event) => {
+        document.querySelectorAll('.member-actions[open]').forEach((actions) => {
+            if (!actions.contains(event.target)) actions.open = false;
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+        document.querySelectorAll('.member-actions[open]').forEach((actions) => {
+            actions.open = false;
+            actions.querySelector('summary').focus();
+        });
+    });
+
+    document.querySelectorAll('.member-actions').forEach((actions) => {
+        actions.addEventListener('toggle', () => {
+            if (!actions.open) return;
+
+            document.querySelectorAll('.member-actions[open]').forEach((other) => {
+                if (other !== actions) other.open = false;
+            });
+
+            const menu = actions.querySelector('.member-actions-menu');
+            menu.style.left = '';
+            const menuRect = menu.getBoundingClientRect();
+            const actionsRect = actions.getBoundingClientRect();
+            const left = Math.min(
+                Math.max(8, menuRect.left),
+                window.innerWidth - menuRect.width - 8,
+            );
+            menu.style.left = `${left - actionsRect.left}px`;
+        });
+    });
+</script>
+
+<div class="status-actions">
+    {% if not is_captain %}
+    <form method="post" action="{% url 'team:remove_member' pk=application.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn-secondary">Leave team</button>
+    </form>
+    {% elif members|length == 1 %}
+    <form method="post" action="{% url 'team:delete' pk=team.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn-secondary">Delete team and leave</button>
+    </form>
+    {% else %}
+    <p>Transfer captaincy to another member before leaving.</p>
+    {% endif %}
+</div>
+{% elif not PENDING %}
+<p class="status-description">Joining a team requires an application under review.</p>
+{% endif %}
+
+{% endblock %}

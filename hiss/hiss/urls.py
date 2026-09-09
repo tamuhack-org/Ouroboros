@@ -36,6 +36,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("customauth.urls")),
     path("application/", include("application.urls", namespace="application")),
+    path("team/", include("team.urls", namespace="team")),
     path("healthy/", healthcheck),
     re_path(r"^$", RedirectView.as_view(pattern_name="status")),
     path("status/", include("status.urls")),

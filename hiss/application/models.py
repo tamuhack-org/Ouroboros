@@ -12,10 +12,9 @@ from typing import (
 from django.core import exceptions
 from django.core.validators import FileExtensionValidator
 from django.db import models
-from django.db.models import QuerySet
+from django.db.models import Q, QuerySet
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django_s3_storage.storage import S3Storage
 from multiselectfield import MultiSelectField
 
 from application.constants import (
@@ -30,7 +29,6 @@ from application.constants import (
     NO_ANSWER,
     RACES,
     SHIRT_SIZES,
-    STARFORGE_INTEREST,
     STATUS_CONFIRMED,
     STATUS_OPTIONS,
     STATUS_PENDING,
@@ -38,7 +36,6 @@ from application.constants import (
 )
 from application.filesize_validation import FileSizeValidator
 
-s3_storage = S3Storage()
 logger = logging.getLogger(__name__)
 
 
@@ -147,6 +144,7 @@ def filename_generator(_instance, filename: str):
 
 class Application(models.Model):
     """Represents a `Hacker`'s application to this hackathon."""
+
     # ABOUT YOU
     first_name = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="first name"
@@ -224,18 +222,11 @@ class Application(models.Model):
         "How many hackathons have you attended?", max_length=22, choices=HACKATHON_TIMES
     )
     wares = models.CharField(
-        "TAMUhack will be partnering with IEEE to offer a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track",
+        "The event will be offering a dedicated hardware track and prizes. Participants can choose to compete in this track or in the general software tracks. Would you like to compete in the software or hardware track?",
         choices=WARECHOICE,
         max_length=8,
         default=NO_ANSWER,
         blank=False,
-        null=True,
-    )
-    starforge_interest = models.CharField(
-        "Would you be interested in collaborating with Starforge Foundry on hardware projects during the event?",
-        choices=STARFORGE_INTEREST,
-        max_length=1,
-        blank=True,
         null=True,
     )
 
@@ -248,10 +239,10 @@ class Application(models.Model):
         choices=AGREE_DISAGREE, null=True, default=None, blank=True
     )
     is_adult = models.BooleanField(
-        "Please confirm you are 18 or older.",
+        "Please confirm you are 18 or older OR you are under 18 and are a current student at TAMU.",
         choices=AGREE,
         default=None,
-        help_text="Please note that freshmen under 18 must be accompanied by an adult or prove that they go to Texas "
+        help_text="Please note that applicants under 18 must prove that they are a current student at Texas "
         "A&M.",
         blank=True,
         null=True,
@@ -315,6 +306,14 @@ class Application(models.Model):
     datetime_submitted = models.DateTimeField(auto_now_add=True)
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, null=False)
+    team = models.ForeignKey(
+        "team.Team",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="members",
+    )
+    is_captain = models.BooleanField(default=False)
     status = models.CharField(
         choices=STATUS_OPTIONS, max_length=1, default=STATUS_PENDING
     )
@@ -323,9 +322,15 @@ class Application(models.Model):
         ordering = ["-datetime_submitted"]
         indexes = [
             models.Index(fields=["datetime_submitted"]),
-            models.Index(fields=["school"])
+            models.Index(fields=["school"]),
         ]
-
+        constraints = [
+            models.UniqueConstraint(
+                fields=["team"],
+                condition=Q(is_captain=True),
+                name="unique_team_captain",
+            )
+        ]
 
     @override
     def __str__(self):

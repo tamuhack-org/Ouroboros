@@ -63,19 +63,19 @@ class InitialRegistrationForm(forms.ModelForm):
             'https://static.mlh.io/docs/mlh-code-of-conduct.pdf'
         )
 
-        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements (optional)."
-
-        self.fields["agree_to_mlh_stuff"].label = format_html(
-            'I authorize {} to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational e-mails, '
-            'and occasional messages about hackathons in-line with the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>. '
-            'I further agree to the terms of both the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Contest Terms and Conditions</a> '
-            'and the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>',
-            settings.ORGANIZER_NAME,
-            'https://mlh.io/privacy',
-            'https://github.com/MLH/mlh-policies/tree/master/contest-terms.md',
-            'https://mlh.io/privacy'
-        )
-        self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
+        # mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements (optional)."
+        #
+        # self.fields["agree_to_mlh_stuff"].label = format_html(
+        #     'I authorize {} to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational e-mails, '
+        #     'and occasional messages about hackathons in-line with the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>. '
+        #     'I further agree to the terms of both the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Contest Terms and Conditions</a> '
+        #     'and the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>',
+        #     settings.ORGANIZER_NAME,
+        #     'https://mlh.io/privacy',
+        #     'https://github.com/MLH/mlh-policies/tree/master/contest-terms.md',
+        #     'https://mlh.io/privacy'
+        # )
+        # self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
         self.fields["is_adult"].label = "Please confirm you are 18 or older."
 
         # Mark other optional fields
@@ -146,8 +146,8 @@ class InitialRegistrationForm(forms.ModelForm):
         widgets = {
             "is_adult": forms.CheckboxInput,
             "agree_to_coc": forms.CheckboxInput,
-            "agree_to_mlh_stuff": forms.CheckboxInput,
-            "signup_to_mlh_newsletter": forms.CheckboxInput,
+            # "agree_to_mlh_stuff": forms.CheckboxInput,
+            # "signup_to_mlh_newsletter": forms.CheckboxInput,
             "agree_to_photos": forms.CheckboxInput,
             "tamu_email": forms.EmailInput(attrs={"placeholder": "netid@tamu.edu"}),
             "extra_links": forms.TextInput(
@@ -177,15 +177,14 @@ class InitialRegistrationForm(forms.ModelForm):
             "race_other",
             "num_hackathons_attended",
             "wares",
-            "starforge_interest",
             "resume",
             "extra_links",
             "notes",
             "misc_short_answer",
             "agree_to_photos",
             "agree_to_coc",
-            "agree_to_mlh_stuff",
-            "signup_to_mlh_newsletter",
+            # "agree_to_mlh_stuff",
+            # "signup_to_mlh_newsletter",
             "is_adult",
         ]
 
@@ -313,19 +312,20 @@ class ApplicationModelForm(forms.ModelForm):
             'https://static.mlh.io/docs/mlh-code-of-conduct.pdf'
         )
 
-        mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements (optional)."
+        # mlh_newsletter = "I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements (optional)."
+        #
+        # self.fields["agree_to_mlh_stuff"].label = format_html(
+        #     'I authorize {} to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational e-mails, '
+        #     'and occasional messages about hackathons in-line with the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>. '
+        #     'I further agree to the terms of both the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Contest Terms and Conditions</a> '
+        #     'and the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>',
+        #     settings.ORGANIZER_NAME,
+        #     'https://mlh.io/privacy',
+        #     'https://github.com/MLH/mlh-policies/tree/master/contest-terms.md',
+        #     'https://mlh.io/privacy'
+        # )
+        # self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
 
-        self.fields["agree_to_mlh_stuff"].label = format_html(
-            'I authorize {} to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational e-mails, '
-            'and occasional messages about hackathons in-line with the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>. '
-            'I further agree to the terms of both the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Contest Terms and Conditions</a> '
-            'and the <a href="{}" target="_blank" rel="noopener noreferrer">MLH Privacy Policy</a>',
-            settings.ORGANIZER_NAME,
-            'https://mlh.io/privacy',
-            'https://github.com/MLH/mlh-policies/tree/master/contest-terms.md',
-            'https://mlh.io/privacy'
-        )
-        self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
         self.fields["is_adult"].label = "Please confirm you are 18 or older."
 
         # Mark other optional fields
@@ -383,8 +383,8 @@ class ApplicationModelForm(forms.ModelForm):
         widgets = {
             "is_adult": forms.CheckboxInput,
             "agree_to_coc": forms.CheckboxInput,
-            "agree_to_mlh_stuff": forms.CheckboxInput,
-            "signup_to_mlh_newsletter": forms.CheckboxInput,
+            # "agree_to_mlh_stuff": forms.CheckboxInput,
+            # "signup_to_mlh_newsletter": forms.CheckboxInput,
             "agree_to_photos": forms.CheckboxInput,
             "accessibility_requirements": forms.CheckboxInput,
             "travel_reimbursement": forms.CheckboxInput,
@@ -415,7 +415,6 @@ class ApplicationModelForm(forms.ModelForm):
             "race_other",
             "num_hackathons_attended",
             "wares",
-            "starforge_interest",
             "dietary_restrictions",
             "shirt_size",
             "resume",
@@ -428,7 +427,7 @@ class ApplicationModelForm(forms.ModelForm):
             "notes",
             "agree_to_photos",
             "agree_to_coc",
-            "agree_to_mlh_stuff",
-            "signup_to_mlh_newsletter",
+            # "agree_to_mlh_stuff",
+            # "signup_to_mlh_newsletter",
             "is_adult",
         ]

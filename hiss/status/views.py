@@ -15,8 +15,8 @@ from user.models import User
 logger = structlog.get_logger()
 
 
-class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
-    template_name = "status/status.html"
+class StatusBaseView(mixins.LoginRequiredMixin, generic.TemplateView):
+    """Supply shared application context for pages using status_base.html."""
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -72,6 +72,10 @@ class StatusView(mixins.LoginRequiredMixin, generic.TemplateView):
         return context
 
 
+class StatusView(StatusBaseView):
+    template_name = "status/status.html"
+
+
 class RSVPSubmitView(mixins.LoginRequiredMixin, generic.View):
     """Handle RSVP form submission - saves logistics info and confirms attendance."""
 
@@ -99,14 +103,3 @@ class RSVPSubmitView(mixins.LoginRequiredMixin, generic.View):
             return redirect(reverse_lazy("status"))
 
         return redirect(reverse_lazy("status"))
-
-
-class ConfirmedCountView(mixins.LoginRequiredMixin, generic.TemplateView):
-    template_name = "status/confirmed_count.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["confirmed_count"] = Application.objects.filter(
-            status=application.constants.STATUS_CONFIRMED
-        ).count()
-        return context

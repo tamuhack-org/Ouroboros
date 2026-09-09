@@ -1,48 +1,8 @@
-{% extends 'dashboard_base.html' %}
+{% extends 'status/status_base.html' %}
 {% load static tz %}
 
 {% block content %}
 {% get_current_timezone as TIME_ZONE %}
-
-<article class="status-card text-center">
-    <header>
-        <ol class="status-timeline">
-            <li>
-                {% if CONFIRMED or REJECTED or PENDING or NEEDS_TO_CONFIRM or DECLINED %}
-                    <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
-                {% else %}
-                    <span class="point"></span>
-                {% endif %}
-                <span class="label">Submitted</span>
-            </li>
-            <li>
-                {% if CONFIRMED or REJECTED or NEEDS_TO_CONFIRM or WAIT_UNTIL_NEXT_WAVE or DECLINED %}
-                    <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
-                {% else %}
-                    <span class="point"></span>
-                {% endif %}
-                <span class="label">In Review</span>
-            </li>
-            <li>
-                {% if CONFIRMED or REJECTED or NEEDS_TO_CONFIRM or DECLINED %}
-                    <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
-                {% else %}
-                    <span class="point"></span>
-                {% endif %}
-                <span class="label">Decisions Released</span>
-            </li>
-            {% if CONFIRMED or NEEDS_TO_CONFIRM or DECLINED %}
-            <li>
-                {% if CONFIRMED or DECLINED %}
-                    <span class="point-complete"><img src="{% static 'tick.svg' %}" alt="Complete"></span>
-                {% else %}
-                    <span class="point"></span>
-                {% endif %}
-                <span class="label">RSVP</span>
-            </li>
-            {% endif %}
-        </ol>
-    </header>
 
     {% if NOT_APPLIED %}
         <p class="status-label">Your application is</p>
@@ -65,6 +25,21 @@
                 {% if active_wave_end %}Edit Application{% else %}View Application{% endif %}
             </a>
         </div>
+
+        <section class="team-options mt-4 mb-0" aria-labelledby="team-options-heading">
+            <p id="team-options-heading" class="status-label">Team up (optional)</p>
+            <div class="status-actions">
+                {% if application.team %}
+                <a href="{% url 'status_team' %}">View Team</a>
+                {% else %}
+                <a href="{% url 'status_team' %}">Join Team</a>
+                <form method="post" action="{% url 'team:my-team' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-secondary">Create Team</button>
+                </form>
+                {% endif %}
+            </div>
+        </section>
 
     {% elif NEEDS_TO_CONFIRM and not DECLINED %}
         <p class="status-label">Congrats, you have been</p>
@@ -153,5 +128,4 @@
             Have additional questions? Email us at <a href="mailto:{{ organizer_email }}">{{ organizer_email }}</a>.
         </p>
     {% endif %}
-</article>
 {% endblock %}

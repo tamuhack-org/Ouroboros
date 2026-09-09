@@ -1,0 +1,35 @@
+# This file is for people who use mise to manage their dev tools/environment
+# If you do not use mise, do not worry about this file, it's not necessary, but convenient for those who do use mise
+# More on it here: https://mise.jdx.dev/about.html
+
+[tools]
+python = "3.13"
+uv = "latest"
+
+[settings]
+python.uv_venv_auto = "create|source"
+
+[tasks.migrate]
+description = "Migrate database"
+run = "uv run python hiss/manage.py migrate"
+
+[tasks.makemigrations]
+description = "Make migrations"
+run = "uv run python hiss/manage.py makemigrations"
+
+[tasks.collectstatic]
+description = "Reload static files"
+run = "uv run python hiss/manage.py collectstatic"
+
+
+[tasks.superuser]
+description = "Create superuser"
+run = "uv run python hiss/manage.py createsuperuser"
+
+[tasks.run]
+description = "Run dev server"
+run = "uv run python hiss/manage.py runserver"
+
+[tasks.test]
+description = "Run tests"
+run = "uv run python hiss/manage.py test --settings=hiss.settings.test --parallel"
