@@ -8,7 +8,7 @@
     <h1 class="status-value">{% if team %}Your team{% else %}Join a team{% endif %}</h1>
 </div>
 
-<p class="status-description">Competing together? Join a team to have your applications reviewed together. You can also compete on your own.</p>
+<p class="status-description">Have a team in mind? Join a team to have your applications reviewed together. We will try out best to accept you all together, but this does not guarantee the whole team will be accepted or rejected together.</p>
 
 {% if PENDING and not team %}
 <form id="join-team-form" class="max-w-sm text-left" method="post" action="{% url 'team:join-code' %}">
