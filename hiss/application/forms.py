@@ -76,7 +76,7 @@ class InitialRegistrationForm(forms.ModelForm):
         #     'https://mlh.io/privacy'
         # )
         # self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
-        self.fields["is_adult"].label = "Please confirm you are 18 or older."
+        self.fields["is_adult"].label = "Please confirm you are 18 or older OR you are under 18 and are a current student at TAMU."
 
         # Mark other optional fields
         self.fields["extra_links"].label = (
@@ -326,7 +326,7 @@ class ApplicationModelForm(forms.ModelForm):
         # )
         # self.fields["signup_to_mlh_newsletter"].label = mlh_newsletter
 
-        self.fields["is_adult"].label = "Please confirm you are 18 or older."
+        self.fields["is_adult"].label = "Please confirm you are 18 or older OR you are under 18 and are a current student at TAMU."
 
         # Mark other optional fields
         self.fields["extra_links"].label = (
