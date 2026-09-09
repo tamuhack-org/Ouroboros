@@ -884,7 +884,7 @@ requires-dist = [
     { name = "bcrypt", specifier = ">=4.2.1" },
     { name = "cachetools", specifier = ">=5.5.2" },
     { name = "certifi", specifier = ">=2025.1.31" },
-    { name = "chardet", specifier = ">=5.2.0" },
+    { name = "chardet", specifier = ">=7.6.0" },
     { name = "colorama", specifier = ">=0.4.6" },
     { name = "coverage", specifier = ">=7.6.12" },
     { name = "dj-database-url", specifier = ">=2.3.0" },
