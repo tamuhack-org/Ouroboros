@@ -83,6 +83,7 @@ def approve(team: Team):
 
 class TeamAdmin(admin.ModelAdmin):
     inlines = (ApplicationAdminInline,)
+    list_filter = ("is_active",)
 
     def response_change(self, request, obj):
         # Brittle reference to the request in hiss/templates/admin/team/team/change_form.html make sure edits there are reflected here
