@@ -275,6 +275,7 @@ def custom_titled_filter(title):
 class RaceFilter(admin.SimpleListFilter):
     title = "Race"
     parameter_name = "race"
+    template = "django_admin_listfilter_dropdown/dropdown_filter.html"
 
     def lookups(self, request: HttpRequest, model_admin) -> list[tuple[str, str]]:
         return RACES
@@ -290,6 +291,7 @@ class ConfirmationDeadlineProximityFilter(admin.SimpleListFilter):
 
     title = "Deadline within days"
     parameter_name = "deadline_days"
+    template = "django_admin_listfilter_dropdown/dropdown_filter.html"
 
     def lookups(self, request: HttpRequest, model_admin) -> list[tuple[str, str]]:
         return [
