@@ -363,7 +363,7 @@ class Application(models.Model):
 
         Counts all meal group values modulo 4, using a dictionary to assign meal groups.
         """
-        meal_group_map = {0: "Strawberry", 1: "Mango", 2: "Blueberry", 3: "Banana"}
+        meal_group_map = {0: "Seahorse", 1: "Cuttlefish", 2: "Marlin", 3: "Urchin"}
         non_null_count = (
             Application.objects.filter(status=STATUS_CONFIRMED)
             .exclude(meal_group__isnull=True)
@@ -377,7 +377,7 @@ class Application(models.Model):
         if self.status == STATUS_CONFIRMED:  # Confirmed
             self.meal_group = self.get_next_meal_group()
         elif self.status == "E":  # Waitlisted
-            self.meal_group = "Tomato"
+            self.meal_group = "Barnacle"
 
     def clean(self):
         super().clean()
