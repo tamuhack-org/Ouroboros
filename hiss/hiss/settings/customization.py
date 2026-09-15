@@ -13,10 +13,10 @@ EVENT_TIMEZONE = "America/Chicago"
 EVENT_START_DATETIME = datetime(2026, 10, 24, hour=9, tzinfo=ZoneInfo(EVENT_TIMEZONE))
 EVENT_END_DATETIME = datetime(2026, 10, 25, hour=12, tzinfo=ZoneInfo(EVENT_TIMEZONE))
 EVENT_DATE_TEXT = "October 24-25, 2026"
-EVENT_WAITLIST_CHECKIN_DATETIME = EVENT_START_DATETIME.replace(hour=11)
+EVENT_WAITLIST_CHECKIN_DATETIME = EVENT_START_DATETIME.replace(hour=10)
 # Use the organizer site until an event-specific site and map are available.
-EVENT_WEBSITE_URL = "https://tamuhack.org/"
-EVENT_MAP_URL = ""
+EVENT_WEBSITE_URL = "https://hh26.tamuhack.org/"
+EVENT_MAP_URL = "https://hh26.tamuhack.org/hh26-map.png"
 
 APPLE_WALLET_S3_BUCKET_URL = "https://hh26-apple-wallet-passes.s3.amazonaws.com"
 
