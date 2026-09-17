@@ -4,6 +4,7 @@ from zoneinfo import ZoneInfo
 from django.conf import settings
 from django.contrib import admin
 from django.db import transaction
+from django.db.models import Count
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import strip_tags
@@ -91,11 +92,30 @@ def approve(team: Team):
 
 class TeamAdmin(admin.ModelAdmin):
     inlines = (ApplicationAdminInline,)
-    list_display = ("__str__", "team_status")
+    list_display = (
+        "__str__",
+        "member_count",
+        "latest_submission_date",
+        "team_status",
+    )
     list_filter = ("is_active",)
 
     def get_queryset(self, request):
-        return super().get_queryset(request).prefetch_related("members")
+        return (
+            super()
+            .get_queryset(request)
+            .order_by_latest_submission()
+            .annotate(member_total=Count("members"))
+            .prefetch_related("members")
+        )
+
+    @admin.display(description="Members", ordering="member_total")
+    def member_count(self, obj: Team) -> int:
+        return obj.member_total
+
+    @admin.display(description="Latest submission", ordering="latest_submission")
+    def latest_submission_date(self, obj: Team) -> datetime | None:
+        return obj.latest_submission
 
     @admin.display(description="Team status")
     def team_status(self, obj: Team) -> str:
