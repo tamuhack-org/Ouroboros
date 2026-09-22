@@ -4,7 +4,12 @@ from django.tasks import task
 from django.template import Context, Template, TemplateSyntaxError
 from django.utils.html import strip_tags
 
-from application.constants import STATUS_ADMITTED, STATUS_CONFIRMED, STATUS_PENDING
+from application.constants import (
+    STATUS_ADMITTED,
+    STATUS_CONFIRMED,
+    STATUS_EXPIRED,
+    STATUS_PENDING,
+)
 from application.emails import (
     send_confirmation_email,
     send_hardware_confirmation_email,
@@ -38,9 +43,12 @@ def bg_send_update_email(application_id: str):
             send_still_reviewing_email(application)
         elif application.status == STATUS_ADMITTED:
             send_reminder_email(application)
-        elif application.status == STATUS_CONFIRMED and application.wares == "HW":
-            send_hardware_confirmation_email(application)
-        else:
+        elif application.status == STATUS_CONFIRMED:
+            if application.wares == "SW":
+                send_confirmation_email(application)
+            elif application.wares == "HW":
+                send_hardware_confirmation_email(application)
+        elif application.status == STATUS_EXPIRED:
             send_confirmation_email(application)
 
     except Application.DoesNotExist:
