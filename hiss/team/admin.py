@@ -10,23 +10,15 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 
 from application.admin import ApplicationAdminInline
-from application.constants import (
-    STATUS_ADMITTED,
-    STATUS_CHECKED_IN,
-    STATUS_CONFIRMED,
-    STATUS_DECLINED,
-    STATUS_EXPIRED,
-    STATUS_PENDING,
-    STATUS_REJECTED,
-)
+from application.constants import STATUS_ADMITTED
 from application.models import Application
 from hiss.settings.customization import EVENT_TIMEZONE
 from shared.admin_functions import send_mass_html_mail
 
-from .models import Team
+from .models import Team, TeamStatus
 
 
-#TODO: This is shared with the code in application. It probably should use the task framework and stuff like that
+# TODO: This is shared with the code in application. It probably should use the task framework and stuff like that
 def build_approval_email(
     application: Application, confirmation_deadline: datetime
 ) -> tuple[str, str, str, None, list[str]]:
@@ -90,6 +82,19 @@ def approve(team: Team):
     send_mass_html_mail(email_tuples)
 
 
+class TeamStatusFilter(admin.SimpleListFilter):
+    title = "Team status"
+    parameter_name = "team_status"
+
+    def lookups(self, request, model_admin):
+        return TeamStatus.choices
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(computed_team_status=self.value())
+        return queryset
+
+
 class TeamAdmin(admin.ModelAdmin):
     inlines = (ApplicationAdminInline,)
     list_display = (
@@ -98,12 +103,13 @@ class TeamAdmin(admin.ModelAdmin):
         "latest_submission_date",
         "team_status",
     )
-    list_filter = ("is_active",)
+    list_filter = ("is_active", TeamStatusFilter)
 
     def get_queryset(self, request):
         return (
             super()
             .get_queryset(request)
+            .with_team_status()
             .order_by_latest_submission()
             .annotate(member_total=Count("members"))
             .prefetch_related("members")
@@ -117,26 +123,9 @@ class TeamAdmin(admin.ModelAdmin):
     def latest_submission_date(self, obj: Team) -> datetime | None:
         return obj.latest_submission
 
-    @admin.display(description="Team status")
+    @admin.display(description="Team status", ordering="computed_team_status")
     def team_status(self, obj: Team) -> str:
-        status_groups = {
-            STATUS_ADMITTED: "Accepted",
-            STATUS_CONFIRMED: "Accepted",
-            STATUS_CHECKED_IN: "Accepted",
-            STATUS_REJECTED: "Rejected",
-            STATUS_DECLINED: "Rejected",
-            STATUS_PENDING: "In review",
-            STATUS_EXPIRED: "In review",
-        }
-        statuses = {
-            status_groups.get(member.status, "Mixed")
-            for member in obj.members.all()
-        }
-        if not statuses:
-            return "In review"
-        if len(statuses) != 1:
-            return "Mixed"
-        return statuses.pop()
+        return TeamStatus(obj.computed_team_status).label
 
     def response_change(self, request, obj):
         # Brittle reference to the request in hiss/templates/admin/team/team/change_form.html make sure edits there are reflected here

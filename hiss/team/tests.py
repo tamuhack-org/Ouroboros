@@ -4,11 +4,16 @@ from django.db import IntegrityError, transaction
 from django.test import TestCase
 from django.urls import reverse
 
-from application.constants import STATUS_REJECTED
+from application.constants import (
+    STATUS_ADMITTED,
+    STATUS_CONFIRMED,
+    STATUS_PENDING,
+    STATUS_REJECTED,
+)
 from application.models import Application
 from shared.test_case import SharedTestCase
 from team.codes import ADJECTIVES, SEA_CREATURES, generate_team_code
-from team.models import Team
+from team.models import Team, TeamStatus
 from user.models import User
 
 
@@ -42,6 +47,70 @@ class TeamCodeTestCase(TestCase):
         self.assertNotEqual(original.pk, replacement.pk)
         with self.assertRaises(IntegrityError), transaction.atomic():
             Team.objects.filter(pk=original.pk).update(is_active=True)
+
+
+class TeamStatusQuerySetTestCase(SharedTestCase):
+    def setUp(self):
+        super().setUp()
+        self.create_active_wave()
+        fields = {**self.application_fields, "wave": self.wave1, "resume": "resume.pdf"}
+        self.team = Team.objects.create()
+        self.first = Application.objects.create(**fields, team=self.team)
+        self.second = Application.objects.create(
+            **{**fields, "user": self.user2}, team=self.team
+        )
+
+    def get_status(self):
+        return (
+            Team.objects.with_team_status()
+            .values_list("computed_team_status", flat=True)
+            .get(pk=self.team.pk)
+        )
+
+    def test_groups_member_statuses_into_team_status(self):
+        self.first.status = STATUS_ADMITTED
+        self.second.status = STATUS_CONFIRMED
+        Application.objects.bulk_update([self.first, self.second], ["status"])
+        self.assertEqual(self.get_status(), TeamStatus.ACCEPTED)
+
+        self.first.status = STATUS_REJECTED
+        self.second.status = STATUS_REJECTED
+        Application.objects.bulk_update([self.first, self.second], ["status"])
+        self.assertEqual(self.get_status(), TeamStatus.REJECTED)
+
+        self.first.status = STATUS_PENDING
+        self.second.status = STATUS_PENDING
+        Application.objects.bulk_update([self.first, self.second], ["status"])
+        self.assertEqual(self.get_status(), TeamStatus.IN_REVIEW)
+
+        self.first.status = STATUS_ADMITTED
+        self.second.status = STATUS_REJECTED
+        Application.objects.bulk_update([self.first, self.second], ["status"])
+        self.assertEqual(self.get_status(), TeamStatus.MIXED)
+
+    def test_empty_team_is_in_review(self):
+        empty_team = Team.objects.create()
+        status = (
+            Team.objects.with_team_status()
+            .values_list("computed_team_status", flat=True)
+            .get(pk=empty_team.pk)
+        )
+        self.assertEqual(status, TeamStatus.IN_REVIEW)
+
+    def test_admin_filters_by_computed_team_status(self):
+        self.first.status = STATUS_ADMITTED
+        self.second.status = STATUS_CONFIRMED
+        Application.objects.bulk_update([self.first, self.second], ["status"])
+        Team.objects.create()
+
+        self.client.force_login(self.admin)
+        response = self.client.get(
+            reverse("admin:team_team_changelist"),
+            {"team_status": TeamStatus.ACCEPTED},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(list(response.context["cl"].queryset), [self.team])
 
 
 class TeamActionsTestCase(SharedTestCase):

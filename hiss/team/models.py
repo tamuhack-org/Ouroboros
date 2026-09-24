@@ -2,13 +2,29 @@ import uuid
 from typing import TYPE_CHECKING, Self, override
 
 from django.db import IntegrityError, models, router, transaction
-from django.db.models import Max, QuerySet
+from django.db.models import Count, F, Max, Q, QuerySet
 
+from application.constants import (
+    STATUS_ADMITTED,
+    STATUS_CHECKED_IN,
+    STATUS_CONFIRMED,
+    STATUS_DECLINED,
+    STATUS_EXPIRED,
+    STATUS_PENDING,
+    STATUS_REJECTED,
+)
 from hiss.settings.customization import MAX_TEAM_CAPACITY
 from team.codes import generate_team_code
 
 if TYPE_CHECKING:
     from application.models import Application
+
+
+class TeamStatus(models.TextChoices):
+    ACCEPTED = ("accepted", "Accepted")
+    REJECTED = ("rejected", "Rejected")
+    IN_REVIEW = ("in_review", "In review")
+    MIXED = ("mixed", "Mixed")
 
 
 class TeamQuerySet(QuerySet):
@@ -18,6 +34,40 @@ class TeamQuerySet(QuerySet):
         return self.annotate(
             latest_submission=Max("members__datetime_submitted")
         ).order_by("-latest_submission")
+
+    def with_team_status(self) -> Self:
+        """Annotate each team with its status based on its members' statuses."""
+        accepted = [STATUS_ADMITTED, STATUS_CONFIRMED, STATUS_CHECKED_IN]
+        rejected = [STATUS_REJECTED, STATUS_DECLINED]
+        in_review = [STATUS_PENDING, STATUS_EXPIRED]
+
+        return self.annotate(
+            member_count=Count("members"),
+            accepted_count=Count("members", filter=Q(members__status__in=accepted)),
+            rejected_count=Count("members", filter=Q(members__status__in=rejected)),
+            in_review_count=Count("members", filter=Q(members__status__in=in_review)),
+        ).annotate(
+            computed_team_status=models.Case(
+                models.When(
+                    member_count=0,
+                    then=models.Value(TeamStatus.IN_REVIEW),
+                ),
+                models.When(
+                    accepted_count=F("member_count"),
+                    then=models.Value(TeamStatus.ACCEPTED),
+                ),
+                models.When(
+                    rejected_count=F("member_count"),
+                    then=models.Value(TeamStatus.REJECTED),
+                ),
+                models.When(
+                    in_review_count=F("member_count"),
+                    then=models.Value(TeamStatus.IN_REVIEW),
+                ),
+                default=models.Value(TeamStatus.MIXED),
+                output_field=models.CharField(),
+            )
+        )
 
 
 class Team(models.Model):
