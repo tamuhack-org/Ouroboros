@@ -173,6 +173,7 @@ def build_waitlist_expired_email(
         "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
         "event_date_text": settings.EVENT_DATE_TEXT,
+        "event_waitlist_checkin": settings.EVENT_WAITLIST_CHECKIN_DATETIME,
     }
     html_message = render_to_string("application/emails/waitlist-expired.html", context)
     message = strip_tags(html_message)
@@ -199,6 +200,7 @@ def build_waitlist_manual_email(
         "event_year": settings.EVENT_YEAR,
         "organizer_email": settings.ORGANIZER_EMAIL,
         "event_date_text": settings.EVENT_DATE_TEXT,
+        "event_waitlist_checkin": settings.EVENT_WAITLIST_CHECKIN_DATETIME,
     }
     html_message = render_to_string("application/emails/waitlist-manual.html", context)
     message = strip_tags(html_message)

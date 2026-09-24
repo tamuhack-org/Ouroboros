@@ -14,6 +14,8 @@ EVENT_START_DATETIME = datetime(2026, 10, 24, hour=9, tzinfo=ZoneInfo(EVENT_TIME
 EVENT_END_DATETIME = datetime(2026, 10, 25, hour=12, tzinfo=ZoneInfo(EVENT_TIMEZONE))
 EVENT_DATE_TEXT = "October 24-25, 2026"
 EVENT_WAITLIST_CHECKIN_DATETIME = EVENT_START_DATETIME.replace(hour=10)
+EVENT_VENUE_NAME = "MSC 2400 (Gates Ballroom)"
+EVENT_VENUE_MAP_URL = "https://maps.app.goo.gl/M8Nehh4nkRQhNBEa9"
 # Use the organizer site until an event-specific site and map are available.
 EVENT_WEBSITE_URL = "https://hh26.tamuhack.org/"
 EVENT_MAP_URL = "https://hh26.tamuhack.org/hh26-map.png"

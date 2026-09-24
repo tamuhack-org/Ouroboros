@@ -82,6 +82,7 @@ def send_confirmation_email(app: Application) -> None:
         "google_wallet_url": google_wallet_pass_url,
         "meal_group": app.meal_group,
         "event_date_text": settings.EVENT_DATE_TEXT,
+        "event_waitlist_checkin": settings.EVENT_WAITLIST_CHECKIN_DATETIME,
         "event_checkin": (
             settings.EVENT_WAITLIST_CHECKIN_DATETIME
             if app.status == "E"
@@ -89,6 +90,8 @@ def send_confirmation_email(app: Application) -> None:
         ),
         "event_website_url": settings.EVENT_WEBSITE_URL,
         "event_map_url": settings.EVENT_MAP_URL,
+        "event_venue_name": settings.EVENT_VENUE_NAME,
+        "event_venue_map_url": settings.EVENT_VENUE_MAP_URL,
     }
     logger.debug("Email context", context=context)
     html_msg = render_to_string(email_template, context)
@@ -162,6 +165,7 @@ def send_hardware_confirmation_email(app: Application) -> None:
         "google_wallet_url": google_wallet_pass_url,
         "meal_group": app.meal_group,
         "event_date_text": settings.EVENT_DATE_TEXT,
+        "event_waitlist_checkin": settings.EVENT_WAITLIST_CHECKIN_DATETIME,
         "event_checkin": (
             settings.EVENT_WAITLIST_CHECKIN_DATETIME
             if app.status == "E"
@@ -169,6 +173,8 @@ def send_hardware_confirmation_email(app: Application) -> None:
         ),
         "event_website_url": settings.EVENT_WEBSITE_URL,
         "event_map_url": settings.EVENT_MAP_URL,
+        "event_venue_name": settings.EVENT_VENUE_NAME,
+        "event_venue_map_url": settings.EVENT_VENUE_MAP_URL,
     }
     logger.debug("Email context", context=context)
     html_msg = render_to_string(email_template, context)
