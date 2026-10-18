@@ -15,7 +15,7 @@ EVENT_END_DATETIME = datetime(2026, 10, 25, hour=12, tzinfo=ZoneInfo(EVENT_TIMEZ
 EVENT_DATE_TEXT = "October 24-25, 2026"
 EVENT_WAITLIST_CHECKIN_DATETIME = EVENT_START_DATETIME.replace(hour=10)
 EVENT_VENUE_NAME = "MSC 2400 (Gates Ballroom)"
-EVENT_VENUE_MAP_URL = "https://maps.app.goo.gl/M8Nehh4nkRQhNBEa9"
+EVENT_VENUE_MAP_URL = "https://www.google.com/maps/place/Memorial+Student+Center+(MSC)/@30.6122578,-96.342188,19z/data=!3m1!4b1!4m6!3m5!1s0x8646839854d18149:0x90311327f8c2221d!8m2!3d30.6122578!4d-96.3415443!16s%2Fg%2F1tm1qw46?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D"
 # Use the organizer site until an event-specific site and map are available.
 EVENT_WEBSITE_URL = "https://hh26.tamuhack.org/"
 EVENT_MAP_URL = "https://hh26.tamuhack.org/hh26-map.png"
