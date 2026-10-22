@@ -326,6 +326,25 @@ STATUS_OPTIONS = [
     (STATUS_CHECKED_IN, "Checked in"),
     (STATUS_EXPIRED, "Waitlisted (Expired, internally)"),
 ]
+# Short status names and Unfold label variants (colors) used throughout the admin UI
+STATUS_ADMIN_LABELS = {
+    STATUS_PENDING: "Under review",
+    STATUS_REJECTED: "Rejected",
+    STATUS_ADMITTED: "Admitted",
+    STATUS_CONFIRMED: "Confirmed",
+    STATUS_DECLINED: "Declined",
+    STATUS_CHECKED_IN: "Checked in",
+    STATUS_EXPIRED: "Waitlisted",
+}
+STATUS_ADMIN_VARIANTS = {
+    STATUS_PENDING: "info",
+    STATUS_REJECTED: "danger",
+    STATUS_ADMITTED: "primary",
+    STATUS_CONFIRMED: "success",
+    STATUS_DECLINED: "default",
+    STATUS_CHECKED_IN: "success",
+    STATUS_EXPIRED: "warning",
+}
 HAS_TEAM = "HT"
 HAS_NO_TEAM = "HNT"
 HAS_TEAM_OPTIONS = [

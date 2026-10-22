@@ -54,7 +54,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
 
         self.client.post(
             change_url,
-            {"action": "approve", "_selected_action": [self.app.pk]},
+            {"action": "approve", "_selected_action": [self.app.pk], "post": "yes"},
             follow=True,
         )
 
@@ -66,7 +66,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         change_url = reverse_lazy("admin:application_application_changelist")
 
         self.client.post(
-            change_url, {"action": "approve", "_selected_action": [self.app.pk]}
+            change_url, {"action": "approve", "_selected_action": [self.app.pk], "post": "yes"}
         )
 
         self.assertEqual(len(mail.outbox), 1)
@@ -78,7 +78,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
 
         self.client.post(
             change_url,
-            {"action": "reject", "_selected_action": [self.app.pk]},
+            {"action": "reject", "_selected_action": [self.app.pk], "post": "yes"},
             follow=True,
         )
 
@@ -89,7 +89,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
         change_url = reverse_lazy("admin:application_application_changelist")
         self.client.post(
             change_url,
-            {"action": "reject", "_selected_action": [self.app.pk]},
+            {"action": "reject", "_selected_action": [self.app.pk], "post": "yes"},
             follow=True,
         )
         self.app.refresh_from_db()
@@ -118,6 +118,7 @@ class ApplicationAdminTestCase(test_case.SharedTestCase):
             {
                 "action": "resend_confirmation",
                 "_selected_action": [self.app.pk],
+                "post": "yes",
             },
             follow=True,
         )

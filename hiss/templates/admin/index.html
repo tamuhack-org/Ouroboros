@@ -1,0 +1,139 @@
+{% extends "admin/base.html" %}
+{% load i18n unfold %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+    {% include "unfold/helpers/site_branding.html" %}
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+        /* Dashboard-only details that Unfold's compiled Tailwind does not ship */
+        .dashboard { font-variant-numeric: tabular-nums; }
+        .dashboard-strip { gap: 1px; }
+        .dashboard-dot { border-radius: 999px; flex: none; height: 8px; width: 8px; }
+        .dashboard-dot--total { background: var(--color-base-400); }
+        .dashboard-dot--info { background: #3b82f6; }
+        .dashboard-dot--primary { background: var(--color-primary-500); }
+        .dashboard-dot--success { background: #16a34a; }
+        .dashboard-dot--warning { background: #f97316; }
+        .dashboard-chart, .dashboard-chart > div { height: 240px; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard flex flex-col gap-6">
+
+    {# Title row: the event, what needs attention, and the main job #}
+    <div class="flex flex-col gap-4 justify-between md:flex-row md:items-center">
+        <div class="flex flex-col gap-1">
+            <h2 class="font-semibold text-2xl tracking-tight text-font-important-light dark:text-font-important-dark">{{ site_subheader }}</h2>
+            <p class="text-font-default-light dark:text-font-default-dark">{{ finding }}</p>
+        </div>
+
+        {% if pending_count %}
+            {% component "unfold/components/button.html" with href=pending_url icon="rate_review" %}
+                Review pending
+            {% endcomponent %}
+        {% endif %}
+    </div>
+
+    {# Status counts: one container split into cells, each linking to its filtered list #}
+    <div class="bg-base-200 border border-base-200 dashboard-strip grid grid-cols-2 md:grid-cols-3 overflow-hidden rounded-default xl:grid-cols-6 dark:bg-base-800 dark:border-base-800">
+        {% for card in status_cards %}
+            <a href="{{ card.href }}" class="bg-white flex flex-col gap-2 px-5 py-4 hover:bg-base-50 dark:bg-base-900 dark:hover:bg-base-800">
+                <span class="flex gap-2 items-center text-font-subtle-light dark:text-font-subtle-dark">
+                    <span class="dashboard-dot dashboard-dot--{{ card.variant }}" aria-hidden="true"></span>
+                    {{ card.label }}
+                </span>
+                <span class="flex gap-2 items-center">
+                    <span class="font-semibold text-2xl text-font-important-light dark:text-font-important-dark">{{ card.value }}</span>
+                    {% if card.share is not None %}
+                        <span class="text-font-subtle-light dark:text-font-subtle-dark">{{ card.share }}%</span>
+                    {% endif %}
+                </span>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+
+        {# Submissions over time #}
+        {% component "unfold/components/card.html" with title="Applications per day" description="Submissions by day, Central Time" class="lg:col-span-2" %}
+            {% if submissions_chart %}
+                <div class="dashboard-chart">
+                    {% component "unfold/components/chart/bar.html" with data=submissions_chart options=submissions_chart_options %}{% endcomponent %}
+                </div>
+            {% else %}
+                <p class="py-16 text-center text-font-subtle-light dark:text-font-subtle-dark">No applications yet</p>
+            {% endif %}
+        {% endcomponent %}
+
+        {# Admissions funnel #}
+        {% component "unfold/components/card.html" with title="Admissions funnel" description="Each bar is a share of all applicants" %}
+            <div class="flex flex-col gap-6">
+                {% for step in funnel %}
+                    <div class="flex flex-col gap-2">
+                        <div class="flex gap-4 items-center justify-between">
+                            <span class="font-medium text-font-important-light dark:text-font-important-dark">{{ step.label }}</span>
+                            <span class="whitespace-nowrap">
+                                <span class="font-semibold text-font-important-light dark:text-font-important-dark">{{ step.value }}</span>
+                                {% if step.conversion %}
+                                    <span class="text-font-subtle-light dark:text-font-subtle-dark">&middot; {{ step.conversion }}</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="bg-base-100 h-2 overflow-hidden rounded-full dark:bg-base-800" role="presentation">
+                            {% if step.width %}
+                                <div class="bg-primary-600 h-2 rounded-full dark:bg-primary-500" style="width: {{ step.width }}%"></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endcomponent %}
+
+        {# Oldest applications still waiting for a decision #}
+        {% capture as waiting_action silent %}
+            {% if waiting_longest %}
+                <a href="{{ waiting_longest_url }}" class="font-medium text-primary-600 whitespace-nowrap dark:text-primary-500">View all</a>
+            {% endif %}
+        {% endcapture %}
+        {% component "unfold/components/card.html" with title="Waiting longest" description="Oldest applications still under review" action=waiting_action class="lg:col-span-2" %}
+            {% if waiting_longest %}
+                <ul class="-my-2">
+                    {% for app in waiting_longest %}
+                        <li class="border-b border-base-200 last:border-b-0 dark:border-base-800">
+                            <a href="{% url 'admin:application_application_change' app.pk %}" class="flex gap-4 items-center py-2.5 hover:text-primary-600 dark:hover:text-primary-500">
+                                <span class="flex flex-1 flex-col min-w-0">
+                                    <span class="font-medium truncate text-font-important-light dark:text-font-important-dark">{{ app.first_name }} {{ app.last_name }}</span>
+                                    <span class="truncate text-font-subtle-light dark:text-font-subtle-dark">{{ app.school|default:app.school_other|default:"—" }}</span>
+                                </span>
+                                <span class="text-right text-font-subtle-light whitespace-nowrap dark:text-font-subtle-dark">
+                                    {{ app.waiting_for }}
+                                </span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="py-8 text-center text-font-subtle-light dark:text-font-subtle-dark">Every application has a decision.</p>
+            {% endif %}
+        {% endcomponent %}
+
+        {# Gender distribution #}
+        {% capture as gender_toggle silent %}
+            <nav class="bg-base-100 flex flex-row font-medium gap-1 p-1 rounded-default text-important *:flex *:flex-row *:gap-1 *:font-medium *:whitespace-nowrap *:items-center *:px-2.5 *:py-[5px] *:rounded-default *:hover:bg-base-700/[.06] dark:bg-white/[.06] *:dark:hover:bg-white/[.06] [&>.active]:bg-white [&>.active]:shadow-xs [&>.active]:dark:bg-base-700 [&>.active]:hover:bg-white [&>.active]:dark:hover:bg-base-700" aria-label="Gender distribution scope">
+                <a href="?gender_scope=all" class="{% if gender_scope == 'all' %}active{% endif %}" {% if gender_scope == 'all' %}aria-current="true"{% endif %}>All</a>
+                <a href="?gender_scope=accepted" class="{% if gender_scope == 'accepted' %}active{% endif %}" {% if gender_scope == 'accepted' %}aria-current="true"{% endif %}>Accepted</a>
+            </nav>
+        {% endcapture %}
+        {% component "unfold/components/card.html" with title="Gender" description=gender_description action=gender_toggle %}
+            {% include "admin/includes/dashboard_gender_rows.html" %}
+        {% endcomponent %}
+
+    </div>
+</div>
+{% endblock %}
