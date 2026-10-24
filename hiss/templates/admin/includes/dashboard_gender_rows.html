@@ -1,0 +1,22 @@
+{% if gender_total %}
+    <div class="flex flex-col gap-6">
+        {% for row in gender_rows %}
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center justify-between gap-4">
+                    <span class="text-font-important-light dark:text-font-important-dark">{{ row.label }}</span>
+                    <span>
+                        <span class="font-semibold text-font-important-light dark:text-font-important-dark">{{ row.value }}</span>
+                        <span class="text-font-subtle-light dark:text-font-subtle-dark">&middot; {{ row.share }}%</span>
+                    </span>
+                </div>
+                <div class="bg-base-100 h-1.5 overflow-hidden rounded-full dark:bg-base-800" role="presentation">
+                    {% if row.share %}
+                        <div class="bg-base-400 h-1.5 rounded-full dark:bg-base-500" style="width: {{ row.share }}%"></div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="py-16 text-center text-font-subtle-light dark:text-font-subtle-dark">No applicants in this group yet</p>
+{% endif %}

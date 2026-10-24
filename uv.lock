@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.13"
 resolution-markers = [
     "python_full_version >= '3.14'",
@@ -538,24 +538,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/4f/5a/488ff3c27477da39cc469aa81b52773169f166dcdc450678913c05aece11/django-address-0.2.8.tar.gz", hash = "sha256:aa0c5b90524d4dee43162929cceb1c546f859c4a16a3fc0497a4896b7ace4236", size = 25152, upload-time = "2022-05-06T19:58:53.694Z" }
 
 [[package]]
-name = "django-admin-list-filter-dropdown"
-version = "1.0.3"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/ef/d1/975f480e8e54e37d1fc6883f4d2d5ef0dc7db3178759302fdf1836216a2a/django-admin-list-filter-dropdown-1.0.3.tar.gz", hash = "sha256:07cd37b6a9be1b08f11d4a92957c69b67bc70b1f87a2a7d4ae886c93ea51eb53", size = 3509, upload-time = "2019-10-14T10:21:28.447Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/e9/18/35bd4e459bfd387c67f1439fafb7e923fa1df620d41a5eae148fa9f5b551/django_admin_list_filter_dropdown-1.0.3-py3-none-any.whl", hash = "sha256:bf1b48bab9772dad79db71efef17e78782d4f2421444d5e49bb10e0da71cd6bb", size = 3813, upload-time = "2019-10-14T10:21:25.963Z" },
-]
-
-[[package]]
-name = "django-admin-rangefilter"
-version = "0.15.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/ea/ac/afbf37addf9a882bff1bfc7102778c86bfd2d939cdc8396f86842a4229ef/django_admin_rangefilter-0.15.0.tar.gz", hash = "sha256:61d9f57715fd091d894e91fa9e1124013e006b645294a70cb2e9255a6e6403ae", size = 25791, upload-time = "2026-08-28T14:28:56.012Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b0/22/5c6518159241082f9482f5313b1ef168adbfb9f3633cf50d3762d7248d3d/django_admin_rangefilter-0.15.0-py2.py3-none-any.whl", hash = "sha256:4e950d01b4d35915c47fc3f2eb23c097825774dd577871632cbd8fcce5f97363", size = 48896, upload-time = "2026-08-28T14:28:55.025Z" },
-]
-
-[[package]]
 name = "django-anymail"
 version = "15.1"
 source = { registry = "https://pypi.org/simple" }
@@ -685,6 +667,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/6c/e9/fd12dc51bb25c52658bbf329a6f2454b215d063fca8c8342458a474dae16/django_tasks_db-0.13.0.tar.gz", hash = "sha256:09630d417cf722b07e1439b837403e18e86455908ba532fa6795b0d23dc3ff23", size = 29608, upload-time = "2026-08-28T15:05:32.098Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/30/d2/8b10117fca37a2d1f2e45f4878ffa07cf6c0c8df1920e250db30e2228b9e/django_tasks_db-0.13.0-py3-none-any.whl", hash = "sha256:a3a47250b09d40e9b289851d2a550d840d29e59ee3e7115129831e291bb35576", size = 31991, upload-time = "2026-08-28T15:05:30.767Z" },
+]
+
+[[package]]
+name = "django-unfold"
+version = "0.110.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/44/45/8fed87cc80291ab694c46fa3c113dff3e25cc7b1de843f5c334679f9128d/django_unfold-0.110.0.tar.gz", hash = "sha256:cd0bbfd3b96454b6e6eccea98996f9de634e1aa08956807943011b12f2fbcdf2", size = 1172280, upload-time = "2026-10-13T06:47:18.085Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2b/d1/d9f998dcd02fbdcc5a63836ac3025e170f3a99cfdc0b64efe7a4ab1e861c/django_unfold-0.110.0-py3-none-any.whl", hash = "sha256:5b20e87cf389376398dee19f9e168ad1f8c4cd5e53850b4b7d38bb1e17c14f9a", size = 1301431, upload-time = "2026-10-13T06:47:16.414Z" },
 ]
 
 [[package]]
@@ -833,8 +827,6 @@ dependencies = [
     { name = "dj-database-url" },
     { name = "django" },
     { name = "django-address" },
-    { name = "django-admin-list-filter-dropdown" },
-    { name = "django-admin-rangefilter" },
     { name = "django-anymail" },
     { name = "django-cors-headers" },
     { name = "django-debug-toolbar" },
@@ -844,6 +836,7 @@ dependencies = [
     { name = "django-storages" },
     { name = "django-stubs" },
     { name = "django-tasks-db" },
+    { name = "django-unfold" },
     { name = "djangorestframework" },
     { name = "entrypoints" },
     { name = "google-api-core" },
@@ -890,8 +883,6 @@ requires-dist = [
     { name = "dj-database-url", specifier = ">=2.3.0" },
     { name = "django", specifier = ">=6.0.7" },
     { name = "django-address", specifier = ">=0.2.8" },
-    { name = "django-admin-list-filter-dropdown", specifier = ">=1.0.3" },
-    { name = "django-admin-rangefilter", specifier = ">=0.13.2" },
     { name = "django-anymail", specifier = ">=12.0" },
     { name = "django-cors-headers", specifier = ">=4.7.0" },
     { name = "django-debug-toolbar", specifier = ">=8.0.0" },
@@ -901,6 +892,7 @@ requires-dist = [
     { name = "django-storages", specifier = ">=1.14.5" },
     { name = "django-stubs", specifier = ">=5.1.3" },
     { name = "django-tasks-db", specifier = ">=0.13.0" },
+    { name = "django-unfold", specifier = "==0.110.0" },
     { name = "djangorestframework", specifier = ">=3.15.2" },
     { name = "entrypoints", specifier = ">=0.4" },
     { name = "google-api-core", specifier = ">=2.24.1" },

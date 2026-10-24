@@ -286,3 +286,6 @@ modules.xml
 # Pyre type checker
 
 # End of https://www.gitignore.io/api/python,django,intellij+iml
+
+# Local design specs/plans
+docs/superpowers/
