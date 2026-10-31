@@ -26,8 +26,6 @@ from django.views.generic.base import RedirectView
 
 from judgesmentors.csv_email_admin import csv_email_admin
 
-admin.site.index_title = "Dashboard"
-
 
 def healthcheck(_request):
     return http.HttpResponse("")
