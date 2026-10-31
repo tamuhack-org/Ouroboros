@@ -32,10 +32,6 @@ GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 
 # Application definition
 INSTALLED_APPS = [
-    # Unfold must load before django.contrib.admin to override its templates
-    "unfold",
-    "unfold.contrib.filters",
-    "unfold.contrib.forms",
     "address",
     "anymail",
     "application.apps.ApplicationConfig",
@@ -48,9 +44,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.sessions",
     "django.contrib.staticfiles",
+    "django_admin_listfilter_dropdown",
     "django_tasks_db",
     "judgesmentors.apps.JudgesmentorsConfig",
     "phonenumber_field",
+    "rangefilter",
     "rest_framework",
     "rest_framework.authtoken",
     "shared.apps.SharedConfig",
@@ -215,6 +213,3 @@ LOGGING = {
         "level": "INFO",
     },
 }
-
-# Admin UI (django-unfold)
-from .admin_ui import UNFOLD  # noqa: E402, F401

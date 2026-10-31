@@ -1,27 +1,21 @@
 from django.contrib import admin
-from unfold.admin import ModelAdmin
-from unfold.contrib.filters.admin import ChoicesDropdownFilter, RangeDateTimeFilter
+from django_admin_listfilter_dropdown.filters import ChoiceDropdownFilter
+from rangefilter.filters import DateTimeRangeFilter
 
 from volunteer.models import FoodEvent, WorkshopEvent
 
 
-class FoodEventAdmin(ModelAdmin):
+class FoodEventAdmin(admin.ModelAdmin):
     list_filter = (
-        ("timestamp", RangeDateTimeFilter),
-        ("meal", ChoicesDropdownFilter),
+        ("timestamp", DateTimeRangeFilter),
+        ("meal", ChoiceDropdownFilter),
     )
-    list_filter_submit = True
     list_display = ("timestamp", "meal", "user")
-    list_select_related = ("user",)
-    search_fields = ("user__email",)
 
 
-class WorkshopEventAdmin(ModelAdmin):
-    list_filter = (("timestamp", RangeDateTimeFilter),)
-    list_filter_submit = True
+class WorkshopEventAdmin(admin.ModelAdmin):
+    list_filter = (("timestamp", DateTimeRangeFilter),)
     list_display = ("timestamp", "user")
-    list_select_related = ("user",)
-    search_fields = ("user__email",)
 
 
 admin.site.register(FoodEvent, FoodEventAdmin)

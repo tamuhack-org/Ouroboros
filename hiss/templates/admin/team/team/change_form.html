@@ -1,0 +1,10 @@
+{% extends "admin/change_form.html" %}
+<!-- Referenced in hiss/team/admin.py. Make sure edits here are reflected there -->
+{% block submit_buttons_bottom %}
+  {% if change and has_change_permission %}
+    <div class="submit-row">
+      <input type="submit" name="_approve" value="Save and approve team">
+    </div>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}
