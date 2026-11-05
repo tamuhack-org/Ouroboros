@@ -46,6 +46,9 @@ class AdHocEmailBatch(models.Model):
     subject = models.CharField(max_length=255)
     html_template = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    recipients = models.ManyToManyField(
+        "Application", blank=True, related_name="ad_hoc_email_batches"
+    )
 
     class Meta:
         verbose_name_plural = "Ad hoc email batches"
