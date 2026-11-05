@@ -1,0 +1,80 @@
+{% extends "admin/base_site.html" %}
+{% load i18n l10n unfold %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} action-confirmation{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl" style="font-variant-numeric: tabular-nums;">
+    <div class="bg-white border border-base-200 rounded-default shadow-xs dark:bg-base-900 dark:border-base-800">
+        <div class="flex gap-4 items-start p-6">
+            <div class="flex items-center justify-center h-10 rounded-default shrink-0 w-10 {% if confirmation.variant == 'danger' %}bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400{% else %}bg-primary-100 text-primary-700 dark:bg-primary-500/20 dark:text-primary-400{% endif %}">
+                <span class="material-symbols-outlined">{{ confirmation.icon }}</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <h2 class="font-semibold text-base text-font-important-light dark:text-font-important-dark">
+                    {{ title }}
+                </h2>
+                <p class="leading-relaxed">{{ confirmation.message }}</p>
+            </div>
+        </div>
+
+        <div class="border-t border-base-200 dark:border-base-800">
+            <div class="flex items-center justify-between px-6 py-3">
+                <h3 class="font-semibold text-font-important-light dark:text-font-important-dark">
+                    Recipients
+                </h3>
+                <span class="font-semibold text-font-important-light dark:text-font-important-dark">
+                    {{ recipient_count }}
+                </span>
+            </div>
+
+            <div style="max-height: 20rem;" class="overflow-y-auto border-t border-base-200 dark:border-base-800">
+                <table class="w-full">
+                    <tbody>
+                        {% for name, email in preview %}
+                            <tr class="border-b border-base-200 last:border-b-0 dark:border-base-800">
+                                <td class="px-6 py-2 text-font-important-light dark:text-font-important-dark">{{ name }}</td>
+                                <td class="px-6 py-2 text-right text-font-subtle-light dark:text-font-subtle-dark">{{ email }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td class="px-6 py-4 text-font-subtle-light dark:text-font-subtle-dark">Nobody will be emailed.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if remaining %}
+                    <p class="border-t border-base-200 px-6 py-2 text-font-subtle-light dark:border-base-800 dark:text-font-subtle-dark">
+                        and {{ remaining }} more
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+
+        <form method="post" action="{{ form_url }}" class="border-t border-base-200 flex gap-3 items-center justify-end px-6 py-4 dark:border-base-800">
+            {% csrf_token %}
+            {% for pk in selected_pks %}
+                <input type="hidden" name="{{ action_checkbox_name }}" value="{{ pk|unlocalize }}">
+            {% endfor %}
+            <input type="hidden" name="action" value="{{ action }}">
+            <input type="hidden" name="post" value="yes">
+            {% if next_url %}<input type="hidden" name="next" value="{{ next_url }}">{% endif %}
+
+            {% component "unfold/components/button.html" with href=cancel_url variant="default" %}
+                {% translate "Cancel" %}
+            {% endcomponent %}
+
+            {% if confirmation.variant == "danger" %}
+                {% component "unfold/components/button.html" with submit=1 variant="danger" icon=confirmation.icon %}
+                    {{ confirmation.confirm_label }}
+                {% endcomponent %}
+            {% else %}
+                {% component "unfold/components/button.html" with submit=1 icon=confirmation.icon %}
+                    {{ confirmation.confirm_label }}
+                {% endcomponent %}
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}

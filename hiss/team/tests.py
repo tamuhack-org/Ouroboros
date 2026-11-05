@@ -112,6 +112,20 @@ class TeamStatusQuerySetTestCase(SharedTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(list(response.context["cl"].queryset), [self.team])
 
+    def test_admin_team_status_filter_accepts_multiple_values(self):
+        self.first.status = STATUS_ADMITTED
+        self.second.status = STATUS_CONFIRMED
+        Application.objects.bulk_update([self.first, self.second], ["status"])
+        empty = Team.objects.create()
+
+        self.client.force_login(self.admin)
+        response = self.client.get(
+            reverse("admin:team_team_changelist"),
+            {"team_status": [TeamStatus.ACCEPTED, TeamStatus.IN_REVIEW]},
+        )
+
+        self.assertEqual(set(response.context["cl"].queryset), {self.team, empty})
+
 
 class TeamActionsTestCase(SharedTestCase):
     def setUp(self):
