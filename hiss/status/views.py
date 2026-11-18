@@ -1,16 +1,21 @@
+from datetime import timedelta
+
 import structlog
 from django.conf import settings
 from django.contrib.auth import mixins
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import generic
 
 import application.constants
 from application.emails import send_confirmation_email
 from application.forms import RSVPConfirmationForm
 from application.models import Application, Wave
+from application.qr import qr_png_base64
 from user.models import User
+from volunteer.models import ScheduleEvent
 
 logger = structlog.get_logger()
 
@@ -69,8 +74,40 @@ class StatusBaseView(mixins.LoginRequiredMixin, generic.TemplateView):
         return context
 
 
+DAY_OF_STATUSES = {
+    application.constants.STATUS_CONFIRMED,
+    application.constants.STATUS_CHECKED_IN,
+    application.constants.STATUS_EXPIRED,
+}
+DEFAULT_EVENT_LENGTH = timedelta(minutes=30)
+
+
+def build_schedule(now):
+    """Group visible schedule events by local day and mark what's on now / next."""
+    days = []
+    next_marked = False
+    for event in ScheduleEvent.objects.filter(is_visible=True):
+        event.is_now = event.start <= now < event.start + DEFAULT_EVENT_LENGTH
+        event.is_next = not next_marked and event.start > now
+        next_marked = next_marked or event.is_next
+        day = timezone.localtime(event.start).date()
+        if not days or days[-1]["date"] != day:
+            days.append({"date": day, "events": []})
+        days[-1]["events"].append(event)
+    return days
+
+
 class StatusView(StatusBaseView):
     template_name = "status/status.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        app = context.get("application")
+        if app and app.status in DAY_OF_STATUSES:
+            context["qr_code_b64"] = qr_png_base64(app)
+            context["meal_group"] = app.meal_group
+            context["schedule_days"] = build_schedule(timezone.now())
+        return context
 
 
 class RSVPSubmitView(mixins.LoginRequiredMixin, generic.View):

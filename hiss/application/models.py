@@ -378,7 +378,8 @@ class Application(models.Model):
     def assign_meal_group(self):
         """Assign a meal group based on the current status."""
         if self.status == STATUS_CONFIRMED:  # Confirmed
-            self.meal_group = self.get_next_meal_group()
+            if not self.meal_group:
+                self.meal_group = self.get_next_meal_group()
         elif self.status == "E":  # Waitlisted
             self.meal_group = "Barnacle"
 

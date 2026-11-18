@@ -1,0 +1,41 @@
+<section class="dayof" aria-labelledby="dayof-heading">
+    <h2 id="dayof-heading" class="status-label">Your day-of pass</h2>
+
+    <figure class="dayof-qr">
+        <img src="data:image/png;base64,{{ qr_code_b64 }}" alt="Your check-in QR code">
+        <figcaption>Show this at check-in and at every meal.</figcaption>
+    </figure>
+
+    {% if meal_group %}
+    <p class="status-label">Meal group</p>
+    <p class="meal-badge">{{ meal_group }}</p>
+    {% endif %}
+
+    {% if schedule_days %}
+    <details class="schedule">
+        <summary>
+            <span class="when-closed">View schedule</span>
+            <span class="when-open">Hide schedule</span>
+        </summary>
+        {% for day in schedule_days %}
+        <section class="schedule-day">
+            <h3>{{ day.date|date:"l, M j" }}</h3>
+            <ol>
+                {% for event in day.events %}
+                <li class="schedule-row{% if event.is_now %} is-now{% elif event.is_next %} is-next{% endif %}">
+                    <time datetime="{{ event.start|date:'c' }}">{{ event.start|time:"g:i A" }}</time>
+                    <div class="schedule-info">
+                        <span class="schedule-name">{{ event.name }}</span>
+                        {% if event.is_now %}<span class="schedule-flag">Now</span>{% elif event.is_next %}<span class="schedule-flag">Up next</span>{% endif %}
+                        <span class="cat-badge cat-{{ event.category|lower }}">{{ event.get_category_display }}</span>
+                        {% if event.location %}<span class="schedule-location">{{ event.location }}</span>{% endif %}
+                        {% if event.description %}<p class="schedule-description">{{ event.description }}</p>{% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ol>
+        </section>
+        {% endfor %}
+    </details>
+    {% endif %}
+</section>

@@ -40,3 +40,43 @@ class FoodEvent(Event):  # noqa: DJ008
 
 class WorkshopEvent(Event):  # noqa: DJ008
     pass
+
+
+class ScheduleEvent(models.Model):
+    """An item on the day-of schedule shown to hackers on their status page."""
+
+    CATEGORY_MAIN = "MAIN"
+    CATEGORY_FOOD = "FOOD"
+    CATEGORY_WORKSHOP = "WORKSHOP"
+    CATEGORY_ACTIVITY = "ACTIVITY"
+    CATEGORY_CHOICES = [
+        (CATEGORY_MAIN, "Main event"),
+        (CATEGORY_FOOD, "Food"),
+        (CATEGORY_WORKSHOP, "Workshop"),
+        (CATEGORY_ACTIVITY, "Activity"),
+    ]
+
+    external_id = models.CharField(
+        max_length=64,
+        unique=True,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text="ID from the website's schedule feed, set by the importer.",
+    )
+    name = models.CharField(max_length=100)
+    start = models.DateTimeField(db_index=True)
+    location = models.CharField(max_length=100, blank=True)
+    description = models.TextField(blank=True)
+    category = models.CharField(
+        max_length=10, choices=CATEGORY_CHOICES, default=CATEGORY_MAIN
+    )
+    is_visible = models.BooleanField(
+        default=True, help_text="Uncheck to hide this event from hackers."
+    )
+
+    class Meta:
+        ordering = ["start"]
+
+    def __str__(self):
+        return self.name
