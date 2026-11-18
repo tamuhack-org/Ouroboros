@@ -77,7 +77,7 @@
             Prepare for the event by visiting our FAQ for tips and info. See you soon!
         </p>
         <p class="status-description">
-            You will receive an email in the coming days containing more information about the event, as well the QR code necessary for checking in.
+            Your check-in QR code, meal group, and schedule are below.
         </p>
         <p class="status-description">
             Have additional questions? Email us at <a href="mailto:{{ organizer_email }}">{{ organizer_email }}</a>.
@@ -98,10 +98,14 @@
             {% csrf_token %}
         </form>
 
+        {% include 'status/day_of.html' %}
+
     {% elif CHECKED_IN %}
         <p class="status-label">Your attendance has been</p>
         <p class="status-value">CHECKED IN</p>
         <p class="status-description">Welcome to {{ event_name }}! You're checked in and ready to go.</p>
+
+        {% include 'status/day_of.html' %}
 
     {% elif REJECTED %}
         <p class="status-label">Your application status is</p>
@@ -127,10 +131,12 @@
             In the event that you do choose to attend, prepare for the event by visiting our FAQ for tips and info. See you soon!
         </p>
         <p class="status-description">
-            You will receive an email shortly containing more information about the event, as well the QR code necessary for checking in.
+            Your check-in QR code, meal group, and schedule are below.
         </p>
         <p class="status-description">
             Have additional questions? Email us at <a href="mailto:{{ organizer_email }}">{{ organizer_email }}</a>.
         </p>
+
+        {% include 'status/day_of.html' %}
     {% endif %}
 {% endblock %}

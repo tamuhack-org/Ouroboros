@@ -102,6 +102,13 @@ UNFOLD = {
                             "admin:volunteer_workshopevent_changelist"
                         ),
                     },
+                    {
+                        "title": "Schedule",
+                        "icon": "calendar_month",
+                        "link": reverse_lazy(
+                            "admin:volunteer_scheduleevent_changelist"
+                        ),
+                    },
                 ],
             },
             {

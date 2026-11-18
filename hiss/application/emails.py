@@ -1,10 +1,7 @@
-import json
 import os
-from io import BytesIO
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-import pyqrcode
 import requests
 import structlog
 from django.conf import settings
@@ -13,6 +10,7 @@ from django.template.loader import render_to_string
 from django.utils import html, timezone
 
 from application.models import Application
+from application.qr import qr_png_bytes
 
 logger = structlog.get_logger()
 
@@ -101,18 +99,7 @@ def send_confirmation_email(app: Application) -> None:
     )
     email.attach_alternative(html_msg, "text/html")
 
-    qr_content = json.dumps(
-        {
-            "first_name": app.first_name,
-            "last_name": app.last_name,
-            "email": app.user.email,
-            "university": app.school.name,
-        }
-    )
-    qr_code = pyqrcode.create(qr_content)
-    qr_stream = BytesIO()
-    qr_code.png(qr_stream, scale=5)
-    email.attach("code.png", qr_stream.getvalue(), "text/png")
+    email.attach("code.png", qr_png_bytes(app), "text/png")
     ics_path = Path(settings.BASE_DIR) / ".." / "static" / "hh26invite.ics"
     email.attach_file(str(ics_path), mimetype="text/calendar")
     logger.info("Sending confirmation email", email=app.user.email)
@@ -184,18 +171,7 @@ def send_hardware_confirmation_email(app: Application) -> None:
     )
     email.attach_alternative(html_msg, "text/html")
 
-    qr_content = json.dumps(
-        {
-            "first_name": app.first_name,
-            "last_name": app.last_name,
-            "email": app.user.email,
-            "university": app.school.name,
-        }
-    )
-    qr_code = pyqrcode.create(qr_content)
-    qr_stream = BytesIO()
-    qr_code.png(qr_stream, scale=5)
-    email.attach("code.png", qr_stream.getvalue(), "text/png")
+    email.attach("code.png", qr_png_bytes(app), "text/png")
     ics_path = Path(settings.BASE_DIR) / ".." / "static" / "hh26invite.ics"
     email.attach_file(str(ics_path), mimetype="text/calendar")
     logger.info("Sending hardware confirmation email", email=app.user.email)

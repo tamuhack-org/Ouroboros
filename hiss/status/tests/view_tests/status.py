@@ -1,11 +1,14 @@
 from datetime import timedelta
+from unittest import mock
 
 from django.urls import reverse_lazy
 from django.utils import timezone
 
 import application.constants
 from application.models import Application, Wave
+from application.qr import qr_payload
 from shared import test_case
+from volunteer.models import ScheduleEvent
 
 
 class StatusViewTestCase(test_case.SharedTestCase):
@@ -195,3 +198,90 @@ class StatusViewTestCase(test_case.SharedTestCase):
         response = self.client.get(reverse_lazy("status"))
 
         self.assertTrue("DECLINED" in response.context and response.context["DECLINED"])
+
+
+class DayOfDashboardTestCase(test_case.SharedTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.create_active_wave()
+        self.client.force_login(self.user)
+        self.now = timezone.now()
+        self.past = ScheduleEvent.objects.create(
+            name="Opening Ceremony", start=self.now - timedelta(hours=3)
+        )
+        self.current = ScheduleEvent.objects.create(
+            name="Intro to Git",
+            start=self.now - timedelta(minutes=10),
+            location="MSC 2400",
+        )
+        self.upcoming = ScheduleEvent.objects.create(
+            name="Lunch", start=self.now + timedelta(hours=1)
+        )
+        self.later = ScheduleEvent.objects.create(
+            name="Awards", start=self.now + timedelta(hours=5)
+        )
+        self.hidden = ScheduleEvent.objects.create(
+            name="Secret Event", start=self.now + timedelta(hours=2), is_visible=False
+        )
+
+    def create_app(self, status):
+        return Application.objects.create(
+            **self.application_fields, wave=self.wave1, status=status
+        )
+
+    def get_status(self):
+        with mock.patch("status.views.timezone.now", return_value=self.now):
+            return self.client.get(reverse_lazy("status"))
+
+    def test_day_of_statuses_show_pass(self):
+        for status in (
+            application.constants.STATUS_CONFIRMED,
+            application.constants.STATUS_CHECKED_IN,
+            application.constants.STATUS_EXPIRED,
+        ):
+            with self.subTest(status=status):
+                Application.objects.filter(user=self.user).delete()
+                app = self.create_app(status)
+                response = self.get_status()
+                self.assertTrue(response.context["qr_code_b64"])
+                self.assertEqual(response.context["meal_group"], app.meal_group)
+                self.assertContains(response, "Your check-in QR code")
+                self.assertContains(response, "Intro to Git")
+                self.assertContains(response, "MSC 2400")
+
+    def test_other_statuses_hide_pass(self):
+        for status in (
+            application.constants.STATUS_PENDING,
+            application.constants.STATUS_REJECTED,
+            application.constants.STATUS_DECLINED,
+            application.constants.STATUS_ADMITTED,
+        ):
+            with self.subTest(status=status):
+                Application.objects.filter(user=self.user).delete()
+                self.create_app(status)
+                response = self.get_status()
+                self.assertNotIn("qr_code_b64", response.context)
+                self.assertNotContains(response, "Intro to Git")
+
+    def test_hidden_events_excluded(self):
+        self.create_app(application.constants.STATUS_CONFIRMED)
+        response = self.get_status()
+        self.assertNotContains(response, "Secret Event")
+
+    def test_now_and_next_highlighted(self):
+        self.create_app(application.constants.STATUS_CONFIRMED)
+        response = self.get_status()
+        events = {
+            e.name: e
+            for day in response.context["schedule_days"]
+            for e in day["events"]
+        }
+        self.assertTrue(events["Intro to Git"].is_now)
+        self.assertFalse(events["Opening Ceremony"].is_now)
+        self.assertTrue(events["Lunch"].is_next)
+        self.assertFalse(events["Awards"].is_next)
+        self.assertContains(response, "Up next")
+
+    def test_qr_encodes_email(self):
+        app = self.create_app(application.constants.STATUS_CONFIRMED)
+        self.assertIn(self.user.email, qr_payload(app))
