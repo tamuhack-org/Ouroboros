@@ -1,0 +1,10 @@
+/* Unfold sizes every change-form label to a single 38px line (h-[38px] leading-[38px]),
+   so long questions wrap into 38px lines and spill over the rows around them.
+   Let long labels grow instead; short ones still line up with their 38px inputs. */
+@media (min-width: 1024px) {
+    .field-line > div:first-child:has(> label) {
+        height: auto;
+        line-height: 1.5;
+        min-height: 38px;
+    }
+}
